@@ -4,6 +4,27 @@
   const D = window.GameData;
   const $ = (s) => document.querySelector(s);
   let state = null;
+  const SAVE_KEY = 'idolmgr.save.v1';
+  const REC_KEY = 'idolmgr.records.v1';
+  const ENDING_TAGS = ['해피 엔딩', '서사 엔딩', '일반 엔딩', '아쉬운 엔딩', '배드 엔딩'];
+
+  // localStorage는 사생활 보호 모드 등에서 막힐 수 있으므로 항상 try/catch
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } },
+    del(k) { try { localStorage.removeItem(k); } catch (e) { /* ignore */ } },
+  };
+  const records = () => { try { return JSON.parse(store.get(REC_KEY) || '{}'); } catch (e) { return {}; } };
+  function recordEnding(summary, pid) {
+    const r = records();
+    const cur = r[pid] || { best: 999, runs: 0, tags: [] };
+    cur.runs += 1;
+    cur.best = Math.min(cur.best, summary.rank);
+    if (!cur.tags.includes(summary.tag)) cur.tags.push(summary.tag);
+    r[pid] = cur;
+    store.set(REC_KEY, JSON.stringify(r));
+  }
+  E.onWeekBoundary = (s) => { if (!s.over) store.set(SAVE_KEY, E.serialize(s)); };
 
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
@@ -21,15 +42,22 @@
     state = null;
     $('#weekTag').textContent = '';
     $('#weekTag').className = 'week-tag';
+    const rec = records();
+    const saved = store.get(SAVE_KEY);
+    const info = saved ? E.saveInfo(saved) : null;
+    const resume = info ? `<div class="resume"><div><b>이어하기</b> — ${esc(info.name)} <span class="star">${stars(info.star)}</span> · ${info.week === 0 ? '시작 전' : info.week + '주차까지 진행'} · 생존 ${info.alive}명 · 현재 ${info.rank}위</div>
+        <div class="resume-btns"><button class="btn" data-act="resume">이어하기</button><button class="btn ghost" data-act="delsave">삭제</button></div></div>` : '';
     const cards = D.protagonists.map((p) => {
       const lab = D.labels.find((l) => l.id === p.label);
+      const r = rec[p.id];
+      const recLine = r ? `<div class="rec">🏆 최고 ${r.best}위 · 엔딩 ${r.tags.length}/${ENDING_TAGS.length} · ${r.runs}회 플레이</div>` : '';
       return `<button class="card" data-act="pick" data-id="${p.id}">
         <div class="row">${avatar({ ...p, color: lab.color, protagonist: true })}
           <div><h3>${esc(p.name)} <span class="meta">(${p.age})</span></h3>
           <div class="star" title="난이도">${stars(p.star)}</div>
           <div class="meta">${esc(lab.name)} · ${esc(p.concept)}</div></div></div>
         <dl><dt>강점</dt><dd>${esc(p.strength)}</dd><dt>약점</dt><dd>${esc(p.weakness)}</dd><dt>억까</dt><dd>${esc(p.edit.kind)}</dd><dt>서사</dt><dd>${esc(p.arc.name)}</dd></dl>
-        <div class="go">이 연습생의 매니저가 된다</div></button>`;
+        ${recLine}<div class="go">이 연습생의 매니저가 된다</div></button>`;
     }).join('');
     $('#app').innerHTML = `
       <div class="hero">
@@ -40,11 +68,32 @@
           <span class="chip">101 → 60 → 35 → 22 → 16 → 13 → 11</span><span class="chip">주당 집중 행동 2개</span>
         </div>
       </div>
-      <div class="cards">${cards}</div>`;
+      ${resume}<div class="cards">${cards}</div>`;
+  }
+
+  // ───────────── 순위 그래프 ─────────────
+  function rankChart(hist, w, h) {
+    const pad = 14;
+    if (!hist.length) return '<p class="dim">아직 기록이 없습니다.</p>';
+    const sx = (wk) => pad + ((wk - 1) / 11) * (w - 2 * pad);
+    const sy = (r) => pad + ((Math.sqrt(r) - 1) / (Math.sqrt(101) - 1)) * (h - 2 * pad);
+    const off = hist.filter((x) => x.official);
+    const line = off.map((x) => `${sx(x.week).toFixed(1)},${sy(x.rank).toFixed(1)}`).join(' ');
+    const dots = hist.map((x) => `<circle cx="${sx(x.week).toFixed(1)}" cy="${sy(x.rank).toFixed(1)}" r="${x.official ? 3.5 : 2.5}" ${x.official ? 'class="dot"' : 'class="dot trend"'}><title>${x.week}주차 ${x.rank}위${x.official ? '' : ' (예상)'}</title></circle>`).join('');
+    const guide = [1, 11, 30, 60].map((r) => `<line x1="${pad}" x2="${w - pad}" y1="${sy(r).toFixed(1)}" y2="${sy(r).toFixed(1)}" class="grid"/><text x="2" y="${(sy(r) + 3).toFixed(1)}" class="axis">${r}</text>`).join('');
+    return `<svg viewBox="0 0 ${w} ${h}" class="chart" role="img" aria-label="주차별 순위 변화">${guide}<polyline points="${line}" class="line"/>${dots}</svg>`;
   }
 
   // ───────────── 게임 화면 ─────────────
-  function step() { render(E.next(state)); }
+  function step() {
+    const sc = E.next(state);
+    if (sc && sc.type === 'ending' && !state.recorded) {
+      state.recorded = true;
+      recordEnding(sc.summary, state.pdef.id);
+      store.del(SAVE_KEY);
+    }
+    render(sc);
+  }
 
   function render(sc) {
     const v = E.view(state);
@@ -88,6 +137,10 @@
         body = `${lines}<div class="ending-summary">
             <div><b>${s.rank}위</b><small>최종 순위</small></div><div><b>${s.week}주</b><small>진행</small></div>
             <div><b>${s.trust}</b><small>매니저 신뢰</small></div><div><b>${s.arcOk ? '달성' : '미달성'}</b><small>${esc(s.arc)}</small></div></div>
+          <h4 style="margin:18px 0 6px">순위 추이</h4>${rankChart(state.hist, 560, 140)}
+          <p class="dim">● 공식 순위 · ○ 준비 주간 예상 순위</p>
+          <h4 style="margin:14px 0 6px">시즌 회고</h4>
+          <ul class="timeline">${state.log.length ? state.log.map((l) => `<li><b>${l.week}주</b> ${esc(l.text)}</li>`).join('') : '<li>기록된 사건이 없습니다.</li>'}</ul>
           <button class="btn right" data-act="restart">다른 연습생으로 다시 하기</button>`;
         break;
       }
@@ -139,6 +192,7 @@
       <div class="panel"><h4>매니저</h4>
         <div class="kv"><span>자금</span><b>${v.mgr.funds}</b></div><div class="kv"><span>신뢰도</span><b>${Math.round(v.mgr.trust)}</b></div>
         <div class="kv"><span>서사 [${esc(v.arc.name)}]</span><b>${v.arc.points > 0 ? '+' + v.arc.points : v.arc.points}</b></div></div>
+      <div class="panel"><h4>순위 추이</h4>${rankChart(state.hist, 300, 90)}</div>
       <div class="panel"><h4>생존 ${v.alive}명 · 상위 5</h4><div class="mini">${top}</div>
         <button class="btn ghost" style="margin-top:10px;width:100%" data-act="ranking">전체 순위표</button></div>
     </aside>`;
@@ -190,6 +244,11 @@
     const act = el.dataset.act;
     switch (act) {
       case 'pick': state = E.newGame(el.dataset.id, Date.now()); step(); break;
+      case 'resume': {
+        try { state = E.deserialize(store.get(SAVE_KEY)); step(); } catch (err) { store.del(SAVE_KEY); alert('저장 데이터를 불러오지 못했습니다: ' + err.message); showSelect(); }
+        break;
+      }
+      case 'delsave': if (confirm('저장된 진행을 삭제할까요?')) { store.del(SAVE_KEY); showSelect(); } break;
       case 'next': step(); break;
       case 'choose': E.choose(state, +el.dataset.i); step(); break;
       case 'action': E.doAction(state, el.dataset.id); render(state.scene); break;
@@ -200,7 +259,19 @@
       default:
     }
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (/INPUT|TEXTAREA/.test((e.target.tagName || '')) || !$('#modal').classList.contains('hidden')) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      const b = document.querySelector('[data-act="next"]');
+      if (b) { e.preventDefault(); b.click(); }
+    } else if (/^[1-9]$/.test(e.key)) {
+      const list = document.querySelectorAll('.scene .choice:not(:disabled)');
+      const t = list[+e.key - 1];
+      if (t) t.click();
+    }
+  });
+  const ver = $('#ver'); if (ver) ver.textContent = 'v' + E.VERSION;
 
   window.UI = { showSelect };
   showSelect();

@@ -10,13 +10,27 @@
   const SKILLS = ['vocal', 'dance', 'rap', 'charm', 'variety'];
   const SKILL_KO = { vocal: '보컬', dance: '댄스', rap: '랩', charm: '매력', variety: '끼' };
 
-  function mulberry32(a) {
-    return function () {
-      a |= 0; a = (a + 0x6d2b79f5) | 0;
+  // 상태를 저장/복원할 수 있는 시드 난수
+  function mulberry32(seed) {
+    let a = seed | 0;
+    const f = function () {
+      a = (a + 0x6d2b79f5) | 0;
       let t = Math.imul(a ^ (a >>> 15), 1 | a);
       t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
+    f.get = () => a;
+    f.set = (v) => { a = v | 0; };
+    return f;
+  }
+  const VERSION = '1.0.0';
+  const SAVE_VERSION = 1;
+
+  // 이름 + 조사 치환: {friend:이가} {rival:와과} {friend:은는} {rival:을를}
+  function josa(name, pair) {
+    const code = name.charCodeAt(name.length - 1) - 0xac00;
+    const batchim = code >= 0 && code <= 11171 && code % 28 !== 0;
+    return pair === '이가' ? (batchim ? '이' : '가') : pair === '은는' ? (batchim ? '은' : '는') : pair === '와과' ? (batchim ? '과' : '와') : batchim ? '을' : '를';
   }
   const pick = (rng, arr) => arr[Math.floor(rng() * arr.length)];
   const between = (rng, [a, b]) => a + rng() * (b - a);
@@ -78,7 +92,7 @@
       chain: null, cooldown: 0, forceConflict: false, brightNext: false,
       usedDaily: [], arcPoints: 0, arcDone: 0, slotPenalty: 0, recover: 0,
       crisis: { level: 0, weeks: 0 }, analyzedWeek: -1, slotsLeft: 2, trained: 0,
-      period: 0, log: [], withdrew: false, final: null,
+      period: 0, log: [], hist: [], withdrew: false, final: null, version: VERSION,
     };
     rank(state, false);
     return state;
@@ -225,6 +239,7 @@
   const hook = (fn) => ({ type: 'hook', run: fn });
   const pushFront = (s, scenes) => s.queue.unshift(...scenes);
   const pushBack = (s, scenes) => s.queue.push(...scenes);
+  const pushLog = (s, t) => { s.log.push({ week: s.week, text: t }); };
   const fxLine = (arr) => (arr.length ? '▸ ' + arr.join(' · ') : '');
 
   function standingLine(state) {
@@ -242,6 +257,7 @@
     for (let guard = 0; guard < 200; guard++) {
       if (!state.queue.length) {
         if (state.over) return state.scene;
+        if (api.onWeekBoundary) api.onWeekBoundary(state);
         beginWeek(state);
         continue;
       }
@@ -307,21 +323,42 @@
   }
 
   // ───────────────────────── 일상/서사 이벤트 ─────────────────────────
+  function fillTokens(state, str) {
+    const me = player(state);
+    return str.replace(/\{(friend|rival)(?::([^}]+))?\}/g, (m, who, pair) => {
+      const o = byId(state, me.rel[who]);
+      return o.name + (pair ? josa(o.name, pair) : '');
+    });
+  }
+
+  function eligibleDaily(state, e) {
+    const me = player(state);
+    if (e.only && e.only !== me.id) return false;
+    if (e.tiers && !e.tiers.includes(me.tier)) return false;
+    if (e.needs && !byId(state, me.rel[e.needs]).alive) return false;
+    return true;
+  }
+
   function dailyEvent(state) {
-    const pool = D().daily.filter((e) => !state.usedDaily.includes(e.id));
+    const all = D().daily.filter((e) => eligibleDaily(state, e));
+    const pool = all.filter((e) => !state.usedDaily.includes(e.id));
+    // 주인공 전용 이벤트는 우선순위를 높여 시즌 중 반드시 한 번은 만나게 한다
+    const only = pool.filter((e) => e.only);
     let cand = state.brightNext ? pool.filter((e) => e.bright) : pool;
-    if (!cand.length) cand = pool.length ? pool : D().daily;
+    if (only.length && !state.brightNext && state.rng() < 0.35) cand = only;
+    if (!cand.length) cand = pool.length ? pool : all;
     const ev = pick(state.rng, cand);
     state.brightNext = false;
     state.usedDaily.push(ev.id);
-    pushFront(state, [eventScene(state, ev.title, ev.text, ev.bg, ev.choices)]);
+    pushFront(state, [eventScene(state, ev.title, fillTokens(state, ev.text), ev.bg, ev.choices)]);
   }
 
   function arcBeat(state) {
     const w = state.week;
-    const idx = w === 4 ? 0 : w === 8 ? 1 : -1;
+    const idx = w === 4 ? 0 : w === 8 ? 1 : w === 10 ? 2 : -1;
     if (idx < 0) return;
     const beat = state.pdef.arc.beats[idx];
+    if (!beat) return;
     const choices = beat.choices.map((c) => ({ ...c, arcTag: true }));
     pushFront(state, [eventScene(state, `[${state.pdef.arc.name}] ${beat.title}`, beat.text, 'dorm', choices, { arc: true })]);
   }
@@ -344,7 +381,7 @@
     const lines = [c.result || ''];
     const eff = applyFx(state, c.fx);
     if (c.arc != null) state.arcPoints += c.arc;
-    if (s.arc) state.arcDone += 1;
+    if (s.arc) { state.arcDone += 1; pushLog(state, `[서사] ${s.title.replace(/^\[[^\]]*\]\s*/, '')} — ${c.label}`); }
     if (c.resolved && state.chain) state.chain.resolved = true;
     if (c.honest && state.chain) state.chain.honest = true;
     if (c.run) { const extra = c.run(state); if (extra) lines.push(...[].concat(extra)); }
@@ -361,6 +398,7 @@
     cr.weeks = lvl >= 2 ? cr.weeks + 1 : 0;
     cr.level = lvl;
     const C = D().crisis;
+    if (lvl >= 2 && cr.weeks === 1) pushLog(state, '[위기] 체력/멘탈 위기 단계 진입');
     if (lvl === 1) { pushFront(state, [text('⚠ 컨디션 경고', [C.warn, `체력 ${Math.round(p.stamina)} / 멘탈 ${Math.round(p.mental)}`], { bg: 'dorm', warn: true })]); return; }
     if (lvl < 2) return;
     const trust = state.mgr.trust;
@@ -450,10 +488,12 @@
       p.note = '편집 이슈';
       lines.push(`방송이 나갔다. ${state.pdef.edit.bad}`, `📺 편집 위험도 ${Math.round(negProb * 100)}% — ${big ? '큰 타격' : '타격'}`, fxLine(eff));
       state.cooldown = 1; state.brightNext = true;
+      pushLog(state, `[억까] ${state.pdef.edit.kind} — 편집 위험 ${Math.round(negProb * 100)}%로 불리한 편집이 방송됨`);
       pushFront(state, [text('📺 방송 반응: 억까 발생', lines, { bg: 'stage', bad: true }), responseScene(state)]);
     } else if (outcome === 'good') {
       const eff = applyFx(state, { favor: 6, aw: 4, coh: 2 });
       lines.push('방송이 나갔다. 제작진은 이번 갈등을 호의적으로 편집했다. 진심이 전해졌다는 반응이 이어진다.', fxLine(eff));
+      pushLog(state, '[편집] 갈등 장면이 호의적으로 편집됨');
       state.chain = null; pushFront(state, [text('📺 방송 반응: 호의적 편집', lines, { bg: 'stage' })]);
     } else {
       lines.push('방송이 나갔다. 다행히 큰 왜곡 없이 지나갔다. 분량도 무난했다.');
@@ -471,15 +511,15 @@
       { label: '[수습] 입장문·해명 영상 (자금 1)', cost: 1, fx: { funds: -1 }, run: (s) => {
         const ok = s.rng() < 0.5 + s.mgr.trust * 0.003 + (guarded ? 0.15 : 0);
         const pl = player(s);
-        if (ok) { const back = s.chain.loss * 0.55; pl.favor = clamp(pl.favor + back, 0, 100); s.chain = null; return `해명이 받아들여졌다. 호감도 +${round1(back)}`; }
-        pl.favor = clamp(pl.favor - 3, 0, 100); s.chain = null; return '해명 영상이 오히려 논란을 키웠다. 호감도 -3';
+        if (ok) { const back = s.chain.loss * 0.55; pl.favor = clamp(pl.favor + back, 0, 100); s.chain = null; pushLog(s, '[수습] 해명이 받아들여져 호감도 일부 회복'); return `해명이 받아들여졌다. 호감도 +${round1(back)}`; }
+        pl.favor = clamp(pl.favor - 3, 0, 100); s.chain = null; pushLog(s, '[수습 실패] 해명 영상이 오히려 논란을 키움'); return '해명 영상이 오히려 논란을 키웠다. 호감도 -3';
       } },
       { label: '[수습·역전] 동료 증언 요청 (다음 주 슬롯 -1)', fx: {}, run: (s) => {
         s.slotPenalty = 1;
         const pl = player(s);
         const ok = s.rng() < 0.3 + s.mgr.trust * 0.004 + (pl.coh / 100) * 0.2 + (s.chain.resolved ? 0.2 : 0);
         if (ok) {
-          const back = s.chain.loss * 0.8 + 4; pl.favor = clamp(pl.favor + back, 0, 100); pl.fans += 6000 + pl.fans * 0.05; s.arcPoints += 1; s.chain = null;
+          const back = s.chain.loss * 0.8 + 4; pl.favor = clamp(pl.favor + back, 0, 100); pl.fans += 6000 + pl.fans * 0.05; s.arcPoints += 1; s.chain = null; pushLog(s, '[역전] 동료의 증언으로 여론이 뒤집힘 — 팬 대폭 증가');
           return `동료의 진심 어린 증언이 화제가 됐다. 역전 서사 완성! 호감도 +${round1(back)} · 팬 증가`;
         }
         s.chain = null; applyFx(s, { mental: -3 }); return '증언 영상은 크게 주목받지 못했다. 멘탈 -3';
@@ -521,7 +561,7 @@
       case 'negotiate_main': {
         const okP = 0.45 + state.mgr.trust * 0.003 + (p.tier <= 2 ? 0.08 : 0) - state.pdef.hostile * 0.1;
         if (state.rng() < okP) { p.part = 'main'; out.push('협상 성공: 메인 파트 확보 (노출 ↑ · 점수 변동 큼)'); }
-        else { p.part = 'safe'; state.forceConflict = true; out.push('협상 결렬: 안정적인 파트로 밀려났다. 갈등 장면이 제작진 눈에 띌 수 있다.'); }
+        else { p.part = 'safe'; state.forceConflict = true; pushLog(state, '[협상] 메인 파트 협상 결렬 → 갈등'); out.push('협상 결렬: 안정적인 파트로 밀려났다. 갈등 장면이 제작진 눈에 띌 수 있다.'); }
         break;
       }
       case 'negotiate_safe': p.part = 'safe'; out.push('안정적인 파트 확보 (점수 +2, 노출 보통)'); break;
@@ -591,6 +631,7 @@
     lines.push(`📝 중간 평가: 이번 미션 기준 예상 실력은 상위 ${pct}% (${qr}/${qs.length}위권).`);
     state.lastQ = qr;
     rank(state, false);
+    recordHist(state, false);
     lines.push(`📈 ${standingLine(state)}`);
     if (e.length) lines.push(fxLine(e));
     pushFront(state, [text('준비 주간 결산', lines, { bg: 'studio', release: true }), rankScene(state, false)]);
@@ -675,6 +716,7 @@
     const info = state.info;
     const p = player(state);
     rank(state, true);
+    recordHist(state, true);
     const q = [];
     const rows = alive(state).sort((a, b) => a.rank - b.rank);
     // 서하연/유나: 발표 충격
@@ -688,6 +730,7 @@
       gone.forEach((c) => { c.alive = false; });
       out.push(...gone);
       const safe = p.rank <= cut;
+      pushLog(state, `[발표] ${info.round === 6 ? '최종' : 'R' + info.round} ${p.rank}위 — ${safe ? '생존' : '탈락'}`);
       const lines = [`${info.round === 6 ? '최종 데뷔' : 'R' + info.round + ' 순위 발표'}: ${cut}명이 남았다. ${out.length}명이 탈락했다.`,
         `탈락자 중 눈에 띄는 이름: ${out.slice(0, 5).map((c) => c.name + '(' + c.rank + '위)').join(', ')}…`,
         `${p.name}: ${p.rank}위 — ${safe ? (info.round === 6 ? '데뷔 확정!' : '생존!') : '탈락'}`];
@@ -705,6 +748,12 @@
     }
     pushFront(state, q);
     state.prevAnnounceRank = p.rank;
+  }
+
+  function recordHist(state, official) {
+    const p = player(state);
+    state.hist = state.hist.filter((h) => !(h.week === state.week && h.official === official));
+    state.hist.push({ week: state.week, rank: p.rank, official, alive: alive(state).length });
   }
 
   function grade(state, p) {
@@ -770,6 +819,36 @@
     return { c, friend: rel(c.rel.friend), rival: rel(c.rel.rival), reasons: c.reasons, delta: c.prevRank - c.rank };
   }
 
-  root.Engine = { newGame, next, choose, doAction, view, ranking, detail, weekInfo, player, byId, SKILLS, SKILL_KO, rank, votes, alive };
-  if (typeof module !== 'undefined' && module.exports) module.exports = root.Engine;
+  // ───────────────────────── 저장/불러오기 ─────────────────────────
+  // 주 경계(큐가 비어 있을 때)에서만 저장한다: 장면 큐에는 함수가 들어 있기 때문.
+  function serialize(state) {
+    const o = Object.assign({}, state);
+    delete o.rng; delete o.queue; delete o.scene; delete o.pdef;
+    o.pdefId = state.pdef.id;
+    o.rngState = state.rng.get();
+    o.saveVersion = SAVE_VERSION;
+    return JSON.stringify(o);
+  }
+  function deserialize(json) {
+    const o = JSON.parse(json);
+    if (o.saveVersion !== SAVE_VERSION) throw new Error('저장 데이터 버전이 맞지 않습니다.');
+    const pdef = D().protagonists.find((p) => p.id === o.pdefId);
+    if (!pdef) throw new Error('저장 데이터의 주인공을 찾을 수 없습니다.');
+    const rng = mulberry32(0);
+    rng.set(o.rngState);
+    delete o.rngState; delete o.pdefId;
+    return Object.assign(o, { rng, queue: [], scene: null, pdef });
+  }
+  function saveInfo(json) {
+    try {
+      const o = JSON.parse(json);
+      const pdef = D().protagonists.find((p) => p.id === o.pdefId);
+      const me = o.contestants.find((c) => c.id === o.playerId);
+      return { name: pdef.name, star: pdef.star, week: o.week, rank: me.rank, alive: o.contestants.filter((c) => c.alive).length };
+    } catch (e) { return null; }
+  }
+
+  const api = { VERSION, newGame, next, choose, doAction, view, ranking, detail, weekInfo, player, byId, SKILLS, SKILL_KO, rank, votes, alive, serialize, deserialize, saveInfo, onWeekBoundary: null };
+  root.Engine = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : global);

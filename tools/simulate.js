@@ -7,6 +7,7 @@ const path = require('path');
 require(path.join(__dirname, '../data/labels.js'));
 require(path.join(__dirname, '../data/protagonists.js'));
 require(path.join(__dirname, '../data/events.js'));
+require(path.join(__dirname, '../data/extra.js'));
 const Engine = require(path.join(__dirname, '../src/engine.js'));
 
 const N = parseInt(process.argv[2] || '40', 10);

@@ -1,0 +1,11 @@
+{
+  "name": "idol-manager-survival",
+  "version": "1.0.0",
+  "description": "Mnet 걸그룹 서바이벌 매니저 시뮬레이션 (텍스트+이미지 선택형)",
+  "private": true,
+  "scripts": {
+    "start": "npx http-server . -p 8080",
+    "test": "node tools/test.js",
+    "sim": "node tools/simulate.js 60 pro"
+  }
+}
