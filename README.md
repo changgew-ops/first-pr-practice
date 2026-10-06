@@ -1,17 +1,47 @@
-# first-pr-practice
+# 아이돌 매니저: 서바이벌
 
-Practice repo for my first pull request.
+Mnet 걸그룹 서바이벌(101명 → TOP 11 데뷔)을 배경으로, 담당 연습생을 골라 12주 동안 매니저로서 이끄는 **텍스트 + 이미지 선택형 육성 게임**입니다. 개인 팬 프로젝트(비상업)이며 참가자와 제작진은 모두 가상 인물입니다.
 
-## What is this?
+## 실행
 
-This repository exists so I can practice the full GitHub pull request
-workflow: creating a branch, making a change, committing it, pushing,
-and opening a PR for review.
+빌드가 필요 없습니다. `index.html`을 브라우저로 열면 됩니다.
 
-## Workflow
+```bash
+# 또는 로컬 서버로
+npx http-server .
+```
 
-1. Create a branch off `main`
-2. Make a small, focused change
-3. Commit with a clear message
-4. Push the branch
-5. Open a pull request
+## 게임 개요
+
+- 12명의 주인공 후보(난이도 ★1~★5) 중 1명 선택
+- 라운드마다 **준비 주간**(훈련·협상·인터뷰, 예상 순위) → **방송 주간**(무대·공식 순위·탈락)
+- 순위는 `인지도 · 호감도 · 고정 팬 · 팬덤 결속`으로 만들어지는 투표로 결정 (11명 → 5명 → 3명 → 1명 투표)
+- 억까는 확률이 아니라 `파트 갈등 → 인터뷰 → 편집 → 방송 → 대응`의 사건 연쇄
+- 체력·멘탈은 0이 되어도 즉시 하차하지 않고 위기 단계를 거침
+- 엔딩 = 오디션 성적 × 개인 서사 × 매니저와의 관계
+
+자세한 설계는 [docs/DESIGN.md](docs/DESIGN.md)를 참고하세요.
+
+## 구조
+
+```
+index.html / style.css
+data/     labels.js protagonists.js events.js   # 데이터 (레이블, 주인공 12명, 이벤트·행동·엔딩)
+src/      engine.js (UI 비의존 로직) / ui.js (렌더링)
+tools/    simulate.js                            # 밸런스 시뮬레이션
+assets/   이미지 (assets/README.md 참고)
+```
+
+## 밸런스 시뮬레이션
+
+봇이 전 시즌을 자동 플레이해 주인공별 데뷔율을 집계합니다.
+
+```bash
+node tools/simulate.js 60 pro      # 전략: pro | smart | random | idle
+```
+
+## 현재 상태 (MVP)
+
+- [x] 12주 시즌 루프, 투표 모델, 101명 AI 참가자, 순위·탈락
+- [x] 억까 연쇄 / 위기 단계 / 3축 엔딩 / 참가자 상세 카드
+- [ ] 저장·불러오기, 이미지 에셋, 이벤트·서사 분량 확장, 사운드
