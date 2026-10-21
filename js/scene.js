@@ -35,6 +35,14 @@
         { t: 'coffee', x: 292 }, { t: 'vending', x: 324 }, { t: 'plant', x: 354 }, { t: 'printer', x: 156, floor: true },
       ],
     },
+    review: {
+      wall: '#4a5f55', trim: '#2f4038', floor: 'tile', fc1: '#a9b3a8', fc2: '#9aa59a', rug: ['#2f4a40', '#4f7a68'], accent: '#e0c060',
+      windows: [{ x: 96, w: 52 }, { x: 236, w: 52 }],
+      props: [
+        { t: 'shelf', x: 6, s: 11 }, { t: 'shelf', x: 48, s: 12 }, { t: 'board', k: 'chart', x: 154, w: 74 },
+        { t: 'clock', x: 300 }, { t: 'coffee', x: 318 }, { t: 'cooler', x: 350 }, { t: 'plant', x: 366 },
+      ],
+    },
   };
 
   // ---------- sprite cache ----------
@@ -118,7 +126,7 @@
   // ---------- floors ----------
   function buildFloor(data) {
     const th = THEMES[data.theme] || THEMES.dev;
-    const f = { data, th, dyn: [], pois: [], agents: [], desks: [], bg: null, windows: [] };
+    const f = { data, th, dyn: [], pois: [], agents: [], desks: [], bg: null, windows: [], parts: [], papers: [] };
     f.windows = th.windows.map(w => ({ x: w.x, y: 8, w: w.w, h: 34 }));
     const [bg, g] = P.mk(W, H);
     g.drawImage(P.floorTex(th.floor, th.fc1, th.fc2, W, H, WALL), 0, 0);
@@ -173,25 +181,25 @@
 
   // ---------- agents ----------
   function targetFor(f, a, idx, used) {
-    const st = a.d.status;
-    if (st === 'working' || st === 'offline' || (st === 'blocked')) {
-      const desk = f.desks[used.desk++ % f.desks.length]; a.desk = desk;
-      if (st === 'blocked') return { x: desk.x + 54, y: desk.y + 32, lane: laneOf(desk.y + 32), mode: 'panic' };
-      if (st === 'offline') return { x: desk.x + 22, y: desk.y + 34, mode: 'away' };
-      return { x: desk.x + 22, y: desk.y + 34, lane: desk.y < 100 ? LANE_MID : LANE_LOW, mode: 'sit' };
-    }
-    a.desk = null;
+    const st = a.d.status, desk = f.desks[idx % f.desks.length];
+    a.desk = desk;                                   // every agent owns a desk
+    if (st === 'blocked') return { x: desk.x + 54, y: desk.y + 32, lane: laneOf(desk.y + 32), mode: 'panic' };
+    if (st === 'offline') return { x: desk.x + 22, y: desk.y + 34, mode: 'away' };
+    if (st === 'working') return { x: desk.x + 22, y: desk.y + 34, lane: desk.y < 100 ? LANE_MID : LANE_LOW, mode: 'sit' };
     if (st === 'done' && used.couch < 2) { const cx = f.lounge.couch.x + (used.couch++ ? 31 : 17); return { x: cx, y: f.lounge.couch.y + 19, mode: 'couch' }; }
     const p = f.pois[(idx * 5 + 3) % f.pois.length];
     return { x: p.x + (idx % 3 - 1) * 4, y: p.y, mode: 'stand', face: p.face, poi: p };
   }
-  function layoutAgents(f, keepPos) {
-    const used = { desk: 0, couch: 0 };
+  function layoutAgents(f) {
+    const used = { couch: 0 };
     const list = f.data.agents.filter(a => !a.demo || S_.showDemo);
     const old = new Map(f.agents.map(a => [a.d.id, a]));
     f.agents = list.map((d, i) => {
-      const a = old.get(d.id) || { d, look: P.makeLook(d.id), x: 0, y: 0, path: [], dir: 'down', t0: Math.random() * 50, timer: 2 + Math.random() * 4, seed: P.hash(d.id) % 97, spawned: false, bubbleT: 0 };
-      a.d = d; a.target = targetFor(f, a, i, used);
+      let a = old.get(d.id), fresh = !a;
+      if (fresh) a = { d, look: P.makeLook(d.id), x: 0, y: 0, path: [], dir: 'down', t0: Math.random() * 50, timer: 2 + Math.random() * 4, seed: P.hash(d.id) % 97, spawned: false };
+      a.d = d;
+      if (!fresh && a.lastStatus === d.status) { if (a.target && a.target.mode === 'couch') used.couch++; a.desk = f.desks[i % f.desks.length]; return a; }   // unchanged: keep walking/wandering
+      a.lastStatus = d.status; a.target = targetFor(f, a, i, used);
       if (!a.spawned) { a.x = a.target.x; a.y = a.target.y; a.spawned = true; a.mode = a.target.mode; a.path = []; }
       else { a.path = route({ x: a.x, y: a.y, lane: a.mode === 'sit' ? (a.desk && a.desk.y < 100 ? LANE_MID : LANE_LOW) : undefined }, a.target); a.mode = 'walk'; }
       return a;
@@ -248,11 +256,12 @@
   const S_ = { floors: [], cur: 0, showDemo: true, tod: 'auto', hover: null, sel: null, parts: [], trans: null, clickCb: null, hoverCb: null, lm: null };
   const [LM, lmg] = P.mk(W, H);
   S_.lm = LM;
-  let cv, g, last = 0, T = 12;
+  let cv, g, main, last = 0, T = 12;
+  const [FG, fgCtx] = P.mk(W, H);
   const timeNow = () => { const d = new Date(); return d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600; };
   const curT = () => S_.tod === 'day' ? 13 : S_.tod === 'night' ? 23 : timeNow();
 
-  function emit(x, y, vx, vy, life, col, size = 1) { if (S_.parts.length < 160) S_.parts.push({ x, y, vx, vy, life, max: life, col, size }); }
+  function emit(f, x, y, vx, vy, life, col, size = 1) { if (f.parts.length < 160) f.parts.push({ x, y, vx, vy, life, max: life, col, size }); }
 
   function chairFor(f, desk, away) {
     return { y: desk.y + (away ? 40 : 36), draw: g2 => P.drawSpr(g2, S('chair', F.chair), desk.x + 15, desk.y + (away ? 31 : 27)) };
@@ -263,12 +272,18 @@
     const t = ms / 1000, dt = Math.min(0.1, t - last); last = t;
     T = curT();
     S_.floors.forEach(f => f.agents.forEach(a => stepAgent(f, a, dt, t)));
-    render(t);
+    if (S_.overview) {
+      const cols = S_.cols;
+      S_.floors.forEach((f, i) => { g = fgCtx; render(f, t, dt); main.drawImage(FG, (i % cols) * W, Math.floor(i / cols) * H); });
+      g = fgCtx;
+    } else {
+      g = fgCtx; const f = S_.floors[S_.cur]; if (f) render(f, t, dt);
+      drawElevator(t); main.drawImage(FG, 0, 0);
+    }
     requestAnimationFrame(frame);
   }
 
-  function render(t) {
-    const f = S_.floors[S_.cur]; if (!f) return;
+  function render(f, t, dt) {
     const N = nightness(T);
     g.clearRect(0, 0, W, H);
     f.windows.forEach(w => drawSky(g, w, T, t));
@@ -284,6 +299,10 @@
       }
       if (d.t === 'steam') { for (let i = 0; i < 3; i++) { const p = (t * 0.6 + i / 3) % 1; g.globalAlpha = 0.5 * (1 - p); r(g, Math.round(d.x - 1 + Math.sin(t * 2 + i * 2) * 1.5), Math.round(d.y - p * 12), 2, 2, '#fff'); } g.globalAlpha = 1; }
     });
+    if (f.data.sign) {
+      const sg = f.data.sign; r(g, W / 2 - 38, 0, 76, 11, '#0b0d18'); r(g, W / 2 - 38, 11, 76, 1, '#000'); r(g, W / 2 - 37, 1, 74, 1, 'rgba(255,255,255,.12)');
+      g.font = '8px "Press Start 2P", monospace'; g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = sg.color || '#ffd84a'; g.fillText(sg.text, W / 2, 2);
+    }
     // sun shafts on the floor in daytime
     if (N < 0.5) {
       g.globalAlpha = 0.07 * (1 - N * 2);
@@ -336,10 +355,10 @@
     f.agents.forEach(a => {
       const st = a.d.status; if (st === 'offline' || !a.box) return;
       const cx = Math.round(a.x);
-      if (st === 'working' && a.mode === 'sit' && Math.random() < 0.06) emit(a.desk.x + 14 + Math.random() * 16, a.desk.y - 8, (Math.random() - .5) * 4, -10 - Math.random() * 6, 1.2, ['#5ad17a', '#6ad3ff', '#ffd85a'][Math.floor(Math.random() * 3)], 1);
-      if (st === 'blocked' && Math.random() < 0.08) emit(cx + (Math.random() - .5) * 10, a.box.y0 + 2, (Math.random() - .5) * 8, -14, 0.8, '#ff5d6c', 2);
-      if (st === 'done' && a.mode === 'couch' && Math.random() < 0.04) emit(cx - 6 + Math.random() * 12, a.box.y0 + 2, 0, -8, 1.3, '#bfe0ff', 1);
-      if (a.mode === 'stand' && f.pois.length && a.target.poi && a.target.poi.kind === 'coffee' && Math.random() < 0.02) emit(cx + 6, a.box.y0 + 8, 0, -6, 1, '#fff', 1);
+      if (st === 'working' && a.mode === 'sit' && Math.random() < 0.06) emit(f, a.desk.x + 14 + Math.random() * 16, a.desk.y - 8, (Math.random() - .5) * 4, -10 - Math.random() * 6, 1.2, ['#5ad17a', '#6ad3ff', '#ffd85a'][Math.floor(Math.random() * 3)], 1);
+      if (st === 'blocked' && Math.random() < 0.08) emit(f, cx + (Math.random() - .5) * 10, a.box.y0 + 2, (Math.random() - .5) * 8, -14, 0.8, '#ff5d6c', 2);
+      if (st === 'done' && a.mode === 'couch' && Math.random() < 0.04) emit(f, cx - 6 + Math.random() * 12, a.box.y0 + 2, 0, -8, 1.3, '#bfe0ff', 1);
+      if (a.mode === 'stand' && f.pois.length && a.target.poi && a.target.poi.kind === 'coffee' && Math.random() < 0.02) emit(f, cx + 6, a.box.y0 + 8, 0, -6, 1, '#fff', 1);
       // status bubble
       const bw = 11, bh = 9, bx = cx - 5, by = a.box.y0 - bh - 3 + (a.mode === 'sit' ? 0 : 0);
       let gl = null, col = null;
@@ -355,12 +374,16 @@
       }
       if (S_.sel === a) { const aw = Math.round(Math.sin(t * 6) * 1); r(g, cx - 1, a.box.y0 - 15 + aw - (gl ? 0 : -9), 3, 1, '#ffd84a'); r(g, cx, a.box.y0 - 14 + aw - (gl ? 0 : -9), 1, 1, '#ffd84a'); }
     });
-    S_.parts = S_.parts.filter(p => (p.life -= 1 / 60) > 0);
-    S_.parts.forEach(p => { p.x += p.vx / 60; p.y += p.vy / 60; g.globalAlpha = Math.max(0, p.life / p.max); r(g, Math.round(p.x), Math.round(p.y), p.size, p.size, p.col); });
+    f.papers = f.papers.filter(pp => (pp.t += dt / 0.9) < 1);
+    f.papers.forEach(pp => {
+      const u = pp.t, e = u * u * (3 - 2 * u), x = pp.x0 + (W - 22 - pp.x0) * e, y = pp.y0 + (14 - pp.y0) * e - Math.sin(u * Math.PI) * 22;
+      r(g, Math.round(x) - 3, Math.round(y) - 4, 7, 8, '#1c1530'); r(g, Math.round(x) - 2, Math.round(y) - 3, 5, 6, '#fffdf6'); r(g, Math.round(x) - 1, Math.round(y) - 1, 3, 1, '#8a8fa8'); r(g, Math.round(x) - 1, Math.round(y) + 1, 3, 1, '#8a8fa8');
+    });
+    f.parts = f.parts.filter(p => (p.life -= 1 / 60) > 0);
+    f.parts.forEach(p => { p.x += p.vx / 60; p.y += p.vy / 60; g.globalAlpha = Math.max(0, p.life / p.max); r(g, Math.round(p.x), Math.round(p.y), p.size, p.size, p.col); });
     g.globalAlpha = 1;
 
     lighting(f, t, N);
-    drawElevator(t);
   }
 
   function agentSprite(a, t) {
@@ -426,12 +449,31 @@
   const Office = (window.Office = {
     W, H,
     init(canvas, data, opts = {}) {
-      cv = canvas; g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+      cv = canvas; main = cv.getContext('2d'); main.imageSmoothingEnabled = false; g = fgCtx;
       S_.floors = data.floors.map(buildFloor); S_.showDemo = opts.showDemo !== false;
       S_.floors.forEach(f => layoutAgents(f));
       requestAnimationFrame(frame);
     },
     state: S_,
+    size: () => ({ w: cv.width, h: cv.height }),
+    setOverview(v) {
+      S_.overview = !!v; S_.cols = Math.min(3, S_.floors.length); const rows = Math.ceil(S_.floors.length / S_.cols);
+      cv.width = v ? W * S_.cols : W; cv.height = v ? H * rows : H; main.imageSmoothingEnabled = false;
+      S_.hover = null;
+    },
+    cellAt(px, py) { if (!S_.overview) return -1; const i = Math.floor(py / H) * S_.cols + Math.floor(px / W); return i < S_.floors.length ? i : -1; },
+    // apply new statuses/summaries from the outside (pipeline) without rebuilding the rooms
+    sync(floorsData) {
+      floorsData.forEach((fd, i) => {
+        const f = S_.floors[i]; if (!f) return; let changed = false;
+        fd.agents.forEach(nd => { const a = f.agents.find(x => x.d.id === nd.id); if (!a) return; if (a.d.status !== nd.status) changed = true; Object.assign(a.d, nd); });
+        if (changed) layoutAgents(f);
+      });
+    },
+    fly(floorIdx, agentId) {
+      const f = S_.floors[floorIdx]; if (!f) return; const a = f.agents.find(x => x.d.id === agentId); if (!a) return;
+      f.papers.push({ x0: a.x, y0: a.y - 16, t: 0 });
+    },
     floors: () => S_.floors,
     current: () => S_.cur,
     setFloor(i, instant) {
@@ -446,7 +488,7 @@
     agentAt(px, py) {
       const f = S_.floors[S_.cur]; if (!f) return null; let best = null, bd = 1e9;
       f.agents.forEach(a => { if (!a.box || a.d.status === 'offline') return; const b = a.box; if (px >= b.x0 - 2 && px <= b.x1 + 2 && py >= b.y0 - 2 && py <= b.y1 + 2) { const d = Math.abs(a.y - py); if (d < bd) { bd = d; best = a; } } });
-      if (!best) f.desks.forEach(dk => { const a = f.agents.find(x => x.desk === dk); if (a && px >= dk.x && px <= dk.x + 44 && py >= dk.y - 7 && py <= dk.y + 24) best = best || a; });
+      if (!best) f.desks.forEach(dk => { const a = f.agents.find(x => x.desk === dk); if (a && (a.mode === 'sit' || a.d.status === 'offline') && px >= dk.x && px <= dk.x + 44 && py >= dk.y - 7 && py <= dk.y + 24) best = best || a; });
       return best;
     },
     select(a) { S_.sel = a; }, hover(a) { S_.hover = a; },

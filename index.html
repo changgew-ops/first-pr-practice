@@ -9,16 +9,28 @@
 <body>
 <div class="app">
   <header class="top">
-    <div class="brand"><span class="logo" aria-hidden="true"></span><h1>PIXEL OFFICE</h1></div>
+    <div class="brand"><span class="logo" aria-hidden="true"></span><h1>PIXEL OFFICE</h1><span class="proj">훅업 설계 파이프라인</span></div>
     <div class="sum" id="sum" aria-live="polite"></div>
     <div class="ctl">
       <div class="seg" id="tod" role="group" aria-label="시간대">
         <button data-v="auto" class="on">자동</button><button data-v="day">낮</button><button data-v="night">밤</button>
       </div>
-      <button class="tgl on" id="demo" aria-pressed="true" title="샘플 에이전트 표시/숨김">SAMPLE</button>
+      <button class="tgl" id="snd" aria-pressed="false">소리 OFF</button>
       <span class="clock" id="clock">--:--</span>
     </div>
   </header>
+
+  <section class="ctrl" aria-label="파이프라인 제어">
+    <div class="runctl">
+      <button class="btn go" id="run" type="button">▶ 실행</button>
+      <button class="btn" id="reset" type="button">↺ 초기화</button>
+      <div class="seg" id="spd" role="group" aria-label="속도"><button data-v="1" class="on">1x</button><button data-v="2">2x</button><button data-v="4">4x</button></div>
+      <button class="tgl on" id="defect" type="button" aria-pressed="true" title="설계 에이전트가 가끔 룰을 빠뜨리게 해서 검수·재작업 흐름을 보여줘요">결함 주입 ON</button>
+      <button class="tgl" id="ov" type="button" title="모든 층을 한 화면에 (O)">전체 보기</button>
+    </div>
+    <ol class="flow" id="flow" aria-label="단계"></ol>
+  </section>
+  <div class="alert" id="alert" hidden></div>
 
   <main class="stage">
     <section class="view" id="view">
@@ -28,26 +40,26 @@
         <div id="tip" class="tip" hidden></div>
         <nav class="elev" id="elev" aria-label="층 선택"></nav>
       </div>
-      <p class="hint">캐릭터를 클릭하면 상세 정보 · 숫자키 1–9 또는 ↑↓ 로 층 이동 · Esc 선택 해제</p>
+      <p class="hint">캐릭터 클릭 = 상세 · 1–9 / ↑↓ 층 이동 · O 전체 보기 · Space 실행/일시정지 · Esc 선택 해제</p>
     </section>
 
     <aside class="side">
-      <section class="panel">
-        <h2>BUILDING</h2>
-        <ul id="bld" class="floors"></ul>
-      </section>
-      <section class="panel">
-        <h2 id="agT">AGENTS</h2>
-        <ul id="agents" class="cards"></ul>
-      </section>
+      <section class="panel"><h2>BUILDING</h2><ul id="bld" class="floors"></ul></section>
+      <section class="panel"><h2 id="agT">AGENTS</h2><ul id="agents" class="cards"></ul></section>
       <section class="panel" id="detail" hidden></section>
+      <section class="panel" id="rules"></section>
+      <section class="panel wide" id="drawing"></section>
+      <section class="panel wide"><h2>ACTIVITY</h2><ul id="log" class="log"></ul></section>
     </aside>
   </main>
   <footer class="foot" id="foot"></footer>
 </div>
 
 <script src="data.js"></script>
+<script src="js/hookup/core.js"></script>
+<script src="js/hookup/diagram.js"></script>
 <script src="js/sprites.js"></script>
+<script src="js/audio.js"></script>
 <script src="js/scene.js"></script>
 <script src="js/ui.js"></script>
 </body>
