@@ -5,46 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pixel Office</title>
 <style>
-  :root { --bg:#14121f; --panel:#1f1b33; --text:#e8e4ff; --muted:#8c86b0; --line:#342e55; }
+  :root { --bg:#14121f; --panel:#1f1b33; --text:#e8e4ff; --muted:#8c86b0; --line:#342e55; --hi:#2a2548; }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--text); font:14px/1.4 system-ui, sans-serif; }
-  main { max-width:1100px; margin:0 auto; padding:16px; display:grid; gap:16px; grid-template-columns:1fr; }
-  @media (min-width:900px) { main { grid-template-columns:minmax(0,1fr) 280px; } }
-  h1 { font-size:16px; margin:0 0 8px; letter-spacing:.04em; }
+  main { max-width:1180px; margin:0 auto; padding:16px; display:grid; gap:16px; grid-template-columns:1fr; }
+  @media (min-width:900px) { main { grid-template-columns:minmax(0,1fr) 300px; } }
+  h1 { font-size:14px; margin:0 0 8px; letter-spacing:.08em; color:var(--muted); }
   canvas { width:100%; height:auto; image-rendering:pixelated; border:2px solid var(--line); background:#000; display:block; cursor:pointer; }
-  aside { background:var(--panel); border:1px solid var(--line); padding:12px; align-self:start; }
+  aside { display:grid; gap:12px; align-self:start; }
+  .box { background:var(--panel); border:1px solid var(--line); padding:12px; }
   ul { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
   li { display:flex; gap:8px; align-items:center; padding:6px 8px; border:1px solid transparent; cursor:pointer; }
-  li:hover, li.sel { border-color:var(--line); background:#2a2548; }
+  li:hover, li.sel { border-color:var(--line); background:var(--hi); }
   .dot { width:10px; height:10px; flex:none; }
   .t { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
   .s { color:var(--muted); font-size:12px; flex:none; }
-  .legend { margin-top:12px; color:var(--muted); font-size:12px; }
+  /* building cross-section: top floor first */
+  #building li { padding:8px; }
+  #building li.cur { border-color:#6b5fc7; background:var(--hi); }
+  .fl { font-weight:700; width:28px; flex:none; }
+  .pips { display:flex; gap:3px; flex:none; }
+  .pips i { width:8px; height:8px; display:block; }
+  .legend { color:var(--muted); font-size:12px; }
+  code { background:var(--hi); padding:0 4px; }
 </style>
 </head>
 <body>
 <main>
   <section>
-    <h1>PIXEL OFFICE</h1>
+    <h1 id="title">PIXEL OFFICE</h1>
     <canvas id="c" width="384" height="216"></canvas>
   </section>
   <aside>
-    <h1>AGENTS</h1>
-    <ul id="list"></ul>
-    <div class="legend">작업 중 = 책상에서 타이핑 · 막힘 = 책상 앞에서 ! · 대기/완료 = 라운지<br>
-      같은 폴더의 <code>agents.json</code>이 있으면 그 데이터를 사용합니다.</div>
+    <div class="box"><h1>BUILDING</h1><ul id="building"></ul></div>
+    <div class="box"><h1 id="agentsTitle">AGENTS</h1><ul id="list"></ul></div>
+    <div class="box legend">
+      working = 책상에서 타이핑 · blocked = 책상 앞에서 ! · idle/done = 라운지<br>
+      층 전환: 오른쪽 목록 클릭 또는 숫자키 1–9<br>
+      같은 폴더에 <code>agents.json</code>이 있으면 그 데이터를 사용합니다.
+    </div>
   </aside>
 </main>
 <script>
-// status: working | blocked | idle | done
-let agents = [
-  { title: "픽셀 오피스",              status: "working" },
-  { title: "게임 UI 렌더러 및 성능 개선", status: "done" },
-  { title: "아이돌 키우기 매니저 초안",   status: "done" },
-  { title: "테스트 실패 원인 분석",       status: "blocked" },
-  { title: "README 번역",               status: "idle" },
+// ---------- data ----------
+// status: working | blocked | idle | done.  role/theme are free-form; edit or override via agents.json.
+let floors = [
+  { id: "1F", name: "개발팀", theme: "dev", agents: [
+    { title: "픽셀 오피스",               role: "프론트엔드",  status: "working" },
+    { title: "게임 UI 렌더러 및 성능 개선", role: "렌더링",     status: "done" },
+    { title: "테스트 실패 원인 분석",       role: "QA",        status: "blocked" },
+  ]},
+  { id: "2F", name: "리서치팀", theme: "research", agents: [
+    { title: "아이돌 키우기 매니저 초안",   role: "기획",      status: "done" },
+    { title: "시장 조사",                 role: "리서치",    status: "working" },
+    { title: "논문 요약",                 role: "리서치",    status: "working" },
+  ]},
+  { id: "3F", name: "운영/문서팀", theme: "ops", agents: [
+    { title: "README 번역",              role: "문서",      status: "idle" },
+    { title: "PR 리뷰",                  role: "리뷰",      status: "working" },
+  ]},
 ];
 
+const THEMES = {
+  dev:      { wall:"#5b4b8a", trim:"#2a2248", f1:"#3a3558", f2:"#403a62", rug:"#6e3b5a", prop:"servers" },
+  research: { wall:"#3f6b73", trim:"#1f3d44", f1:"#4a5d4f", f2:"#51655a", rug:"#3b5a6e", prop:"shelf" },
+  ops:      { wall:"#8a6a4b", trim:"#4a3722", f1:"#5e5048", f2:"#665750", rug:"#4f6e3b", prop:"board" },
+};
+
+// ---------- constants ----------
 const W = 384, H = 216;
 const cv = document.getElementById("c"), g = cv.getContext("2d");
 const COLORS = { working:"#5ad17a", blocked:"#ff5d6c", idle:"#8c86b0", done:"#6ab0ff" };
@@ -55,71 +83,116 @@ for (let r = 0; r < 2; r++) for (let i = 0; i < 4; i++) DESKS.push({ x: 24 + i*8
 const LOUNGE = [{x:40,y:182},{x:70,y:190},{x:150,y:186},{x:200,y:192},{x:300,y:186},{x:330,y:176}];
 const COUCH = [{x:34,y:168},{x:50,y:168}];
 
-let chars = [], selected = -1;
+let cur = 0, selected = -1;   // selected = agent index within the current floor
+const rnd = a => a[Math.floor(Math.random()*a.length)];
 
-function rnd(a) { return a[Math.floor(Math.random()*a.length)]; }
-
-function layout() {
+// ---------- layout ----------
+function layoutFloor(fl) {
   let desk = 0, lounge = 0;
-  chars = agents.map((a, i) => {
-    const old = chars[i];
-    const working = a.status === "working" || a.status === "blocked";
-    let target;
-    if (working) {
-      const d = DESKS[desk++ % DESKS.length];
-      // seated: at the chair behind the desk; blocked: standing in front of it
+  fl.chars = fl.agents.map((a, i) => {
+    const old = fl.chars && fl.chars[i];
+    let target, deskIdx = -1;
+    if (a.status === "working" || a.status === "blocked") {
+      deskIdx = desk++ % DESKS.length;
+      const d = DESKS[deskIdx];
       target = a.status === "working" ? { x: d.x + 14, y: d.y + 6, sit: true } : { x: d.x + 14, y: d.y + 34, sit: false };
     } else if (a.status === "done" && lounge < COUCH.length) {
       target = { ...COUCH[lounge++], sit: true };
     } else {
       target = { ...LOUNGE[(lounge++) % LOUNGE.length], sit: false, wander: true };
     }
-    return {
-      x: old ? old.x : 192, y: old ? old.y : H - 4,
-      target, shirt: SHIRTS[i % SHIRTS.length], hair: HAIRS[(i*3) % HAIRS.length], moving: false,
-    };
+    return { x: old ? old.x : 192, y: old ? old.y : H - 4, target, deskIdx, moving: false,
+             shirt: SHIRTS[i % SHIRTS.length], hair: HAIRS[(i*3) % HAIRS.length] };
   });
-  renderList();
 }
 
-function renderList() {
-  const ul = document.getElementById("list");
-  ul.innerHTML = "";
-  agents.forEach((a, i) => {
-    const li = document.createElement("li");
-    li.className = i === selected ? "sel" : "";
-    const dot = document.createElement("span"); dot.className = "dot"; dot.style.background = COLORS[a.status];
-    const t = document.createElement("span"); t.className = "t"; t.textContent = a.title; t.title = a.title;
-    const s = document.createElement("span"); s.className = "s"; s.textContent = a.status;
-    li.append(dot, t, s);
-    li.onclick = () => { selected = selected === i ? -1 : i; renderList(); };
+function setData(d) {
+  floors = d;
+  floors.forEach(layoutFloor);
+  cur = Math.min(cur, floors.length - 1); selected = -1;
+  renderUI();
+}
+
+// ---------- UI ----------
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+function renderUI() {
+  const fl = floors[cur];
+  document.getElementById("title").textContent = `PIXEL OFFICE — ${fl.id} ${fl.name}`;
+  document.getElementById("agentsTitle").textContent = `AGENTS · ${fl.id}`;
+
+  const b = document.getElementById("building"); b.innerHTML = "";
+  floors.map((f, i) => i).reverse().forEach(i => {      // top floor first, like a building
+    const f = floors[i], li = el("li", i === cur ? "cur" : "");
+    const pips = el("span", "pips");
+    ["working","blocked","idle","done"].forEach(s => {
+      const n = f.agents.filter(a => a.status === s).length;
+      for (let k = 0; k < n; k++) { const p = document.createElement("i"); p.style.background = COLORS[s]; pips.append(p); }
+    });
+    li.append(el("span", "fl", f.id), el("span", "t", f.name), pips);
+    li.onclick = () => { cur = i; selected = -1; renderUI(); };
+    b.append(li);
+  });
+
+  const ul = document.getElementById("list"); ul.innerHTML = "";
+  fl.agents.forEach((a, i) => {
+    const li = el("li", i === selected ? "sel" : "");
+    const dot = el("span", "dot"); dot.style.background = COLORS[a.status];
+    const t = el("span", "t", a.title); t.title = a.role ? `${a.title} (${a.role})` : a.title;
+    li.append(dot, t, el("span", "s", a.role || a.status));
+    li.onclick = () => { selected = selected === i ? -1 : i; renderUI(); };
     ul.append(li);
   });
 }
 
+// ---------- drawing ----------
 function rect(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
 
-function drawRoom(t) {
-  // floor checker
+function drawRoom(fl, t) {
+  const th = THEMES[fl.theme] || THEMES.dev;
   for (let y = 40; y < H; y += 8) for (let x = 0; x < W; x += 8)
-    rect(x, y, 8, 8, ((x + y) / 8) % 2 ? "#3a3558" : "#403a62");
-  // wall + windows
-  rect(0, 0, W, 40, "#5b4b8a"); rect(0, 36, W, 4, "#2a2248");
-  for (let i = 0; i < 4; i++) { const x = 30 + i*88; rect(x, 8, 36, 22, "#2a2248"); rect(x+2, 10, 32, 18, "#7fc8f8"); rect(x+17, 10, 2, 18, "#2a2248"); }
-  // lounge rug, couch, plant, coffee
-  rect(20, 158, 120, 50, "#5a2f4a"); rect(24, 162, 112, 42, "#6e3b5a");
+    rect(x, y, 8, 8, ((x + y) / 8) % 2 ? th.f1 : th.f2);
+  rect(0, 0, W, 40, th.wall); rect(0, 36, W, 4, th.trim);
+  for (let i = 0; i < 4; i++) {
+    const x = 30 + i*88;
+    rect(x, 8, 36, 22, th.trim); rect(x+2, 10, 32, 18, "#7fc8f8"); rect(x+17, 10, 2, 18, th.trim);
+  }
+  // floor sign
+  rect(W - 44, 2, 40, 10, th.trim);
+  g.font = "8px monospace"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "#ffd84a";
+  g.fillText(fl.id, W - 32, 8);
+  // lounge
+  rect(20, 158, 120, 50, th.rug); rect(24, 162, 112, 42, th.rug + "cc");
   rect(28, 160, 44, 18, "#c0526a"); rect(28, 156, 44, 6, "#a8425a");
   rect(340, 150, 14, 18, "#6b4a2f"); rect(336, 138, 22, 14, "#3f8f4a"); rect(340, 132, 14, 10, "#56b05f");
   rect(300, 150, 16, 24, "#d9d4ee"); rect(304, 154, 8, 6, "#2b2b3a");
   if ((t/400|0) % 2) rect(307, 162, 2, 4, "#ffffff55");
+  drawProp(th.prop, t);
+}
+
+// one distinguishing prop per floor theme, on the right edge between the desk rows and lounge
+function drawProp(kind, t) {
+  if (kind === "servers") {
+    for (let i = 0; i < 2; i++) {
+      rect(246 + i*20, 150, 16, 26, "#23232e"); rect(246 + i*20, 150, 16, 2, "#3a3a4a");
+      for (let k = 0; k < 4; k++) rect(249 + i*20, 154 + k*5, 3, 2, ((t/(200+k*90)|0) + i) % 2 ? "#5ad17a" : "#2a5a3a");
+    }
+  } else if (kind === "shelf") {
+    rect(244, 150, 40, 26, "#6b4a2f");
+    for (let r = 0; r < 3; r++) for (let k = 0; k < 7; k++)
+      rect(246 + k*5, 152 + r*8, 4, 7, ["#e0566b","#4a90e2","#f2b84b","#7bc96f"][(k + r) % 4]);
+  } else if (kind === "board") {
+    rect(244, 148, 44, 26, "#ddd"); rect(244, 148, 44, 2, "#999");
+    ["#f2b84b","#e0566b","#7bc96f","#4a90e2","#f2b84b","#b17be0"].forEach((c, i) => rect(248 + (i%3)*13, 153 + (i/3|0)*10, 9, 8, c));
+    rect(262, 174, 2, 8, "#555"); rect(270, 174, 2, 8, "#555");
+  }
 }
 
 function drawDesk(d, a, t) {
-  // chair
-  rect(d.x + 10, d.y + 8, 12, 10, "#2b2b3a");
+  rect(d.x + 10, d.y + 8, 12, 10, "#2b2b3a");           // chair
   return () => {
     rect(d.x, d.y + 14, 44, 14, "#8a5a33"); rect(d.x, d.y + 26, 44, 3, "#6b4425");
-    rect(d.x + 14, d.y + 4, 16, 11, "#222"); // monitor
+    rect(d.x + 14, d.y + 4, 16, 11, "#222");
     const on = a && (a.status === "working" || a.status === "blocked");
     rect(d.x + 15, d.y + 5, 14, 8, on ? "#10241a" : "#1a1a22");
     if (on) for (let k = 0; k < 4; k++) {
@@ -130,7 +203,7 @@ function drawDesk(d, a, t) {
   };
 }
 
-function drawChar(c, a, i, t) {
+function drawChar(c, a, selectedHere, t) {
   const x = Math.round(c.x), y = Math.round(c.y);
   const sit = c.target.sit && !c.moving;
   const step = c.moving ? (t/140|0) % 2 : 0;
@@ -138,13 +211,12 @@ function drawChar(c, a, i, t) {
   const top = y - 14 + (sit ? 4 : 0) + bob;
   if (!sit) { rect(x - 4, top + 12, 3, 2 + (step ? 1 : 0), "#2b2b3a"); rect(x + 1, top + 12, 3, 2 + (step ? 0 : 1), "#2b2b3a"); }
   rect(x - 4, top + 6, 8, 6, c.shirt);
-  const typing = a.status === "working" && sit;
-  rect(x - 5, top + 7 + (typing && (t/120|0)%2 ? 1 : 0), 2, 4, c.shirt);
-  rect(x + 3, top + 7 + (typing && (t/120|0)%2 ? 0 : 1), 2, 4, c.shirt);
+  const typing = a.status === "working" && sit, k = typing && (t/120|0) % 2;
+  rect(x - 5, top + 7 + (k ? 1 : 0), 2, 4, c.shirt);
+  rect(x + 3, top + 7 + (k ? 0 : 1), 2, 4, c.shirt);
   rect(x - 3, top + 1, 6, 5, "#f1c9a0");
   rect(x - 3, top - 1, 6, 3, c.hair);
   rect(x - 2, top + 3, 1, 1, "#222"); rect(x + 1, top + 3, 1, 1, "#222");
-  // status bubble
   g.font = "8px monospace"; g.textAlign = "center"; g.textBaseline = "middle";
   const by = top - 8;
   let ch = null, col = null;
@@ -153,49 +225,50 @@ function drawChar(c, a, i, t) {
   else if (a.status === "done") { ch = "✓"; col = COLORS.done; }
   else if (a.status === "idle") { ch = "z"; col = "#c9c4e8"; }
   if (ch) { rect(x - 6, by - 4, 12, 9, "#ffffffee"); g.fillStyle = col; g.fillText(ch, x, by + 1); }
-  if (i === selected) { g.fillStyle = "#ffd84a"; g.fillText("▼", x, top - 16 + ((t/250|0) % 2)); }
+  if (selectedHere) { g.fillStyle = "#ffd84a"; g.fillText("▼", x, top - 16 + ((t/250|0) % 2)); }
 }
 
 function update() {
-  chars.forEach((c, i) => {
+  floors.forEach(fl => fl.chars.forEach(c => {
     const tg = c.target, dx = tg.x - c.x, dy = tg.y - c.y, dist = Math.hypot(dx, dy);
     if (dist > 1) { c.x += dx/dist*0.7; c.y += dy/dist*0.7; c.moving = true; }
-    else {
-      c.moving = false;
-      if (tg.wander && Math.random() < 0.004) Object.assign(tg, rnd(LOUNGE));
-    }
-  });
+    else { c.moving = false; if (tg.wander && Math.random() < 0.004) Object.assign(tg, rnd(LOUNGE)); }
+  }));
 }
 
 function frame(t) {
   update();
-  drawRoom(t);
+  const fl = floors[cur];
+  drawRoom(fl, t);
   const draws = [];
   DESKS.forEach((d, k) => {
-    const idx = agents.findIndex((a, i) => chars[i].target.sit && a.status === "working" && chars[i].target.x === d.x + 14 && chars[i].target.y === d.y + 6);
-    const blockedIdx = agents.findIndex((a, i) => a.status === "blocked" && chars[i].target.x === d.x + 14 && chars[i].target.y === d.y + 34);
-    const a = idx >= 0 ? agents[idx] : blockedIdx >= 0 ? agents[blockedIdx] : null;
-    const deskDraw = drawDesk(d, a, t);
-    draws.push({ y: d.y + 14, fn: deskDraw });
+    const i = fl.chars.findIndex(c => c.deskIdx === k);
+    draws.push({ y: d.y + 14, fn: drawDesk(d, i >= 0 ? fl.agents[i] : null, t) });
   });
-  chars.forEach((c, i) => {
-    const seatedAtDesk = c.target.sit && agents[i].status === "working" && !c.moving;
-    draws.push({ y: seatedAtDesk ? c.y - 100 : c.y, fn: () => drawChar(c, agents[i], i, t) });
+  fl.chars.forEach((c, i) => {
+    const seated = c.target.sit && fl.agents[i].status === "working" && !c.moving;
+    draws.push({ y: seated ? c.y - 100 : c.y, fn: () => drawChar(c, fl.agents[i], i === selected, t) });
   });
   draws.sort((a, b) => a.y - b.y).forEach(d => d.fn());
   requestAnimationFrame(frame);
 }
 
+// ---------- input ----------
 cv.addEventListener("click", e => {
   const r = cv.getBoundingClientRect(), mx = (e.clientX - r.left) * W / r.width, my = (e.clientY - r.top) * H / r.height;
   let best = -1, bd = 14;
-  chars.forEach((c, i) => { const d = Math.hypot(c.x - mx, c.y - 6 - my); if (d < bd) { bd = d; best = i; } });
-  selected = best === selected ? -1 : best; renderList();
+  floors[cur].chars.forEach((c, i) => { const d = Math.hypot(c.x - mx, c.y - 6 - my); if (d < bd) { bd = d; best = i; } });
+  selected = best === selected ? -1 : best; renderUI();
+});
+addEventListener("keydown", e => {
+  const n = parseInt(e.key, 10);
+  if (n >= 1 && n <= floors.length) { cur = n - 1; selected = -1; renderUI(); }
 });
 
+// agents.json: { "floors": [ { id, name, theme, agents:[{title, role, status}] } ] }
 fetch("agents.json").then(r => r.ok ? r.json() : null).catch(() => null).then(d => {
-  if (Array.isArray(d) && d.length) agents = d;
-  layout(); requestAnimationFrame(frame);
+  setData(d && Array.isArray(d.floors) && d.floors.length ? d.floors : floors);
+  requestAnimationFrame(frame);
 });
 </script>
 </body>
