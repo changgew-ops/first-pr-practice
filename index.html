@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pixel Office</title>
+<style>
+  :root { --bg:#14121f; --panel:#1f1b33; --text:#e8e4ff; --muted:#8c86b0; --line:#342e55; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.4 system-ui, sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:16px; display:grid; gap:16px; grid-template-columns:1fr; }
+  @media (min-width:900px) { main { grid-template-columns:minmax(0,1fr) 280px; } }
+  h1 { font-size:16px; margin:0 0 8px; letter-spacing:.04em; }
+  canvas { width:100%; height:auto; image-rendering:pixelated; border:2px solid var(--line); background:#000; display:block; cursor:pointer; }
+  aside { background:var(--panel); border:1px solid var(--line); padding:12px; align-self:start; }
+  ul { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+  li { display:flex; gap:8px; align-items:center; padding:6px 8px; border:1px solid transparent; cursor:pointer; }
+  li:hover, li.sel { border-color:var(--line); background:#2a2548; }
+  .dot { width:10px; height:10px; flex:none; }
+  .t { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+  .s { color:var(--muted); font-size:12px; flex:none; }
+  .legend { margin-top:12px; color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>PIXEL OFFICE</h1>
+    <canvas id="c" width="384" height="216"></canvas>
+  </section>
+  <aside>
+    <h1>AGENTS</h1>
+    <ul id="list"></ul>
+    <div class="legend">작업 중 = 책상에서 타이핑 · 막힘 = 책상 앞에서 ! · 대기/완료 = 라운지<br>
+      같은 폴더의 <code>agents.json</code>이 있으면 그 데이터를 사용합니다.</div>
+  </aside>
+</main>
+<script>
+// status: working | blocked | idle | done
+let agents = [
+  { title: "픽셀 오피스",              status: "working" },
+  { title: "게임 UI 렌더러 및 성능 개선", status: "done" },
+  { title: "아이돌 키우기 매니저 초안",   status: "done" },
+  { title: "테스트 실패 원인 분석",       status: "blocked" },
+  { title: "README 번역",               status: "idle" },
+];
+
+const W = 384, H = 216;
+const cv = document.getElementById("c"), g = cv.getContext("2d");
+const COLORS = { working:"#5ad17a", blocked:"#ff5d6c", idle:"#8c86b0", done:"#6ab0ff" };
+const SHIRTS = ["#e0566b","#4a90e2","#f2b84b","#7bc96f","#b17be0","#e08a4a","#4ac7c0","#d96fb5"];
+const HAIRS  = ["#2b1d14","#6b3b1f","#d9b24c","#1d1d2b","#a33b2b"];
+const DESKS = [];
+for (let r = 0; r < 2; r++) for (let i = 0; i < 4; i++) DESKS.push({ x: 24 + i*88, y: 62 + r*50 });
+const LOUNGE = [{x:40,y:182},{x:70,y:190},{x:150,y:186},{x:200,y:192},{x:300,y:186},{x:330,y:176}];
+const COUCH = [{x:34,y:168},{x:50,y:168}];
+
+let chars = [], selected = -1;
+
+function rnd(a) { return a[Math.floor(Math.random()*a.length)]; }
+
+function layout() {
+  let desk = 0, lounge = 0;
+  chars = agents.map((a, i) => {
+    const old = chars[i];
+    const working = a.status === "working" || a.status === "blocked";
+    let target;
+    if (working) {
+      const d = DESKS[desk++ % DESKS.length];
+      // seated: at the chair behind the desk; blocked: standing in front of it
+      target = a.status === "working" ? { x: d.x + 14, y: d.y + 6, sit: true } : { x: d.x + 14, y: d.y + 34, sit: false };
+    } else if (a.status === "done" && lounge < COUCH.length) {
+      target = { ...COUCH[lounge++], sit: true };
+    } else {
+      target = { ...LOUNGE[(lounge++) % LOUNGE.length], sit: false, wander: true };
+    }
+    return {
+      x: old ? old.x : 192, y: old ? old.y : H - 4,
+      target, shirt: SHIRTS[i % SHIRTS.length], hair: HAIRS[(i*3) % HAIRS.length], moving: false,
+    };
+  });
+  renderList();
+}
+
+function renderList() {
+  const ul = document.getElementById("list");
+  ul.innerHTML = "";
+  agents.forEach((a, i) => {
+    const li = document.createElement("li");
+    li.className = i === selected ? "sel" : "";
+    const dot = document.createElement("span"); dot.className = "dot"; dot.style.background = COLORS[a.status];
+    const t = document.createElement("span"); t.className = "t"; t.textContent = a.title; t.title = a.title;
+    const s = document.createElement("span"); s.className = "s"; s.textContent = a.status;
+    li.append(dot, t, s);
+    li.onclick = () => { selected = selected === i ? -1 : i; renderList(); };
+    ul.append(li);
+  });
+}
+
+function rect(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
+
+function drawRoom(t) {
+  // floor checker
+  for (let y = 40; y < H; y += 8) for (let x = 0; x < W; x += 8)
+    rect(x, y, 8, 8, ((x + y) / 8) % 2 ? "#3a3558" : "#403a62");
+  // wall + windows
+  rect(0, 0, W, 40, "#5b4b8a"); rect(0, 36, W, 4, "#2a2248");
+  for (let i = 0; i < 4; i++) { const x = 30 + i*88; rect(x, 8, 36, 22, "#2a2248"); rect(x+2, 10, 32, 18, "#7fc8f8"); rect(x+17, 10, 2, 18, "#2a2248"); }
+  // lounge rug, couch, plant, coffee
+  rect(20, 158, 120, 50, "#5a2f4a"); rect(24, 162, 112, 42, "#6e3b5a");
+  rect(28, 160, 44, 18, "#c0526a"); rect(28, 156, 44, 6, "#a8425a");
+  rect(340, 150, 14, 18, "#6b4a2f"); rect(336, 138, 22, 14, "#3f8f4a"); rect(340, 132, 14, 10, "#56b05f");
+  rect(300, 150, 16, 24, "#d9d4ee"); rect(304, 154, 8, 6, "#2b2b3a");
+  if ((t/400|0) % 2) rect(307, 162, 2, 4, "#ffffff55");
+}
+
+function drawDesk(d, a, t) {
+  // chair
+  rect(d.x + 10, d.y + 8, 12, 10, "#2b2b3a");
+  return () => {
+    rect(d.x, d.y + 14, 44, 14, "#8a5a33"); rect(d.x, d.y + 26, 44, 3, "#6b4425");
+    rect(d.x + 14, d.y + 4, 16, 11, "#222"); // monitor
+    const on = a && (a.status === "working" || a.status === "blocked");
+    rect(d.x + 15, d.y + 5, 14, 8, on ? "#10241a" : "#1a1a22");
+    if (on) for (let k = 0; k < 4; k++) {
+      const w = 4 + ((k*5 + (t/180|0)) % 8);
+      rect(d.x + 17, d.y + 6 + k*2, Math.min(w, 10), 1, a.status === "blocked" ? "#ff8c96" : "#5ad17a");
+    }
+    rect(d.x + 20, d.y + 15, 4, 2, "#999");
+  };
+}
+
+function drawChar(c, a, i, t) {
+  const x = Math.round(c.x), y = Math.round(c.y);
+  const sit = c.target.sit && !c.moving;
+  const step = c.moving ? (t/140|0) % 2 : 0;
+  const bob = !c.moving && !sit && a.status === "idle" ? ((t/500|0) % 2) : 0;
+  const top = y - 14 + (sit ? 4 : 0) + bob;
+  if (!sit) { rect(x - 4, top + 12, 3, 2 + (step ? 1 : 0), "#2b2b3a"); rect(x + 1, top + 12, 3, 2 + (step ? 0 : 1), "#2b2b3a"); }
+  rect(x - 4, top + 6, 8, 6, c.shirt);
+  const typing = a.status === "working" && sit;
+  rect(x - 5, top + 7 + (typing && (t/120|0)%2 ? 1 : 0), 2, 4, c.shirt);
+  rect(x + 3, top + 7 + (typing && (t/120|0)%2 ? 0 : 1), 2, 4, c.shirt);
+  rect(x - 3, top + 1, 6, 5, "#f1c9a0");
+  rect(x - 3, top - 1, 6, 3, c.hair);
+  rect(x - 2, top + 3, 1, 1, "#222"); rect(x + 1, top + 3, 1, 1, "#222");
+  // status bubble
+  g.font = "8px monospace"; g.textAlign = "center"; g.textBaseline = "middle";
+  const by = top - 8;
+  let ch = null, col = null;
+  if (a.status === "blocked" && (t/350|0) % 2) { ch = "!"; col = COLORS.blocked; }
+  else if (a.status === "working") { ch = ".".repeat(1 + (t/300|0) % 3); col = COLORS.working; }
+  else if (a.status === "done") { ch = "✓"; col = COLORS.done; }
+  else if (a.status === "idle") { ch = "z"; col = "#c9c4e8"; }
+  if (ch) { rect(x - 6, by - 4, 12, 9, "#ffffffee"); g.fillStyle = col; g.fillText(ch, x, by + 1); }
+  if (i === selected) { g.fillStyle = "#ffd84a"; g.fillText("▼", x, top - 16 + ((t/250|0) % 2)); }
+}
+
+function update() {
+  chars.forEach((c, i) => {
+    const tg = c.target, dx = tg.x - c.x, dy = tg.y - c.y, dist = Math.hypot(dx, dy);
+    if (dist > 1) { c.x += dx/dist*0.7; c.y += dy/dist*0.7; c.moving = true; }
+    else {
+      c.moving = false;
+      if (tg.wander && Math.random() < 0.004) Object.assign(tg, rnd(LOUNGE));
+    }
+  });
+}
+
+function frame(t) {
+  update();
+  drawRoom(t);
+  const draws = [];
+  DESKS.forEach((d, k) => {
+    const idx = agents.findIndex((a, i) => chars[i].target.sit && a.status === "working" && chars[i].target.x === d.x + 14 && chars[i].target.y === d.y + 6);
+    const blockedIdx = agents.findIndex((a, i) => a.status === "blocked" && chars[i].target.x === d.x + 14 && chars[i].target.y === d.y + 34);
+    const a = idx >= 0 ? agents[idx] : blockedIdx >= 0 ? agents[blockedIdx] : null;
+    const deskDraw = drawDesk(d, a, t);
+    draws.push({ y: d.y + 14, fn: deskDraw });
+  });
+  chars.forEach((c, i) => {
+    const seatedAtDesk = c.target.sit && agents[i].status === "working" && !c.moving;
+    draws.push({ y: seatedAtDesk ? c.y - 100 : c.y, fn: () => drawChar(c, agents[i], i, t) });
+  });
+  draws.sort((a, b) => a.y - b.y).forEach(d => d.fn());
+  requestAnimationFrame(frame);
+}
+
+cv.addEventListener("click", e => {
+  const r = cv.getBoundingClientRect(), mx = (e.clientX - r.left) * W / r.width, my = (e.clientY - r.top) * H / r.height;
+  let best = -1, bd = 14;
+  chars.forEach((c, i) => { const d = Math.hypot(c.x - mx, c.y - 6 - my); if (d < bd) { bd = d; best = i; } });
+  selected = best === selected ? -1 : best; renderList();
+});
+
+fetch("agents.json").then(r => r.ok ? r.json() : null).catch(() => null).then(d => {
+  if (Array.isArray(d) && d.length) agents = d;
+  layout(); requestAnimationFrame(frame);
+});
+</script>
+</body>
+</html>
