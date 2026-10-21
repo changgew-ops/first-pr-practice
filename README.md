@@ -36,6 +36,14 @@ python3 tools/build-single.py out.html scenario.html   # bundle a page into one 
 
 Art is drawn procedurally in `js/sprites.js`; fonts live in `assets/fonts` (Galmuri, Press Start 2P — SIL OFL).
 
+## Downloads (`dist/`)
+
+- `pixel-office-scenario.html` — the narrated scenario as ONE file (fonts and code inlined); double-click to open, works offline.
+- `pixel-office.html` — the operations view as one file.
+- `pixel-office-source.zip` — the whole project (open `index.html` or `scenario.html`).
+
+Rebuild after changes: `python3 tools/build-single.py dist/pixel-office-scenario.html scenario.html`.
+
 ## Workflow
 
 1. Create a branch off `main`
