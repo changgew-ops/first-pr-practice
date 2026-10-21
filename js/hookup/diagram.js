@@ -92,6 +92,7 @@
     txt(ix, y0 - 4, pfx, INK); txt(ix, y0 + 12, d.tag.split('-')[1], INK);
     txt(ix, y0 + 36, d.tag, '#ffd84a');
     if (bad('R-07')) txt(ix, y0 + 48, '등급 미달 R-07', BAD);
+    if (by['R-07'] && by['R-07'].status === 'waived') txt(ix, y0 + 48, '등급 예외 승인 R-07', '#ffd84a');
     return svg;
   };
 })();

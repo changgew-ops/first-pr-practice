@@ -1,0 +1,71 @@
+/* Scenario page (viewer mode). Builds on css/style.css. */
+.lnk { color: var(--muted); font-size: 12px; text-decoration: none; border-bottom: 1px dotted var(--muted); }
+.lnk:hover { color: var(--text); }
+.hero { padding: 4px 0 14px; max-width: 860px; }
+.hero h2 { font: 700 20px/1.35 var(--ui); margin: 0 0 6px; text-shadow: 2px 2px 0 #3b2f8f; text-wrap: balance; }
+.hero p { margin: 0; color: var(--muted); font-size: 13px; }
+
+.chap { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; counter-reset: ch; }
+.chap li { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--bg2); color: var(--muted); font-size: 12px;
+  box-shadow: 0 -2px 0 0 var(--line), 0 2px 0 0 var(--line), -2px 0 0 0 var(--line), 2px 0 0 0 var(--line); }
+.chap li::before { counter-increment: ch; content: counter(ch); font: 400 8px/16px var(--px); width: 16px; text-align: center; background: var(--line); color: var(--text); }
+.chap li.done { color: var(--text); } .chap li.done::before { background: var(--working); color: #0e0a24; }
+.chap li.now { color: #1a1330; background: #ffd84a; font-weight: 700; box-shadow: 0 -2px 0 0 #a88a1f, 0 2px 0 0 #a88a1f, -2px 0 0 0 #a88a1f, 2px 0 0 0 #a88a1f; }
+.chap li.now::before { background: #1a1330; color: #ffd84a; }
+
+.sstage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-items: start; margin-bottom: 22px; }
+@media (min-width: 1100px) { .sstage { grid-template-columns: minmax(0, 1fr) 340px; } }
+.sstage .side { grid-template-columns: 1fr; }
+
+.cap { position: relative; margin: 18px auto 0; background: var(--panel); padding: 12px 14px 14px; display: grid; gap: 6px; min-height: 92px;
+  box-shadow: 0 -2px 0 0 var(--line2), 0 2px 0 0 var(--line2), -2px 0 0 0 var(--line2), 2px 0 0 0 var(--line2); }
+.cap .who { justify-self: start; background: #ffd84a; color: #1a1330; font-weight: 700; font-size: 11px; padding: 0 8px; line-height: 18px; }
+.cap .who.human { background: #ff9ecb; }
+.cap p { margin: 0; font-size: 15px; line-height: 1.55; min-height: 3.1em; }
+.cap .hold { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--accent); }
+.runctl { margin: 16px auto 0; justify-content: center; }
+.view .alert { margin: 14px auto 0; }
+
+.intro { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; background: rgba(8, 6, 20, .86); padding: 12px; overflow: auto; }
+.intro[hidden] { display: none; }
+.intro .card { width: min(520px, 100%); background: var(--panel); padding: 16px 18px; display: grid; gap: 10px;
+  box-shadow: 0 -2px 0 0 #ffd84a, 0 2px 0 0 #ffd84a, -2px 0 0 0 #ffd84a, 2px 0 0 0 #ffd84a; }
+.intro h3 { margin: 0; font: 700 16px/1.35 var(--ui); text-wrap: balance; }
+.intro p { margin: 0; font-size: 12px; color: var(--text); }
+.intro .sm { font-size: 11px; } .btn.big { padding: 10px 14px; font-size: 14px; justify-self: start; }
+.vp.compact .intro .card { padding: 10px 12px; gap: 6px; } .vp.compact .intro h3 { font-size: 13px; } .vp.compact .intro table { display: none; }
+
+#brief table td { white-space: normal; } #brief table th, #brief td.rid { white-space: nowrap; }
+td.hi { color: var(--blocked); font-weight: 700; }
+.mini { display: grid; gap: 6px; margin-top: 12px; }
+.mini div { display: grid; grid-template-columns: 74px 1fr auto; gap: 8px; align-items: center; font-size: 11px; color: var(--muted); }
+.mini .bar i { background: var(--working); }
+.tick { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; font-size: 12px; max-height: 300px; overflow: auto; }
+.tick li { padding: 2px 6px; border-left: 3px solid var(--line); color: var(--muted); }
+.tick li.major { color: var(--text); font-weight: 700; border-color: #ffd84a; }
+.tick li.bad { border-color: var(--blocked); }
+.tick time { font: 400 8px/1.6 var(--px); color: var(--muted); margin-right: 8px; }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.tabs button { background: var(--bg2); border: 0; padding: 5px 12px; color: var(--muted); box-shadow: 0 0 0 1px var(--line); }
+.tabs button.on { background: var(--accent); color: #0e0a24; font-weight: 700; }
+.spot { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 800px) { .spot { grid-template-columns: 1fr; } }
+.pane { min-width: 0; }
+.pane h3 { margin: 0 0 6px; font-size: 13px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.pane .ph { display: grid; place-items: center; min-height: 160px; color: var(--muted); background: #0b0918; box-shadow: 0 0 0 2px var(--line); text-align: center; padding: 12px; font-size: 12px; }
+.pane .dg { margin-bottom: 8px; }
+.rl { display: flex; flex-wrap: wrap; gap: 4px; }
+.tw { overflow-x: auto; }
+
+#final .kpi { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 800px) { #final .kpi { grid-template-columns: repeat(2, 1fr); } }
+#final .kpi b { font-size: 16px; }
+#final h3 { margin: 16px 0 8px; font-size: 13px; color: var(--muted); font-weight: 400; }
+.fin-act { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
+
+/* keep the side column inside its track */
+.sstage > *, .sstage .side .panel { min-width: 0; }
+.sstage .side .kpi { grid-template-columns: repeat(2, 1fr); }
+.mini div { grid-template-columns: 104px 1fr auto; }
+.mini div span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

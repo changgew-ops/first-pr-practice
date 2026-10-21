@@ -457,7 +457,7 @@
     state: S_,
     size: () => ({ w: cv.width, h: cv.height }),
     setOverview(v) {
-      S_.overview = !!v; S_.cols = Math.min(3, S_.floors.length); const rows = Math.ceil(S_.floors.length / S_.cols);
+      S_.overview = !!v; S_.cols = S_.floors.length <= 4 ? 2 : 3; const rows = Math.ceil(S_.floors.length / S_.cols);
       cv.width = v ? W * S_.cols : W; cv.height = v ? H * rows : H; main.imageSmoothingEnabled = false;
       S_.hover = null;
     },

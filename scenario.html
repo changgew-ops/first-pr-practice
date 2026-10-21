@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pixel Office</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/scenario.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><span class="logo" aria-hidden="true"></span><h1>PIXEL OFFICE</h1><span class="proj">시나리오 데모</span></div>
+    <div class="sum" id="sum" aria-live="polite"></div>
+    <div class="ctl">
+      <a class="lnk" href="index.html" data-local-only>운영 화면 →</a>
+      <button class="tgl" id="snd" type="button" aria-pressed="false">소리 OFF</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2 id="ttl"></h2>
+    <p id="lead"></p>
+  </section>
+  <ol class="chap" id="chap" aria-label="진행 단계"></ol>
+
+  <main class="sstage">
+    <section class="view" id="view">
+      <div class="vp" id="vp">
+        <canvas id="c" width="384" height="216" aria-label="사무실 화면"></canvas>
+        <div id="tags"></div>
+        <nav class="elev" id="elev" aria-label="층 선택"></nav>
+        <div class="intro" id="intro">
+          <div class="card">
+            <h3 id="iTtl"></h3>
+            <p id="iLead"></p>
+            <table id="iBrief"></table>
+            <button class="btn go big" id="start" type="button">▶ 시나리오 시작</button>
+            <p class="dim sm">약 1분 · 중요한 장면에서는 자동으로 잠깐 멈춰요 · 소리는 오른쪽 위에서 켤 수 있어요</p>
+          </div>
+        </div>
+      </div>
+      <div class="cap" id="cap" aria-live="polite">
+        <span class="who" id="capWho">대기</span>
+        <p id="capTxt">시작 버튼을 누르면 의뢰가 접수돼요.</p>
+        <i class="hold" id="capHold"></i>
+      </div>
+      <div class="runctl">
+        <button class="btn go" id="run" type="button">⏸ 일시정지</button>
+        <button class="btn" id="again" type="button">↺ 처음부터</button>
+        <div class="seg" id="spd" role="group" aria-label="속도"><button data-v="1" class="on">1x</button><button data-v="2">2x</button><button data-v="4">4x</button></div>
+        <div class="seg" id="cam" role="group" aria-label="카메라"><button data-v="auto" class="on">자동 카메라</button><button data-v="manual">직접 보기</button><button data-v="all">전체 보기</button></div>
+      </div>
+      <div class="alert" id="alert" hidden></div>
+    </section>
+
+    <aside class="side">
+      <section class="panel" id="brief"></section>
+      <section class="panel" id="live"></section>
+      <section class="panel" id="tick"></section>
+    </aside>
+  </main>
+
+  <section class="panel wide" id="spot"></section>
+  <section class="panel wide" id="final" hidden></section>
+  <footer class="foot" id="foot"></footer>
+</div>
+
+<script src="js/hookup/core.js"></script>
+<script src="js/hookup/story.js"></script>
+<script src="js/hookup/diagram.js"></script>
+<script src="js/hookup/bridge.js"></script>
+<script src="js/sprites.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/scenario.js"></script>
+</body>
+</html>

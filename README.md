@@ -24,8 +24,14 @@ Open `index.html` in a browser (works straight from disk, no build step).
 are **sample rules** — replace them with your own standard. "결함 주입" makes designers occasionally
 skip a rule so the review/rework loop is visible; turn it off for a clean run.
 
+**Scenario page** — `scenario.html` is a narrated, viewer-friendly run of the same pipeline (an invented
+A-Plant U-100 request): captions with short pauses on key moments, an auto camera that follows the work,
+a before/after drawing for a rejected design, a scripted "design lead" decision for the HPS exception,
+and a final report. `index.html` is the operations view.
+
 ```
-node test/hookup.test.js     # pipeline + rule engine tests (no dependencies)
+node test/hookup.test.js                         # pipeline, rule engine and story tests (no dependencies)
+python3 tools/build-single.py out.html scenario.html   # bundle a page into one self-contained file
 ```
 
 Art is drawn procedurally in `js/sprites.js`; fonts live in `assets/fonts` (Galmuri, Press Start 2P — SIL OFL).

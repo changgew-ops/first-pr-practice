@@ -188,7 +188,6 @@
 
     finish(w, job) {
       this.curWorker = w; this.prog[job.stage].done++;
-      this.emit('jobDone', w, job);
       const next = (j, from) => this.enqueue(j, from || job.stage);
       switch (job.type) {
         case 'define': {
@@ -243,6 +242,7 @@
         }
         case 'report': this.lastReport = this.report(); this.reportRuns++; this.emit('report', this.lastReport); break;
       }
+      this.emit('jobDone', w, job);   // after the result exists, so listeners can read it
     }
 
     // --- design stage: the ONLY place rules are applied ---

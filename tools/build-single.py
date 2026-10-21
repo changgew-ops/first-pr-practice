@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Bundle Pixel Office into ONE html file (CSS, JS and fonts inlined) for hosts that block extra requests.
 
-    python3 tools/build-single.py OUT.html
+    python3 tools/build-single.py OUT.html [SOURCE.html]    # SOURCE defaults to index.html (try scenario.html)
 
 The output is a page *fragment* (<title>, <meta>, <style>, markup, <script>) without <html>/<head>/<body>,
 which is the shape the Artifact publisher expects. Opening it directly in a browser also works.
@@ -11,14 +11,17 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent
 out = Path(sys.argv[1] if len(sys.argv) > 1 else 'pixel-office.single.html')
+src = sys.argv[2] if len(sys.argv) > 2 else 'index.html'
 read = lambda p: (root / p).read_text(encoding='utf-8')
 
-html = read('index.html')
+html = read(src)
 body = html.split('<body>', 1)[1].split('</body>', 1)[0]
 markup = body.split('<script', 1)[0].strip()
+markup = re.sub(r'<a [^>]*data-local-only[^>]*>.*?</a>\s*', '', markup)   # links to sibling pages do not exist in a single file
 scripts = re.findall(r'<script src="([^"]+)"></script>', body)
 
-css = read('css/style.css')
+links = re.findall(r'<link rel="stylesheet" href="([^"]+)">', html)
+css = '\n'.join(read(l) for l in links)
 def font_uri(m):
     data = (root / 'css' / m.group(1)).read_bytes()
     return 'url("data:font/woff2;base64,' + base64.b64encode(data).decode() + '")'
