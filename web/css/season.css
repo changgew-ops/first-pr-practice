@@ -70,3 +70,4 @@
 .sv .sv-cols { grid-template-columns: minmax(0, 1fr) minmax(380px, .9fr); }
 .sv .sv-cols > *, .sv .grid > * { min-width: 0; }
 @media (max-width: 1180px) { .sv .sv-cols { grid-template-columns: minmax(0, 1fr); } }
+.sv .sv-series-detail > .stack { margin-top: 16px; }

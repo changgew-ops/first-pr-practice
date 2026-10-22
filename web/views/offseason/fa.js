@@ -2,7 +2,7 @@
 import { h, eok, POS_ORDER } from '../../lib/dom.js';
 import { buildCtx, faPlan, minAcceptSalary, round1, valueOf } from '../../lib/offseason-view.js';
 import { offerScore, compensationFor, preferredYears } from '../../../src/freeagency.mjs';
-import { domesticOf, softCapPenaltyEok } from '../../../src/valuation.mjs';
+import { domesticOf } from '../../../src/valuation.mjs';
 import { playerLine, decide } from './common.js';
 
 const SORTS = { value: ['가치순', (p) => -valueOf(p)], ovr: ['OVR순', (p) => -p.ovr], pot: ['POT순', (p) => -p.potential], age: ['어린 순', (p) => p.age], price: ['요구액 낮은 순', (p, d) => d(p)] };
@@ -78,7 +78,6 @@ export function render(ctx, pending) {
     update();
   }
 
-  const posChips = ['all', ...POS_ORDER].map((pos) => h('button', { class: `btn ${filter.pos === pos ? 'primary' : ''}`, type: 'button', onclick: () => { filter.pos = pos; rebuildBar(); draw(); } }, pos === 'all' ? '모든 포지션' : pos));
   const bar = h('div', { class: 'row os-filters' });
   function rebuildBar() {
     bar.replaceChildren(
@@ -88,7 +87,6 @@ export function render(ctx, pending) {
       h('label', { class: 'os-check' }, h('input', { type: 'checkbox', checked: filter.needOnly, onchange: (e) => { filter.needOnly = e.target.checked; draw(); } }), '자리가 부족한 포지션만'));
   }
   rebuildBar();
-  void posChips;
 
   const body = h('div', { class: 'stack' },
     h('div', { class: 'card' }, h('h2', `FA 시장 ${round}라운드 / ${fa.rounds}`),
