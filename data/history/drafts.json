@@ -1,10 +1,256 @@
 [
   {
+    "draftYear": 2023,
+    "season": "2023-24",
+    "date": "2023-09-21",
+    "venue": "잠실학생체육관",
+    "note": "30명 지원, 20명 지명(66.7%). 2라운드 계약에 1년 계약이 생겨 모든 구단이 2라운드까지 지명했고 3·4라운드는 전 구단이 지명하지 않았다. 참가자 명단(생년월일 등)은 아직 옮기지 않았다",
+    "participantsKnown": false,
+    "lottery": [
+      {
+        "franchiseId": "suwon-kt",
+        "balls": 32,
+        "slot": 1
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "balls": 24,
+        "slot": 2
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "balls": 10,
+        "slot": 3
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "balls": 32,
+        "slot": 4
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "balls": 32,
+        "slot": 5
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "balls": 24,
+        "slot": 6
+      },
+      {
+        "franchiseId": "wonju-db",
+        "balls": 32,
+        "slot": 7
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "balls": 10,
+        "slot": 8
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "balls": 3,
+        "slot": 9
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "balls": 1,
+        "slot": 10
+      }
+    ],
+    "tradedPicks": [],
+    "territorialPicks": [],
+    "participants": [],
+    "picks": [
+      {
+        "round": 1,
+        "pick": 1,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "문정현",
+        "school": "고려대",
+        "position": "F"
+      },
+      {
+        "round": 1,
+        "pick": 2,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "박무빈",
+        "school": "고려대",
+        "position": "G"
+      },
+      {
+        "round": 1,
+        "pick": 3,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "유기상",
+        "school": "연세대",
+        "position": "G"
+      },
+      {
+        "round": 1,
+        "pick": 4,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "조준희",
+        "school": "세리토스대",
+        "position": "G"
+      },
+      {
+        "round": 1,
+        "pick": 5,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "신주영",
+        "school": "고려대",
+        "position": "C"
+      },
+      {
+        "round": 1,
+        "pick": 6,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "이주영",
+        "school": "중앙대",
+        "position": "G"
+      },
+      {
+        "round": 1,
+        "pick": 7,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "박승재",
+        "school": "동국대",
+        "position": "G"
+      },
+      {
+        "round": 1,
+        "pick": 8,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "박종하",
+        "school": "성균관대",
+        "position": "G"
+      },
+      {
+        "round": 1,
+        "pick": 9,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "이경도",
+        "school": "단국대",
+        "position": "G"
+      },
+      {
+        "round": 1,
+        "pick": 10,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "나성호",
+        "school": "단국대",
+        "position": "F"
+      },
+      {
+        "round": 2,
+        "pick": 1,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "표승빈",
+        "school": "한양대",
+        "position": "F"
+      },
+      {
+        "round": 2,
+        "pick": 2,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "김건우",
+        "school": "연세대",
+        "position": "C"
+      },
+      {
+        "round": 2,
+        "pick": 3,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "민기남",
+        "school": "성균관대",
+        "position": "G"
+      },
+      {
+        "round": 2,
+        "pick": 4,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "최승빈",
+        "school": "건국대",
+        "position": "F"
+      },
+      {
+        "round": 2,
+        "pick": 5,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "정배권",
+        "school": "성균관대",
+        "position": "G"
+      },
+      {
+        "round": 2,
+        "pick": 6,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "김태호",
+        "school": "상명대",
+        "position": "G"
+      },
+      {
+        "round": 2,
+        "pick": 7,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "김근현",
+        "school": "성균관대",
+        "position": "G"
+      },
+      {
+        "round": 2,
+        "pick": 8,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "이강현",
+        "school": "중앙대",
+        "position": "C"
+      },
+      {
+        "round": 2,
+        "pick": 9,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "박상우",
+        "school": "건국대",
+        "position": "F"
+      },
+      {
+        "round": 2,
+        "pick": 10,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "이두호",
+        "school": "단국대",
+        "position": "F"
+      }
+    ]
+  },
+  {
     "draftYear": 2024,
     "season": "2024-25",
     "date": "2024-11-15",
     "venue": "고양 소노 아레나",
     "note": "고졸 선수가 1·2순위로 뽑힌 첫 드래프트. 42명 참가, 26명 지명(61.9%)",
+    "participantsKnown": true,
     "lottery": [
       {
         "franchiseId": "seoul-samsung",
@@ -791,6 +1037,7 @@
     "date": "2025-11-14",
     "venue": "잠실학생체육관",
     "note": "46명 지원(얼리 14명, 역대 최다), 26명 지명. 연고지명으로 에디 다니엘(SK)·김건하(현대모비스)가 드래프트 전에 프로에 합류했다(지명권은 소진되지 않음)",
+    "participantsKnown": true,
     "lottery": [
       {
         "franchiseId": "seoul-samsung",

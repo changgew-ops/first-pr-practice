@@ -1,0 +1,182 @@
+{
+  "draftYear": 2023,
+  "season": "2023-24",
+  "date": "2023-09-21",
+  "venue": "잠실학생체육관",
+  "note": "30명 지원, 20명 지명(66.7%). 2라운드 계약에 1년 계약이 생겨 모든 구단이 2라운드까지 지명했고 3·4라운드는 전 구단이 지명하지 않았다. 참가자 명단(생년월일 등)은 아직 옮기지 않았다",
+  "lottery": [
+    ["수원 KT", 32, 1],
+    ["울산 현대모비스", 24, 2],
+    ["창원 LG", 10, 3],
+    ["서울 삼성", 32, 4],
+    ["대구 한국가스공사", 32, 5],
+    ["부산 KCC", 24, 6],
+    ["원주 DB", 32, 7],
+    ["고양 소노", 10, 8],
+    ["서울 SK", 3, 9],
+    ["안양 정관장", 1, 10]
+  ],
+  "tradedPicks": [],
+  "picks": [
+    {
+      "round": 1,
+      "pick": 1,
+      "team": "수원 KT",
+      "name": "문정현",
+      "school": "고려대",
+      "position": "F"
+    },
+    {
+      "round": 1,
+      "pick": 2,
+      "team": "울산 현대모비스",
+      "name": "박무빈",
+      "school": "고려대",
+      "position": "G"
+    },
+    {
+      "round": 1,
+      "pick": 3,
+      "team": "창원 LG",
+      "name": "유기상",
+      "school": "연세대",
+      "position": "G"
+    },
+    {
+      "round": 1,
+      "pick": 4,
+      "team": "서울 삼성",
+      "name": "조준희",
+      "school": "세리토스대",
+      "position": "G"
+    },
+    {
+      "round": 1,
+      "pick": 5,
+      "team": "대구 한국가스공사",
+      "name": "신주영",
+      "school": "고려대",
+      "position": "C"
+    },
+    {
+      "round": 1,
+      "pick": 6,
+      "team": "부산 KCC",
+      "name": "이주영",
+      "school": "중앙대",
+      "position": "G"
+    },
+    {
+      "round": 1,
+      "pick": 7,
+      "team": "원주 DB",
+      "name": "박승재",
+      "school": "동국대",
+      "position": "G"
+    },
+    {
+      "round": 1,
+      "pick": 8,
+      "team": "고양 소노",
+      "name": "박종하",
+      "school": "성균관대",
+      "position": "G"
+    },
+    {
+      "round": 1,
+      "pick": 9,
+      "team": "서울 SK",
+      "name": "이경도",
+      "school": "단국대",
+      "position": "G"
+    },
+    {
+      "round": 1,
+      "pick": 10,
+      "team": "안양 정관장",
+      "name": "나성호",
+      "school": "단국대",
+      "position": "F"
+    },
+    {
+      "round": 2,
+      "pick": 1,
+      "team": "안양 정관장",
+      "name": "표승빈",
+      "school": "한양대",
+      "position": "F"
+    },
+    {
+      "round": 2,
+      "pick": 2,
+      "team": "서울 SK",
+      "name": "김건우",
+      "school": "연세대",
+      "position": "C"
+    },
+    {
+      "round": 2,
+      "pick": 3,
+      "team": "고양 소노",
+      "name": "민기남",
+      "school": "성균관대",
+      "position": "G"
+    },
+    {
+      "round": 2,
+      "pick": 4,
+      "team": "원주 DB",
+      "name": "최승빈",
+      "school": "건국대",
+      "position": "F"
+    },
+    {
+      "round": 2,
+      "pick": 5,
+      "team": "부산 KCC",
+      "name": "정배권",
+      "school": "성균관대",
+      "position": "G"
+    },
+    {
+      "round": 2,
+      "pick": 6,
+      "team": "대구 한국가스공사",
+      "name": "김태호",
+      "school": "상명대",
+      "position": "G"
+    },
+    {
+      "round": 2,
+      "pick": 7,
+      "team": "서울 삼성",
+      "name": "김근현",
+      "school": "성균관대",
+      "position": "G"
+    },
+    {
+      "round": 2,
+      "pick": 8,
+      "team": "창원 LG",
+      "name": "이강현",
+      "school": "중앙대",
+      "position": "C"
+    },
+    {
+      "round": 2,
+      "pick": 9,
+      "team": "울산 현대모비스",
+      "name": "박상우",
+      "school": "건국대",
+      "position": "F"
+    },
+    {
+      "round": 2,
+      "pick": 10,
+      "team": "수원 KT",
+      "name": "이두호",
+      "school": "단국대",
+      "position": "F"
+    }
+  ]
+}

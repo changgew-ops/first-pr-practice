@@ -1,6 +1,6 @@
 // 팀 이력 빌드(순수 함수): 사이트 화면에서 옮긴 시즌별 원본을 검증하고 구단 id 기준으로 정리한다.
 // 입출력은 호출하는 쪽(tools/build-history.mjs, 테스트)이 맡는다.
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 // 사이트에 표시된 이름(공백 제거) → 현재 구단 id.
@@ -173,16 +173,48 @@ export function buildHistory(rawDir, teams) {
       };
     }
 
+    // 우승팀: 플레이오프 화면이 있으면 결승 승자, 없으면 raw의 champion(나무위키 구단별 우승 연도). 우승팀이 없는 시즌은 null
+    let championId = playoffs ? playoffs.championId : null;
+    if (raw.champion) {
+      const c = lookup.get(norm(raw.champion));
+      if (!c) fail(season, `champion "${raw.champion}"을(를) 알 수 없습니다`);
+      else if (!rows.some((r) => r.franchiseId === c)) fail(season, `champion ${raw.champion}이(가) 순위표에 없습니다`);
+      else if (championId && championId !== c) fail(season, `champion(${c})이 플레이오프 결승 승자(${championId})와 다릅니다`);
+      else championId = c;
+    }
+
     seasons.push({
       season,
       startYear: Number(season.slice(0, 4)),
       ...(raw.note ? { note: raw.note } : {}),
       gamesPerTeam: Math.max(...games),
       teams: rows,
+      championId,
       ...(rounds ? { rounds } : {}),
       ...(raw.awards ? { awards: raw.awards } : {}),
       playoffs
     });
+  }
+
+  // 타이틀 스폰서와 대회 명칭 (시즌 범위로 적은 파일을 시즌마다 펼친다). 모든 시즌이 한 번씩 덮여야 한다
+  const sponsorFile = join(rawDir, '..', 'title-sponsors.json');
+  if (existsSync(sponsorFile)) {
+    const all = [...seasons.map((s) => s.season), ...JSON.parse(readFileSync(sponsorFile, 'utf8')).flatMap((r) => [r.from, r.to])];
+    const order = [...new Set(all)].sort((a, b) => sortKey(`${a}.json`).localeCompare(sortKey(`${b}.json`)));
+    const bySeason = new Map();
+    for (const r of JSON.parse(readFileSync(sponsorFile, 'utf8'))) {
+      const i = order.indexOf(r.from);
+      const j = order.indexOf(r.to);
+      if (j < i) { fail(r.from, `타이틀 스폰서 범위가 거꾸로입니다 (${r.from}~${r.to})`); continue; }
+      for (const name of order.slice(i, j + 1)) {
+        if (bySeason.has(name)) fail(name, '타이틀 스폰서가 두 번 정의됐습니다');
+        bySeason.set(name, { sponsor: r.sponsor, name: r.name });
+      }
+    }
+    for (const s of seasons) {
+      if (!bySeason.has(s.season)) fail(s.season, '타이틀 스폰서가 없습니다');
+      else s.titleSponsor = bySeason.get(s.season);
+    }
   }
 
   // 5) 구단 계보: 모든 현재 구단이 모든 시즌에 한 번씩 나오는지 (1997년은 8개 구단 중 일부)
@@ -250,7 +282,8 @@ export function buildDrafts(draftDir, teams) {
     // 지명권 트레이드는 짝을 이뤄야 한다(양쪽이 서로 바꾸거나, 한 방향 양도)
     for (const t of traded) if (!baseOrder[t.round]) fail(`지명권 트레이드의 라운드 ${t.round}가 이상합니다`);
 
-    const participants = raw.participants.map(([name, birth, position, height, weight, school, status]) => ({ name, birth: birth.replace(/\./g, '-'), position, height, weight, school, status }));
+    const participantsKnown = Array.isArray(raw.participants);
+    const participants = (raw.participants ?? []).map(([name, birth, position, height, weight, school, status]) => ({ name, birth: birth.replace(/\./g, '-'), position, height, weight, school, status }));
     const seenPart = new Set();
     for (const p of participants) {
       const k = `${p.name}|${p.school}`;
@@ -273,7 +306,7 @@ export function buildDrafts(draftDir, teams) {
       if (team !== exp.owner) fail(`${where}: 지명 구단 ${pk.team}이(가) 기대(${exp.owner})와 다릅니다`);
       const orig = pk.originalTeam ? id(pk.originalTeam, where) : team;
       if (orig !== exp.original) fail(`${where}: 원래 구단이 기대(${exp.original})와 다릅니다`);
-      if (!seenPart.has(`${pk.name}|${pk.school}`)) fail(`${where}: 참가자 명단에 없습니다 (${pk.name}, ${pk.school})`);
+      if (participantsKnown && !seenPart.has(`${pk.name}|${pk.school}`)) fail(`${where}: 참가자 명단에 없습니다 (${pk.name}, ${pk.school})`);
       if (seenPlayer.has(`${pk.name}|${pk.school}`)) fail(`${where}: 두 번 지명됨`);
       seenPlayer.add(`${pk.name}|${pk.school}`);
       if (!['G', 'F', 'C'].includes(pk.position)) fail(`${where}: 포지션 ${pk.position}`);
@@ -287,7 +320,7 @@ export function buildDrafts(draftDir, teams) {
 
     drafts.push({
       draftYear: y, season: raw.season, date: raw.date, venue: raw.venue, ...(raw.note ? { note: raw.note } : {}),
-      lottery, tradedPicks: traded,
+      participantsKnown, lottery, tradedPicks: traded,
       territorialPicks: (raw.territorialPicks ?? []).map((t) => ({ franchiseId: id(t.team, '연고지명'), name: t.name, school: t.school })),
       participants, picks
     });

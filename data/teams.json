@@ -1,12 +1,12 @@
 [
-  { "id": "wonju-db", "name": "원주 DB", "city": "원주" },
-  { "id": "seoul-samsung", "name": "서울 삼성", "city": "서울" },
-  { "id": "goyang-sono", "name": "고양 소노", "city": "고양" },
-  { "id": "seoul-sk", "name": "서울 SK", "city": "서울" },
-  { "id": "changwon-lg", "name": "창원 LG", "city": "창원" },
-  { "id": "anyang-jungkwanjang", "name": "안양 정관장", "city": "안양" },
-  { "id": "busan-kcc", "name": "부산 KCC", "city": "부산" },
-  { "id": "suwon-kt", "name": "수원 KT", "city": "수원" },
-  { "id": "daegu-kogas", "name": "대구 한국가스공사", "city": "대구" },
-  { "id": "ulsan-hyundai-mobis", "name": "울산 현대모비스", "city": "울산" }
+  {"id": "wonju-db", "name": "원주 DB", "city": "원주", "arena": "원주종합체육관", "founded": [{"year": 1996, "note": "전신 원주 나래 블루버드 창단"}, {"year": 2005, "note": "동부화재 인수 후 재창단"}], "cupTitles": [2024], "officialTitles": 10, "lineageTitles": 10},
+  {"id": "seoul-samsung", "name": "서울 삼성", "city": "서울", "arena": "잠실학생체육관", "founded": [{"year": 1978, "note": "삼성 농구단 창단"}, {"year": 2001, "note": "서울 연고지 이전"}], "cupTitles": [], "officialTitles": 3, "lineageTitles": 3},
+  {"id": "goyang-sono", "name": "고양 소노", "city": "고양", "arena": "고양 소노 아레나", "founded": [{"year": 2023, "note": "고양 소노 스카이거너스 창단"}], "cupTitles": [2020], "officialTitles": 0, "lineageTitles": 5, "lineageNote": "위키는 소노를 2023년 창단 구단으로 따로 보고, 오리온스·캐롯 계보(1996 동양제과 창단, 2022 데이원자산운용 인수 후 재창단, 우승 5회)를 고양 데이원 점퍼스로 분리한다. 이 게임은 계보를 한 구단으로 잇는다."},
+  {"id": "seoul-sk", "name": "서울 SK", "city": "서울", "arena": "잠실학생체육관", "founded": [{"year": 1997, "note": "전신 청주 진로 맥카스 창단"}, {"year": 2001, "note": "서울 연고지 이전"}], "cupTitles": [2021], "officialTitles": 7, "lineageTitles": 7},
+  {"id": "changwon-lg", "name": "창원 LG", "city": "창원", "arena": "창원체육관", "founded": [{"year": 1997, "note": "경남 LG 세이커스 창단"}], "cupTitles": [], "officialTitles": 3, "lineageTitles": 3},
+  {"id": "anyang-jungkwanjang", "name": "안양 정관장", "city": "안양", "arena": "안양 정관장 아레나", "founded": [{"year": 1992, "note": "SBS 농구단 창단"}, {"year": 2005, "note": "한국인삼공사 인수 후 재창단"}], "cupTitles": [], "officialTitles": 6, "lineageTitles": 6},
+  {"id": "busan-kcc", "name": "부산 KCC", "city": "부산", "arena": "사직실내체육관", "founded": [{"year": 1978, "note": "현대중공업 농구단 창단"}, {"year": 2023, "note": "부산 연고지 이전"}], "cupTitles": [2023], "officialTitles": 13, "lineageTitles": 13},
+  {"id": "suwon-kt", "name": "수원 KT", "city": "수원", "arena": "수원 KT 소닉붐 아레나", "founded": [{"year": 1996, "note": "전신 광주 나산 플라망스 창단"}, {"year": 2021, "note": "수원시 연고지 이전"}], "cupTitles": [2022], "officialTitles": 2, "lineageTitles": 2},
+  {"id": "daegu-kogas", "name": "대구 한국가스공사", "city": "대구", "arena": "대구체육관", "founded": [{"year": 2021, "note": "대구 한국가스공사 페가수스 창단"}], "cupTitles": [], "officialTitles": 0, "lineageTitles": 0, "lineageNote": "위키는 가스공사를 2021년 창단 구단으로 보고 인천 전자랜드(1994 대우증권 창단)를 과거 참가 구단으로 따로 둔다. 이 게임은 계보를 한 구단으로 잇는다."},
+  {"id": "ulsan-hyundai-mobis", "name": "울산 현대모비스", "city": "울산", "arena": "울산동천체육관", "founded": [{"year": 1986, "note": "기아자동차 농구단 창단"}, {"year": 2001, "note": "현대모비스 이관 및 울산 연고지 이전"}], "cupTitles": [], "officialTitles": 14, "lineageTitles": 14}
 ]

@@ -184,13 +184,17 @@ test('2024-25 라운드·수상: 6개 라운드가 검증을 통과하고 최종
   assert.equal(s.awards['감독상'], '전희철');
 });
 
-test('신인 드래프트 2024·2025: 검증 오류 0건, 저장본과 일치, 지명 수·순서', () => {
+test('신인 드래프트 2023~2025: 검증 오류 0건, 저장본과 일치, 지명 수·순서', () => {
   const built = buildDrafts(join(ROOT, 'data/history/drafts'), teams);
   assert.deepEqual(built.errors, []);
   const saved = JSON.parse(readFileSync(join(ROOT, 'data/history/drafts.json'), 'utf8'));
   assert.deepEqual(built.drafts, saved);
-  assert.deepEqual(saved.map((d) => d.draftYear), [2024, 2025]);
-  const [d24, d25] = saved;
+  assert.deepEqual(saved.map((d) => d.draftYear), [2023, 2024, 2025]);
+  const [d23, d24, d25] = saved;
+  assert.equal(d23.picks.length, 20);
+  assert.equal(d23.participantsKnown, false);
+  assert.deepEqual(d23.picks.slice(0, 3).map((p) => p.name), ['문정현', '박무빈', '유기상']);
+  assert.equal(d23.picks.find((p) => p.round === 2 && p.pick === 1).franchiseId, 'anyang-jungkwanjang'); // 2라운드는 역순: 1라운드 10순위 팀이 먼저
   assert.equal(d24.participants.length, 42);
   assert.equal(d24.picks.length, 26);
   assert.equal(d25.participants.length, 46);
@@ -222,4 +226,68 @@ test('드래프트 검증: 추첨 공 합계, 지명 구단, 참가자 명단에
   assert.match(run((c) => { c.picks[0].team = '서울 SK'; }), /지명 구단/);
   assert.match(run((c) => { c.picks[0].name = '없는선수'; }), /참가자 명단에 없습니다/);
   assert.match(run((c) => { c.tradedPicks = []; }), /지명 구단/);
+});
+
+// 나무위키 KBL 문서(구단별 우승 연도·타이틀 스폰서)와의 대조
+const POFF = {
+  'ulsan-hyundai-mobis': ['1997', '2006-07', '2009-10', '2012-13', '2013-14', '2014-15', '2018-19'],
+  'busan-kcc': ['1997-98', '1998-99', '2003-04', '2008-09', '2010-11', '2023-24', '2025-26'],
+  'seoul-sk': ['1999-2000', '2017-18', '2021-22'],
+  'seoul-samsung': ['2000-01', '2005-06'],
+  'wonju-db': ['2002-03', '2004-05', '2007-08'],
+  'anyang-jungkwanjang': ['2011-12', '2016-17', '2020-21', '2022-23'],
+  'changwon-lg': ['2024-25'],
+  'goyang-sono': ['2001-02', '2015-16'],
+  'suwon-kt': [],
+  'daegu-kogas': []
+};
+const REGULAR = {
+  'ulsan-hyundai-mobis': ['1997', '2005-06', '2006-07', '2008-09', '2009-10', '2014-15', '2018-19'],
+  'wonju-db': ['2003-04', '2004-05', '2007-08', '2011-12', '2017-18', '2023-24'],
+  'busan-kcc': ['1997-98', '1998-99', '1999-2000', '2015-16', '2020-21'],
+  'seoul-sk': ['2012-13', '2021-22', '2024-25'],
+  'changwon-lg': ['2013-14', '2025-26'],
+  'anyang-jungkwanjang': ['2016-17', '2022-23'],
+  'goyang-sono': ['2001-02', '2002-03'],
+  'seoul-samsung': ['2000-01'],
+  'suwon-kt': ['2010-11'],
+  'daegu-kogas': []
+};
+
+test('우승 연도: 시즌별 챔피언(championId)이 구단별 플레이오프 우승 연도와 정확히 같다 (2019-20은 우승 없음)', () => {
+  const byTeam = {};
+  for (const s of seasons) if (s.championId) (byTeam[s.championId] ??= []).push(s.season);
+  for (const t of teams) assert.deepEqual(byTeam[t.id] ?? [], POFF[t.id], t.id);
+  assert.equal(seasons.find((s) => s.season === '2019-20').championId, null);
+  assert.equal(seasons.filter((s) => s.championId).length, 29);
+  // 플레이오프 화면이 있는 시즌은 결승 승자와 같다
+  for (const s of seasons) if (s.playoffs) assert.equal(s.championId, s.playoffs.championId, s.season);
+});
+
+test('정규시즌 우승: 1위 구단이 구단별 정규시즌 우승 연도와 같다 (코로나로 중단된 2019-20 제외)', () => {
+  const byTeam = {};
+  for (const s of seasons) if (s.season !== '2019-20') (byTeam[s.teams[0].franchiseId] ??= []).push(s.season);
+  for (const t of teams) assert.deepEqual(byTeam[t.id] ?? [], REGULAR[t.id], t.id);
+});
+
+test('구단 정보: 우승 횟수 = 플레이오프 + 정규시즌 + 컵대회 (위키 표기), 소노·가스공사는 위키가 계보를 따로 센다', () => {
+  for (const t of teams) {
+    assert.ok(t.arena && t.founded.length >= 1, t.id);
+    const total = POFF[t.id].length + REGULAR[t.id].length + t.cupTitles.length;
+    assert.equal(t.lineageTitles, total, `${t.id} 계보 합산 우승`);
+    if (!t.lineageNote) assert.equal(t.officialTitles, total, `${t.id} 공식 우승`);
+  }
+  const sono = teams.find((t) => t.id === 'goyang-sono');
+  assert.equal(sono.officialTitles, 0);
+  assert.equal(sono.lineageTitles, 5);
+});
+
+test('타이틀 스폰서: 모든 시즌에 있고 연속 범위가 맞다', () => {
+  for (const s of seasons) assert.ok(s.titleSponsor?.name, s.season);
+  const at = (name) => seasons.find((s) => s.season === name).titleSponsor;
+  assert.equal(at('1997').sponsor, 'FILA');
+  assert.equal(at('1997-98').sponsor, 'FILA');
+  assert.equal(at('2002-03').name, '애니콜 프로농구');
+  assert.equal(at('2013-14').sponsor, 'KB국민카드');
+  assert.equal(at('2025-26').name, 'LG전자 프로농구');
 });

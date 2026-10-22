@@ -86,7 +86,12 @@
         "away": "1-6"
       }
     ],
-    "playoffs": null
+    "championId": "ulsan-hyundai-mobis",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "FILA",
+      "name": "FILA배 프로농구"
+    }
   },
   {
     "season": "1997-98",
@@ -195,7 +200,12 @@
         "away": "7-11"
       }
     ],
-    "playoffs": null
+    "championId": "busan-kcc",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "FILA",
+      "name": "FILA배 프로농구"
+    }
   },
   {
     "season": "1998-99",
@@ -304,7 +314,12 @@
         "away": "0-18"
       }
     ],
-    "playoffs": null
+    "championId": "busan-kcc",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "현대전자",
+      "name": "현대 걸리버배 프로농구"
+    }
   },
   {
     "season": "1999-2000",
@@ -413,7 +428,12 @@
         "away": "4-14"
       }
     ],
-    "playoffs": null
+    "championId": "seoul-sk",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "삼성전자",
+      "name": "애니콜 프로농구"
+    }
   },
   {
     "season": "2000-01",
@@ -522,7 +542,12 @@
         "away": "2-16"
       }
     ],
-    "playoffs": null
+    "championId": "seoul-samsung",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "삼성전자",
+      "name": "애니콜 프로농구"
+    }
   },
   {
     "season": "2001-02",
@@ -631,7 +656,12 @@
         "away": "8-19"
       }
     ],
-    "playoffs": null
+    "championId": "goyang-sono",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "삼성전자",
+      "name": "애니콜 프로농구"
+    }
   },
   {
     "season": "2002-03",
@@ -740,7 +770,12 @@
         "away": "4-23"
       }
     ],
-    "playoffs": null
+    "championId": "wonju-db",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "삼성전자",
+      "name": "애니콜 프로농구"
+    }
   },
   {
     "season": "2003-04",
@@ -849,7 +884,12 @@
         "away": "6-21"
       }
     ],
-    "playoffs": null
+    "championId": "busan-kcc",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "삼성전자",
+      "name": "애니콜 프로농구"
+    }
   },
   {
     "season": "2004-05",
@@ -958,7 +998,12 @@
         "away": "3-24"
       }
     ],
-    "playoffs": null
+    "championId": "wonju-db",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "삼성전자",
+      "name": "애니콜 프로농구"
+    }
   },
   {
     "season": "2005-06",
@@ -1067,7 +1112,12 @@
         "away": "4-23"
       }
     ],
-    "playoffs": null
+    "championId": "seoul-samsung",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "KCC",
+      "name": "KCC 프로농구"
+    }
   },
   {
     "season": "2006-07",
@@ -1176,7 +1226,12 @@
         "away": "7-20"
       }
     ],
-    "playoffs": null
+    "championId": "ulsan-hyundai-mobis",
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "현대모비스",
+      "name": "현대모비스 프로농구"
+    }
   },
   {
     "season": "2007-08",
@@ -1285,6 +1340,7 @@
         "away": "5-22"
       }
     ],
+    "championId": "wonju-db",
     "playoffs": {
       "seeds": {
         "wonju-db": 1,
@@ -1351,6 +1407,10 @@
       ],
       "championId": "wonju-db",
       "runnerUpId": "seoul-samsung"
+    },
+    "titleSponsor": {
+      "sponsor": "SK텔레콤",
+      "name": "SK텔레콤 T 프로농구"
     }
   },
   {
@@ -1460,6 +1520,7 @@
         "away": "5-22"
       }
     ],
+    "championId": "busan-kcc",
     "playoffs": {
       "seeds": {
         "ulsan-hyundai-mobis": 1,
@@ -1526,6 +1587,10 @@
       ],
       "championId": "busan-kcc",
       "runnerUpId": "seoul-samsung"
+    },
+    "titleSponsor": {
+      "sponsor": "동부화재",
+      "name": "동부프로미 프로농구"
     }
   },
   {
@@ -1635,6 +1700,7 @@
         "away": "7-20"
       }
     ],
+    "championId": "ulsan-hyundai-mobis",
     "playoffs": {
       "seeds": {
         "ulsan-hyundai-mobis": 1,
@@ -1701,6 +1767,10 @@
       ],
       "championId": "ulsan-hyundai-mobis",
       "runnerUpId": "busan-kcc"
+    },
+    "titleSponsor": {
+      "sponsor": "KCC",
+      "name": "KCC 프로농구"
     }
   },
   {
@@ -1809,6 +1879,7 @@
         "away": "8-19"
       }
     ],
+    "championId": "busan-kcc",
     "playoffs": {
       "seeds": {
         "suwon-kt": 1,
@@ -1875,6 +1946,10 @@
       ],
       "championId": "busan-kcc",
       "runnerUpId": "wonju-db"
+    },
+    "titleSponsor": {
+      "sponsor": "현대모비스",
+      "name": "현대모비스 프로농구"
     }
   },
   {
@@ -1984,6 +2059,7 @@
         "away": "7-20"
       }
     ],
+    "championId": "anyang-jungkwanjang",
     "playoffs": {
       "seeds": {
         "wonju-db": 1,
@@ -2050,6 +2126,10 @@
       ],
       "championId": "anyang-jungkwanjang",
       "runnerUpId": "wonju-db"
+    },
+    "titleSponsor": {
+      "sponsor": "KB국민카드",
+      "name": "KB국민카드 프로농구"
     }
   },
   {
@@ -2158,6 +2238,7 @@
         "away": "4-23"
       }
     ],
+    "championId": "ulsan-hyundai-mobis",
     "playoffs": {
       "seeds": {
         "seoul-sk": 1,
@@ -2224,6 +2305,10 @@
       ],
       "championId": "ulsan-hyundai-mobis",
       "runnerUpId": "seoul-sk"
+    },
+    "titleSponsor": {
+      "sponsor": "KB국민카드",
+      "name": "KB국민카드 프로농구"
     }
   },
   {
@@ -2333,6 +2418,7 @@
         "away": "8-19"
       }
     ],
+    "championId": "ulsan-hyundai-mobis",
     "playoffs": {
       "seeds": {
         "changwon-lg": 1,
@@ -2399,6 +2485,10 @@
       ],
       "championId": "ulsan-hyundai-mobis",
       "runnerUpId": "changwon-lg"
+    },
+    "titleSponsor": {
+      "sponsor": "KB국민카드",
+      "name": "KB국민카드 프로농구"
     }
   },
   {
@@ -2508,6 +2598,7 @@
         "away": "5-22"
       }
     ],
+    "championId": "ulsan-hyundai-mobis",
     "playoffs": {
       "seeds": {
         "ulsan-hyundai-mobis": 1,
@@ -2574,6 +2665,10 @@
       ],
       "championId": "ulsan-hyundai-mobis",
       "runnerUpId": "wonju-db"
+    },
+    "titleSponsor": {
+      "sponsor": "KCC",
+      "name": "KCC 프로농구"
     }
   },
   {
@@ -2683,6 +2778,7 @@
         "away": "8-19"
       }
     ],
+    "championId": "goyang-sono",
     "playoffs": {
       "seeds": {
         "busan-kcc": 1,
@@ -2749,6 +2845,10 @@
       ],
       "championId": "goyang-sono",
       "runnerUpId": "busan-kcc"
+    },
+    "titleSponsor": {
+      "sponsor": "KCC",
+      "name": "KCC 프로농구"
     }
   },
   {
@@ -2857,6 +2957,7 @@
         "away": "8-19"
       }
     ],
+    "championId": "anyang-jungkwanjang",
     "playoffs": {
       "seeds": {
         "anyang-jungkwanjang": 1,
@@ -2923,6 +3024,10 @@
       ],
       "championId": "anyang-jungkwanjang",
       "runnerUpId": "seoul-samsung"
+    },
+    "titleSponsor": {
+      "sponsor": "KCC",
+      "name": "KCC 프로농구"
     }
   },
   {
@@ -3032,6 +3137,7 @@
         "away": "4-23"
       }
     ],
+    "championId": "seoul-sk",
     "playoffs": {
       "seeds": {
         "wonju-db": 1,
@@ -3098,6 +3204,10 @@
       ],
       "championId": "seoul-sk",
       "runnerUpId": "wonju-db"
+    },
+    "titleSponsor": {
+      "sponsor": "한국인삼공사",
+      "name": "정관장 프로농구"
     }
   },
   {
@@ -3206,6 +3316,7 @@
         "away": "6-21"
       }
     ],
+    "championId": "ulsan-hyundai-mobis",
     "playoffs": {
       "seeds": {
         "ulsan-hyundai-mobis": 1,
@@ -3272,6 +3383,10 @@
       ],
       "championId": "ulsan-hyundai-mobis",
       "runnerUpId": "daegu-kogas"
+    },
+    "titleSponsor": {
+      "sponsor": "SK텔레콤",
+      "name": "SKT 5GX 프로농구"
     }
   },
   {
@@ -3381,7 +3496,12 @@
         "away": "5-14"
       }
     ],
-    "playoffs": null
+    "championId": null,
+    "playoffs": null,
+    "titleSponsor": {
+      "sponsor": "현대모비스",
+      "name": "현대모비스 프로농구"
+    }
   },
   {
     "season": "2020-21",
@@ -3490,6 +3610,7 @@
         "away": "7-20"
       }
     ],
+    "championId": "anyang-jungkwanjang",
     "playoffs": {
       "seeds": {
         "busan-kcc": 1,
@@ -3556,6 +3677,10 @@
       ],
       "championId": "anyang-jungkwanjang",
       "runnerUpId": "busan-kcc"
+    },
+    "titleSponsor": {
+      "sponsor": "현대모비스",
+      "name": "현대모비스 프로농구"
     }
   },
   {
@@ -3664,6 +3789,7 @@
         "away": "3-25"
       }
     ],
+    "championId": "seoul-sk",
     "playoffs": {
       "seeds": {
         "seoul-sk": 1,
@@ -3730,6 +3856,10 @@
       ],
       "championId": "seoul-sk",
       "runnerUpId": "anyang-jungkwanjang"
+    },
+    "titleSponsor": {
+      "sponsor": "KGC인삼공사",
+      "name": "정관장 프로농구"
     }
   },
   {
@@ -3839,6 +3969,7 @@
         "away": "5-22"
       }
     ],
+    "championId": "anyang-jungkwanjang",
     "playoffs": {
       "seeds": {
         "anyang-jungkwanjang": 1,
@@ -3905,6 +4036,10 @@
       ],
       "championId": "anyang-jungkwanjang",
       "runnerUpId": "seoul-sk"
+    },
+    "titleSponsor": {
+      "sponsor": "SK텔레콤",
+      "name": "SKT 에이닷 프로농구"
     }
   },
   {
@@ -4013,6 +4148,7 @@
         "away": "4-23"
       }
     ],
+    "championId": "busan-kcc",
     "playoffs": {
       "seeds": {
         "wonju-db": 1,
@@ -4079,6 +4215,10 @@
       ],
       "championId": "busan-kcc",
       "runnerUpId": "suwon-kt"
+    },
+    "titleSponsor": {
+      "sponsor": "KGC인삼공사",
+      "name": "정관장 프로농구"
     }
   },
   {
@@ -4188,6 +4328,7 @@
         "away": "10-17"
       }
     ],
+    "championId": "changwon-lg",
     "rounds": [
       {
         "round": 1,
@@ -4988,6 +5129,10 @@
       ],
       "championId": "changwon-lg",
       "runnerUpId": "seoul-sk"
+    },
+    "titleSponsor": {
+      "sponsor": "KCC",
+      "name": "KCC 프로농구"
     }
   },
   {
@@ -5096,6 +5241,7 @@
         "away": "8-19"
       }
     ],
+    "championId": "busan-kcc",
     "rounds": [
       {
         "round": 1,
@@ -5878,6 +6024,10 @@
       ],
       "championId": "busan-kcc",
       "runnerUpId": "goyang-sono"
+    },
+    "titleSponsor": {
+      "sponsor": "LG전자",
+      "name": "LG전자 프로농구"
     }
   }
 ]
