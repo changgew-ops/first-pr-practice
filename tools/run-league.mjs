@@ -1,10 +1,10 @@
 // 여러 해를 이어서 진행하는 리그 시뮬레이션 (육성·시즌 중 갱신·시즌 종료 처리 포함)
 //   node tools/run-league.mjs --years 20
 //   옵션: --seed 1, --manager busan-kcc (그 구단 훈련을 자동 관리), --bot (그 구단 트레이드·재계약·FA도 자동 단장이 결정),
-//         --no-inseason (시즌 중 능력치 갱신 끄기)
-import { readFileSync } from 'node:fs';
+//         --no-inseason (시즌 중 능력치 갱신 끄기), --out 파일.json (시즌별 결과를 저장: 순위·플레이오프·득점 상위·은퇴·드래프트·이동)
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { createLeague, playLeagueYear } from '../src/league.mjs';
 import { mulberry32 } from '../src/rng.mjs';
 import { createManagerBot } from '../src/manager-bot.mjs';
@@ -24,6 +24,8 @@ const seed = num('seed', 1);
 const manager = str('manager', null);
 const inSeasonUpdates = argIdx('no-inseason') < 0;
 const useBot = argIdx('bot') >= 0 && manager;
+const outFile = str('out', null);
+const log = [];
 
 const rng = mulberry32(seed);
 let league = createLeague(players, rules);
@@ -34,12 +36,30 @@ const avg = (list, fn) => list.reduce((s, p) => s + fn(p), 0) / list.length;
 
 for (let y = 0; y < years; y++) {
   const season = league.season;
-  const { league: next, report, result } = playLeagueYear(league, teamData, rules, rng, { manager, inSeasonUpdates, policy: useBot ? createManagerBot(manager, rules) : null });
+  const { league: next, report, result, totals, seasonPlayers } = playLeagueYear(league, teamData, rules, rng, { manager, inSeasonUpdates, policy: useBot ? createManagerBot(manager, rules) : null });
   titles.set(result.championId, titles.get(result.championId) + 1);
   for (const s of result.standings) winPct.set(s.id, winPct.get(s.id) + s.wins / rules.regularSeasonGames);
   const mgrRank = manager ? result.standings.findIndex((s) => s.id === manager) + 1 : null;
   const dom = next.players.filter((p) => p.origin === 'domestic');
   const payroll = teamData.map((t) => dom.filter((p) => p.teamId === t.id).reduce((s, p) => s + p.contract.salaryEok, 0));
+  if (outFile) {
+    const names = new Map(seasonPlayers.map((p) => [p.id, p]));
+    const leaders = [...totals.entries()].filter(([id, t]) => names.has(id) && t.games >= 20)
+      .map(([id, t]) => ({ name: names.get(id).name, team: names.get(id).teamId, games: t.games, ppg: +(t.points / t.games).toFixed(1), rpg: +(t.rebounds / t.games).toFixed(1), apg: +(t.assists / t.games).toFixed(1) }))
+      .sort((a, b) => b.ppg - a.ppg).slice(0, 10);
+    log.push({
+      season,
+      standings: result.standings.map((t, i) => ({ rank: i + 1, id: t.id, wins: t.wins, losses: t.losses, pointsFor: t.pointsFor, pointsAgainst: t.pointsAgainst })),
+      playoffs: result.playoffs.series.map((x) => ({ round: x.round, higherId: x.higherId, lowerId: x.lowerId, winnerId: x.winnerId, wins: x.wins })),
+      championId: result.championId,
+      scoringLeaders: leaders,
+      retired: report.retired.map((r) => ({ name: r.name, team: r.teamId, age: r.age, ovr: r.ovr })),
+      drafted: report.drafted.map((d) => ({ name: d.name, team: d.teamId, pick: d.pick, ovr: d.ovr, potential: d.potential })),
+      signings: report.signings.map((x) => ({ name: x.name, from: x.from ?? null, to: x.teamId })),
+      trades: report.trades.filter((t) => t.executed !== false),
+      avgOvr: +report.after.avgOvr.toFixed(2), avgAge: +report.after.avgAge.toFixed(2)
+    });
+  }
   rows.push({
     season, champion: nameOf.get(result.championId), mgrRank, avgOvr: report.after.avgOvr, avgAge: report.after.avgAge,
     retired: report.retired.length, drafted: report.drafted.length, expired: report.expired.filter((e) => !e.foreign).length,
@@ -63,3 +83,11 @@ for (const [id, n] of [...titles.entries()].sort((a, b) => b[1] - a[1])) {
 }
 const all = league.players;
 console.log(`\n최종: 평균 OVR ${avg(all, (p) => p.ovr).toFixed(1)}, 평균 나이 ${avg(all, (p) => p.age).toFixed(1)}, FA 풀 ${league.freeAgents.length}명`);
+
+if (outFile) {
+  const file = resolve(outFile);
+  mkdirSync(dirname(file), { recursive: true });
+  const ids = (list) => Object.fromEntries(list.map((t) => [t.id, t.name]));
+  writeFileSync(file, JSON.stringify({ seed, years, startSeason: log[0].season, teams: ids(teamData), seasons: log }) + '\n');
+  console.log(`\n→ ${file}`);
+}

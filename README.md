@@ -28,6 +28,7 @@ npm run apply:real                            # 소속이 정해진 선수를 �
 npm run build:history                         # 팀 이력(data/history/raw → seasons.json, franchises.json) 검증·빌드
 node tools/run-season.mjs                     # 1시즌 + 플레이오프 결과 출력
 node tools/run-season.mjs --seasons 500       # 여러 시즌 밸런스 통계
+npm run sim:dummy                             # 25-26 실데이터로 20시즌을 돌려 data/dummy/league-20y.json 에 저장 (실제 시즌 데이터가 들어오면 대체할 더미 이력)
 node tools/run-league.mjs --years 20          # 여러 해 연속 (육성·시즌 중 갱신·은퇴·드래프트 포함)
 node tools/run-league.mjs --years 20 --manager busan-kcc          # 그 구단의 훈련을 자동 관리
 node tools/run-league.mjs --years 20 --manager busan-kcc --bot    # 트레이드·재계약·FA도 자동 단장이 결정
