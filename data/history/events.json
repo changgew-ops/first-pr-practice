@@ -1,5 +1,1149 @@
 [
   {
+    "season": "2022-23",
+    "note": "FA 계약표의 병합 칸(새 소속 잔류·보상·날짜)은 위에서 아래로 풀어 채웠다. 보상이 '-'인 행은 잔류라 보상 해당 없음. 외국인 선수 표에는 국적 칸이 없어 다른 시즌 이벤트에서 같은 선수를 찾아 채웠고 못 찾으면 '미상'이다. 위키 은퇴 명단에 현대모비스·LG 양쪽에 강병현이 있고 FA 대상자 목록에도 양쪽에 [은퇴]로 나온다(위키 표기 그대로 두 건으로 둠). 웨이버 공시·군 전역·시즌 중 코칭스태프 변경은 이 문서에 기록이 없다. 원주 DB FA 대상 나카무라 타이치는 계약·미체결·은퇴 어디에도 기록이 없어 withdrawn으로 두었다. 오프시즌 트레이드 표는 '(왼쪽 구단이 보내는 선수) ↔ (오른쪽 구단이 보내는 선수)'로 읽었다",
+    "coaching": [
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "김상식",
+        "from": "前 대한민국 농구 국가대표팀 감독",
+        "to": "감독"
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "최승태",
+        "from": "前 창원 LG 세이커스 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "조성민",
+        "from": "前 창원 LG 세이커스 선수",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "송영진",
+        "from": "前 휘문고 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "김도수",
+        "from": "前 부천 하나원큐 여자농구단 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "김승기",
+        "from": "前 안양 KGC인삼공사 감독",
+        "to": "감독"
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "손규완",
+        "from": "前 안양 KGC인삼공사 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "손창환",
+        "from": "前 안양 KGC인삼공사 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "유재학",
+        "from": "감독에서 보직 변경",
+        "to": "총감독"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "조동현",
+        "from": "수석코치에서 보직 변경",
+        "to": "감독"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "양동근",
+        "from": "코치에서 보직 변경",
+        "to": "수석코치"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "맥클린",
+        "from": "前 울산 현대모비스 외국인선수",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "조상현",
+        "from": "前 대한민국 국가대표팀 감독",
+        "to": "감독"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "임재현",
+        "from": "前 배재고 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "김동우",
+        "from": "前 국가대표 농구대표팀 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "박유진",
+        "from": "前 창원 LG 세이커스 전력분석원",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "은희석",
+        "from": "前 연세대학교 감독",
+        "to": "감독"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "김보현",
+        "from": "前 군산고 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "천재민",
+        "from": "前 울산 현대모비스 피버스 선수",
+        "to": "매니저"
+      }
+    ],
+    "trades": [
+      {
+        "date": "2022-06-03",
+        "phase": "offseason",
+        "teamA": "busan-kcc",
+        "giveA": [],
+        "teamB": "wonju-db",
+        "giveB": [
+          "박경상"
+        ],
+        "note": "KCC는 무상(선수 없음), DB가 박경상을 보냈다(이후 KCC 소속으로 은퇴)"
+      },
+      {
+        "date": "2022-06-09",
+        "phase": "offseason",
+        "teamA": "goyang-sono",
+        "giveA": [
+          "이대성"
+        ],
+        "teamB": "daegu-kogas",
+        "giveB": [],
+        "note": "가스공사가 현금 6억원을 지급(선수 없음)"
+      },
+      {
+        "date": "2023-01-09",
+        "phase": "inseason",
+        "teamA": "seoul-samsung",
+        "giveA": [],
+        "teamB": "goyang-sono",
+        "giveB": [
+          "김무성"
+        ],
+        "note": "삼성은 무상(선수 없음), 캐롯이 김무성을 보냈다"
+      },
+      {
+        "date": "2023-01-11",
+        "phase": "inseason",
+        "teamA": "seoul-samsung",
+        "giveA": [
+          "임동섭"
+        ],
+        "teamB": "changwon-lg",
+        "giveB": [
+          "최승욱"
+        ]
+      },
+      {
+        "date": "2023-02-01",
+        "phase": "inseason",
+        "teamA": "seoul-samsung",
+        "giveA": [
+          "전형준"
+        ],
+        "teamB": "seoul-sk",
+        "giveB": [
+          "김승원"
+        ]
+      },
+      {
+        "date": "2023-02-01",
+        "phase": "inseason",
+        "teamA": "goyang-sono",
+        "giveA": [
+          "이종현"
+        ],
+        "teamB": "busan-kcc",
+        "giveB": [
+          "김진용",
+          "박재현"
+        ],
+        "note": "위키 표에서 KCC 쪽 선수가 둘이다(김진용 · 박재현)"
+      }
+    ],
+    "foreign": [
+      {
+        "franchiseId": "seoul-sk",
+        "name": "자밀 워니",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "name": "리온 윌리엄스",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 위키 표의 병합 칸(포지션·비고)을 위 행에서 이어받았다(위키 표에 '-'로 비어 있음). 구분(재계약)도 병합 이어받기라 실제 구분은 불확실"
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "오마리 스펠맨",
+        "position": "센터",
+        "nationality": [
+          "미국",
+          "레바논"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "대릴 먼로",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 비고 칸은 오마리 스펠맨 행과 병합(이어받음)"
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "렌즈 아반도",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": true,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "랜드리 은노코",
+        "position": "센터",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "EJ 아노시케",
+        "position": "포워드",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 비고 칸은 랜드리 은노코 행과 병합(이어받음)"
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "디드릭 로슨",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "데이비드 사이먼",
+        "position": "센터",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 비고 칸은 디드릭 로슨 행과 병합(이어받음)"
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "모리구치 히사시",
+        "position": "가드",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": true,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "저스틴 녹스",
+        "position": "포워드",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "게이지 프림",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 비고 칸은 저스틴 녹스 행과 병합(이어받음)"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "론 제이 아바리엔토스",
+        "position": "가드",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": true,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "name": "유슈 은도예",
+        "position": "센터",
+        "nationality": [
+          "세네갈"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "name": "머피 할로웨이",
+        "position": "센터",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 위키 표의 병합 칸(포지션·비고)을 위 행에서 이어받았다(포지션 추정: 유슈 은도예 행의 센터를 이어받음)"
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "name": "SJ 벨란겔",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": true,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 샘조세프 벨란겔과 같은 선수(위키 표기만 다름)"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "아셈 마레이",
+        "position": "센터",
+        "nationality": [
+          "이집트"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "단테 커닝햄",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "저스틴 구탕",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": true,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "레너드 프리먼",
+        "position": "포워드",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "드완 에르난데스",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "이선 알바노",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": true,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "name": "라건아",
+        "position": "센터",
+        "nationality": [
+          "미국",
+          "대한민국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false,
+        "flags": [
+          "귀화선수"
+        ],
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "name": "론데 홀리스제퍼슨",
+        "position": "포워드",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "이매뉴얼 테리",
+        "position": "센터",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "마커스 데릭슨",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": false,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 비고 칸은 이매뉴얼 테리 행과 병합(이어받음)"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "크리스찬 데이비드",
+        "position": "포워드",
+        "nationality": [
+          "미상"
+        ],
+        "kind": "신규영입",
+        "asiaQuota": true,
+        "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 위키 표에 포지션 칸이 비어 있어 위 행(마커스 데릭슨)의 포워드를 이어받았다(추정)"
+      }
+    ],
+    "retirements": [
+      {
+        "franchiseId": "seoul-sk",
+        "names": [
+          "송창무"
+        ]
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "names": [
+          "박형철",
+          "양승면",
+          "정강호",
+          "임기웅"
+        ]
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "names": [
+          "김기윤",
+          "문상옥",
+          "박철호"
+        ]
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "names": [
+          "오용준"
+        ]
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "names": [
+          "강병현",
+          "김형진",
+          "홍순규",
+          "이현민",
+          "박병우",
+          "김수찬",
+          "정성호"
+        ]
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "names": [
+          "정영삼",
+          "민성주"
+        ]
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "names": [
+          "강병현",
+          "변기훈",
+          "김영현",
+          "김성민"
+        ]
+      },
+      {
+        "franchiseId": "wonju-db",
+        "names": [
+          "맹상훈",
+          "배강률"
+        ]
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "names": [
+          "함승호"
+        ]
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "names": [
+          "배수용",
+          "정준수"
+        ]
+      }
+    ],
+    "voluntaryLeave": [],
+    "military": {
+      "enlist": [
+        {
+          "franchiseId": "suwon-kt",
+          "names": [
+            "허훈",
+            "박준영"
+          ]
+        },
+        {
+          "franchiseId": "daegu-kogas",
+          "names": [
+            "김낙현",
+            "이윤기"
+          ]
+        },
+        {
+          "franchiseId": "changwon-lg",
+          "names": [
+            "박정현"
+          ]
+        },
+        {
+          "franchiseId": "wonju-db",
+          "names": [
+            "김훈",
+            "이용우",
+            "유현준"
+          ]
+        },
+        {
+          "franchiseId": "busan-kcc",
+          "names": [
+            "송교창",
+            "곽동기"
+          ]
+        },
+        {
+          "franchiseId": "seoul-samsung",
+          "names": [
+            "박민우"
+          ]
+        }
+      ],
+      "discharge": []
+    },
+    "fa": {
+      "withdrawn": [
+        {
+          "franchiseId": "seoul-sk",
+          "names": [
+            "송창무"
+          ]
+        },
+        {
+          "franchiseId": "anyang-jungkwanjang",
+          "names": [
+            "박형철",
+            "양승면"
+          ]
+        },
+        {
+          "franchiseId": "ulsan-hyundai-mobis",
+          "names": [
+            "강병현",
+            "김형진",
+            "박병우",
+            "이현민",
+            "홍순규"
+          ]
+        },
+        {
+          "franchiseId": "goyang-sono",
+          "names": [
+            "오용준"
+          ]
+        },
+        {
+          "franchiseId": "daegu-kogas",
+          "names": [
+            "정영삼"
+          ]
+        },
+        {
+          "franchiseId": "changwon-lg",
+          "names": [
+            "강병현",
+            "김영현",
+            "변기훈"
+          ]
+        },
+        {
+          "franchiseId": "wonju-db",
+          "names": [
+            "나카무라 타이치",
+            "맹상훈"
+          ]
+        },
+        {
+          "franchiseId": "busan-kcc",
+          "names": [
+            "함승호"
+          ]
+        },
+        {
+          "franchiseId": "seoul-samsung",
+          "names": [
+            "배수용"
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "franchiseId": "seoul-sk",
+          "names": [
+            "김선형",
+            "배병준",
+            "송창무",
+            "이원대",
+            "이현석",
+            "장문호"
+          ]
+        },
+        {
+          "franchiseId": "anyang-jungkwanjang",
+          "names": [
+            "박재한",
+            "박형철",
+            "양승면",
+            "양희종",
+            "우동현",
+            "전성현"
+          ]
+        },
+        {
+          "franchiseId": "suwon-kt",
+          "names": [
+            "김영환",
+            "김현민"
+          ]
+        },
+        {
+          "franchiseId": "ulsan-hyundai-mobis",
+          "names": [
+            "강병현",
+            "김형진",
+            "박병우",
+            "박지훈",
+            "이현민",
+            "홍순규"
+          ]
+        },
+        {
+          "franchiseId": "goyang-sono",
+          "names": [
+            "오용준",
+            "이승현",
+            "최승욱"
+          ]
+        },
+        {
+          "franchiseId": "daegu-kogas",
+          "names": [
+            "두경민",
+            "민성주",
+            "정영삼",
+            "홍경기"
+          ]
+        },
+        {
+          "franchiseId": "changwon-lg",
+          "names": [
+            "강병현",
+            "김영현",
+            "변기훈",
+            "정해원",
+            "한상혁"
+          ]
+        },
+        {
+          "franchiseId": "wonju-db",
+          "names": [
+            "김영훈",
+            "김철욱",
+            "나카무라 타이치",
+            "맹상훈",
+            "박찬희",
+            "정준원",
+            "허웅"
+          ]
+        },
+        {
+          "franchiseId": "busan-kcc",
+          "names": [
+            "송창용",
+            "이정현",
+            "정창영",
+            "함승호"
+          ]
+        },
+        {
+          "franchiseId": "seoul-samsung",
+          "names": [
+            "김동량",
+            "배수용",
+            "정준수"
+          ]
+        }
+      ],
+      "contracts": [
+        {
+          "fromFranchiseId": "seoul-sk",
+          "name": "이원대",
+          "position": "가드",
+          "toFranchiseId": "daegu-kogas",
+          "stayed": false,
+          "date": "2022-05-22",
+          "years": 3,
+          "salaryEok": 1.2,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "seoul-sk",
+          "name": "이현석",
+          "position": "가드",
+          "toFranchiseId": "suwon-kt",
+          "stayed": false,
+          "date": "2022-05-23",
+          "years": 3,
+          "salaryEok": 1.8,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음. 보상 칸은 위 행에서 이어받음"
+        },
+        {
+          "fromFranchiseId": "seoul-sk",
+          "name": "김선형",
+          "position": "가드",
+          "toFranchiseId": "seoul-sk",
+          "stayed": true,
+          "date": "2022-05-24",
+          "years": 3,
+          "salaryEok": 8,
+          "compensation": "-",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "seoul-sk",
+          "name": "장문호",
+          "position": "포워드",
+          "toFranchiseId": "seoul-sk",
+          "stayed": true,
+          "date": "2022-05-24",
+          "years": 1,
+          "salaryEok": 0.45,
+          "compensation": "-",
+          "window": null,
+          "note": "새 소속(잔류)과 보상 칸은 김선형 행과 병합(이어받음)"
+        },
+        {
+          "fromFranchiseId": "seoul-sk",
+          "name": "배병준",
+          "position": "가드",
+          "toFranchiseId": "anyang-jungkwanjang",
+          "stayed": false,
+          "date": "2022-05-24",
+          "years": 1,
+          "salaryEok": 0.9,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "양희종",
+          "position": "포워드",
+          "toFranchiseId": "anyang-jungkwanjang",
+          "stayed": true,
+          "date": "2022-05-23",
+          "years": 3,
+          "salaryEok": 2.2,
+          "compensation": "-",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "전성현",
+          "position": "포워드",
+          "toFranchiseId": "goyang-sono",
+          "stayed": false,
+          "date": "2022-05-23",
+          "years": 4,
+          "salaryEok": 7.5,
+          "compensation": "5억 6천만원",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "박재한",
+          "position": "가드",
+          "toFranchiseId": "ulsan-hyundai-mobis",
+          "stayed": false,
+          "date": "2022-05-25",
+          "years": 2,
+          "salaryEok": 0.6,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "우동현",
+          "position": "가드",
+          "toFranchiseId": "daegu-kogas",
+          "stayed": false,
+          "date": "2022-05-25",
+          "years": 3,
+          "salaryEok": 0.52,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "suwon-kt",
+          "name": "김영환",
+          "position": "포워드",
+          "toFranchiseId": "suwon-kt",
+          "stayed": true,
+          "date": "2022-05-25",
+          "years": 2,
+          "salaryEok": 2,
+          "compensation": "-",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "suwon-kt",
+          "name": "김현민",
+          "position": "포워드",
+          "toFranchiseId": "ulsan-hyundai-mobis",
+          "stayed": false,
+          "date": "2022-05-28",
+          "years": 1,
+          "salaryEok": 0.8,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "goyang-sono",
+          "name": "이승현",
+          "position": "포워드",
+          "toFranchiseId": "busan-kcc",
+          "stayed": false,
+          "date": "2022-05-23",
+          "years": 5,
+          "salaryEok": 7.5,
+          "compensation": "12억원",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "goyang-sono",
+          "name": "최승욱",
+          "position": "포워드",
+          "toFranchiseId": "wonju-db",
+          "stayed": false,
+          "date": "2022-05-24",
+          "years": 2,
+          "salaryEok": 1.1,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "ulsan-hyundai-mobis",
+          "name": "박지훈",
+          "position": "포워드",
+          "toFranchiseId": "daegu-kogas",
+          "stayed": false,
+          "date": "2022-05-22",
+          "years": 2,
+          "salaryEok": 2.2,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "daegu-kogas",
+          "name": "두경민",
+          "position": "가드",
+          "toFranchiseId": "wonju-db",
+          "stayed": false,
+          "date": "2022-05-23",
+          "years": 4,
+          "salaryEok": 5,
+          "compensation": "8억원",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "daegu-kogas",
+          "name": "홍경기",
+          "position": "가드",
+          "toFranchiseId": "seoul-sk",
+          "stayed": false,
+          "date": "2022-05-24",
+          "years": 2,
+          "salaryEok": 1.2,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "changwon-lg",
+          "name": "한상혁",
+          "position": "가드",
+          "toFranchiseId": "changwon-lg",
+          "stayed": true,
+          "date": "2022-05-25",
+          "years": 3,
+          "salaryEok": 1.2,
+          "compensation": "-",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "changwon-lg",
+          "name": "정해원",
+          "position": "포워드",
+          "toFranchiseId": "goyang-sono",
+          "stayed": false,
+          "date": "2022-05-28",
+          "years": 1,
+          "salaryEok": 0.5,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "박찬희",
+          "position": "가드",
+          "toFranchiseId": "wonju-db",
+          "stayed": true,
+          "date": "2022-05-23",
+          "years": 2,
+          "salaryEok": 2.1,
+          "compensation": "-",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "허웅",
+          "position": "가드",
+          "toFranchiseId": "busan-kcc",
+          "stayed": false,
+          "date": "2022-05-23",
+          "years": 5,
+          "salaryEok": 7,
+          "compensation": "유현준 / 1억 6천 5백만원",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "김철욱",
+          "position": "센터",
+          "toFranchiseId": "anyang-jungkwanjang",
+          "stayed": false,
+          "date": "2022-05-24",
+          "years": 2,
+          "salaryEok": 1.2,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "정준원",
+          "position": "포워드",
+          "toFranchiseId": "anyang-jungkwanjang",
+          "stayed": false,
+          "date": "2022-05-24",
+          "years": 3,
+          "salaryEok": 0.9,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "김영훈",
+          "position": "포워드",
+          "toFranchiseId": "ulsan-hyundai-mobis",
+          "stayed": false,
+          "date": "2022-05-28",
+          "years": 2,
+          "salaryEok": 0.7,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "busan-kcc",
+          "name": "이정현",
+          "position": "가드",
+          "toFranchiseId": "seoul-samsung",
+          "stayed": false,
+          "date": "2022-05-19",
+          "years": 3,
+          "salaryEok": 7,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "busan-kcc",
+          "name": "송창용",
+          "position": "포워드",
+          "toFranchiseId": "seoul-sk",
+          "stayed": false,
+          "date": "2022-05-24",
+          "years": 2,
+          "salaryEok": 0.7,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        },
+        {
+          "fromFranchiseId": "busan-kcc",
+          "name": "정창영",
+          "position": "포워드",
+          "toFranchiseId": "busan-kcc",
+          "stayed": true,
+          "date": "2022-05-25",
+          "years": 3,
+          "salaryEok": 2.5,
+          "compensation": "-",
+          "window": null
+        },
+        {
+          "fromFranchiseId": "seoul-samsung",
+          "name": "김동량",
+          "position": "센터",
+          "toFranchiseId": "suwon-kt",
+          "stayed": false,
+          "date": "2022-05-23",
+          "years": 3,
+          "salaryEok": 1.7,
+          "compensation": "없음",
+          "window": null,
+          "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+        }
+      ],
+      "unsigned": [
+        {
+          "franchiseId": "daegu-kogas",
+          "names": [
+            "민성주"
+          ]
+        },
+        {
+          "franchiseId": "seoul-samsung",
+          "names": [
+            "정준수"
+          ]
+        }
+      ]
+    }
+  },
+  {
     "season": "2023-24",
     "note": "FA 계약표의 병합 칸(포지션·새 소속·날짜·기간·보수·보상)은 위에서 아래로 풀어 채웠고, 풀어서 채운 칸은 계약 행의 note에 적었다. 위키 은퇴 명단에 서울 삼성 장민국이 있으나 그는 이후 시즌에도 뛴다(FA 대상자 장민국은 withdrawn으로 처리). 군 입대 명단의 고양 데이원 조한진은 7/31 트레이드로 현대모비스로 간 선수와 같은 이름이다(위키 표기 그대로). FA 미체결 대구 한국가스공사 이대성은 해외 진출 의사로 계약하지 않았다(위키 각주 [32]). 위키 트레이드 표는 한 쪽에 선수가 둘이면 두 번째 선수를 팀 칸 다음에 적는다",
     "coaching": [

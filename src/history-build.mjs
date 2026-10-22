@@ -367,7 +367,7 @@ const SHORT_NAMES = {
   'anyang-jungkwanjang': ['정관장', 'KGC', 'KGC인삼공사', '안양KGC인삼공사', '안양정관장', '안양정관장레드부스터스'], 'changwon-lg': ['LG', '창원LG', '창원LG세이커스'],
   'wonju-db': ['DB', '원주DB', '원주DB프로미'], 'ulsan-hyundai-mobis': ['현대모비스', '울산현대모비스', '울산현대모비스피버스'],
   'suwon-kt': ['KT', 'kt', '수원KT', '수원KT소닉붐'], 'daegu-kogas': ['한국가스공사', '가스공사', '대구한국가스공사', '대구한국가스공사페가수스'],
-  'goyang-sono': ['소노', '데이원', '고양데이원', '고양데이원점퍼스', '고양소노', '고양소노스카이거너스']
+  'goyang-sono': ['소노', '캐롯', '고양캐롯', '고양캐롯점퍼스', '데이원', '고양데이원', '고양데이원점퍼스', '고양소노', '고양소노스카이거너스']
 };
 const EVENT_LOOKUP = new Map([...lookup, ...Object.entries(SHORT_NAMES).flatMap(([id, names]) => names.map((n) => [norm(n), id]))]);
 

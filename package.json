@@ -8,6 +8,8 @@
     "build:history": "node tools/build-history.mjs",
     "build:real": "node tools/build-real-players.mjs",
     "apply:real": "node tools/build-real-players.mjs --apply",
-    "sim:dummy": "node tools/run-league.mjs --years 20 --out data/dummy/league-20y.json"
+    "sim:dummy": "node tools/run-league.mjs --years 20 --out data/dummy/league-20y.json",
+    "coverage": "node tools/coverage.mjs",
+    "check": "npm run build:history && npm test"
   }
 }

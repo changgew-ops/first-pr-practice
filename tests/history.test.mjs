@@ -184,13 +184,17 @@ test('2024-25 라운드·수상: 6개 라운드가 검증을 통과하고 최종
   assert.equal(s.awards['감독상'], '전희철');
 });
 
-test('신인 드래프트 2023~2025: 검증 오류 0건, 저장본과 일치, 지명 수·순서', () => {
+test('신인 드래프트 2022~2025: 검증 오류 0건, 저장본과 일치, 지명 수·순서', () => {
   const built = buildDrafts(join(ROOT, 'data/history/drafts'), teams);
   assert.deepEqual(built.errors, []);
   const saved = JSON.parse(readFileSync(join(ROOT, 'data/history/drafts.json'), 'utf8'));
   assert.deepEqual(built.drafts, saved);
-  assert.deepEqual(saved.map((d) => d.draftYear), [2023, 2024, 2025]);
-  const [d23, d24, d25] = saved;
+  assert.deepEqual(saved.map((d) => d.draftYear), [2022, 2023, 2024, 2025]);
+  const [d22, d23, d24, d25] = saved;
+  assert.equal(d22.participants.length, 42);
+  assert.equal(d22.picks.length, 25);
+  assert.equal(d22.picks[0].name, '양준석');
+  assert.equal(d22.picks.find((p) => p.round === 1 && p.pick === 2).franchiseId, 'suwon-kt'); // 3년 연속 2순위
   assert.equal(d23.picks.length, 20);
   assert.equal(d23.participantsKnown, false);
   assert.deepEqual(d23.picks.slice(0, 3).map((p) => p.name), ['문정현', '박무빈', '유기상']);
@@ -365,4 +369,18 @@ test('등록선수 화면에 없는 주전급(출전 600분 이상)은 은퇴·�
   const pool = JSON.parse(readFileSync(join(ROOT, 'data/players/real-pool.json'), 'utf8'));
   const unexplained = pool.filter((p) => !p.registered && p.minutes >= 600 && p.origin === 'domestic' && !gone.has(p.name.replace(/\(\d+\)$/, ''))).map((p) => p.name);
   assert.deepEqual(unexplained, []);
+});
+
+test('2022-23: 상대전적(LG·SK 동률), 라운드 MVP, 수상', () => {
+  const s = seasons.find((x) => x.season === '2022-23');
+  const h = s.headToHead;
+  const w = (a, b) => h.wins[h.teams.indexOf(a)][h.teams.indexOf(b)];
+  assert.equal(w('changwon-lg', 'seoul-sk'), 3);
+  assert.equal(w('seoul-sk', 'changwon-lg'), 3);
+  for (const a of h.teams) for (const b of h.teams) if (a !== b) assert.equal(w(a, b) + w(b, a), 6);
+  assert.equal(s.awards['정규시즌 MVP(국내)'], '김선형');
+  assert.equal(s.awards['베스트5'].length, 5);
+  assert.equal(s.awards['수비 5걸'].length, 6); // 투표 동률
+  assert.equal(s.awards['감독상'], '김상식');
+  assert.equal(s.championId, 'anyang-jungkwanjang');
 });
