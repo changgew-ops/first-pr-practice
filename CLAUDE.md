@@ -11,6 +11,7 @@
 | `npm run build:real` / `apply:real` / `generate` | 실제 선수 풀 → 로스터·기록 CSV → `data/players.json` |
 | `npm run coverage` | 시즌별 어떤 자료가 있는지 표 (`-- --write docs/DATA_STATUS.md`로 저장) |
 | `npm run check` | build:history + test (커밋 전에) |
+| `npm run web` | 화면 개발 서버(저장소 루트를 정적으로 서빙). http://localhost:8080/web/ |
 | `npm run sim:dummy` | 20시즌 시뮬레이션 결과를 `data/dummy/`에 저장 |
 
 ## 반드시 지킬 것
@@ -27,6 +28,7 @@
 - `data/players/` 실제 선수 풀(등록선수 화면, 시즌별 소속, 별칭, 정정값, 아이콘 템플릿)
 - `data/rosters/`, `data/players.json` 게임에 쓰는 로스터와 선수(생성물)
 - `src/` 게임 규칙(순수 함수), `tools/` 데이터 도구와 시뮬레이션 실행기, `tests/`
+- `web/` 화면(의존성 없는 정적 웹앱: `app.js` 경로·틀, `views/` 화면별, `lib/game.js` 게임 상태·규칙 호출). 규칙은 `src/`를 그대로 import하므로 `src/`는 node 전용 모듈(`node:fs` 등)을 끌어들이지 않는다(파일에서 읽는 일은 `history.mjs`·`tools/`에만).
 - `.claude/agents/` 반복 작업용 에이전트 정의 (아래)
 
 ## 반복 작업과 담당 에이전트

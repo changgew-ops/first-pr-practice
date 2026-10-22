@@ -1,0 +1,168 @@
+:root {
+  --bg: #0e1320; --panel: #161d2e; --panel-2: #1d2639; --line: #2a3550; --text: #e8ecf5; --muted: #8e9ab3;
+  --accent: #ff7a1a; --accent-ink: #1a0d00; --good: #3ecf8e; --bad: #ff5d6c; --warn: #f5c451; --focus: #7cb7ff;
+  --common: #8e9ab3; --rare: #4ea1ff; --ace: #b07cff; --legend: #ffc83d;
+  --team: #ff7a1a; --radius: 10px;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f2f4f9; --panel: #ffffff; --panel-2: #eef1f8; --line: #d5dbe8; --text: #152033; --muted: #5b6784;
+    --accent: #d95d00; --accent-ink: #ffffff; --good: #14815a; --bad: #c4283a; --warn: #956a00; --focus: #1f6fd1;
+    --common: #5b6784; --rare: #1f6fd1; --ace: #7b3fd0; --legend: #a87500; color-scheme: light;
+  }
+}
+* { box-sizing: border-box; }
+html { font-size: 15px; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; line-height: 1.45; }
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.boot, .muted { color: var(--muted); }
+.pad { padding: 14px; }
+.r { text-align: right; font-variant-numeric: tabular-nums; }
+.good { color: var(--good); } .bad { color: var(--bad); } .warn { color: var(--warn); }
+h1, h2, h3 { margin: 0; line-height: 1.2; }
+h2 { font-size: 1.15rem; margin-bottom: 10px; }
+h3 { font-size: 1rem; margin-bottom: 8px; }
+
+/* 셸 */
+.shell { display: grid; grid-template-columns: 210px 1fr; min-height: 100vh; }
+.side { background: var(--panel); border-right: 1px solid var(--line); padding: 16px 12px; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 14px; }
+.brand { font-weight: 800; letter-spacing: -0.02em; font-size: 1.05rem; padding: 0 8px; }
+.brand small { display: block; color: var(--muted); font-weight: 500; font-size: .75rem; }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav a { padding: 9px 10px; border-radius: 8px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.nav a:hover { background: var(--panel-2); text-decoration: none; color: var(--text); }
+.nav a.on { background: var(--panel-2); color: var(--text); box-shadow: inset 3px 0 0 var(--team); font-weight: 600; }
+.side .spacer { flex: 1; }
+.side .small { font-size: .8rem; color: var(--muted); padding: 0 8px; }
+.main { padding: 22px 26px 60px; max-width: 1180px; width: 100%; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.crumb { font-size: .85rem; color: var(--muted); }
+.title { display: flex; align-items: center; gap: 12px; }
+.title h1 { font-size: 1.5rem; }
+.swatch { width: 10px; height: 34px; border-radius: 3px; background: var(--team); flex: none; }
+
+/* 공통 부품 */
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
+.card.flush { padding: 0; overflow: hidden; }
+.card > h2:first-child, .card > h3:first-child { margin-top: 0; }
+.grid { display: grid; gap: 14px; }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.split { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.row.between { justify-content: space-between; }
+.stack > * + * { margin-top: 14px; }
+.btn { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; font-weight: 600; }
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.big { padding: 12px 22px; font-size: 1.05rem; }
+.btn[disabled] { opacity: .5; cursor: progress; }
+.btn.ghost { background: transparent; }
+.tag { display: inline-block; font-size: .72rem; font-weight: 600; padding: 2px 7px; border-radius: 99px; background: var(--panel-2); color: var(--muted); border: 1px solid var(--line); }
+.tag.hot { color: var(--accent); border-color: var(--accent); }
+.tag.champ { color: var(--legend); border-color: var(--legend); }
+.note { font-size: .85rem; color: var(--muted); }
+.callout { border-left: 3px solid var(--warn); background: var(--panel-2); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: .9rem; }
+
+.stat { background: var(--panel-2); border-radius: 8px; padding: 10px 12px; }
+.stat-label { font-size: .75rem; color: var(--muted); }
+.stat-value { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat-sub { font-size: .78rem; color: var(--muted); }
+.bar { height: 7px; background: var(--panel-2); border-radius: 99px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--team); border-radius: 99px; }
+.bar.warn i { background: var(--warn); } .bar.bad i { background: var(--bad); }
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 14px; overflow-x: auto; }
+.tabs button { background: none; border: 0; padding: 9px 14px; color: var(--muted); border-bottom: 2px solid transparent; font-weight: 600; white-space: nowrap; }
+.tabs button.on { color: var(--text); border-bottom-color: var(--team); }
+
+/* 표 */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: .76rem; color: var(--muted); font-weight: 600; background: var(--panel); position: sticky; top: 0; }
+th.r { text-align: right; }
+th.sortable { cursor: pointer; user-select: none; }
+th.sorted { color: var(--text); }
+tr.clickable { cursor: pointer; }
+tr.clickable:hover td { background: var(--panel-2); }
+tr.me td { background: color-mix(in srgb, var(--team) 14%, transparent); font-weight: 600; }
+tr.cut td { border-bottom: 2px dashed var(--muted); }
+tbody tr:last-child td { border-bottom: 0; }
+
+.ovr { display: inline-block; min-width: 2.1em; text-align: center; font-weight: 800; border-radius: 6px; padding: 1px 6px; font-variant-numeric: tabular-nums; color: #fff; }
+.ovr.r-common { background: color-mix(in srgb, var(--common) 55%, #000); }
+.ovr.r-rare { background: color-mix(in srgb, var(--rare) 75%, #000); }
+.ovr.r-ace { background: color-mix(in srgb, var(--ace) 75%, #000); }
+.ovr.r-legend { background: color-mix(in srgb, var(--legend) 80%, #000); }
+.pos { display: inline-block; font-size: .72rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--panel-2); border: 1px solid var(--line); }
+
+/* 구단 선택 */
+.team-card { text-align: left; background: var(--panel); border: 1px solid var(--line); border-top: 4px solid var(--team); border-radius: var(--radius); padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.team-card:hover { border-color: var(--team); transform: translateY(-1px); }
+.team-card h3 { font-size: 1.1rem; margin: 0; }
+.team-card dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: .85rem; }
+.team-card dt { color: var(--muted); }
+.team-card dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.intro { max-width: 1100px; margin: 0 auto; padding: 36px 22px 60px; }
+.intro h1 { font-size: 2rem; }
+
+/* 선수 카드 */
+.pcard { border-radius: 14px; padding: 18px; border: 2px solid var(--line); background: linear-gradient(160deg, var(--panel-2), var(--panel)); position: relative; overflow: hidden; }
+.pcard.r-rare { border-color: var(--rare); } .pcard.r-ace { border-color: var(--ace); } .pcard.r-legend { border-color: var(--legend); }
+.pcard .big-ovr { font-size: 3.4rem; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+.pcard.r-rare .big-ovr { color: var(--rare); } .pcard.r-ace .big-ovr { color: var(--ace); } .pcard.r-legend .big-ovr { color: var(--legend); }
+.pcard .num { position: absolute; right: 14px; top: 8px; font-size: 3rem; font-weight: 900; color: var(--line); }
+.statline { display: grid; grid-template-columns: 74px 1fr 34px; gap: 8px; align-items: center; font-size: .9rem; }
+.radar { width: 100%; max-width: 260px; }
+.radar-ring { fill: none; stroke: var(--line); } .radar-axis { stroke: var(--line); }
+.radar-area { fill: color-mix(in srgb, var(--team) 35%, transparent); stroke: var(--team); stroke-width: 2; }
+.radar-dot { fill: var(--team); } .radar-label { fill: var(--muted); font-size: 11px; }
+.rank-chart { width: 100%; height: auto; }
+.rank-chart .grid { stroke: var(--line); } .rank-chart .axis { fill: var(--muted); font-size: 10px; }
+.rank-chart .line { fill: none; stroke: var(--team); stroke-width: 2; }
+.rank-chart .dot { fill: var(--team); } .rank-chart .dot.champ { fill: var(--legend); stroke: var(--bg); stroke-width: 1.5; }
+
+/* 라인업 */
+.court { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.slot { background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px; text-align: center; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+.slot .nm { font-weight: 700; }
+.slot .meta { font-size: .78rem; color: var(--muted); }
+
+/* 플레이오프 */
+.bracket { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.series { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+.series .t { display: flex; justify-content: space-between; gap: 8px; }
+.series .t.win { font-weight: 800; }
+.series .t.lose { color: var(--muted); }
+.toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--panel-2); border: 1px solid var(--line); padding: 10px 16px; border-radius: 8px; z-index: 10; }
+.overlay { position: fixed; inset: 0; background: color-mix(in srgb, var(--bg) 80%, transparent); display: grid; place-items: center; z-index: 9; }
+.overlay .card { text-align: center; min-width: 260px; }
+.hero { border-top: 4px solid var(--team); }
+.timeline { display: flex; flex-wrap: wrap; gap: 4px; }
+.timeline .d { width: 18px; height: 18px; border-radius: 4px; font-size: .62rem; display: grid; place-items: center; color: #fff; }
+.timeline .d.w { background: color-mix(in srgb, var(--good) 80%, #000); } .timeline .d.l { background: color-mix(in srgb, var(--bad) 80%, #000); }
+ul.plain { list-style: none; margin: 0; padding: 0; } ul.plain li { padding: 6px 0; border-bottom: 1px solid var(--line); display: flex; gap: 8px; align-items: center; }
+ul.plain li:last-child { border-bottom: 0; }
+ul.plain .grow { flex: 1; }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; }
+  .side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 10px 12px; }
+  .nav { flex-direction: row; flex-wrap: wrap; } .side .spacer, .side .small { display: none; }
+  .main { padding: 16px 16px 60px; }
+  .g3, .g4, .split, .bracket { grid-template-columns: 1fr 1fr; }
+  .court { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .g2, .g3, .split, .bracket { grid-template-columns: 1fr; }
+  .g4 { grid-template-columns: 1fr 1fr; }
+  .court { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

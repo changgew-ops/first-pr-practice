@@ -41,9 +41,10 @@ function withStats(p, stats) {
  * options.manager: 단장이 맡은 구단 id (훈련을 관리하고, 시즌 종료 때 트레이드·재계약·FA 결정을 내린다)
  * options.policy: 단장의 의사결정 콜백 (src/offseason.mjs 머리말 참고). 없으면 자동 규칙
  * options.inSeasonUpdates: 시즌 중 기록 기반 능력치 갱신 (기본 true)
+ * options.keepGames: 정규리그 경기 결과를 result.games에 모두 보관 (화면의 경기 일정·결과용, 기본 false)
  */
 export function playLeagueYear(league, teamData, rules, rng, options = {}) {
-  const { manager = null, inSeasonUpdates = true, policy = null } = options;
+  const { manager = null, inSeasonUpdates = true, policy = null, keepGames = false } = options;
   let players = league.players;
   const start = new Map(players.map((p) => [p.id, { ...p.stats }])); // 시즌 시작 능력치
   const totals = new Map();
@@ -70,6 +71,7 @@ export function playLeagueYear(league, teamData, rules, rng, options = {}) {
   const initial = buildTeams(players, teamData, rules);
   const result = playSeason(initial.teams, rules, initial.baseline, rng, {
     onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); },
+    keepGames,
     checkpointEvery: rules.ratingModel.checkpointDays,
     onCheckpoint: () => {
       applyUpdates();
