@@ -7,14 +7,16 @@ const profiles = JSON.parse(read('data/players/profiles.json'));
 const teams = JSON.parse(read('data/teams.json'));
 const ids = new Set(teams.map((t) => t.id));
 const teamCsv = (season) => new Map(read(`data/players/team-${season}.csv`).split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#') && l !== 'name,team').map((l) => l.split(',').slice(0, 2)));
+const LATEST = 2025; // 기록이 있는 마지막 시즌(2025-26)의 시작 연도
 const seasonName = (y) => `${y}-${String(y + 1).slice(2)}`;
 
-// "2021~2024" = 2021-22 ~ 2023-24 시즌. 한 해만 쓴 표기는 문서마다 시작 연도(2021 = 2021-22)나 끝나는 연도(2025 = 2024-25)로 달라 두 시즌 중 하나로 본다
+// "2021~2024" = 2021-22 ~ 2023-24 시즌. "2019~"처럼 끝이 비면 지금(2025-26)까지 뛰는 중이다. 한 해만 쓴 표기는 문서마다 시작 연도(2021 = 2021-22)나 끝나는 연도(2025 = 2024-25)로 달라 두 시즌 중 하나로 본다
 function seasonCandidates(years) {
-  const m = /^(\d{4})(?:~(\d{4}))?$/.exec(years);
+  const m = /^(\d{4})(?:~(\d{4})?)?$/.exec(years);
+  const open = years.endsWith('~');
   assert.ok(m, `경력 표기 ${years}`);
   const start = Number(m[1]);
-  const end = m[2] ? Number(m[2]) : null;
+  const end = m[2] ? Number(m[2]) : open ? LATEST + 1 : null;
   if (end === null) return [[seasonName(start)], [seasonName(start - 1)]]; // 둘 중 하나
   return Array.from({ length: end - start }, (_, i) => [seasonName(start + i)]); // 각각 맞아야 한다
 }

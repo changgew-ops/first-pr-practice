@@ -432,5 +432,224 @@
       }
     ],
     "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "다니엘 오셰푸",
+    "aliases": [
+      "대니얼 오셰푸",
+      "오셰푸"
+    ],
+    "nameEn": "Daniel Ochefu",
+    "birth": "1993-12-15",
+    "heightCm": 204,
+    "weightKg": 120,
+    "wingspanCm": 222,
+    "nationality": [
+      "미국",
+      "나이지리아"
+    ],
+    "position": [
+      "파워 포워드",
+      "센터"
+    ],
+    "school": "빌라노바 대학교",
+    "kblEntry": "2021 외국인 선수 자유계약(서울 삼성)",
+    "career": [
+      {
+        "team": "seoul-samsung",
+        "years": "2021~2022"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "자밀 워니",
+    "nameEn": "Jameel Marcus Warney",
+    "birth": "1994-01-31",
+    "heightCm": 199,
+    "weightKg": 116,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "스토니브룩 대학교",
+    "kblEntry": "2019 외국인 자유 계약(서울 SK)",
+    "career": [
+      {
+        "team": "seoul-sk",
+        "years": "2019~"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "리온 윌리엄스",
+    "nameEn": "Leon Vernon Williams Jr.",
+    "birth": "1986-07-24",
+    "heightCm": 197,
+    "weightKg": 120,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "파워 포워드",
+      "센터"
+    ],
+    "school": "오하이오 대학교",
+    "kblEntry": "2012 외국인 드래프트(18순위, 고양 오리온스)",
+    "career": [
+      {
+        "team": "goyang-sono",
+        "years": "2012~2014"
+      },
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2014~2015"
+      },
+      {
+        "team": "suwon-kt",
+        "years": "2016~2017"
+      },
+      {
+        "team": "seoul-sk",
+        "years": "2018"
+      },
+      {
+        "team": "goyang-sono",
+        "years": "2018"
+      },
+      {
+        "team": "wonju-db",
+        "years": "2018~2019"
+      },
+      {
+        "team": "busan-kcc",
+        "years": "2019"
+      },
+      {
+        "team": "ulsan-hyundai-mobis",
+        "years": "2019~2020"
+      },
+      {
+        "team": "changwon-lg",
+        "years": "2020~2021"
+      },
+      {
+        "team": "seoul-sk",
+        "years": "2021~2024"
+      },
+      {
+        "team": "busan-kcc",
+        "years": "2024~2025"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "얀테 메이튼",
+    "nameEn": "Yante Khaaliq Daiyann Maten",
+    "birth": "1996-08-14",
+    "heightCm": 201,
+    "weightKg": 109,
+    "wingspanCm": 216,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "파워 포워드",
+      "센터"
+    ],
+    "school": "조지아 대학교",
+    "kblEntry": "2020 외국인 선수 자유계약(원주 DB)",
+    "career": [
+      {
+        "team": "wonju-db",
+        "years": "2020~2021"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "레나드 프리먼",
+    "aliases": [
+      "레너드 프리먼",
+      "프리먼"
+    ],
+    "nameEn": "Lennard Kevin Freeman",
+    "birth": "1995-12-10",
+    "heightCm": 198,
+    "weightKg": 113,
+    "wingspanCm": 213,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "파워 포워드"
+    ],
+    "school": "노스캐롤라이나 주립대학교",
+    "kblEntry": "2021 외국인 자유계약(원주 DB)",
+    "career": [
+      {
+        "team": "wonju-db",
+        "years": "2021~2023"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "아셈 마레이",
+    "nameEn": "Assem Ahmed Mohammed Marei",
+    "birth": "1992-06-16",
+    "heightCm": 202,
+    "weightKg": 113,
+    "wingspanCm": 202,
+    "nationality": [
+      "이집트"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "미네소타 주립대학교 맨케이토",
+    "kblEntry": "2021 외국인 자유 계약(창원 LG)",
+    "career": [
+      {
+        "team": "changwon-lg",
+        "years": "2021~"
+      }
+    ],
+    "otherCareer": [
+      {
+        "team": "알 아흘리 SC 트리폴리",
+        "country": "리비아",
+        "years": "2025"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "압둘 말릭 아부",
+    "nameEn": "Abdul Malik Abu",
+    "birth": "1995-09-16",
+    "heightCm": 199,
+    "weightKg": 109,
+    "wingspanCm": 216,
+    "nationality": [
+      "나이지리아",
+      "미국"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "노스캐롤라이나 대학교",
+    "kblEntry": "2021 외국인 자유계약(창원 LG)",
+    "career": [
+      {
+        "team": "changwon-lg",
+        "years": "2021~2022"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
   }
 ]
