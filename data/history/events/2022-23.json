@@ -1,0 +1,900 @@
+{
+  "season": "2022-23",
+  "note": "FA 계약표의 병합 칸(새 소속 잔류·보상·날짜)은 위에서 아래로 풀어 채웠다. 보상이 '-'인 행은 잔류라 보상 해당 없음. 외국인 선수 표에는 국적 칸이 없어 다른 시즌 이벤트에서 같은 선수를 찾아 채웠고 못 찾으면 '미상'이다. 위키 은퇴 명단에 현대모비스·LG 양쪽에 강병현이 있고 FA 대상자 목록에도 양쪽에 [은퇴]로 나온다(위키 표기 그대로 두 건으로 둠). 웨이버 공시·군 전역·시즌 중 코칭스태프 변경은 이 문서에 기록이 없다. 원주 DB FA 대상 나카무라 타이치는 계약·미체결·은퇴 어디에도 기록이 없어 withdrawn으로 두었다. 오프시즌 트레이드 표는 '(왼쪽 구단이 보내는 선수) ↔ (오른쪽 구단이 보내는 선수)'로 읽었다",
+  "coaching": [
+    {
+      "team": "안양 KGC인삼공사",
+      "name": "김상식",
+      "from": "前 대한민국 농구 국가대표팀 감독",
+      "to": "감독"
+    },
+    {
+      "team": "안양 KGC인삼공사",
+      "name": "최승태",
+      "from": "前 창원 LG 세이커스 코치",
+      "to": "코치"
+    },
+    {
+      "team": "안양 KGC인삼공사",
+      "name": "조성민",
+      "from": "前 창원 LG 세이커스 선수",
+      "to": "코치"
+    },
+    {
+      "team": "수원 KT",
+      "name": "송영진",
+      "from": "前 휘문고 코치",
+      "to": "코치"
+    },
+    {
+      "team": "수원 KT",
+      "name": "김도수",
+      "from": "前 부천 하나원큐 여자농구단 코치",
+      "to": "코치"
+    },
+    {
+      "team": "고양 캐롯",
+      "name": "김승기",
+      "from": "前 안양 KGC인삼공사 감독",
+      "to": "감독"
+    },
+    {
+      "team": "고양 캐롯",
+      "name": "손규완",
+      "from": "前 안양 KGC인삼공사 코치",
+      "to": "코치"
+    },
+    {
+      "team": "고양 캐롯",
+      "name": "손창환",
+      "from": "前 안양 KGC인삼공사 코치",
+      "to": "코치"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "유재학",
+      "from": "감독에서 보직 변경",
+      "to": "총감독"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "조동현",
+      "from": "수석코치에서 보직 변경",
+      "to": "감독"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "양동근",
+      "from": "코치에서 보직 변경",
+      "to": "수석코치"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "맥클린",
+      "from": "前 울산 현대모비스 외국인선수",
+      "to": "코치"
+    },
+    {
+      "team": "창원 LG",
+      "name": "조상현",
+      "from": "前 대한민국 국가대표팀 감독",
+      "to": "감독"
+    },
+    {
+      "team": "창원 LG",
+      "name": "임재현",
+      "from": "前 배재고 코치",
+      "to": "코치"
+    },
+    {
+      "team": "창원 LG",
+      "name": "김동우",
+      "from": "前 국가대표 농구대표팀 코치",
+      "to": "코치"
+    },
+    {
+      "team": "창원 LG",
+      "name": "박유진",
+      "from": "前 창원 LG 세이커스 전력분석원",
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "은희석",
+      "from": "前 연세대학교 감독",
+      "to": "감독"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "김보현",
+      "from": "前 군산고 코치",
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "천재민",
+      "from": "前 울산 현대모비스 피버스 선수",
+      "to": "매니저"
+    }
+  ],
+  "trades": [
+    {
+      "date": "2022-06-03",
+      "phase": "offseason",
+      "teamA": "전주 KCC",
+      "giveA": [],
+      "teamB": "원주 DB",
+      "giveB": ["박경상"],
+      "note": "KCC는 무상(선수 없음), DB가 박경상을 보냈다(이후 KCC 소속으로 은퇴)"
+    },
+    {
+      "date": "2022-06-09",
+      "phase": "offseason",
+      "teamA": "고양 캐롯",
+      "giveA": ["이대성"],
+      "teamB": "대구 한국가스공사",
+      "giveB": [],
+      "note": "가스공사가 현금 6억원을 지급(선수 없음)"
+    },
+    {
+      "date": "2023-01-09",
+      "phase": "inseason",
+      "teamA": "서울 삼성",
+      "giveA": [],
+      "teamB": "고양 캐롯",
+      "giveB": ["김무성"],
+      "note": "삼성은 무상(선수 없음), 캐롯이 김무성을 보냈다"
+    },
+    {
+      "date": "2023-01-11",
+      "phase": "inseason",
+      "teamA": "서울 삼성",
+      "giveA": ["임동섭"],
+      "teamB": "창원 LG",
+      "giveB": ["최승욱"]
+    },
+    {
+      "date": "2023-02-01",
+      "phase": "inseason",
+      "teamA": "서울 삼성",
+      "giveA": ["전형준"],
+      "teamB": "서울 SK",
+      "giveB": ["김승원"]
+    },
+    {
+      "date": "2023-02-01",
+      "phase": "inseason",
+      "teamA": "고양 캐롯",
+      "giveA": ["이종현"],
+      "teamB": "전주 KCC",
+      "giveB": ["김진용", "박재현"],
+      "note": "위키 표에서 KCC 쪽 선수가 둘이다(김진용 · 박재현)"
+    }
+  ],
+  "foreign": [
+    {
+      "team": "서울 SK",
+      "name": "자밀 워니",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "서울 SK",
+      "name": "리온 윌리엄스",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 위키 표의 병합 칸(포지션·비고)을 위 행에서 이어받았다(위키 표에 '-'로 비어 있음). 구분(재계약)도 병합 이어받기라 실제 구분은 불확실"
+    },
+    {
+      "team": "안양 KGC인삼공사",
+      "name": "오마리 스펠맨",
+      "position": "센터",
+      "nationality": ["미국", "레바논"],
+      "kind": "재계약",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "안양 KGC인삼공사",
+      "name": "대릴 먼로",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 비고 칸은 오마리 스펠맨 행과 병합(이어받음)"
+    },
+    {
+      "team": "안양 KGC인삼공사",
+      "name": "렌즈 아반도",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "신규영입",
+      "asiaQuota": true,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "수원 KT",
+      "name": "랜드리 은노코",
+      "position": "센터",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+    },
+    {
+      "team": "수원 KT",
+      "name": "EJ 아노시케",
+      "position": "포워드",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 비고 칸은 랜드리 은노코 행과 병합(이어받음)"
+    },
+    {
+      "team": "고양 캐롯",
+      "name": "디드릭 로슨",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "고양 캐롯",
+      "name": "데이비드 사이먼",
+      "position": "센터",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 비고 칸은 디드릭 로슨 행과 병합(이어받음)"
+    },
+    {
+      "team": "고양 캐롯",
+      "name": "모리구치 히사시",
+      "position": "가드",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": true,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "저스틴 녹스",
+      "position": "포워드",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "게이지 프림",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 비고 칸은 저스틴 녹스 행과 병합(이어받음)"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "론 제이 아바리엔토스",
+      "position": "가드",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": true,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "유슈 은도예",
+      "position": "센터",
+      "nationality": ["세네갈"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "머피 할로웨이",
+      "position": "센터",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 위키 표의 병합 칸(포지션·비고)을 위 행에서 이어받았다(포지션 추정: 유슈 은도예 행의 센터를 이어받음)"
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "SJ 벨란겔",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "신규영입",
+      "asiaQuota": true,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 샘조세프 벨란겔과 같은 선수(위키 표기만 다름)"
+    },
+    {
+      "team": "창원 LG",
+      "name": "아셈 마레이",
+      "position": "센터",
+      "nationality": ["이집트"],
+      "kind": "재계약",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "창원 LG",
+      "name": "단테 커닝햄",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "창원 LG",
+      "name": "저스틴 구탕",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "신규영입",
+      "asiaQuota": true,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "원주 DB",
+      "name": "레너드 프리먼",
+      "position": "포워드",
+      "nationality": ["미상"],
+      "kind": "재계약",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+    },
+    {
+      "team": "원주 DB",
+      "name": "드완 에르난데스",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "원주 DB",
+      "name": "이선 알바노",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "신규영입",
+      "asiaQuota": true,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "전주 KCC",
+      "name": "라건아",
+      "position": "센터",
+      "nationality": ["미국", "대한민국"],
+      "kind": "재계약",
+      "asiaQuota": false,
+      "flags": ["귀화선수"],
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다"
+    },
+    {
+      "team": "전주 KCC",
+      "name": "론데 홀리스제퍼슨",
+      "position": "포워드",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "이매뉴얼 테리",
+      "position": "센터",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "마커스 데릭슨",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규영입",
+      "asiaQuota": false,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없어 다른 시즌 이벤트(같은 선수)에서 가져왔다; 비고 칸은 이매뉴얼 테리 행과 병합(이어받음)"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "크리스찬 데이비드",
+      "position": "포워드",
+      "nationality": ["미상"],
+      "kind": "신규영입",
+      "asiaQuota": true,
+      "note": "국적: 위키 22-23 표에 국적 칸이 없고 다른 시즌 문서에서도 확인되지 않아 미상; 위키 표에 포지션 칸이 비어 있어 위 행(마커스 데릭슨)의 포워드를 이어받았다(추정)"
+    }
+  ],
+  "retirements": [
+    {
+      "team": "서울 SK",
+      "names": ["송창무"]
+    },
+    {
+      "team": "안양 KGC인삼공사",
+      "names": ["박형철", "양승면", "정강호", "임기웅"]
+    },
+    {
+      "team": "수원 KT",
+      "names": ["김기윤", "문상옥", "박철호"]
+    },
+    {
+      "team": "고양 캐롯",
+      "names": ["오용준"]
+    },
+    {
+      "team": "울산 현대모비스",
+      "names": ["강병현", "김형진", "홍순규", "이현민", "박병우", "김수찬", "정성호"]
+    },
+    {
+      "team": "대구 한국가스공사",
+      "names": ["정영삼", "민성주"]
+    },
+    {
+      "team": "창원 LG",
+      "names": ["강병현", "변기훈", "김영현", "김성민"]
+    },
+    {
+      "team": "원주 DB",
+      "names": ["맹상훈", "배강률"]
+    },
+    {
+      "team": "전주 KCC",
+      "names": ["함승호"]
+    },
+    {
+      "team": "서울 삼성",
+      "names": ["배수용", "정준수"]
+    }
+  ],
+  "voluntaryLeave": [],
+  "military": {
+    "enlist": [
+      {
+        "team": "수원 KT",
+        "names": ["허훈", "박준영"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["김낙현", "이윤기"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["박정현"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["김훈", "이용우", "유현준"]
+      },
+      {
+        "team": "전주 KCC",
+        "names": ["송교창", "곽동기"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["박민우"]
+      }
+    ],
+    "discharge": []
+  },
+  "fa": {
+    "targets": [
+      {
+        "team": "서울 SK",
+        "names": ["김선형", "배병준", "송창무", "이원대", "이현석", "장문호"]
+      },
+      {
+        "team": "안양 KGC인삼공사",
+        "names": ["박재한", "박형철", "양승면", "양희종", "우동현", "전성현"]
+      },
+      {
+        "team": "수원 KT",
+        "names": ["김영환", "김현민"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["강병현", "김형진", "박병우", "박지훈", "이현민", "홍순규"]
+      },
+      {
+        "team": "고양 캐롯",
+        "names": ["오용준", "이승현", "최승욱"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["두경민", "민성주", "정영삼", "홍경기"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["강병현", "김영현", "변기훈", "정해원", "한상혁"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["김영훈", "김철욱", "나카무라 타이치", "맹상훈", "박찬희", "정준원", "허웅"]
+      },
+      {
+        "team": "전주 KCC",
+        "names": ["송창용", "이정현", "정창영", "함승호"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["김동량", "배수용", "정준수"]
+      }
+    ],
+    "contracts": [
+      {
+        "fromTeam": "서울 SK",
+        "name": "이원대",
+        "position": "가드",
+        "toTeam": "대구 한국가스공사",
+        "date": "2022-05-22",
+        "years": 3,
+        "salaryEok": 1.2,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "이현석",
+        "position": "가드",
+        "toTeam": "수원 KT",
+        "date": "2022-05-23",
+        "years": 3,
+        "salaryEok": 1.8,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음. 보상 칸은 위 행에서 이어받음"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "김선형",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2022-05-24",
+        "years": 3,
+        "salaryEok": 8,
+        "window": null,
+        "compensation": "-"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "장문호",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2022-05-24",
+        "years": 1,
+        "salaryEok": 0.45,
+        "window": null,
+        "compensation": "-",
+        "note": "새 소속(잔류)과 보상 칸은 김선형 행과 병합(이어받음)"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "배병준",
+        "position": "가드",
+        "toTeam": "안양 KGC인삼공사",
+        "date": "2022-05-24",
+        "years": 1,
+        "salaryEok": 0.9,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "안양 KGC인삼공사",
+        "name": "양희종",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2022-05-23",
+        "years": 3,
+        "salaryEok": 2.2,
+        "window": null,
+        "compensation": "-"
+      },
+      {
+        "fromTeam": "안양 KGC인삼공사",
+        "name": "전성현",
+        "position": "포워드",
+        "toTeam": "고양 캐롯",
+        "date": "2022-05-23",
+        "years": 4,
+        "salaryEok": 7.5,
+        "window": null,
+        "compensation": "5억 6천만원"
+      },
+      {
+        "fromTeam": "안양 KGC인삼공사",
+        "name": "박재한",
+        "position": "가드",
+        "toTeam": "울산 현대모비스",
+        "date": "2022-05-25",
+        "years": 2,
+        "salaryEok": 0.6,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "안양 KGC인삼공사",
+        "name": "우동현",
+        "position": "가드",
+        "toTeam": "대구 한국가스공사",
+        "date": "2022-05-25",
+        "years": 3,
+        "salaryEok": 0.52,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "김영환",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2022-05-25",
+        "years": 2,
+        "salaryEok": 2,
+        "window": null,
+        "compensation": "-"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "김현민",
+        "position": "포워드",
+        "toTeam": "울산 현대모비스",
+        "date": "2022-05-28",
+        "years": 1,
+        "salaryEok": 0.8,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "고양 캐롯",
+        "name": "이승현",
+        "position": "포워드",
+        "toTeam": "전주 KCC",
+        "date": "2022-05-23",
+        "years": 5,
+        "salaryEok": 7.5,
+        "window": null,
+        "compensation": "12억원"
+      },
+      {
+        "fromTeam": "고양 캐롯",
+        "name": "최승욱",
+        "position": "포워드",
+        "toTeam": "원주 DB",
+        "date": "2022-05-24",
+        "years": 2,
+        "salaryEok": 1.1,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "울산 현대모비스",
+        "name": "박지훈",
+        "position": "포워드",
+        "toTeam": "대구 한국가스공사",
+        "date": "2022-05-22",
+        "years": 2,
+        "salaryEok": 2.2,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "두경민",
+        "position": "가드",
+        "toTeam": "원주 DB",
+        "date": "2022-05-23",
+        "years": 4,
+        "salaryEok": 5,
+        "window": null,
+        "compensation": "8억원"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "홍경기",
+        "position": "가드",
+        "toTeam": "서울 SK",
+        "date": "2022-05-24",
+        "years": 2,
+        "salaryEok": 1.2,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "한상혁",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2022-05-25",
+        "years": 3,
+        "salaryEok": 1.2,
+        "window": null,
+        "compensation": "-"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "정해원",
+        "position": "포워드",
+        "toTeam": "고양 캐롯",
+        "date": "2022-05-28",
+        "years": 1,
+        "salaryEok": 0.5,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "박찬희",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2022-05-23",
+        "years": 2,
+        "salaryEok": 2.1,
+        "window": null,
+        "compensation": "-"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "허웅",
+        "position": "가드",
+        "toTeam": "전주 KCC",
+        "date": "2022-05-23",
+        "years": 5,
+        "salaryEok": 7,
+        "window": null,
+        "compensation": "유현준 / 1억 6천 5백만원"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "김철욱",
+        "position": "센터",
+        "toTeam": "안양 KGC인삼공사",
+        "date": "2022-05-24",
+        "years": 2,
+        "salaryEok": 1.2,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "정준원",
+        "position": "포워드",
+        "toTeam": "안양 KGC인삼공사",
+        "date": "2022-05-24",
+        "years": 3,
+        "salaryEok": 0.9,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "김영훈",
+        "position": "포워드",
+        "toTeam": "울산 현대모비스",
+        "date": "2022-05-28",
+        "years": 2,
+        "salaryEok": 0.7,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "전주 KCC",
+        "name": "이정현",
+        "position": "가드",
+        "toTeam": "서울 삼성",
+        "date": "2022-05-19",
+        "years": 3,
+        "salaryEok": 7,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "전주 KCC",
+        "name": "송창용",
+        "position": "포워드",
+        "toTeam": "서울 SK",
+        "date": "2022-05-24",
+        "years": 2,
+        "salaryEok": 0.7,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      },
+      {
+        "fromTeam": "전주 KCC",
+        "name": "정창영",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2022-05-25",
+        "years": 3,
+        "salaryEok": 2.5,
+        "window": null,
+        "compensation": "-"
+      },
+      {
+        "fromTeam": "서울 삼성",
+        "name": "김동량",
+        "position": "센터",
+        "toTeam": "수원 KT",
+        "date": "2022-05-23",
+        "years": 3,
+        "salaryEok": 1.7,
+        "window": null,
+        "compensation": "없음",
+        "note": "각주 [A] 보수총액 20위 이하 또는 만 35세 이상 FA 이적이라 보상 없음"
+      }
+    ],
+    "unsigned": [
+      {
+        "team": "대구 한국가스공사",
+        "names": ["민성주"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["정준수"]
+      }
+    ],
+    "withdrawn": [
+      {
+        "team": "서울 SK",
+        "names": ["송창무"]
+      },
+      {
+        "team": "안양 KGC인삼공사",
+        "names": ["박형철", "양승면"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["강병현", "김형진", "박병우", "이현민", "홍순규"]
+      },
+      {
+        "team": "고양 캐롯",
+        "names": ["오용준"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["정영삼"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["강병현", "김영현", "변기훈"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["나카무라 타이치", "맹상훈"]
+      },
+      {
+        "team": "전주 KCC",
+        "names": ["함승호"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["배수용"]
+      }
+    ]
+  }
+}
