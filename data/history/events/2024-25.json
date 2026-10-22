@@ -1,0 +1,1139 @@
+{
+  "season": "2024-25",
+  "note": "FA 계약표는 병합 칸을 위에서 아래로 풀어 채웠다. 위치(포지션)는 표에 없는 행은 null로 둔다(추측하지 않음). 보상은 표의 병합된 '없음' 한 칸뿐이라 전 행 '없음'으로 적었다. 이름이 겹치는 최승욱(DB→소노)과 삼성 최승욱은 다른 선수다. 대상자 명단에는 있으나 계약표·미체결·은퇴 어디에도 없는 선수 — 김현민(현대모비스), 장민국(해외 복귀), 라건아(KCC, 각주 [18], 2024-25 KBL 소속 없음) — 는 withdrawn으로 두었다. 군 전역은 12월 군 전역 항목(5.6.4.1)을 포함하고 시즌 중 전역이다.",
+  "coaching": [
+    {
+      "team": "수원 KT",
+      "name": "김승원",
+      "from": "前 서울 삼성 썬더스 선수",
+      "to": "매니저"
+    },
+    {
+      "team": "원주 DB",
+      "name": "김현호",
+      "from": null,
+      "to": "스카우트"
+    },
+    {
+      "team": "창원 LG",
+      "name": "강병현",
+      "from": "전력분석원",
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "김효범",
+      "from": "감독대행",
+      "to": "감독"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "김태경",
+      "from": "NCAA 전력분석원",
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "최수현",
+      "from": "전력분석원",
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "김광철",
+      "from": "선수",
+      "to": "전력분석원"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "조우성",
+      "from": "선수",
+      "to": "매니저"
+    },
+    {
+      "team": "원주 DB",
+      "name": "한상민",
+      "from": "수석 코치",
+      "to": "-"
+    }
+  ],
+  "trades": [
+    {
+      "date": "2024-06-01",
+      "phase": "offseason",
+      "teamA": "울산 현대모비스",
+      "giveA": [],
+      "teamB": "고양 소노",
+      "giveB": ["한호빈"],
+      "note": "모비스는 내주는 것 없음(무상). 위키 날짜 각주 [2]의 내용은 붙여넣은 글에 없음"
+    },
+    {
+      "date": "2024-06-03",
+      "phase": "offseason",
+      "teamA": "창원 LG",
+      "giveA": ["이승우"],
+      "teamB": "울산 현대모비스",
+      "giveB": ["최진수"]
+    },
+    {
+      "date": "2024-06-03",
+      "phase": "offseason",
+      "teamA": "고양 소노",
+      "giveA": ["김진용"],
+      "teamB": "안양 정관장",
+      "giveB": ["유진"]
+    },
+    {
+      "date": "2024-06-04",
+      "phase": "offseason",
+      "teamA": "원주 DB",
+      "giveA": ["두경민"],
+      "teamB": "창원 LG",
+      "giveB": ["이관희"]
+    },
+    {
+      "date": "2024-06-04",
+      "phase": "offseason",
+      "teamA": "창원 LG",
+      "giveA": ["이재도"],
+      "teamB": "고양 소노",
+      "giveB": ["전성현"]
+    },
+    {
+      "date": "2024-06-05",
+      "phase": "offseason",
+      "teamA": "대구 한국가스공사",
+      "giveA": ["이원대"],
+      "teamB": "안양 정관장",
+      "giveB": ["김철욱"]
+    },
+    {
+      "date": "2024-06-05",
+      "phase": "offseason",
+      "teamA": "안양 정관장",
+      "giveA": ["김진용"],
+      "teamB": "서울 삼성",
+      "giveB": ["김진영"]
+    },
+    {
+      "date": "2024-08-05",
+      "phase": "offseason",
+      "teamA": "창원 LG",
+      "giveA": ["김준형"],
+      "teamB": "안양 정관장",
+      "giveB": ["장태빈"]
+    },
+    {
+      "date": "2024-09-09",
+      "phase": "offseason",
+      "teamA": "수원 KT",
+      "giveA": ["박찬호"],
+      "teamB": "안양 정관장",
+      "giveB": ["고찬혁"]
+    },
+    {
+      "date": "2024-10-17",
+      "phase": "offseason",
+      "teamA": "원주 DB",
+      "giveA": ["박승재"],
+      "teamB": "서울 삼성",
+      "giveB": ["24년 1라운드 우선 지명권"],
+      "note": "드래프트 추첨 결과 삼성 3순위·DB 8순위라 두 팀의 1라운드 순서가 맞교환됨"
+    },
+    {
+      "date": "2024-11-12",
+      "phase": "inseason",
+      "teamA": "창원 LG",
+      "giveA": ["24년 1라운드 7순위 지명권"],
+      "teamB": "서울 SK",
+      "giveB": ["이경도"]
+    },
+    {
+      "date": "2024-11-12",
+      "phase": "inseason",
+      "teamA": "서울 SK",
+      "giveA": ["24년 2라운드 우선 지명권"],
+      "teamB": "고양 소노",
+      "giveB": ["2라운드 우선 지명권"],
+      "note": "날짜는 표의 앞 행에서 이어받음. 소노 제안의 2라운드 지명권 맞교환(소노 5순위, SK 9순위)이며 SK는 대가로 원하는 해의 2라운드 선순위 지명권을 가짐(2024 드래프트 문서). 위키 각주 [32] 내용은 붙여넣은 글에 없음"
+    },
+    {
+      "date": "2024-11-19",
+      "phase": "inseason",
+      "teamA": "안양 정관장",
+      "giveA": ["이원대"],
+      "teamB": "서울 삼성",
+      "giveB": [],
+      "note": "삼성은 내주는 것 없음(무상)"
+    },
+    {
+      "date": "2025-01-10",
+      "phase": "inseason",
+      "teamA": "부산 KCC",
+      "giveA": ["디온테 버튼"],
+      "teamB": "안양 정관장",
+      "giveB": ["캐디 라렌"]
+    },
+    {
+      "date": "2025-01-23",
+      "phase": "inseason",
+      "teamA": "원주 DB",
+      "giveA": ["김종규"],
+      "teamB": "안양 정관장",
+      "giveB": ["정효근"]
+    },
+    {
+      "date": "2025-02-03",
+      "phase": "inseason",
+      "teamA": "울산 현대모비스",
+      "giveA": ["김준일"],
+      "teamB": "대구 한국가스공사",
+      "giveB": ["이대헌"]
+    },
+    {
+      "date": "2025-02-05",
+      "phase": "inseason",
+      "teamA": "원주 DB",
+      "giveA": ["김영현"],
+      "teamB": "안양 정관장",
+      "giveB": ["최성원"]
+    }
+  ],
+  "foreign": [
+    {
+      "team": "부산 KCC",
+      "name": "디온테 버튼",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 트레이드로 이적"]
+    },
+    {
+      "team": "부산 KCC",
+      "name": "캐디 라렌",
+      "position": "센터",
+      "nationality": ["아이티"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 트레이드로 영입"]
+    },
+    {
+      "team": "부산 KCC",
+      "name": "리온 윌리엄스",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 부상으로 방출"]
+    },
+    {
+      "team": "부산 KCC",
+      "name": "도노반 스미스",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "부산 KCC",
+      "name": "캘빈 에피스톨라",
+      "position": "가드",
+      "nationality": ["캐나다", "필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "수원 KT",
+      "name": "레이숀 해먼즈",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "수원 KT",
+      "name": "제레미아 틸먼",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출"]
+    },
+    {
+      "team": "수원 KT",
+      "name": "조던 모건",
+      "position": "센터",
+      "nationality": ["미국", "슬로베니아"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출 후 재영입"]
+    },
+    {
+      "team": "수원 KT",
+      "name": "이스마엘 로메로",
+      "position": "센터",
+      "nationality": ["쿠바", "푸에르토리코"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 계약 만료"]
+    },
+    {
+      "team": "수원 KT",
+      "name": "자렐 마틴",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["일시대체선수"]
+    },
+    {
+      "team": "수원 KT",
+      "name": "데릭 컬버",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["일시대체선수"]
+    },
+    {
+      "team": "수원 KT",
+      "name": "조엘 카굴랑안",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "신규 계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "원주 DB",
+      "name": "치나누 오누아쿠",
+      "position": "센터",
+      "nationality": ["미국", "나이지리아"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "원주 DB",
+      "name": "로버트 카터 주니어",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출", "일시대체선수"]
+    },
+    {
+      "team": "원주 DB",
+      "name": "오마리 스펠맨",
+      "position": "센터",
+      "nationality": ["미국", "레바논"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "원주 DB",
+      "name": "이선 알바노",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "창원 LG",
+      "name": "아셈 마레이",
+      "position": "센터",
+      "nationality": ["이집트"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "창원 LG",
+      "name": "브라이언 그리핀",
+      "position": "센터",
+      "nationality": ["이집트"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["일시대체선수"]
+    },
+    {
+      "team": "창원 LG",
+      "name": "대릴 먼로",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "창원 LG",
+      "name": "칼 타마요",
+      "position": "포워드",
+      "nationality": ["필리핀"],
+      "kind": "신규 계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "서울 SK",
+      "name": "자밀 워니",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 SK",
+      "name": "아이제아 힉스",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 SK",
+      "name": "고메즈 델 리아노",
+      "position": "가드",
+      "nationality": ["필리핀", "스페인"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "게이지 프림",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "숀 롱",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "미구엘 옥존",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "앤드류 니콜슨",
+      "position": "포워드",
+      "nationality": ["캐나다"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "유슈 은도예",
+      "position": "센터",
+      "nationality": ["세네갈"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "만콕 마티앙",
+      "position": "센터",
+      "nationality": ["호주", "남수단"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["일시대체선수"]
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "샘조세프 벨란겔",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "고양 소노",
+      "name": "앨런 윌리엄스",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출 후 재영입"]
+    },
+    {
+      "team": "고양 소노",
+      "name": "자넬 스톡스",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 이전 방출"]
+    },
+    {
+      "team": "고양 소노",
+      "name": "D.J. 번즈",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "고양 소노",
+      "name": "알파 카바",
+      "position": "센터",
+      "nationality": ["프랑스", "기니"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출"]
+    },
+    {
+      "team": "고양 소노",
+      "name": "케빈 켐바오",
+      "position": "포워드",
+      "nationality": ["필리핀"],
+      "kind": "신규 계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "안양 정관장",
+      "name": "캐디 라렌",
+      "position": "센터",
+      "nationality": ["아이티"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 트레이드로 이적"]
+    },
+    {
+      "team": "안양 정관장",
+      "name": "디온테 버튼",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 트레이드로 영입"]
+    },
+    {
+      "team": "안양 정관장",
+      "name": "마이클 영",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출"]
+    },
+    {
+      "team": "안양 정관장",
+      "name": "클리프 알렉산더",
+      "position": "센터",
+      "nationality": ["미국", "바레인"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출"]
+    },
+    {
+      "team": "안양 정관장",
+      "name": "조니 오브라이언트",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "안양 정관장",
+      "name": "하비 고메즈",
+      "position": "포워드",
+      "nationality": ["필리핀", "스페인"],
+      "kind": "신규 계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "서울 삼성",
+      "name": "코피 코번",
+      "position": "센터",
+      "nationality": ["미국", "자메이카"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 삼성",
+      "name": "마커스 데릭슨",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["시즌 도중 방출"]
+    },
+    {
+      "team": "서울 삼성",
+      "name": "글렌 로빈슨 3세",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 삼성",
+      "name": "저스틴 구탕",
+      "position": "포워드",
+      "nationality": ["필리핀"],
+      "kind": "신규 계약",
+      "asiaQuota": true
+    }
+  ],
+  "retirements": [
+    {
+      "team": "대구 한국가스공사",
+      "names": ["임준수"]
+    },
+    {
+      "team": "고양 소노",
+      "names": ["김강선"]
+    },
+    {
+      "team": "서울 SK",
+      "names": ["양우섭"]
+    },
+    {
+      "team": "원주 DB",
+      "names": ["박찬희", "김현호"]
+    },
+    {
+      "team": "서울 삼성",
+      "names": ["김승원", "김무성", "김광철", "조우성"]
+    },
+    {
+      "team": "울산 현대모비스",
+      "names": ["박재한", "김현수"]
+    },
+    {
+      "team": "부산 KCC",
+      "names": ["김승협", "유병훈", "곽동기"]
+    }
+  ],
+  "voluntaryLeave": [],
+  "military": {
+    "enlist": [
+      {
+        "team": "원주 DB",
+        "names": ["이준희", "인승찬"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["양홍석", "윤원상"]
+      },
+      {
+        "team": "수원 KT",
+        "names": ["김준환"]
+      },
+      {
+        "team": "서울 SK",
+        "names": ["김수환"]
+      },
+      {
+        "team": "부산 KCC",
+        "names": ["서정현"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["김태완"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["최주영", "양준우"]
+      },
+      {
+        "team": "고양 소노",
+        "names": ["안정욱", "조재우"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["신동혁"]
+      }
+    ],
+    "discharge": [
+      {
+        "team": "수원 KT",
+        "names": ["박지원"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["정호영"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["이광진"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["김동준", "조한진"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["전현우", "우동현"]
+      },
+      {
+        "team": "고양 소노",
+        "names": ["박진철", "문시윤", "조석호"]
+      },
+      {
+        "team": "안양 정관장",
+        "names": ["변준형", "한승희", "김세창"]
+      }
+    ]
+  },
+  "fa": {
+    "targets": [
+      {
+        "team": "부산 KCC",
+        "names": ["라건아", "김승협", "염재성", "이진욱", "곽정훈"]
+      },
+      {
+        "team": "수원 KT",
+        "names": ["정성우", "박선웅", "최성모", "최진광"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["박찬희", "김종규", "김현호", "강상재", "이민석", "최승욱", "김형준"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["이재도", "정희재", "임동섭", "박준형"]
+      },
+      {
+        "team": "서울 SK",
+        "names": ["최부경", "허일영", "송창용", "양우섭"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["김현민", "김현수", "김영훈", "박재한"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["차바위", "박봉진", "안세영", "박지훈", "임준수", "조상열"]
+      },
+      {
+        "team": "고양 소노",
+        "names": ["한호빈", "최현민", "이진석", "김강선", "김진유", "김지후"]
+      },
+      {
+        "team": "안양 정관장",
+        "names": ["박지훈", "김상규", "이종현"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["김시래", "김승원", "김무성", "홍경기"]
+      },
+      {
+        "team": "해외 복귀",
+        "names": ["이대성", "장문호", "장민국"]
+      }
+    ],
+    "contracts": [
+      {
+        "fromTeam": "안양 정관장",
+        "name": "박지훈",
+        "position": null,
+        "toTeam": "잔류",
+        "date": "2024-05-13",
+        "years": 3,
+        "salaryEok": 5.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "강상재",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2024-05-14",
+        "years": 5,
+        "salaryEok": 7,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "차바위",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2024-05-15",
+        "years": 2,
+        "salaryEok": 2.7,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "박지훈",
+        "position": null,
+        "toTeam": "잔류",
+        "date": "2024-05-15",
+        "years": 2,
+        "salaryEok": 2.2,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "표에 이름·보수만 보이고 나머지는 위 행(차바위)의 병합 칸에서 이어받음"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "안세영",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2024-05-15",
+        "years": 1,
+        "salaryEok": 0.45,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "정성우",
+        "position": "가드",
+        "toTeam": "대구 한국가스공사",
+        "date": "2024-05-16",
+        "years": 4,
+        "salaryEok": 4.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "정희재",
+        "position": "포워드",
+        "toTeam": "고양 소노",
+        "date": "2024-05-16",
+        "years": 4,
+        "salaryEok": 3.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "날짜·기간은 위 행(정성우)의 병합 칸에서 이어받음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "최승욱",
+        "position": null,
+        "toTeam": "고양 소노",
+        "date": "2024-05-16",
+        "years": 4,
+        "salaryEok": 4,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "새 소속·날짜·기간은 위 행(정희재)의 병합 칸에서 이어받음. 같은 이름의 삼성 최승욱과 다른 선수"
+      },
+      {
+        "fromTeam": "부산 KCC",
+        "name": "곽정훈",
+        "position": null,
+        "toTeam": "대구 한국가스공사",
+        "date": "2024-05-16",
+        "years": 3,
+        "salaryEok": 0.85,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "최부경",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2024-05-17",
+        "years": 3,
+        "salaryEok": 3,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "기간은 위 행에서 이어받음"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "허일영",
+        "position": null,
+        "toTeam": "창원 LG",
+        "date": "2024-05-17",
+        "years": 2,
+        "salaryEok": 2.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "김종규",
+        "position": "센터",
+        "toTeam": "잔류",
+        "date": "2024-05-17",
+        "years": 3,
+        "salaryEok": 6,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "2025-01-23 트레이드(김종규↔정효근)로 정관장 이적: 소속 CSV는 시즌 마지막 소속"
+      },
+      {
+        "fromTeam": "안양 정관장",
+        "name": "이종현",
+        "position": null,
+        "toTeam": "잔류",
+        "date": "2024-05-17",
+        "years": 1,
+        "salaryEok": 2.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "고양 소노",
+        "name": "김진유",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2024-05-17",
+        "years": 3,
+        "salaryEok": 2,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "임동섭",
+        "position": "포워드",
+        "toTeam": "고양 소노",
+        "date": "2024-05-17",
+        "years": 3,
+        "salaryEok": 1.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "울산 현대모비스",
+        "name": "김영훈",
+        "position": null,
+        "toTeam": "고양 소노",
+        "date": "2024-05-17",
+        "years": 1,
+        "salaryEok": 0.6,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "새 소속은 위 행(임동섭)의 병합 칸에서 이어받음 — 2024-25 소속 CSV(고양 소노)와 일치"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "송창용",
+        "position": null,
+        "toTeam": "안양 정관장",
+        "date": "2024-05-20",
+        "years": 1,
+        "salaryEok": 0.7,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "이재도",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2024-05-20",
+        "years": 3,
+        "salaryEok": 5.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "위키 각주 [24]: 이후 6/4 트레이드로 소노 이적(이재도↔전성현)"
+      },
+      {
+        "fromTeam": "서울 삼성",
+        "name": "홍경기",
+        "position": null,
+        "toTeam": "고양 소노",
+        "date": "2024-05-20",
+        "years": 2,
+        "salaryEok": 0.6,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "서울 삼성",
+        "name": "김시래",
+        "position": null,
+        "toTeam": "원주 DB",
+        "date": "2024-05-20",
+        "years": 1,
+        "salaryEok": 1,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "박봉진",
+        "position": null,
+        "toTeam": "원주 DB",
+        "date": "2024-05-20",
+        "years": 3,
+        "salaryEok": 1.4,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "새 소속은 위 행(김시래)의 병합 칸에서 이어받음 — 2024-25 소속 CSV(원주 DB)와 일치"
+      },
+      {
+        "fromTeam": "고양 소노",
+        "name": "김지후",
+        "position": "가드",
+        "toTeam": "서울 SK",
+        "date": "2024-05-20",
+        "years": 1,
+        "salaryEok": 0.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "고양 소노",
+        "name": "최현민",
+        "position": "포워드",
+        "toTeam": "서울 삼성",
+        "date": "2024-05-20",
+        "years": 3,
+        "salaryEok": 2.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "최성모",
+        "position": "가드",
+        "toTeam": "서울 삼성",
+        "date": "2024-05-20",
+        "years": 3,
+        "salaryEok": 2.1,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "새 소속은 위 행(최현민)의 병합 칸에서 이어받음 — 소속 CSV(삼성)와 일치"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "박선웅",
+        "position": null,
+        "toTeam": "잔류",
+        "date": "2024-05-21",
+        "years": 1,
+        "salaryEok": 0.5,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "최진광",
+        "position": null,
+        "toTeam": "잔류",
+        "date": "2024-05-21",
+        "years": 1,
+        "salaryEok": 0.4,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "해외 복귀",
+        "name": "이대성",
+        "position": null,
+        "toTeam": "서울 삼성",
+        "date": "2024-05-21",
+        "years": 2,
+        "salaryEok": 6,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음",
+        "note": "날짜는 위 행에서 이어받음(표에 날짜 칸 없음). 미계약 FA(해외 진출 후 복귀)"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "박준형",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2024-05-21",
+        "years": 1,
+        "salaryEok": 0.4,
+        "window": "자율 협상(5/7~5/21)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "고양 소노",
+        "name": "한호빈",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2024-05-28",
+        "years": 1,
+        "salaryEok": 1.5,
+        "window": "미계약자 추가 계약(5/25~5/28)",
+        "compensation": "없음",
+        "note": "위키 각주 [25]: 이후 6/1 트레이드로 현대모비스 이적(한호빈, 모비스는 무상)"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "조상열",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2024-05-28",
+        "years": 1,
+        "salaryEok": 0.5,
+        "window": "미계약자 추가 계약(5/25~5/28)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "해외 복귀",
+        "name": "장문호",
+        "position": "포워드",
+        "toTeam": "서울 SK",
+        "date": "2024-06-12",
+        "years": 1,
+        "salaryEok": 0.7,
+        "window": "미계약자 추가 계약(5/25~5/28)",
+        "compensation": "없음",
+        "note": "미계약 FA(해외 진출 후 복귀)"
+      }
+    ],
+    "unsigned": [
+      {
+        "team": "원주 DB",
+        "names": ["이민석", "김형준"]
+      },
+      {
+        "team": "고양 소노",
+        "names": ["이진석"]
+      },
+      {
+        "team": "안양 정관장",
+        "names": ["김상규"]
+      },
+      {
+        "team": "부산 KCC",
+        "names": ["염재성", "이진욱"]
+      }
+    ],
+    "withdrawn": [
+      {
+        "team": "부산 KCC",
+        "names": ["라건아", "김승협"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["박찬희", "김현호"]
+      },
+      {
+        "team": "서울 SK",
+        "names": ["양우섭"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["김현수", "박재한", "김현민"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["임준수"]
+      },
+      {
+        "team": "고양 소노",
+        "names": ["김강선"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["김승원", "김무성"]
+      },
+      {
+        "team": "해외 복귀",
+        "names": ["장민국"]
+      }
+    ]
+  }
+}
