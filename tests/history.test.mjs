@@ -135,3 +135,38 @@ test('구단 요약: 우승·결승 횟수는 우승 기록이 있는 시즌 안
   assert.ok(kcc.titles.includes('2025-26') && kcc.titles.includes('2023-24') && kcc.titles.includes('2010-11'));
   assert.equal(recentForm(history, 'busan-kcc', 3).length, 3);
 });
+
+test('2025-26 라운드별 순위: 6개 라운드, 누적 경기 수, 마지막 라운드 = 최종 순위, 라운드 MVP', () => {
+  const s = seasons.at(-1);
+  assert.equal(s.rounds.length, 6);
+  s.rounds.forEach((r, i) => {
+    assert.equal(r.teams.length, 10);
+    for (const t of r.teams) assert.equal(t.games, 9 * (i + 1));
+    assert.ok(r.mvp.name && teams.some((t) => t.id === r.mvp.franchiseId));
+  });
+  for (const f of s.teams) {
+    const t = s.rounds[5].teams.find((x) => x.franchiseId === f.franchiseId);
+    assert.equal(`${t.wins}-${t.losses}`, `${f.wins}-${f.losses}`);
+  }
+  assert.equal(s.rounds[0].mvp.name, '허웅');
+  assert.equal(s.rounds[5].mvp.franchiseId, 'wonju-db');
+});
+
+test('라운드 검증: 누적과 맞지 않는 라운드 전적·경기 수·최종 순위는 오류로 잡는다', async () => {
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const raw = JSON.parse(readFileSync(join(ROOT, 'data/history/raw/2025-26.json'), 'utf8'));
+  const run = (mutate) => {
+    const dir = mkdtempSync(join(tmpdir(), 'hist-'));
+    try {
+      const copy = JSON.parse(JSON.stringify(raw));
+      mutate(copy);
+      writeFileSync(join(dir, '2025-26.json'), JSON.stringify(copy));
+      return buildHistory(dir, teams).errors.filter((e) => !e.includes('순위표에 없습니다')).join('\n');
+    } finally { rmSync(dir, { recursive: true, force: true }); }
+  };
+  assert.equal(run(() => {}), '');
+  assert.match(run((c) => { c.rounds[1].rows[0][7] = '5-4'; }), /라운드 전적/);
+  assert.match(run((c) => { c.rounds[2].rows[0][2] = 28; }), /경기 수/);
+  assert.match(run((c) => { c.rounds[5].rows[0][3] = 35; c.rounds[5].rows[0][4] = 19; c.rounds[5].rows[0][5] = 0.648; }), /최종|라운드 전적/);
+});

@@ -78,6 +78,52 @@ export function buildHistory(rawDir, teams) {
       }
     }
 
+    // 3.5) 라운드별 순위(누적)와 라운드 MVP: 선택 항목. 마지막 라운드는 시즌 최종 순위와 같아야 한다
+    let rounds = null;
+    if (raw.rounds) {
+      const perTeam = Math.max(...games);
+      const n = raw.rounds.length;
+      if (perTeam % n !== 0) fail(season, `경기 수 ${perTeam}가 라운드 수 ${n}로 나누어떨어지지 않습니다`);
+      const per = perTeam / n;
+      const prevByTeam = new Map();
+      rounds = raw.rounds.map((rd, i) => {
+        const label = `${i + 1}라운드`;
+        const teams = rd.rows.map(([rank, display, g, wins, losses, pct, gamesBehind, rec]) => {
+          const id = lookup.get(norm(display));
+          if (!id) fail(season, `${label}에 알 수 없는 구단: "${display}"`);
+          const roundRec = parseRecord(rec);
+          if (!roundRec) fail(season, `${label} ${display} 라운드 전적 형식 오류: "${rec}"`);
+          return { rank, franchiseId: id, games: g, wins, losses, pct, gamesBehind, roundWins: roundRec?.wins, roundLosses: roundRec?.losses };
+        });
+        if (new Set(teams.map((t) => t.franchiseId)).size !== teams.length || teams.length !== rows.length) fail(season, `${label} 구단 목록이 순위표와 다릅니다`);
+        const leader = teams[0];
+        for (const [j, t] of teams.entries()) {
+          const who = `${label} ${t.franchiseId}`;
+          if (t.games !== per * (i + 1) || t.wins + t.losses !== t.games) fail(season, `${who} 경기 수 ${t.games} (기대 ${per * (i + 1)}, 승+패 ${t.wins + t.losses})`);
+          if (Math.abs(t.wins / t.games - t.pct) > 0.0011) fail(season, `${who} 승률 ${t.pct} ≠ ${(t.wins / t.games).toFixed(3)}`);
+          if (j > 0 && t.pct > teams[j - 1].pct + 1e-9) fail(season, `${who} 승률이 바로 위 순위보다 높습니다`);
+          const better = teams.filter((o) => o.pct > t.pct + 1e-9).length;
+          const tied = teams.filter((o) => Math.abs(o.pct - t.pct) < 1e-9).length;
+          // 승률이 같으면 같은 순위로 표시하거나(진행 중), 타이브레이크로 갈린 순위를 준다(최종)
+          if (t.rank < better + 1 || t.rank > better + tied) fail(season, `${who} 순위 ${t.rank} (승률 기준 ${better + 1}~${better + tied})`);
+          if (j > 0 && t.rank < teams[j - 1].rank) fail(season, `${who} 순위가 거꾸로입니다`);
+          const gb = ((leader.wins - t.wins) + (t.losses - leader.losses)) / 2;
+          if (Math.abs(gb - t.gamesBehind) > 1e-9) fail(season, `${who} 경기차 ${t.gamesBehind} ≠ ${gb}`);
+          const prev = prevByTeam.get(t.franchiseId) ?? { wins: 0, losses: 0 };
+          if (t.wins - prev.wins !== t.roundWins || t.losses - prev.losses !== t.roundLosses) fail(season, `${who} 라운드 전적 ${t.roundWins}-${t.roundLosses} ≠ 누적 변화 ${t.wins - prev.wins}-${t.losses - prev.losses}`);
+        }
+        for (const t of teams) prevByTeam.set(t.franchiseId, { wins: t.wins, losses: t.losses });
+        const mvpTeam = lookup.get(norm(rd.mvp[1]));
+        if (!mvpTeam) fail(season, `${label} MVP 소속 "${rd.mvp[1]}"을(를) 알 수 없습니다`);
+        return { round: i + 1, teams, mvp: { name: rd.mvp[0], franchiseId: mvpTeam } };
+      });
+      const last = rounds.at(-1).teams;
+      for (const r of rows) {
+        const t = last.find((x) => x.franchiseId === r.franchiseId);
+        if (!t || t.wins !== r.wins || t.losses !== r.losses) fail(season, `마지막 라운드 ${r.displayName} ${t?.wins}-${t?.losses}가 시즌 최종 ${r.wins}-${r.losses}와 다릅니다`);
+      }
+    }
+
     // 4) 플레이오프 정합성
     let playoffs = null;
     if (raw.playoffs) {
@@ -133,6 +179,7 @@ export function buildHistory(rawDir, teams) {
       ...(raw.note ? { note: raw.note } : {}),
       gamesPerTeam: Math.max(...games),
       teams: rows,
+      ...(rounds ? { rounds } : {}),
       playoffs
     });
   }
