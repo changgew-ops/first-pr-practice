@@ -360,3 +360,121 @@ export function buildDrafts(draftDir, teams) {
   }
   return { drafts, errors };
 }
+
+// 이벤트 파일의 구단 표기(나무위키는 줄임말을 많이 쓴다)
+const SHORT_NAMES = {
+  'seoul-sk': ['SK', '서울SK', '서울SK나이츠'], 'seoul-samsung': ['삼성', '서울삼성', '서울삼성썬더스'], 'busan-kcc': ['KCC', '전주KCC', '부산KCC', '부산KCC이지스'],
+  'anyang-jungkwanjang': ['정관장', 'KGC', 'KGC인삼공사', '안양KGC인삼공사', '안양정관장', '안양정관장레드부스터스'], 'changwon-lg': ['LG', '창원LG', '창원LG세이커스'],
+  'wonju-db': ['DB', '원주DB', '원주DB프로미'], 'ulsan-hyundai-mobis': ['현대모비스', '울산현대모비스', '울산현대모비스피버스'],
+  'suwon-kt': ['KT', 'kt', '수원KT', '수원KT소닉붐'], 'daegu-kogas': ['한국가스공사', '가스공사', '대구한국가스공사', '대구한국가스공사페가수스'],
+  'goyang-sono': ['소노', '데이원', '고양데이원', '고양데이원점퍼스', '고양소노', '고양소노스카이거너스']
+};
+const EVENT_LOOKUP = new Map([...lookup, ...Object.entries(SHORT_NAMES).flatMap(([id, names]) => names.map((n) => [norm(n), id]))]);
+
+/**
+ * 시즌 이벤트(data/history/events/<시즌>.json): 오프시즌·시즌 중 트레이드, 외국인 선수 계약, 은퇴, 임의탈퇴, 군 입대·전역, FA(대상자·계약·미체결), 코칭스태프 변경.
+ * seasonTeams: Map<시즌, Map<선수 이름, 구단 id>> — 그 시즌 소속(선수 CSV). FA 새 소속이 그 시즌 소속과 다르면 경고만 한다(시즌 중 이적일 수 있다).
+ * 반환: { events, errors, warnings }
+ */
+export function buildEvents(eventDir, teams, { seasonTeams = new Map() } = {}) {
+  const errors = [];
+  const warnings = [];
+  const franchiseIds = new Set(teams.map((t) => t.id));
+  const files = existsSync(eventDir) ? readdirSync(eventDir).filter((f) => f.endsWith('.json')).sort() : [];
+  const events = [];
+  const GROUP_NONE = '계약 미체결';
+  const SPECIAL_GROUPS = new Set([GROUP_NONE, '해외 복귀']); // 구단이 아닌 FA 대상 묶음
+  for (const file of files) {
+    const raw = JSON.parse(readFileSync(join(eventDir, file), 'utf8'));
+    const season = raw.season;
+    const fail = (msg) => errors.push(`[${season} 이벤트] ${msg}`);
+    const warn = (msg) => warnings.push(`[${season} 이벤트] ${msg}`);
+    if (`${season}.json` !== file) fail(`파일 이름(${file})과 season이 다릅니다`);
+    const id = (name, where) => {
+      const f = EVENT_LOOKUP.get(norm(String(name)));
+      if (!f || !franchiseIds.has(f)) fail(`${where}: 알 수 없는 구단 "${name}"`);
+      return f;
+    };
+    const isDate = (d) => /^\d{4}-\d{2}-\d{2}$/.test(d ?? '');
+    const names = (list, where) => {
+      if (!Array.isArray(list) || list.length === 0 || list.some((n) => typeof n !== 'string' || !n.trim())) fail(`${where}: 이름 목록이 비었거나 형식이 이상합니다`);
+      return list;
+    };
+    const groupList = (arr, where) => (arr ?? []).map((g) => ({ franchiseId: id(g.team, where), names: names(g.names, `${where} ${g.team}`) }));
+
+    const coaching = (raw.coaching ?? []).map((c) => {
+      if (!c.name || !c.to) fail(`코칭스태프: 이름/새 직책이 없습니다 (${JSON.stringify(c)})`);
+      return { franchiseId: id(c.team, '코칭스태프'), name: c.name, from: c.from ?? null, to: c.to };
+    });
+
+    const trades = (raw.trades ?? []).map((t) => {
+      const where = `트레이드 ${t.date ?? '?'} ${t.teamA}↔${t.teamB}`;
+      const a = id(t.teamA, where);
+      const b = id(t.teamB, where);
+      if (a && a === b) fail(`${where}: 같은 구단끼리입니다`);
+      if (!isDate(t.date)) fail(`${where}: 날짜 형식 오류`);
+      if (!['offseason', 'inseason'].includes(t.phase)) fail(`${where}: phase는 offseason/inseason`);
+      if (!Array.isArray(t.giveA) || !Array.isArray(t.giveB)) fail(`${where}: giveA/giveB는 배열(무상·지명권만이면 빈 배열이나 지명권 문자열)`);
+      if ((t.giveA ?? []).length + (t.giveB ?? []).length === 0) fail(`${where}: 오가는 선수나 지명권이 없습니다`);
+      return { date: t.date, phase: t.phase, teamA: a, giveA: t.giveA, teamB: b, giveB: t.giveB, ...(t.note ? { note: t.note } : {}) };
+    });
+
+    const foreign = (raw.foreign ?? []).map((f) => {
+      const where = `외국인 선수 ${f.name}`;
+      if (!['센터', '포워드', '가드'].includes(f.position)) fail(`${where}: 포지션 ${f.position}`);
+      if (!f.kind) fail(`${where}: 구분(재계약/신규 계약 등)이 없습니다`);
+      if (!Array.isArray(f.nationality) || f.nationality.length === 0) fail(`${where}: 국적이 없습니다`);
+      return { franchiseId: id(f.team, where), name: f.name, position: f.position, nationality: f.nationality, kind: f.kind, asiaQuota: Boolean(f.asiaQuota), ...(f.flags?.length ? { flags: f.flags } : {}), ...(f.note ? { note: f.note } : {}) };
+    });
+
+    const retirements = groupList(raw.retirements, '은퇴');
+    const voluntaryLeave = groupList(raw.voluntaryLeave, '임의 탈퇴');
+    const military = { enlist: groupList(raw.military?.enlist, '군 입대'), discharge: groupList(raw.military?.discharge, '군 전역') };
+
+    // FA: 대상자 = 계약 + 미체결 (구단별로 이름 집합이 정확히 같아야 한다)
+    let fa = null;
+    if (raw.fa) {
+      const groupId = (g, where) => (SPECIAL_GROUPS.has(g) ? g : id(g, where));
+      const targets = new Map();
+      for (const g of raw.fa.targets ?? []) {
+        const gid = groupId(g.team, 'FA 대상자');
+        if (targets.has(gid)) fail(`FA 대상자에 ${g.team}이(가) 두 번 나옵니다`);
+        targets.set(gid, names(g.names, `FA 대상자 ${g.team}`));
+      }
+      const seenContract = new Set();
+      const contracts = (raw.fa.contracts ?? []).map((c) => {
+        const where = `FA 계약 ${c.name}`;
+        const from = groupId(c.fromTeam, where);
+        const to = c.toTeam === '잔류' ? from : id(c.toTeam, where);
+        if (c.toTeam === '잔류' && SPECIAL_GROUPS.has(from)) fail(`${where}: 구단이 없는 묶음의 FA는 잔류가 아닙니다`);
+        if (!targets.get(from)?.includes(c.name)) fail(`${where}: ${c.fromTeam}의 FA 대상자 명단에 없습니다`);
+        if (seenContract.has(`${from}|${c.name}`)) fail(`${where}: 계약이 두 번 나옵니다`);
+        seenContract.add(`${from}|${c.name}`);
+        if (!isDate(c.date)) fail(`${where}: 날짜 형식 오류`);
+        if (!Number.isInteger(c.years) || c.years < 1 || c.years > 6) fail(`${where}: 계약 기간 ${c.years}`);
+        if (typeof c.salaryEok !== 'number' || !(c.salaryEok > 0)) fail(`${where}: 보수총액(억 원) ${c.salaryEok}`);
+        const want = seasonTeams.get(season)?.get(c.name);
+        if (want && to && !SPECIAL_GROUPS.has(to) && want !== to) warn(`${where}: 새 소속 ${c.toTeam}이(가) 그 시즌 소속 CSV(${want})와 다릅니다`);
+        return { fromFranchiseId: from, name: c.name, position: c.position ?? null, toFranchiseId: to, stayed: c.toTeam === '잔류', date: c.date, years: c.years, salaryEok: c.salaryEok, compensation: c.compensation ?? '없음', window: c.window ?? null };
+      });
+      const unsigned = new Map();
+      for (const g of raw.fa.unsigned ?? []) unsigned.set(groupId(g.team, 'FA 미체결'), names(g.names, `FA 미체결 ${g.team}`));
+      // 대상자였지만 계약도 미체결도 아닌 경우(은퇴 등): withdrawn
+      const withdrawn = new Map();
+      for (const g of raw.fa.withdrawn ?? []) withdrawn.set(groupId(g.team, 'FA 제외'), names(g.names, `FA 제외 ${g.team}`));
+      for (const [gid, list] of targets) {
+        const signed = contracts.filter((c) => c.fromFranchiseId === gid).map((c) => c.name);
+        const un = [...(unsigned.get(gid) ?? []), ...(withdrawn.get(gid) ?? [])];
+        const all = [...signed, ...un];
+        if (new Set(all).size !== all.length) fail(`FA ${gid}: 계약과 미체결에 같은 이름이 겹칩니다`);
+        const missing = list.filter((n) => !all.includes(n));
+        const extra = all.filter((n) => !list.includes(n));
+        if (missing.length || extra.length) fail(`FA ${gid}: 대상자 ≠ 계약+미체결+제외 (빠짐: ${missing.join(', ') || '-'}, 초과: ${extra.join(', ') || '-'})`);
+      }
+      for (const gid of unsigned.keys()) if (!targets.has(gid)) fail(`FA 미체결 ${gid}: 대상자 명단에 그 구단이 없습니다`);
+      fa = { withdrawn: [...withdrawn].map(([franchiseId, n]) => ({ franchiseId, names: n })), targets: [...targets].map(([franchiseId, n]) => ({ franchiseId, names: n })), contracts, unsigned: [...unsigned].map(([franchiseId, n]) => ({ franchiseId, names: n })) };
+    }
+    events.push({ season, coaching, trades, foreign, retirements, voluntaryLeave, military, ...(fa ? { fa } : {}) });
+  }
+  return { events, errors, warnings };
+}

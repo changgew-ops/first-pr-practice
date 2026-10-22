@@ -1,0 +1,813 @@
+{
+  "season": "2026-27",
+  "note": "FA 계약표의 새 소속은 표의 병합 칸을 풀어서 정했고, 등록선수 화면(2026-27 현재 소속)과 모두 일치한다. 계약 미체결 FA 최승욱의 날짜·기간은 같은 표의 앞 행에서 이어받았다",
+  "coaching": [
+    {
+      "team": "부산 KCC",
+      "name": "김도수",
+      "from": "tvN SPORTS 해설위원",
+      "to": "수석코치"
+    },
+    {
+      "team": "창원 LG",
+      "name": "이광재",
+      "from": "원주 DB 코치",
+      "to": "코치"
+    },
+    {
+      "team": "원주 DB",
+      "name": "이규섭",
+      "from": "부산 KCC 수석코치",
+      "to": "감독"
+    },
+    {
+      "team": "원주 DB",
+      "name": "박지현",
+      "from": "코치",
+      "to": "수석코치"
+    },
+    {
+      "team": "원주 DB",
+      "name": "박재현",
+      "from": "수원 KT D리그 코치",
+      "to": "코치"
+    },
+    {
+      "team": "원주 DB",
+      "name": "김현호",
+      "from": "전력분석 겸 스카우트",
+      "to": "D리그 코치"
+    },
+    {
+      "team": "원주 DB",
+      "name": "켄고 오츠카",
+      "from": "아키타 노던 해피네츠 체력 코치",
+      "to": "체력 코치"
+    },
+    {
+      "team": "원주 DB",
+      "name": "크리스 케어드",
+      "from": "나폴리 코치",
+      "to": "코치"
+    },
+    {
+      "team": "수원 KT",
+      "name": "김영환",
+      "from": "사무국 과장",
+      "to": "D리그 코치"
+    },
+    {
+      "team": "수원 KT",
+      "name": "윤준",
+      "from": "원주 DB 체력 코치",
+      "to": "트레이닝 코치"
+    },
+    {
+      "team": "수원 KT",
+      "name": "김재현",
+      "from": null,
+      "to": "전력분석 코치"
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "함지훈",
+      "from": null,
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "김상식",
+      "from": "前 안양 정관장 감독",
+      "to": "감독"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "진경석",
+      "from": "前 원주 DB 수석코치",
+      "to": "수석코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "조성민",
+      "from": "tvN SPORTS 해설위원",
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "이정석",
+      "from": "용산중 농구부 코치",
+      "to": "코치"
+    },
+    {
+      "team": "서울 삼성",
+      "name": "최수현",
+      "from": "코치",
+      "to": "전력분석원"
+    }
+  ],
+  "trades": [
+    {
+      "date": "2026-07-01",
+      "phase": "offseason",
+      "teamA": "안양 정관장",
+      "giveA": ["김경원"],
+      "teamB": "울산 현대모비스",
+      "giveB": ["이대헌"]
+    }
+  ],
+  "foreign": [
+    {
+      "team": "부산 KCC",
+      "name": "숀 롱",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "부산 KCC",
+      "name": "루이스 킹",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "고양 소노",
+      "name": "스카티 제임스",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "고양 소노",
+      "name": "자니 오브라이언트",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "고양 소노",
+      "name": "케빈 켐바오",
+      "position": "포워드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "창원 LG",
+      "name": "아셈 마레이",
+      "position": "센터",
+      "nationality": ["이집트"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "창원 LG",
+      "name": "아치 굿윈",
+      "position": "가드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "창원 LG",
+      "name": "칼 타마요",
+      "position": "포워드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "안양 정관장",
+      "name": "존 무니",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "안양 정관장",
+      "name": "라숀 토마스",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "안양 정관장",
+      "name": "데이본 리드",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false,
+      "flags": ["일시대체선수"],
+      "note": "라숀 토마스의 부상으로 인한 일시대체 선수 영입"
+    },
+    {
+      "team": "안양 정관장",
+      "name": "렌즈 아반도",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "원주 DB",
+      "name": "헨리 엘런슨",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "원주 DB",
+      "name": "레이션 해먼즈",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "원주 DB",
+      "name": "이선 알바노",
+      "position": "가드",
+      "nationality": ["필리핀", "미국"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "서울 SK",
+      "name": "자밀 워니",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 SK",
+      "name": "아이재아 힉스",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 SK",
+      "name": "알빈 톨렌티노",
+      "position": "포워드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "수원 KT",
+      "name": "패리스 배스",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "수원 KT",
+      "name": "트레이 포터",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "수원 KT",
+      "name": "미구엘 안드레 옥존",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "신규 계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "다리우스 베즐리",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "게이지 프림",
+      "position": "센터",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "울산 현대모비스",
+      "name": "제리 아바디아노",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "신규 계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "케베 알루마",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "라건아",
+      "position": "센터",
+      "nationality": ["미국", "대한민국"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "대구 한국가스공사",
+      "name": "샘조세프 벨란겔",
+      "position": "가드",
+      "nationality": ["필리핀"],
+      "kind": "재계약",
+      "asiaQuota": true
+    },
+    {
+      "team": "서울 삼성",
+      "name": "크리스 맥컬러",
+      "position": "포워드",
+      "nationality": ["미국"],
+      "kind": "신규 계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 삼성",
+      "name": "케렘 칸터",
+      "position": "센터",
+      "nationality": ["튀르키예"],
+      "kind": "재계약",
+      "asiaQuota": false
+    },
+    {
+      "team": "서울 삼성",
+      "name": "저스틴 구탕",
+      "position": "포워드",
+      "nationality": ["필리핀", "미국"],
+      "kind": "재계약",
+      "asiaQuota": true
+    }
+  ],
+  "retirements": [
+    {
+      "team": "부산 KCC",
+      "names": ["정배권"]
+    },
+    {
+      "team": "고양 소노",
+      "names": ["김영훈", "홍경기"]
+    },
+    {
+      "team": "안양 정관장",
+      "names": ["김영현"]
+    },
+    {
+      "team": "수원 KT",
+      "names": ["김재현"]
+    },
+    {
+      "team": "울산 현대모비스",
+      "names": ["함지훈", "김근현"]
+    },
+    {
+      "team": "대구 한국가스공사",
+      "names": ["차바위", "최진수", "박지훈", "최창진", "최주영"]
+    },
+    {
+      "team": "서울 삼성",
+      "names": ["박민채", "김한솔", "박민우"]
+    }
+  ],
+  "voluntaryLeave": [
+    {
+      "team": "부산 KCC",
+      "names": ["송교창", "최준용"]
+    }
+  ],
+  "military": {
+    "enlist": [
+      {
+        "team": "창원 LG",
+        "names": ["이경도"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["박인웅"]
+      },
+      {
+        "team": "서울 SK",
+        "names": ["강재민", "김태훈", "문가온"]
+      },
+      {
+        "team": "수원 KT",
+        "names": ["고찬혁", "박성재"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["이승우", "박준형"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["신승민", "신주영"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["박승재", "이원석"]
+      }
+    ],
+    "discharge": [
+      {
+        "team": "울산 현대모비스",
+        "names": ["이우석"]
+      }
+    ]
+  },
+  "fa": {
+    "targets": [
+      {
+        "team": "부산 KCC",
+        "names": ["여준형", "정배권"]
+      },
+      {
+        "team": "고양 소노",
+        "names": ["이동엽", "김영훈", "홍경기", "조은후", "문시윤", "김도은"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["정인덕", "배병준", "허일영", "장민국", "두경민"]
+      },
+      {
+        "team": "안양 정관장",
+        "names": ["변준형", "전성현", "김영현", "표승빈", "소준혁"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["정효근", "최성원", "서민수", "박상우"]
+      },
+      {
+        "team": "서울 SK",
+        "names": ["오세근", "최원혁", "김건우"]
+      },
+      {
+        "team": "수원 KT",
+        "names": ["박준영", "이윤기", "김재현"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["조한진", "정준원", "전준범", "이우정", "박준은", "강현수"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["전현우", "최진수", "박지훈", "최창진", "최주영"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["박민우", "김한솔"]
+      },
+      {
+        "team": "계약 미체결",
+        "names": ["장문호", "최승욱", "박세진", "김민욱"]
+      }
+    ],
+    "contracts": [
+      {
+        "fromTeam": "창원 LG",
+        "name": "정인덕",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-19",
+        "years": 4,
+        "salaryEok": 3.5,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "안양 정관장",
+        "name": "변준형",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2026-05-20",
+        "years": 3,
+        "salaryEok": 8,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "안양 정관장",
+        "name": "표승빈",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-21",
+        "years": 2,
+        "salaryEok": 1,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "이윤기",
+        "position": "포워드",
+        "toTeam": "원주 DB",
+        "date": "2026-05-22",
+        "years": 3,
+        "salaryEok": 1.3,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "장민국",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-26",
+        "years": 2,
+        "salaryEok": 2,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "안양 정관장",
+        "name": "소준혁",
+        "position": "가드",
+        "toTeam": "고양 소노",
+        "date": "2026-05-26",
+        "years": 3,
+        "salaryEok": 0.8,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "울산 현대모비스",
+        "name": "조한진",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-27",
+        "years": 3,
+        "salaryEok": 3,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "울산 현대모비스",
+        "name": "정준원",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-27",
+        "years": 1,
+        "salaryEok": 0.9,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "안양 정관장",
+        "name": "전성현",
+        "position": "포워드",
+        "toTeam": "수원 KT",
+        "date": "2026-05-28",
+        "years": 1,
+        "salaryEok": 2,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "서민수",
+        "position": "포워드",
+        "toTeam": "수원 KT",
+        "date": "2026-05-28",
+        "years": 3,
+        "salaryEok": 2.3,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "최성원",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2026-05-28",
+        "years": 1,
+        "salaryEok": 2.4,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "오세근",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-28",
+        "years": 1,
+        "salaryEok": 2.2,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "서울 SK",
+        "name": "최원혁",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2026-05-28",
+        "years": 3,
+        "salaryEok": 2,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "고양 소노",
+        "name": "조은후",
+        "position": "가드",
+        "toTeam": "원주 DB",
+        "date": "2026-05-28",
+        "years": 1,
+        "salaryEok": 0.5,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "허일영",
+        "position": "포워드",
+        "toTeam": "안양 정관장",
+        "date": "2026-05-29",
+        "years": 2,
+        "salaryEok": 1.2,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "고양 소노",
+        "name": "이동엽",
+        "position": "가드",
+        "toTeam": "잔류",
+        "date": "2026-05-29",
+        "years": 1,
+        "salaryEok": 0.7,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "대구 한국가스공사",
+        "name": "전현우",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-29",
+        "years": 3,
+        "salaryEok": 2,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "원주 DB",
+        "name": "정효근",
+        "position": "포워드",
+        "toTeam": "잔류",
+        "date": "2026-05-30",
+        "years": 2,
+        "salaryEok": 3.6,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "울산 현대모비스",
+        "name": "전준범",
+        "position": "포워드",
+        "toTeam": "서울 SK",
+        "date": "2026-06-01",
+        "years": 1,
+        "salaryEok": 0.5,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "울산 현대모비스",
+        "name": "박준은",
+        "position": "포워드",
+        "toTeam": "대구 한국가스공사",
+        "date": "2026-06-01",
+        "years": 1,
+        "salaryEok": 0.5,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "수원 KT",
+        "name": "박준영",
+        "position": "포워드",
+        "toTeam": "대구 한국가스공사",
+        "date": "2026-06-01",
+        "years": 3,
+        "salaryEok": 4,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "부산 KCC",
+        "name": "여준형",
+        "position": "포워드",
+        "toTeam": "서울 삼성",
+        "date": "2026-06-01",
+        "years": 1,
+        "salaryEok": 0.45,
+        "window": "자율 협상(5/18~6/1)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "고양 소노",
+        "name": "문시윤",
+        "position": "포워드",
+        "toTeam": "창원 LG",
+        "date": "2026-06-04",
+        "years": 1,
+        "salaryEok": 0.42,
+        "window": "영입의향서 제출(6/2~6/4)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "창원 LG",
+        "name": "배병준",
+        "position": "가드",
+        "toTeam": "울산 현대모비스",
+        "date": "2026-06-04",
+        "years": 1,
+        "salaryEok": 1.2,
+        "window": "영입의향서 제출(6/2~6/4)",
+        "compensation": "없음"
+      },
+      {
+        "fromTeam": "계약 미체결",
+        "name": "최승욱",
+        "position": "포워드",
+        "toTeam": "대구 한국가스공사",
+        "date": "2026-06-04",
+        "years": 1,
+        "salaryEok": 0.45,
+        "window": "영입의향서 제출(6/2~6/4)",
+        "compensation": "없음"
+      }
+    ],
+    "unsigned": [
+      {
+        "team": "고양 소노",
+        "names": ["김도은"]
+      },
+      {
+        "team": "창원 LG",
+        "names": ["두경민"]
+      },
+      {
+        "team": "원주 DB",
+        "names": ["박상우"]
+      },
+      {
+        "team": "서울 SK",
+        "names": ["김건우"]
+      },
+      {
+        "team": "울산 현대모비스",
+        "names": ["이우정", "강현수"]
+      },
+      {
+        "team": "계약 미체결",
+        "names": ["장문호", "박세진", "김민욱"]
+      }
+    ],
+    "withdrawn": [
+      {
+        "team": "부산 KCC",
+        "names": ["정배권"]
+      },
+      {
+        "team": "고양 소노",
+        "names": ["김영훈", "홍경기"]
+      },
+      {
+        "team": "안양 정관장",
+        "names": ["김영현"]
+      },
+      {
+        "team": "수원 KT",
+        "names": ["김재현"]
+      },
+      {
+        "team": "대구 한국가스공사",
+        "names": ["최진수", "박지훈", "최창진", "최주영"]
+      },
+      {
+        "team": "서울 삼성",
+        "names": ["박민우", "김한솔"]
+      }
+    ]
+  }
+}

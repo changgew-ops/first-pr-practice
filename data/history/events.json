@@ -1,0 +1,1043 @@
+[
+  {
+    "season": "2026-27",
+    "coaching": [
+      {
+        "franchiseId": "busan-kcc",
+        "name": "김도수",
+        "from": "tvN SPORTS 해설위원",
+        "to": "수석코치"
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "이광재",
+        "from": "원주 DB 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "이규섭",
+        "from": "부산 KCC 수석코치",
+        "to": "감독"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "박지현",
+        "from": "코치",
+        "to": "수석코치"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "박재현",
+        "from": "수원 KT D리그 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "김현호",
+        "from": "전력분석 겸 스카우트",
+        "to": "D리그 코치"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "켄고 오츠카",
+        "from": "아키타 노던 해피네츠 체력 코치",
+        "to": "체력 코치"
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "크리스 케어드",
+        "from": "나폴리 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "김영환",
+        "from": "사무국 과장",
+        "to": "D리그 코치"
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "윤준",
+        "from": "원주 DB 체력 코치",
+        "to": "트레이닝 코치"
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "김재현",
+        "from": null,
+        "to": "전력분석 코치"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "함지훈",
+        "from": null,
+        "to": "코치"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "김상식",
+        "from": "前 안양 정관장 감독",
+        "to": "감독"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "진경석",
+        "from": "前 원주 DB 수석코치",
+        "to": "수석코치"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "조성민",
+        "from": "tvN SPORTS 해설위원",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "이정석",
+        "from": "용산중 농구부 코치",
+        "to": "코치"
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "최수현",
+        "from": "코치",
+        "to": "전력분석원"
+      }
+    ],
+    "trades": [
+      {
+        "date": "2026-07-01",
+        "phase": "offseason",
+        "teamA": "anyang-jungkwanjang",
+        "giveA": [
+          "김경원"
+        ],
+        "teamB": "ulsan-hyundai-mobis",
+        "giveB": [
+          "이대헌"
+        ]
+      }
+    ],
+    "foreign": [
+      {
+        "franchiseId": "busan-kcc",
+        "name": "숀 롱",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "name": "루이스 킹",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "스카티 제임스",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "자니 오브라이언트",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "name": "케빈 켐바오",
+        "position": "포워드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "재계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "아셈 마레이",
+        "position": "센터",
+        "nationality": [
+          "이집트"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "아치 굿윈",
+        "position": "가드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "name": "칼 타마요",
+        "position": "포워드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "재계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "존 무니",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "라숀 토마스",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "데이본 리드",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false,
+        "flags": [
+          "일시대체선수"
+        ],
+        "note": "라숀 토마스의 부상으로 인한 일시대체 선수 영입"
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "name": "렌즈 아반도",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "재계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "헨리 엘런슨",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "레이션 해먼즈",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "wonju-db",
+        "name": "이선 알바노",
+        "position": "가드",
+        "nationality": [
+          "필리핀",
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "name": "자밀 워니",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "name": "아이재아 힉스",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "name": "알빈 톨렌티노",
+        "position": "포워드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "재계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "패리스 배스",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "트레이 포터",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "name": "미구엘 안드레 옥존",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "다리우스 베즐리",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "게이지 프림",
+        "position": "센터",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "제리 아바디아노",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "name": "케베 알루마",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "name": "라건아",
+        "position": "센터",
+        "nationality": [
+          "미국",
+          "대한민국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "name": "샘조세프 벨란겔",
+        "position": "가드",
+        "nationality": [
+          "필리핀"
+        ],
+        "kind": "재계약",
+        "asiaQuota": true
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "크리스 맥컬러",
+        "position": "포워드",
+        "nationality": [
+          "미국"
+        ],
+        "kind": "신규 계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "케렘 칸터",
+        "position": "센터",
+        "nationality": [
+          "튀르키예"
+        ],
+        "kind": "재계약",
+        "asiaQuota": false
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "name": "저스틴 구탕",
+        "position": "포워드",
+        "nationality": [
+          "필리핀",
+          "미국"
+        ],
+        "kind": "재계약",
+        "asiaQuota": true
+      }
+    ],
+    "retirements": [
+      {
+        "franchiseId": "busan-kcc",
+        "names": [
+          "정배권"
+        ]
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "names": [
+          "김영훈",
+          "홍경기"
+        ]
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "names": [
+          "김영현"
+        ]
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "names": [
+          "김재현"
+        ]
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "names": [
+          "함지훈",
+          "김근현"
+        ]
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "names": [
+          "차바위",
+          "최진수",
+          "박지훈",
+          "최창진",
+          "최주영"
+        ]
+      },
+      {
+        "franchiseId": "seoul-samsung",
+        "names": [
+          "박민채",
+          "김한솔",
+          "박민우"
+        ]
+      }
+    ],
+    "voluntaryLeave": [
+      {
+        "franchiseId": "busan-kcc",
+        "names": [
+          "송교창",
+          "최준용"
+        ]
+      }
+    ],
+    "military": {
+      "enlist": [
+        {
+          "franchiseId": "changwon-lg",
+          "names": [
+            "이경도"
+          ]
+        },
+        {
+          "franchiseId": "wonju-db",
+          "names": [
+            "박인웅"
+          ]
+        },
+        {
+          "franchiseId": "seoul-sk",
+          "names": [
+            "강재민",
+            "김태훈",
+            "문가온"
+          ]
+        },
+        {
+          "franchiseId": "suwon-kt",
+          "names": [
+            "고찬혁",
+            "박성재"
+          ]
+        },
+        {
+          "franchiseId": "ulsan-hyundai-mobis",
+          "names": [
+            "이승우",
+            "박준형"
+          ]
+        },
+        {
+          "franchiseId": "daegu-kogas",
+          "names": [
+            "신승민",
+            "신주영"
+          ]
+        },
+        {
+          "franchiseId": "seoul-samsung",
+          "names": [
+            "박승재",
+            "이원석"
+          ]
+        }
+      ],
+      "discharge": [
+        {
+          "franchiseId": "ulsan-hyundai-mobis",
+          "names": [
+            "이우석"
+          ]
+        }
+      ]
+    },
+    "fa": {
+      "withdrawn": [
+        {
+          "franchiseId": "busan-kcc",
+          "names": [
+            "정배권"
+          ]
+        },
+        {
+          "franchiseId": "goyang-sono",
+          "names": [
+            "김영훈",
+            "홍경기"
+          ]
+        },
+        {
+          "franchiseId": "anyang-jungkwanjang",
+          "names": [
+            "김영현"
+          ]
+        },
+        {
+          "franchiseId": "suwon-kt",
+          "names": [
+            "김재현"
+          ]
+        },
+        {
+          "franchiseId": "daegu-kogas",
+          "names": [
+            "최진수",
+            "박지훈",
+            "최창진",
+            "최주영"
+          ]
+        },
+        {
+          "franchiseId": "seoul-samsung",
+          "names": [
+            "박민우",
+            "김한솔"
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "franchiseId": "busan-kcc",
+          "names": [
+            "여준형",
+            "정배권"
+          ]
+        },
+        {
+          "franchiseId": "goyang-sono",
+          "names": [
+            "이동엽",
+            "김영훈",
+            "홍경기",
+            "조은후",
+            "문시윤",
+            "김도은"
+          ]
+        },
+        {
+          "franchiseId": "changwon-lg",
+          "names": [
+            "정인덕",
+            "배병준",
+            "허일영",
+            "장민국",
+            "두경민"
+          ]
+        },
+        {
+          "franchiseId": "anyang-jungkwanjang",
+          "names": [
+            "변준형",
+            "전성현",
+            "김영현",
+            "표승빈",
+            "소준혁"
+          ]
+        },
+        {
+          "franchiseId": "wonju-db",
+          "names": [
+            "정효근",
+            "최성원",
+            "서민수",
+            "박상우"
+          ]
+        },
+        {
+          "franchiseId": "seoul-sk",
+          "names": [
+            "오세근",
+            "최원혁",
+            "김건우"
+          ]
+        },
+        {
+          "franchiseId": "suwon-kt",
+          "names": [
+            "박준영",
+            "이윤기",
+            "김재현"
+          ]
+        },
+        {
+          "franchiseId": "ulsan-hyundai-mobis",
+          "names": [
+            "조한진",
+            "정준원",
+            "전준범",
+            "이우정",
+            "박준은",
+            "강현수"
+          ]
+        },
+        {
+          "franchiseId": "daegu-kogas",
+          "names": [
+            "전현우",
+            "최진수",
+            "박지훈",
+            "최창진",
+            "최주영"
+          ]
+        },
+        {
+          "franchiseId": "seoul-samsung",
+          "names": [
+            "박민우",
+            "김한솔"
+          ]
+        },
+        {
+          "franchiseId": "계약 미체결",
+          "names": [
+            "장문호",
+            "최승욱",
+            "박세진",
+            "김민욱"
+          ]
+        }
+      ],
+      "contracts": [
+        {
+          "fromFranchiseId": "changwon-lg",
+          "name": "정인덕",
+          "position": "포워드",
+          "toFranchiseId": "changwon-lg",
+          "stayed": true,
+          "date": "2026-05-19",
+          "years": 4,
+          "salaryEok": 3.5,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "변준형",
+          "position": "가드",
+          "toFranchiseId": "anyang-jungkwanjang",
+          "stayed": true,
+          "date": "2026-05-20",
+          "years": 3,
+          "salaryEok": 8,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "표승빈",
+          "position": "포워드",
+          "toFranchiseId": "anyang-jungkwanjang",
+          "stayed": true,
+          "date": "2026-05-21",
+          "years": 2,
+          "salaryEok": 1,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "suwon-kt",
+          "name": "이윤기",
+          "position": "포워드",
+          "toFranchiseId": "wonju-db",
+          "stayed": false,
+          "date": "2026-05-22",
+          "years": 3,
+          "salaryEok": 1.3,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "changwon-lg",
+          "name": "장민국",
+          "position": "포워드",
+          "toFranchiseId": "changwon-lg",
+          "stayed": true,
+          "date": "2026-05-26",
+          "years": 2,
+          "salaryEok": 2,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "소준혁",
+          "position": "가드",
+          "toFranchiseId": "goyang-sono",
+          "stayed": false,
+          "date": "2026-05-26",
+          "years": 3,
+          "salaryEok": 0.8,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "ulsan-hyundai-mobis",
+          "name": "조한진",
+          "position": "포워드",
+          "toFranchiseId": "ulsan-hyundai-mobis",
+          "stayed": true,
+          "date": "2026-05-27",
+          "years": 3,
+          "salaryEok": 3,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "ulsan-hyundai-mobis",
+          "name": "정준원",
+          "position": "포워드",
+          "toFranchiseId": "ulsan-hyundai-mobis",
+          "stayed": true,
+          "date": "2026-05-27",
+          "years": 1,
+          "salaryEok": 0.9,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "anyang-jungkwanjang",
+          "name": "전성현",
+          "position": "포워드",
+          "toFranchiseId": "suwon-kt",
+          "stayed": false,
+          "date": "2026-05-28",
+          "years": 1,
+          "salaryEok": 2,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "서민수",
+          "position": "포워드",
+          "toFranchiseId": "suwon-kt",
+          "stayed": false,
+          "date": "2026-05-28",
+          "years": 3,
+          "salaryEok": 2.3,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "최성원",
+          "position": "가드",
+          "toFranchiseId": "wonju-db",
+          "stayed": true,
+          "date": "2026-05-28",
+          "years": 1,
+          "salaryEok": 2.4,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "seoul-sk",
+          "name": "오세근",
+          "position": "포워드",
+          "toFranchiseId": "seoul-sk",
+          "stayed": true,
+          "date": "2026-05-28",
+          "years": 1,
+          "salaryEok": 2.2,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "seoul-sk",
+          "name": "최원혁",
+          "position": "가드",
+          "toFranchiseId": "seoul-sk",
+          "stayed": true,
+          "date": "2026-05-28",
+          "years": 3,
+          "salaryEok": 2,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "goyang-sono",
+          "name": "조은후",
+          "position": "가드",
+          "toFranchiseId": "wonju-db",
+          "stayed": false,
+          "date": "2026-05-28",
+          "years": 1,
+          "salaryEok": 0.5,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "changwon-lg",
+          "name": "허일영",
+          "position": "포워드",
+          "toFranchiseId": "anyang-jungkwanjang",
+          "stayed": false,
+          "date": "2026-05-29",
+          "years": 2,
+          "salaryEok": 1.2,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "goyang-sono",
+          "name": "이동엽",
+          "position": "가드",
+          "toFranchiseId": "goyang-sono",
+          "stayed": true,
+          "date": "2026-05-29",
+          "years": 1,
+          "salaryEok": 0.7,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "daegu-kogas",
+          "name": "전현우",
+          "position": "포워드",
+          "toFranchiseId": "daegu-kogas",
+          "stayed": true,
+          "date": "2026-05-29",
+          "years": 3,
+          "salaryEok": 2,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "wonju-db",
+          "name": "정효근",
+          "position": "포워드",
+          "toFranchiseId": "wonju-db",
+          "stayed": true,
+          "date": "2026-05-30",
+          "years": 2,
+          "salaryEok": 3.6,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "ulsan-hyundai-mobis",
+          "name": "전준범",
+          "position": "포워드",
+          "toFranchiseId": "seoul-sk",
+          "stayed": false,
+          "date": "2026-06-01",
+          "years": 1,
+          "salaryEok": 0.5,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "ulsan-hyundai-mobis",
+          "name": "박준은",
+          "position": "포워드",
+          "toFranchiseId": "daegu-kogas",
+          "stayed": false,
+          "date": "2026-06-01",
+          "years": 1,
+          "salaryEok": 0.5,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "suwon-kt",
+          "name": "박준영",
+          "position": "포워드",
+          "toFranchiseId": "daegu-kogas",
+          "stayed": false,
+          "date": "2026-06-01",
+          "years": 3,
+          "salaryEok": 4,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "busan-kcc",
+          "name": "여준형",
+          "position": "포워드",
+          "toFranchiseId": "seoul-samsung",
+          "stayed": false,
+          "date": "2026-06-01",
+          "years": 1,
+          "salaryEok": 0.45,
+          "compensation": "없음",
+          "window": "자율 협상(5/18~6/1)"
+        },
+        {
+          "fromFranchiseId": "goyang-sono",
+          "name": "문시윤",
+          "position": "포워드",
+          "toFranchiseId": "changwon-lg",
+          "stayed": false,
+          "date": "2026-06-04",
+          "years": 1,
+          "salaryEok": 0.42,
+          "compensation": "없음",
+          "window": "영입의향서 제출(6/2~6/4)"
+        },
+        {
+          "fromFranchiseId": "changwon-lg",
+          "name": "배병준",
+          "position": "가드",
+          "toFranchiseId": "ulsan-hyundai-mobis",
+          "stayed": false,
+          "date": "2026-06-04",
+          "years": 1,
+          "salaryEok": 1.2,
+          "compensation": "없음",
+          "window": "영입의향서 제출(6/2~6/4)"
+        },
+        {
+          "fromFranchiseId": "계약 미체결",
+          "name": "최승욱",
+          "position": "포워드",
+          "toFranchiseId": "daegu-kogas",
+          "stayed": false,
+          "date": "2026-06-04",
+          "years": 1,
+          "salaryEok": 0.45,
+          "compensation": "없음",
+          "window": "영입의향서 제출(6/2~6/4)"
+        }
+      ],
+      "unsigned": [
+        {
+          "franchiseId": "goyang-sono",
+          "names": [
+            "김도은"
+          ]
+        },
+        {
+          "franchiseId": "changwon-lg",
+          "names": [
+            "두경민"
+          ]
+        },
+        {
+          "franchiseId": "wonju-db",
+          "names": [
+            "박상우"
+          ]
+        },
+        {
+          "franchiseId": "seoul-sk",
+          "names": [
+            "김건우"
+          ]
+        },
+        {
+          "franchiseId": "ulsan-hyundai-mobis",
+          "names": [
+            "이우정",
+            "강현수"
+          ]
+        },
+        {
+          "franchiseId": "계약 미체결",
+          "names": [
+            "장문호",
+            "박세진",
+            "김민욱"
+          ]
+        }
+      ]
+    }
+  }
+]

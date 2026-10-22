@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { buildHistory, buildDrafts } from '../src/history-build.mjs';
+import { buildHistory, buildDrafts, buildEvents } from '../src/history-build.mjs';
 import { loadHistory, champions, franchiseSummary, recentForm } from '../src/history.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -327,4 +327,42 @@ test('시즌별 소속 CSV: 선수기록 시트와 같은 선수 수, 모두 실
       assert.ok(statSet.has(name) || statSet.has(name.replace(/\(\d+\)$/, '')) || [...statSet].some((n) => n.replace(/\(\d+\)$/, '') === name), `${season} 소속 목록의 ${name}이(가) 기록에 없음`);
     }
   }
+});
+
+// 시즌 이벤트(오프시즌 트레이드·외국인·FA·은퇴·군 입대)
+const csvLines = (p) => readFileSync(join(ROOT, p), 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
+function seasonTeamMaps() {
+  const m = new Map();
+  for (const s of ['2023-24', '2024-25', '2025-26']) m.set(s, new Map(csvLines(`data/players/team-${s}.csv`).slice(1).map((l) => l.split(',').slice(0, 2))));
+  m.set('2026-27', new Map(csvLines('data/players/registry.csv').slice(1).map((l) => l.split(',').slice(0, 2))));
+  return m;
+}
+
+test('시즌 이벤트: 모든 파일이 검증을 통과하고 저장본(events.json)과 같다', () => {
+  const built = buildEvents(join(ROOT, 'data/history/events'), teams, { seasonTeams: seasonTeamMaps() });
+  assert.deepEqual(built.errors, []);
+  const saved = JSON.parse(readFileSync(join(ROOT, 'data/history/events.json'), 'utf8'));
+  assert.deepEqual(built.events, saved);
+  assert.ok(saved.length >= 1);
+});
+
+test('시즌 이벤트 2026-27: FA 대상자 = 계약 + 미체결 + 제외, 아시아쿼터 9명, 위키 FA 새 소속이 등록선수 화면과 모두 일치', () => {
+  const ev = JSON.parse(readFileSync(join(ROOT, 'data/history/events.json'), 'utf8')).find((e) => e.season === '2026-27');
+  assert.equal(ev.fa.contracts.length, 25);
+  assert.equal(ev.foreign.filter((f) => f.asiaQuota).length, 9);
+  assert.deepEqual(ev.trades.map((t) => [t.teamA, t.giveA[0], t.teamB, t.giveB[0]]), [['anyang-jungkwanjang', '김경원', 'ulsan-hyundai-mobis', '이대헌']]);
+  const choi = ev.fa.contracts.find((c) => c.name === '최승욱');
+  assert.equal(choi.fromFranchiseId, '계약 미체결');
+  assert.equal(choi.toFranchiseId, 'daegu-kogas');
+  // 위키 새 소속 ↔ 등록선수 화면(동명이인 최승욱 제외)
+  const reg = seasonTeamMaps().get('2026-27');
+  for (const c of ev.fa.contracts) if (c.name !== '최승욱') assert.equal(reg.get(c.name), c.toFranchiseId, c.name);
+});
+
+test('등록선수 화면에 없는 주전급(출전 600분 이상)은 은퇴·임의 탈퇴·군 입대 등 이벤트로 설명된다', () => {
+  const ev = JSON.parse(readFileSync(join(ROOT, 'data/history/events.json'), 'utf8')).find((e) => e.season === '2026-27');
+  const gone = new Set([...ev.retirements, ...ev.voluntaryLeave, ...ev.military.enlist].flatMap((g) => g.names));
+  const pool = JSON.parse(readFileSync(join(ROOT, 'data/players/real-pool.json'), 'utf8'));
+  const unexplained = pool.filter((p) => !p.registered && p.minutes >= 600 && p.origin === 'domestic' && !gone.has(p.name.replace(/\(\d+\)$/, ''))).map((p) => p.name);
+  assert.deepEqual(unexplained, []);
 });
