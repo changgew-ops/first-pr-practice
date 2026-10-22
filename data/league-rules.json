@@ -55,7 +55,12 @@
       8,
       4
     ],
-    "benchWeight": 0.45
+    "benchWeight": 0.45,
+    "teamRebounds": 38,
+    "teamAssists": 17,
+    "teamSteals": 7,
+    "teamBlocks": 3.5,
+    "freeThrowShare": 0.16
   },
   "playoffs": {
     "_note": "KBL 방식을 단순화한 초기안. 실제 방식은 공식 자료로 확인 필요.",
@@ -92,5 +97,125 @@
         1
       ]
     }
+  },
+  "ratingModel": {
+    "_note": "기록 → 능력치 변환 설정. mean/sd는 리그 전체 능력치 분포, credibilityMinutes는 기록을 100% 믿는 출전 시간.",
+    "mean": 62,
+    "sd": 10,
+    "minQualifiedMinutes": 300,
+    "credibilityMinutes": 1200,
+    "inSeasonWeightCap": 0.25,
+    "checkpointDays": 9
+  },
+  "training": {
+    "_note": "훈련: 집중 능력치 하나에 경험치가 쌓여 임계값마다 +1. 나이가 어리고 잠재력 여유가 클수록 빠르다.",
+    "sessionsPerCheckpoint": 8,
+    "baseGain": 1,
+    "ageMultipliers": [
+      [
+        22,
+        1.4
+      ],
+      [
+        25,
+        1.0
+      ],
+      [
+        29,
+        0.6
+      ],
+      [
+        32,
+        0.3
+      ],
+      [
+        99,
+        0.1
+      ]
+    ],
+    "thresholdBase": 6,
+    "thresholdPerPoint": 0.12,
+    "potentialRoomRef": 10,
+    "minPotentialMultiplier": 0.15,
+    "maxPotentialMultiplier": 1.5
+  },
+  "aging": {
+    "_note": "시즌 종료 시 적용. 이전 게임(카드야구 매니지먼트)의 '젊으면 성장·나이 들면 노쇠·확률 은퇴' 구조를 농구에 맞춰 조정.",
+    "growthMaxAge": 25,
+    "growthGapDivisor": 4,
+    "growthMaxStep": 6,
+    "lateGrowthFactor": 0.6,
+    "peakJitter": 1,
+    "physicalDeclineFrom": 29,
+    "skillDeclineFrom": 31,
+    "retirement": [
+      [
+        40,
+        1
+      ],
+      [
+        38,
+        0.4
+      ],
+      [
+        36,
+        0.2
+      ],
+      [
+        34,
+        0.1
+      ],
+      [
+        32,
+        0.04
+      ],
+      [
+        30,
+        0.015
+      ],
+      [
+        0,
+        0.004
+      ]
+    ],
+    "lowOvrRetireRef": 58,
+    "lowOvrRetireDivisor": 25,
+    "foreignMaxAge": 37,
+    "lateDeclineFrom": 33
+  },
+  "offseason": {
+    "_note": "계약 만료·드래프트·로스터 정리. FA 시장(AI 간 경쟁)과 트레이드는 이적 단계에서 확장한다.",
+    "renewBase": 0.35,
+    "renewPerOvr": 0.02,
+    "renewMin": 0.2,
+    "renewMax": 0.95,
+    "foreignRenewProbability": 0.5,
+    "renewSalaryFactor": 0.85,
+    "contractYears": [
+      1,
+      4
+    ],
+    "draft": {
+      "rounds": 2,
+      "poolSize": 24,
+      "rookieYears": 3,
+      "ageRange": [
+        20,
+        23
+      ],
+      "topOvr": 58,
+      "ovrDropPerPick": 0.7,
+      "potentialBonus": [
+        8,
+        22
+      ]
+    },
+    "rookieSalaryEok": {
+      "first": 0.9,
+      "dropPerPick": 0.015,
+      "min": 0.4
+    },
+    "freeAgentPoolMax": 40,
+    "emergencySalaryEok": 0.3
   }
 }

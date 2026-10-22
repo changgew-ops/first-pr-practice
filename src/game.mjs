@@ -55,11 +55,67 @@ function splitPoints(total, players, minutes, rng) {
   return floor;
 }
 
+// 포지션별 3점 비중 (득점 중 3점슛 비율의 기준)
+const THREE_SHARE = { PG: 0.32, SG: 0.4, SF: 0.3, PF: 0.18, C: 0.05 };
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+// 가중치에 비례해 이벤트 n개를 선수들에게 배분한다 (이벤트마다 한 명씩 뽑는 다항 추출)
+function allocate(n, weights, rng) {
+  const counts = new Array(weights.length).fill(0);
+  const total = weights.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < n; i++) {
+    let r = rng() * total;
+    let k = 0;
+    while (k < weights.length - 1 && r >= weights[k]) { r -= weights[k]; k++; }
+    counts[k]++;
+  }
+  return counts;
+}
+
+// 득점(pts)을 자유투·2점·3점으로 나누고 슈팅 능력에 맞는 성공률로 시도 수를 만든다.
+// 항상 pts = ftm + 2×(fgm−tpm) + 3×tpm 이 성립한다.
+function shotLine(p, pts, sim, rng) {
+  const s = p.stats.shooting;
+  const share3 = clamp(THREE_SHARE[p.position] * (0.6 + (s / 100) * 0.8), 0, 0.6);
+  let m3 = Math.floor((pts * share3) / 3 + rng());
+  let ftm = Math.round(pts * sim.freeThrowShare * (0.7 + rng() * 0.6));
+  if (3 * m3 > pts) m3 = Math.floor(pts / 3);
+  if (3 * m3 + ftm > pts) ftm = pts - 3 * m3;
+  if ((pts - 3 * m3 - ftm) % 2 !== 0) ftm += 1;
+  const m2 = (pts - 3 * m3 - ftm) / 2;
+
+  const big = p.position === 'C' || p.position === 'PF';
+  const p2 = clamp(0.43 + 0.0045 * (s - 50) + (big ? 0.04 : 0), 0.3, 0.7);
+  const p3 = clamp(0.27 + 0.0035 * (s - 50), 0.15, 0.5);
+  const pf = clamp(0.66 + 0.0045 * (s - 50), 0.45, 0.92);
+  const jitter = () => 1 + 0.1 * normal(rng);
+  const att = (made, prob) => (made === 0 ? 0 : Math.max(made, Math.round((made / prob) * jitter())));
+  const fga2 = att(m2, p2);
+  const tpa = att(m3, p3);
+  return { fgm: m2 + m3, fga: fga2 + tpa, tpm: m3, tpa, ftm, fta: att(ftm, pf) };
+}
+
 function boxScore(lineup, pts, sim, rng) {
   const players = [...lineup.starters, ...lineup.bench];
   const minutes = lineupMinutes(lineup, sim);
   const scored = splitPoints(pts, players, minutes, rng);
-  return players.map((p, i) => ({ id: p.id, name: p.name, minutes: minutes.get(p.id), points: scored[i] }));
+  const w = (fn) => players.map((p) => Math.max(0.01, minutes.get(p.id) * fn(p)));
+  const tot = (mean, sd) => Math.max(0, Math.round(mean + sd * normal(rng)));
+  const rebs = allocate(tot(sim.teamRebounds, 4), w((p) => (p.stats.rebound / 50) ** 2.2), rng);
+  const asts = allocate(tot(sim.teamAssists, 3), w((p) => (p.stats.passing / 50) ** 2.2), rng);
+  const stls = allocate(tot(sim.teamSteals, 2), w((p) => (p.stats.defense / 50) ** 1.5 * (p.stats.athletic / 50)), rng);
+  const blks = allocate(tot(sim.teamBlocks, 1.6), w((p) => (p.stats.rebound / 50) ** 1.5 * (p.stats.defense / 50) ** 1.5), rng);
+  return players.map((p, i) => ({
+    id: p.id,
+    name: p.name,
+    minutes: minutes.get(p.id),
+    points: scored[i],
+    rebounds: rebs[i],
+    assists: asts[i],
+    steals: stls[i],
+    blocks: blks[i],
+    ...shotLine(p, scored[i], sim, rng)
+  }));
 }
 
 /**

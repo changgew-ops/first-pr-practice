@@ -43,24 +43,41 @@ export function rankStandings(records) {
     || a.id.localeCompare(b.id));
 }
 
-export function playRegularSeason(teams, baseline, sim, rng, { keepGames = false } = {}) {
-  const byId = new Map(teams.map((t) => [t.id, t]));
+/**
+ * 정규리그 진행.
+ * options.keepGames: 경기 결과를 모두 보관
+ * options.onGame(result): 경기마다 호출 (기록 누적 등)
+ * options.checkpointEvery: N일마다 onCheckpoint를 호출
+ * options.onCheckpoint({ day, teams, baseline }): { teams, baseline }을 돌려주면 이후 경기부터 새 라인업·기준점으로 진행
+ *   (시즌 중 능력치 갱신, 훈련 반영 등에 쓴다)
+ */
+export function playRegularSeason(teams, baseline, sim, rng, options = {}) {
+  const { keepGames = false, onGame, checkpointEvery, onCheckpoint } = options;
+  let current = teams;
+  let base = baseline;
+  let byId = new Map(current.map((t) => [t.id, t]));
   const records = new Map(teams.map((t) => [t.id, newRecord(t.id)]));
   const schedule = createSchedule(teams.map((t) => t.id));
-  // 같은 날 경기끼리는 독립이므로 날짜 순서대로 진행
   const games = [];
-  for (const day of schedule) {
+  schedule.forEach((day, dayIdx) => {
     for (const g of shuffle(day, rng)) {
-      const r = simulateGame(byId.get(g.homeId), byId.get(g.awayId), baseline, sim, rng);
+      const r = simulateGame(byId.get(g.homeId), byId.get(g.awayId), base, sim, rng);
       const hr = records.get(r.homeId);
       const ar = records.get(r.awayId);
       hr.pointsFor += r.homePts; hr.pointsAgainst += r.awayPts;
       ar.pointsFor += r.awayPts; ar.pointsAgainst += r.homePts;
       if (r.winnerId === r.homeId) { hr.wins++; ar.losses++; } else { ar.wins++; hr.losses++; }
       if (keepGames) games.push(r);
+      if (onGame) onGame(r);
     }
-  }
-  return { standings: rankStandings([...records.values()]), games };
+    const day1 = dayIdx + 1;
+    if (checkpointEvery && onCheckpoint && day1 % checkpointEvery === 0 && day1 < schedule.length) {
+      const next = onCheckpoint({ day: day1, teams: current, baseline: base });
+      if (next?.teams) { current = next.teams; byId = new Map(current.map((t) => [t.id, t])); }
+      if (next?.baseline) base = next.baseline;
+    }
+  });
+  return { standings: rankStandings([...records.values()]), games, teams: current, baseline: base };
 }
 
 /** 시리즈: bestOf 전 (bestOf+1)/2 선승. 높은 시드가 홈 패턴(1=홈)에 따라 홈 경기를 가진다. */
@@ -107,8 +124,9 @@ export function playPlayoffs(rankedIds, teamsById, rules, baseline, sim, rng) {
 
 export function playSeason(teams, rules, baseline, rng, options) {
   const sim = rules.simulation;
-  const teamsById = new Map(teams.map((t) => [t.id, t]));
   const regular = playRegularSeason(teams, baseline, sim, rng, options);
-  const playoffs = playPlayoffs(regular.standings.map((r) => r.id), teamsById, rules, baseline, sim, rng);
-  return { standings: regular.standings, games: regular.games, playoffs, championId: playoffs.championId };
+  // 시즌 중 라인업이 바뀌었다면 마지막 라인업·기준점으로 플레이오프를 치른다
+  const finalById = new Map(regular.teams.map((t) => [t.id, t]));
+  const playoffs = playPlayoffs(regular.standings.map((r) => r.id), finalById, rules, regular.baseline, sim, rng);
+  return { standings: regular.standings, games: regular.games, playoffs, championId: playoffs.championId, teams: regular.teams, baseline: regular.baseline };
 }
