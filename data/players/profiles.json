@@ -651,5 +651,51 @@
       }
     ],
     "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "스카티 제임스",
+    "nameEn": "David Scott James Jr.",
+    "birth": "1996-11-07",
+    "heightCm": 202,
+    "weightKg": 108,
+    "wingspanCm": 213,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "파워 포워드"
+    ],
+    "school": "리버티 대학교",
+    "kblEntry": "2026 외국인 자유계약(고양 소노)",
+    "career": [
+      {
+        "team": "goyang-sono",
+        "years": "2026~"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-23)"
+  },
+  {
+    "name": "브라이언 그리핀",
+    "nameEn": "Bryan Griffin",
+    "birth": "1998-04-30",
+    "heightCm": 203,
+    "weightKg": 108,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "제이비어 대학교",
+    "kblEntry": "2025 외국인 자유계약(창원 LG)",
+    "career": [
+      {
+        "team": "changwon-lg",
+        "years": "2025"
+      }
+    ],
+    "note": "2024-25 시즌 중 2025년 1월 6일 아셈 마레이의 부상으로 4주간 일시 대체",
+    "source": "나무위키 인물 문서(2026-10-23)"
   }
 ]
