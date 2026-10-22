@@ -1,0 +1,9 @@
+{
+  "name": "kbl-gm-game",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "node tools/generate-players.mjs",
+    "test": "node --test"
+  }
+}

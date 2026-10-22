@@ -1,0 +1,22 @@
+{
+  "_note": "2026-27 시즌 검색 기준. 구현 전 KBL 공식 자료와 대조할 것.",
+  "season": "2026-27",
+  "teams": 10,
+  "regularSeasonGames": 54,
+  "salaryCap": {
+    "domesticEok": 30,
+    "foreignUsdTotal": 1000000,
+    "foreignUsdPerPlayer": 700000
+  },
+  "roster": {
+    "domestic": 12,
+    "foreign": 2
+  },
+  "foreignPlayers": {
+    "registered": 2,
+    "onCourt": 2,
+    "quartersBothAllowed": [2, 3],
+    "quartersSingleOnly": [1, 4]
+  },
+  "stats": { "min": 0, "max": 99 }
+}

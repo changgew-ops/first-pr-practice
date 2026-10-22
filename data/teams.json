@@ -1,0 +1,12 @@
+[
+  { "id": "wonju-db", "name": "원주 DB", "city": "원주" },
+  { "id": "seoul-samsung", "name": "서울 삼성", "city": "서울" },
+  { "id": "goyang-sono", "name": "고양 소노", "city": "고양" },
+  { "id": "seoul-sk", "name": "서울 SK", "city": "서울" },
+  { "id": "changwon-lg", "name": "창원 LG", "city": "창원" },
+  { "id": "anyang-jungkwanjang", "name": "안양 정관장", "city": "안양" },
+  { "id": "busan-kcc", "name": "부산 KCC", "city": "부산" },
+  { "id": "suwon-kt", "name": "수원 KT", "city": "수원" },
+  { "id": "daegu-kogas", "name": "대구 한국가스공사", "city": "대구" },
+  { "id": "ulsan-hyundai-mobis", "name": "울산 현대모비스", "city": "울산" }
+]

@@ -1,0 +1,4062 @@
+[
+  {
+    "id": "wonju-db-01",
+    "name": "정승훈",
+    "real": false,
+    "position": "PG",
+    "age": 28,
+    "number": 5,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 70,
+      "passing": 75,
+      "defense": 69,
+      "rebound": 56,
+      "athletic": 73,
+      "stamina": 78
+    },
+    "ovr": 72,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-02",
+    "name": "윤재수",
+    "real": false,
+    "position": "SG",
+    "age": 29,
+    "number": 16,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 73,
+      "passing": 67,
+      "defense": 71,
+      "rebound": 56,
+      "athletic": 69,
+      "stamina": 71
+    },
+    "ovr": 70,
+    "potential": 73,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-03",
+    "name": "윤동규",
+    "real": false,
+    "position": "SF",
+    "age": 26,
+    "number": 26,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 70,
+      "passing": 69,
+      "defense": 65,
+      "rebound": 66,
+      "athletic": 75,
+      "stamina": 65
+    },
+    "ovr": 68,
+    "potential": 70,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-04",
+    "name": "윤재우",
+    "real": false,
+    "position": "PF",
+    "age": 25,
+    "number": 28,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 61,
+      "passing": 56,
+      "defense": 72,
+      "rebound": 77,
+      "athletic": 73,
+      "stamina": 70
+    },
+    "ovr": 71,
+    "potential": 78,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-05",
+    "name": "이재율",
+    "real": false,
+    "position": "C",
+    "age": 22,
+    "number": 36,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 53,
+      "passing": 60,
+      "defense": 69,
+      "rebound": 80,
+      "athletic": 72,
+      "stamina": 67
+    },
+    "ovr": 71,
+    "potential": 79,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-06",
+    "name": "황우수",
+    "real": false,
+    "position": "PG",
+    "age": 35,
+    "number": 40,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 64,
+      "passing": 75,
+      "defense": 59,
+      "rebound": 46,
+      "athletic": 64,
+      "stamina": 72
+    },
+    "ovr": 67,
+    "potential": 67,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-07",
+    "name": "권동준",
+    "real": false,
+    "position": "SG",
+    "age": 26,
+    "number": 14,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 68,
+      "passing": 61,
+      "defense": 64,
+      "rebound": 54,
+      "athletic": 62,
+      "stamina": 67
+    },
+    "ovr": 64,
+    "potential": 67,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-08",
+    "name": "오찬민",
+    "real": false,
+    "position": "SF",
+    "age": 21,
+    "number": 27,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 62,
+      "passing": 58,
+      "defense": 59,
+      "rebound": 60,
+      "athletic": 61,
+      "stamina": 66
+    },
+    "ovr": 61,
+    "potential": 66,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.3
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-09",
+    "name": "송우혁",
+    "real": false,
+    "position": "PF",
+    "age": 20,
+    "number": 17,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 53,
+      "passing": 50,
+      "defense": 64,
+      "rebound": 64,
+      "athletic": 57,
+      "stamina": 56
+    },
+    "ovr": 59,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-10",
+    "name": "오민빈",
+    "real": false,
+    "position": "C",
+    "age": 23,
+    "number": 29,
+    "rarity": "common",
+    "stats": {
+      "shooting": 45,
+      "passing": 45,
+      "defense": 56,
+      "rebound": 70,
+      "athletic": 60,
+      "stamina": 51
+    },
+    "ovr": 59,
+    "potential": 62,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-11",
+    "name": "권준우",
+    "real": false,
+    "position": "PG",
+    "age": 27,
+    "number": 42,
+    "rarity": "common",
+    "stats": {
+      "shooting": 57,
+      "passing": 61,
+      "defense": 53,
+      "rebound": 37,
+      "athletic": 58,
+      "stamina": 59
+    },
+    "ovr": 57,
+    "potential": 59,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-12",
+    "name": "서시수",
+    "real": false,
+    "position": "SF",
+    "age": 25,
+    "number": 20,
+    "rarity": "common",
+    "stats": {
+      "shooting": 52,
+      "passing": 53,
+      "defense": 58,
+      "rebound": 53,
+      "athletic": 54,
+      "stamina": 59
+    },
+    "ovr": 55,
+    "potential": 58,
+    "origin": "domestic",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-13",
+    "name": "Elijah Brooks",
+    "real": false,
+    "position": "C",
+    "age": 26,
+    "number": 10,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 52,
+      "passing": 56,
+      "defense": 62,
+      "rebound": 77,
+      "athletic": 59,
+      "stamina": 63
+    },
+    "ovr": 65,
+    "potential": 66,
+    "origin": "foreign",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryUsd": 540000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "wonju-db-14",
+    "name": "Caleb Dalton",
+    "real": false,
+    "position": "PF",
+    "age": 25,
+    "number": 21,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 55,
+      "passing": 60,
+      "defense": 66,
+      "rebound": 66,
+      "athletic": 67,
+      "stamina": 62
+    },
+    "ovr": 64,
+    "potential": 70,
+    "origin": "foreign",
+    "teamId": "wonju-db",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryUsd": 340000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-01",
+    "name": "권현훈",
+    "real": false,
+    "position": "PG",
+    "age": 19,
+    "number": 35,
+    "rarity": "legend",
+    "stats": {
+      "shooting": 72,
+      "passing": 86,
+      "defense": 69,
+      "rebound": 59,
+      "athletic": 75,
+      "stamina": 74
+    },
+    "ovr": 76,
+    "potential": 87,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 2.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-02",
+    "name": "황진우",
+    "real": false,
+    "position": "SG",
+    "age": 23,
+    "number": 1,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 76,
+      "passing": 70,
+      "defense": 74,
+      "rebound": 60,
+      "athletic": 71,
+      "stamina": 77
+    },
+    "ovr": 73,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-03",
+    "name": "김민석",
+    "real": false,
+    "position": "SF",
+    "age": 33,
+    "number": 27,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 76,
+      "passing": 71,
+      "defense": 76,
+      "rebound": 68,
+      "athletic": 75,
+      "stamina": 69
+    },
+    "ovr": 73,
+    "potential": 73,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-04",
+    "name": "강찬수",
+    "real": false,
+    "position": "PF",
+    "age": 29,
+    "number": 22,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 63,
+      "passing": 64,
+      "defense": 67,
+      "rebound": 79,
+      "athletic": 73,
+      "stamina": 72
+    },
+    "ovr": 71,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-05",
+    "name": "류준철",
+    "real": false,
+    "position": "C",
+    "age": 23,
+    "number": 17,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 55,
+      "passing": 64,
+      "defense": 71,
+      "rebound": 78,
+      "athletic": 74,
+      "stamina": 61
+    },
+    "ovr": 71,
+    "potential": 77,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-06",
+    "name": "정민철",
+    "real": false,
+    "position": "PG",
+    "age": 34,
+    "number": 32,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 68,
+      "passing": 74,
+      "defense": 66,
+      "rebound": 53,
+      "athletic": 70,
+      "stamina": 74
+    },
+    "ovr": 70,
+    "potential": 70,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-07",
+    "name": "황찬석",
+    "real": false,
+    "position": "SG",
+    "age": 19,
+    "number": 36,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 69,
+      "passing": 63,
+      "defense": 66,
+      "rebound": 50,
+      "athletic": 67,
+      "stamina": 62
+    },
+    "ovr": 65,
+    "potential": 78,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-08",
+    "name": "박지민",
+    "real": false,
+    "position": "SF",
+    "age": 25,
+    "number": 14,
+    "rarity": "common",
+    "stats": {
+      "shooting": 64,
+      "passing": 56,
+      "defense": 64,
+      "rebound": 61,
+      "athletic": 64,
+      "stamina": 65
+    },
+    "ovr": 63,
+    "potential": 64,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.4
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-09",
+    "name": "송진준",
+    "real": false,
+    "position": "PF",
+    "age": 30,
+    "number": 24,
+    "rarity": "common",
+    "stats": {
+      "shooting": 54,
+      "passing": 52,
+      "defense": 62,
+      "rebound": 70,
+      "athletic": 61,
+      "stamina": 64
+    },
+    "ovr": 63,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.4
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-10",
+    "name": "한성원",
+    "real": false,
+    "position": "C",
+    "age": 33,
+    "number": 38,
+    "rarity": "common",
+    "stats": {
+      "shooting": 47,
+      "passing": 52,
+      "defense": 62,
+      "rebound": 67,
+      "athletic": 60,
+      "stamina": 53
+    },
+    "ovr": 60,
+    "potential": 60,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-11",
+    "name": "장영민",
+    "real": false,
+    "position": "PG",
+    "age": 34,
+    "number": 11,
+    "rarity": "common",
+    "stats": {
+      "shooting": 58,
+      "passing": 62,
+      "defense": 55,
+      "rebound": 42,
+      "athletic": 58,
+      "stamina": 63
+    },
+    "ovr": 59,
+    "potential": 59,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-12",
+    "name": "임태혁",
+    "real": false,
+    "position": "SF",
+    "age": 35,
+    "number": 33,
+    "rarity": "common",
+    "stats": {
+      "shooting": 61,
+      "passing": 57,
+      "defense": 58,
+      "rebound": 51,
+      "athletic": 57,
+      "stamina": 55
+    },
+    "ovr": 57,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-13",
+    "name": "Trevor Pierce",
+    "real": false,
+    "position": "PF",
+    "age": 28,
+    "number": 10,
+    "rarity": "common",
+    "stats": {
+      "shooting": 61,
+      "passing": 59,
+      "defense": 69,
+      "rebound": 68,
+      "athletic": 67,
+      "stamina": 61
+    },
+    "ovr": 65,
+    "potential": 65,
+    "origin": "foreign",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 420000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-samsung-14",
+    "name": "Jalen Dalton",
+    "real": false,
+    "position": "SF",
+    "age": 24,
+    "number": 37,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 69,
+      "passing": 62,
+      "defense": 69,
+      "rebound": 63,
+      "athletic": 63,
+      "stamina": 65
+    },
+    "ovr": 66,
+    "potential": 67,
+    "origin": "foreign",
+    "teamId": "seoul-samsung",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 250000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-01",
+    "name": "임시준",
+    "real": false,
+    "position": "PG",
+    "age": 32,
+    "number": 7,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 71,
+      "passing": 82,
+      "defense": 72,
+      "rebound": 59,
+      "athletic": 70,
+      "stamina": 79
+    },
+    "ovr": 75,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 2.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-02",
+    "name": "서재규",
+    "real": false,
+    "position": "SG",
+    "age": 31,
+    "number": 25,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 79,
+      "passing": 73,
+      "defense": 74,
+      "rebound": 61,
+      "athletic": 73,
+      "stamina": 74
+    },
+    "ovr": 74,
+    "potential": 74,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 2.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-03",
+    "name": "강동우",
+    "real": false,
+    "position": "SF",
+    "age": 31,
+    "number": 34,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 70,
+      "passing": 71,
+      "defense": 69,
+      "rebound": 67,
+      "athletic": 79,
+      "stamina": 74
+    },
+    "ovr": 72,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-04",
+    "name": "신승빈",
+    "real": false,
+    "position": "PF",
+    "age": 19,
+    "number": 15,
+    "rarity": "legend",
+    "stats": {
+      "shooting": 68,
+      "passing": 63,
+      "defense": 72,
+      "rebound": 82,
+      "athletic": 73,
+      "stamina": 66
+    },
+    "ovr": 72,
+    "potential": 84,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-05",
+    "name": "오우빈",
+    "real": false,
+    "position": "C",
+    "age": 19,
+    "number": 20,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 55,
+      "passing": 65,
+      "defense": 77,
+      "rebound": 88,
+      "athletic": 70,
+      "stamina": 68
+    },
+    "ovr": 76,
+    "potential": 80,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 2.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-06",
+    "name": "김도호",
+    "real": false,
+    "position": "PG",
+    "age": 26,
+    "number": 43,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 66,
+      "passing": 73,
+      "defense": 63,
+      "rebound": 55,
+      "athletic": 71,
+      "stamina": 73
+    },
+    "ovr": 69,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-07",
+    "name": "조재수",
+    "real": false,
+    "position": "SG",
+    "age": 34,
+    "number": 5,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 77,
+      "passing": 71,
+      "defense": 68,
+      "rebound": 52,
+      "athletic": 62,
+      "stamina": 70
+    },
+    "ovr": 69,
+    "potential": 69,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-08",
+    "name": "송우율",
+    "real": false,
+    "position": "SF",
+    "age": 26,
+    "number": 22,
+    "rarity": "common",
+    "stats": {
+      "shooting": 68,
+      "passing": 58,
+      "defense": 62,
+      "rebound": 56,
+      "athletic": 64,
+      "stamina": 61
+    },
+    "ovr": 62,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.4
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-09",
+    "name": "이성철",
+    "real": false,
+    "position": "PF",
+    "age": 33,
+    "number": 35,
+    "rarity": "common",
+    "stats": {
+      "shooting": 57,
+      "passing": 58,
+      "defense": 62,
+      "rebound": 68,
+      "athletic": 69,
+      "stamina": 64
+    },
+    "ovr": 64,
+    "potential": 64,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-10",
+    "name": "최도훈",
+    "real": false,
+    "position": "C",
+    "age": 32,
+    "number": 10,
+    "rarity": "common",
+    "stats": {
+      "shooting": 47,
+      "passing": 51,
+      "defense": 62,
+      "rebound": 77,
+      "athletic": 59,
+      "stamina": 52
+    },
+    "ovr": 63,
+    "potential": 63,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.4
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-11",
+    "name": "황진수",
+    "real": false,
+    "position": "PG",
+    "age": 26,
+    "number": 24,
+    "rarity": "common",
+    "stats": {
+      "shooting": 58,
+      "passing": 65,
+      "defense": 57,
+      "rebound": 43,
+      "athletic": 61,
+      "stamina": 63
+    },
+    "ovr": 60,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-12",
+    "name": "최현철",
+    "real": false,
+    "position": "SF",
+    "age": 31,
+    "number": 28,
+    "rarity": "common",
+    "stats": {
+      "shooting": 60,
+      "passing": 56,
+      "defense": 55,
+      "rebound": 57,
+      "athletic": 57,
+      "stamina": 55
+    },
+    "ovr": 57,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-13",
+    "name": "Elijah Dalton",
+    "real": false,
+    "position": "SG",
+    "age": 33,
+    "number": 30,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 69,
+      "passing": 71,
+      "defense": 69,
+      "rebound": 53,
+      "athletic": 66,
+      "stamina": 62
+    },
+    "ovr": 67,
+    "potential": 67,
+    "origin": "foreign",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 530000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "goyang-sono-14",
+    "name": "Isaiah Holloway",
+    "real": false,
+    "position": "SG",
+    "age": 31,
+    "number": 37,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 77,
+      "passing": 64,
+      "defense": 64,
+      "rebound": 56,
+      "athletic": 64,
+      "stamina": 65
+    },
+    "ovr": 68,
+    "potential": 68,
+    "origin": "foreign",
+    "teamId": "goyang-sono",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 390000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-01",
+    "name": "최준범",
+    "real": false,
+    "position": "PG",
+    "age": 22,
+    "number": 10,
+    "rarity": "legend",
+    "stats": {
+      "shooting": 73,
+      "passing": 83,
+      "defense": 69,
+      "rebound": 58,
+      "athletic": 70,
+      "stamina": 77
+    },
+    "ovr": 75,
+    "potential": 90,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 2.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-02",
+    "name": "강준빈",
+    "real": false,
+    "position": "SG",
+    "age": 19,
+    "number": 38,
+    "rarity": "legend",
+    "stats": {
+      "shooting": 74,
+      "passing": 71,
+      "defense": 66,
+      "rebound": 53,
+      "athletic": 74,
+      "stamina": 70
+    },
+    "ovr": 70,
+    "potential": 85,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-03",
+    "name": "박건수",
+    "real": false,
+    "position": "SF",
+    "age": 28,
+    "number": 12,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 64,
+      "passing": 67,
+      "defense": 72,
+      "rebound": 66,
+      "athletic": 72,
+      "stamina": 71
+    },
+    "ovr": 69,
+    "potential": 71,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-04",
+    "name": "강건환",
+    "real": false,
+    "position": "PF",
+    "age": 32,
+    "number": 31,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 57,
+      "passing": 59,
+      "defense": 69,
+      "rebound": 72,
+      "athletic": 69,
+      "stamina": 65
+    },
+    "ovr": 67,
+    "potential": 67,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-05",
+    "name": "송현규",
+    "real": false,
+    "position": "C",
+    "age": 31,
+    "number": 25,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 54,
+      "passing": 54,
+      "defense": 71,
+      "rebound": 82,
+      "athletic": 64,
+      "stamina": 67
+    },
+    "ovr": 71,
+    "potential": 71,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-06",
+    "name": "안준규",
+    "real": false,
+    "position": "PG",
+    "age": 25,
+    "number": 33,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 62,
+      "passing": 74,
+      "defense": 59,
+      "rebound": 51,
+      "athletic": 62,
+      "stamina": 67
+    },
+    "ovr": 65,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-07",
+    "name": "정지율",
+    "real": false,
+    "position": "SG",
+    "age": 19,
+    "number": 13,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 71,
+      "passing": 58,
+      "defense": 63,
+      "rebound": 52,
+      "athletic": 65,
+      "stamina": 66
+    },
+    "ovr": 65,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-08",
+    "name": "조태석",
+    "real": false,
+    "position": "SF",
+    "age": 25,
+    "number": 43,
+    "rarity": "common",
+    "stats": {
+      "shooting": 63,
+      "passing": 58,
+      "defense": 59,
+      "rebound": 56,
+      "athletic": 59,
+      "stamina": 59
+    },
+    "ovr": 59,
+    "potential": 63,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-09",
+    "name": "한동철",
+    "real": false,
+    "position": "PF",
+    "age": 29,
+    "number": 39,
+    "rarity": "common",
+    "stats": {
+      "shooting": 51,
+      "passing": 53,
+      "defense": 58,
+      "rebound": 63,
+      "athletic": 65,
+      "stamina": 55
+    },
+    "ovr": 59,
+    "potential": 60,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-10",
+    "name": "서우범",
+    "real": false,
+    "position": "C",
+    "age": 33,
+    "number": 5,
+    "rarity": "common",
+    "stats": {
+      "shooting": 45,
+      "passing": 48,
+      "defense": 59,
+      "rebound": 65,
+      "athletic": 58,
+      "stamina": 52
+    },
+    "ovr": 58,
+    "potential": 58,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-11",
+    "name": "이준범",
+    "real": false,
+    "position": "PG",
+    "age": 34,
+    "number": 34,
+    "rarity": "common",
+    "stats": {
+      "shooting": 56,
+      "passing": 63,
+      "defense": 52,
+      "rebound": 35,
+      "athletic": 59,
+      "stamina": 55
+    },
+    "ovr": 57,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-12",
+    "name": "황민철",
+    "real": false,
+    "position": "SF",
+    "age": 24,
+    "number": 28,
+    "rarity": "common",
+    "stats": {
+      "shooting": 59,
+      "passing": 46,
+      "defense": 53,
+      "rebound": 52,
+      "athletic": 58,
+      "stamina": 56
+    },
+    "ovr": 55,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-13",
+    "name": "Jamal Hale",
+    "real": false,
+    "position": "SG",
+    "age": 29,
+    "number": 41,
+    "rarity": "common",
+    "stats": {
+      "shooting": 64,
+      "passing": 61,
+      "defense": 59,
+      "rebound": 50,
+      "athletic": 61,
+      "stamina": 66
+    },
+    "ovr": 62,
+    "potential": 64,
+    "origin": "foreign",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryUsd": 590000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "seoul-sk-14",
+    "name": "Elijah Sutton",
+    "real": false,
+    "position": "PF",
+    "age": 26,
+    "number": 16,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 53,
+      "passing": 50,
+      "defense": 61,
+      "rebound": 69,
+      "athletic": 61,
+      "stamina": 57
+    },
+    "ovr": 61,
+    "potential": 68,
+    "origin": "foreign",
+    "teamId": "seoul-sk",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 340000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-01",
+    "name": "박건원",
+    "real": false,
+    "position": "PG",
+    "age": 19,
+    "number": 1,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 64,
+      "passing": 71,
+      "defense": 59,
+      "rebound": 46,
+      "athletic": 70,
+      "stamina": 69
+    },
+    "ovr": 66,
+    "potential": 79,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-02",
+    "name": "한찬준",
+    "real": false,
+    "position": "SG",
+    "age": 32,
+    "number": 3,
+    "rarity": "common",
+    "stats": {
+      "shooting": 71,
+      "passing": 62,
+      "defense": 64,
+      "rebound": 49,
+      "athletic": 65,
+      "stamina": 63
+    },
+    "ovr": 65,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-03",
+    "name": "임시율",
+    "real": false,
+    "position": "SF",
+    "age": 23,
+    "number": 5,
+    "rarity": "common",
+    "stats": {
+      "shooting": 62,
+      "passing": 59,
+      "defense": 69,
+      "rebound": 58,
+      "athletic": 67,
+      "stamina": 62
+    },
+    "ovr": 63,
+    "potential": 64,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.4
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-04",
+    "name": "안동범",
+    "real": false,
+    "position": "PF",
+    "age": 23,
+    "number": 28,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 53,
+      "passing": 59,
+      "defense": 68,
+      "rebound": 69,
+      "athletic": 65,
+      "stamina": 60
+    },
+    "ovr": 64,
+    "potential": 69,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-05",
+    "name": "송도석",
+    "real": false,
+    "position": "C",
+    "age": 26,
+    "number": 25,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 53,
+      "passing": 57,
+      "defense": 70,
+      "rebound": 80,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 69,
+    "potential": 74,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-06",
+    "name": "오진혁",
+    "real": false,
+    "position": "PG",
+    "age": 25,
+    "number": 15,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 57,
+      "passing": 71,
+      "defense": 53,
+      "rebound": 48,
+      "athletic": 58,
+      "stamina": 61
+    },
+    "ovr": 61,
+    "potential": 67,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.3
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-07",
+    "name": "홍태민",
+    "real": false,
+    "position": "SG",
+    "age": 35,
+    "number": 20,
+    "rarity": "common",
+    "stats": {
+      "shooting": 62,
+      "passing": 61,
+      "defense": 57,
+      "rebound": 48,
+      "athletic": 58,
+      "stamina": 59
+    },
+    "ovr": 59,
+    "potential": 59,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-08",
+    "name": "조준규",
+    "real": false,
+    "position": "SF",
+    "age": 29,
+    "number": 36,
+    "rarity": "common",
+    "stats": {
+      "shooting": 52,
+      "passing": 48,
+      "defense": 61,
+      "rebound": 51,
+      "athletic": 60,
+      "stamina": 62
+    },
+    "ovr": 56,
+    "potential": 59,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-09",
+    "name": "장찬환",
+    "real": false,
+    "position": "PF",
+    "age": 22,
+    "number": 6,
+    "rarity": "common",
+    "stats": {
+      "shooting": 50,
+      "passing": 52,
+      "defense": 60,
+      "rebound": 56,
+      "athletic": 53,
+      "stamina": 57
+    },
+    "ovr": 55,
+    "potential": 64,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-10",
+    "name": "조찬호",
+    "real": false,
+    "position": "C",
+    "age": 32,
+    "number": 2,
+    "rarity": "common",
+    "stats": {
+      "shooting": 35,
+      "passing": 43,
+      "defense": 52,
+      "rebound": 63,
+      "athletic": 54,
+      "stamina": 46
+    },
+    "ovr": 53,
+    "potential": 53,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 0.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-11",
+    "name": "류태철",
+    "real": false,
+    "position": "PG",
+    "age": 27,
+    "number": 40,
+    "rarity": "common",
+    "stats": {
+      "shooting": 55,
+      "passing": 60,
+      "defense": 48,
+      "rebound": 38,
+      "athletic": 54,
+      "stamina": 54
+    },
+    "ovr": 54,
+    "potential": 54,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 0.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-12",
+    "name": "최민환",
+    "real": false,
+    "position": "SF",
+    "age": 31,
+    "number": 19,
+    "rarity": "common",
+    "stats": {
+      "shooting": 49,
+      "passing": 45,
+      "defense": 49,
+      "rebound": 47,
+      "athletic": 54,
+      "stamina": 49
+    },
+    "ovr": 49,
+    "potential": 49,
+    "origin": "domestic",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 0.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-13",
+    "name": "Corey Brooks",
+    "real": false,
+    "position": "C",
+    "age": 26,
+    "number": 11,
+    "rarity": "common",
+    "stats": {
+      "shooting": 49,
+      "passing": 47,
+      "defense": 62,
+      "rebound": 71,
+      "athletic": 63,
+      "stamina": 52
+    },
+    "ovr": 61,
+    "potential": 64,
+    "origin": "foreign",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 400000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "changwon-lg-14",
+    "name": "Darius Holloway",
+    "real": false,
+    "position": "C",
+    "age": 26,
+    "number": 32,
+    "rarity": "common",
+    "stats": {
+      "shooting": 46,
+      "passing": 52,
+      "defense": 58,
+      "rebound": 69,
+      "athletic": 59,
+      "stamina": 55
+    },
+    "ovr": 60,
+    "potential": 61,
+    "origin": "foreign",
+    "teamId": "changwon-lg",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryUsd": 330000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-01",
+    "name": "윤우범",
+    "real": false,
+    "position": "PG",
+    "age": 27,
+    "number": 1,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 67,
+      "passing": 80,
+      "defense": 67,
+      "rebound": 59,
+      "athletic": 74,
+      "stamina": 73
+    },
+    "ovr": 72,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-02",
+    "name": "서도원",
+    "real": false,
+    "position": "SG",
+    "age": 28,
+    "number": 4,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 76,
+      "passing": 66,
+      "defense": 72,
+      "rebound": 58,
+      "athletic": 69,
+      "stamina": 71
+    },
+    "ovr": 71,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-03",
+    "name": "안찬환",
+    "real": false,
+    "position": "SF",
+    "age": 20,
+    "number": 9,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 72,
+      "passing": 66,
+      "defense": 72,
+      "rebound": 67,
+      "athletic": 69,
+      "stamina": 71
+    },
+    "ovr": 70,
+    "potential": 78,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-04",
+    "name": "홍현규",
+    "real": false,
+    "position": "PF",
+    "age": 32,
+    "number": 30,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 64,
+      "passing": 62,
+      "defense": 72,
+      "rebound": 78,
+      "athletic": 74,
+      "stamina": 67
+    },
+    "ovr": 71,
+    "potential": 71,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-05",
+    "name": "오성철",
+    "real": false,
+    "position": "C",
+    "age": 24,
+    "number": 23,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 50,
+      "passing": 55,
+      "defense": 71,
+      "rebound": 75,
+      "athletic": 66,
+      "stamina": 59
+    },
+    "ovr": 67,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-06",
+    "name": "윤진규",
+    "real": false,
+    "position": "PG",
+    "age": 35,
+    "number": 38,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 64,
+      "passing": 75,
+      "defense": 57,
+      "rebound": 49,
+      "athletic": 65,
+      "stamina": 63
+    },
+    "ovr": 66,
+    "potential": 66,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-07",
+    "name": "신영범",
+    "real": false,
+    "position": "SG",
+    "age": 29,
+    "number": 25,
+    "rarity": "common",
+    "stats": {
+      "shooting": 67,
+      "passing": 68,
+      "defense": 62,
+      "rebound": 47,
+      "athletic": 62,
+      "stamina": 65
+    },
+    "ovr": 64,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-08",
+    "name": "이현빈",
+    "real": false,
+    "position": "SF",
+    "age": 24,
+    "number": 7,
+    "rarity": "common",
+    "stats": {
+      "shooting": 56,
+      "passing": 60,
+      "defense": 63,
+      "rebound": 56,
+      "athletic": 62,
+      "stamina": 58
+    },
+    "ovr": 59,
+    "potential": 61,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-09",
+    "name": "신찬호",
+    "real": false,
+    "position": "PF",
+    "age": 30,
+    "number": 10,
+    "rarity": "common",
+    "stats": {
+      "shooting": 50,
+      "passing": 52,
+      "defense": 55,
+      "rebound": 65,
+      "athletic": 63,
+      "stamina": 59
+    },
+    "ovr": 59,
+    "potential": 61,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-10",
+    "name": "이건원",
+    "real": false,
+    "position": "C",
+    "age": 30,
+    "number": 6,
+    "rarity": "common",
+    "stats": {
+      "shooting": 46,
+      "passing": 43,
+      "defense": 58,
+      "rebound": 71,
+      "athletic": 59,
+      "stamina": 54
+    },
+    "ovr": 60,
+    "potential": 60,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-11",
+    "name": "황지환",
+    "real": false,
+    "position": "PG",
+    "age": 29,
+    "number": 29,
+    "rarity": "common",
+    "stats": {
+      "shooting": 53,
+      "passing": 66,
+      "defense": 57,
+      "rebound": 36,
+      "athletic": 61,
+      "stamina": 61
+    },
+    "ovr": 59,
+    "potential": 59,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-12",
+    "name": "권건수",
+    "real": false,
+    "position": "SF",
+    "age": 27,
+    "number": 16,
+    "rarity": "common",
+    "stats": {
+      "shooting": 51,
+      "passing": 53,
+      "defense": 52,
+      "rebound": 51,
+      "athletic": 57,
+      "stamina": 56
+    },
+    "ovr": 53,
+    "potential": 56,
+    "origin": "domestic",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 0.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-13",
+    "name": "Omar Tate",
+    "real": false,
+    "position": "PF",
+    "age": 31,
+    "number": 43,
+    "rarity": "common",
+    "stats": {
+      "shooting": 53,
+      "passing": 59,
+      "defense": 61,
+      "rebound": 72,
+      "athletic": 66,
+      "stamina": 62
+    },
+    "ovr": 64,
+    "potential": 64,
+    "origin": "foreign",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryUsd": 680000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-14",
+    "name": "Trevor Ellis",
+    "real": false,
+    "position": "SG",
+    "age": 25,
+    "number": 28,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 71,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 59
+    },
+    "ovr": 64,
+    "potential": 66,
+    "origin": "foreign",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 310000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-01",
+    "name": "권현호",
+    "real": false,
+    "position": "PG",
+    "age": 20,
+    "number": 8,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 67,
+      "passing": 73,
+      "defense": 67,
+      "rebound": 51,
+      "athletic": 66,
+      "stamina": 74
+    },
+    "ovr": 69,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-02",
+    "name": "권성규",
+    "real": false,
+    "position": "SG",
+    "age": 22,
+    "number": 1,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 78,
+      "passing": 65,
+      "defense": 65,
+      "rebound": 60,
+      "athletic": 64,
+      "stamina": 74
+    },
+    "ovr": 70,
+    "potential": 79,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-03",
+    "name": "최태수",
+    "real": false,
+    "position": "SF",
+    "age": 21,
+    "number": 35,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 64,
+      "passing": 67,
+      "defense": 71,
+      "rebound": 62,
+      "athletic": 70,
+      "stamina": 71
+    },
+    "ovr": 68,
+    "potential": 73,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-04",
+    "name": "김민율",
+    "real": false,
+    "position": "PF",
+    "age": 26,
+    "number": 36,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 61,
+      "passing": 58,
+      "defense": 70,
+      "rebound": 73,
+      "athletic": 66,
+      "stamina": 67
+    },
+    "ovr": 68,
+    "potential": 71,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-05",
+    "name": "송성훈",
+    "real": false,
+    "position": "C",
+    "age": 27,
+    "number": 21,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 51,
+      "passing": 52,
+      "defense": 64,
+      "rebound": 75,
+      "athletic": 64,
+      "stamina": 63
+    },
+    "ovr": 66,
+    "potential": 66,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-06",
+    "name": "이준민",
+    "real": false,
+    "position": "PG",
+    "age": 22,
+    "number": 0,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 58,
+      "passing": 77,
+      "defense": 57,
+      "rebound": 51,
+      "athletic": 67,
+      "stamina": 61
+    },
+    "ovr": 65,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-07",
+    "name": "송현원",
+    "real": false,
+    "position": "SG",
+    "age": 30,
+    "number": 45,
+    "rarity": "common",
+    "stats": {
+      "shooting": 71,
+      "passing": 61,
+      "defense": 57,
+      "rebound": 46,
+      "athletic": 66,
+      "stamina": 62
+    },
+    "ovr": 64,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-08",
+    "name": "강준율",
+    "real": false,
+    "position": "SF",
+    "age": 24,
+    "number": 6,
+    "rarity": "common",
+    "stats": {
+      "shooting": 60,
+      "passing": 57,
+      "defense": 62,
+      "rebound": 51,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 59,
+    "potential": 62,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-09",
+    "name": "권태수",
+    "real": false,
+    "position": "PF",
+    "age": 35,
+    "number": 2,
+    "rarity": "common",
+    "stats": {
+      "shooting": 52,
+      "passing": 52,
+      "defense": 54,
+      "rebound": 64,
+      "athletic": 57,
+      "stamina": 53
+    },
+    "ovr": 57,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-10",
+    "name": "최성훈",
+    "real": false,
+    "position": "C",
+    "age": 34,
+    "number": 14,
+    "rarity": "common",
+    "stats": {
+      "shooting": 37,
+      "passing": 42,
+      "defense": 56,
+      "rebound": 71,
+      "athletic": 54,
+      "stamina": 47
+    },
+    "ovr": 57,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-11",
+    "name": "서우준",
+    "real": false,
+    "position": "PG",
+    "age": 23,
+    "number": 16,
+    "rarity": "common",
+    "stats": {
+      "shooting": 53,
+      "passing": 63,
+      "defense": 51,
+      "rebound": 41,
+      "athletic": 50,
+      "stamina": 59
+    },
+    "ovr": 56,
+    "potential": 60,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-12",
+    "name": "신건석",
+    "real": false,
+    "position": "SF",
+    "age": 20,
+    "number": 41,
+    "rarity": "common",
+    "stats": {
+      "shooting": 59,
+      "passing": 45,
+      "defense": 52,
+      "rebound": 50,
+      "athletic": 51,
+      "stamina": 52
+    },
+    "ovr": 52,
+    "potential": 64,
+    "origin": "domestic",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 0.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-13",
+    "name": "Caleb Hale",
+    "real": false,
+    "position": "SG",
+    "age": 25,
+    "number": 12,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 73,
+      "passing": 60,
+      "defense": 61,
+      "rebound": 45,
+      "athletic": 63,
+      "stamina": 61
+    },
+    "ovr": 64,
+    "potential": 71,
+    "origin": "foreign",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryUsd": 630000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "busan-kcc-14",
+    "name": "Terrell Hale",
+    "real": false,
+    "position": "C",
+    "age": 28,
+    "number": 17,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 47,
+      "passing": 50,
+      "defense": 61,
+      "rebound": 79,
+      "athletic": 64,
+      "stamina": 59
+    },
+    "ovr": 65,
+    "potential": 66,
+    "origin": "foreign",
+    "teamId": "busan-kcc",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryUsd": 350000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-01",
+    "name": "조진우",
+    "real": false,
+    "position": "PG",
+    "age": 24,
+    "number": 43,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 70,
+      "passing": 71,
+      "defense": 68,
+      "rebound": 54,
+      "athletic": 63,
+      "stamina": 66
+    },
+    "ovr": 68,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-02",
+    "name": "이영빈",
+    "real": false,
+    "position": "SG",
+    "age": 32,
+    "number": 29,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 77,
+      "passing": 66,
+      "defense": 64,
+      "rebound": 48,
+      "athletic": 69,
+      "stamina": 70
+    },
+    "ovr": 69,
+    "potential": 69,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-03",
+    "name": "강현범",
+    "real": false,
+    "position": "SF",
+    "age": 19,
+    "number": 28,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 67,
+      "passing": 57,
+      "defense": 64,
+      "rebound": 56,
+      "athletic": 72,
+      "stamina": 62
+    },
+    "ovr": 64,
+    "potential": 75,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-04",
+    "name": "홍성혁",
+    "real": false,
+    "position": "PF",
+    "age": 23,
+    "number": 2,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 61,
+      "passing": 57,
+      "defense": 66,
+      "rebound": 66,
+      "athletic": 70,
+      "stamina": 59
+    },
+    "ovr": 64,
+    "potential": 68,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-05",
+    "name": "박건우",
+    "real": false,
+    "position": "C",
+    "age": 19,
+    "number": 9,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 49,
+      "passing": 56,
+      "defense": 71,
+      "rebound": 78,
+      "athletic": 60,
+      "stamina": 60
+    },
+    "ovr": 67,
+    "potential": 74,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-06",
+    "name": "오찬석",
+    "real": false,
+    "position": "PG",
+    "age": 19,
+    "number": 34,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 64,
+      "passing": 74,
+      "defense": 57,
+      "rebound": 46,
+      "athletic": 63,
+      "stamina": 63
+    },
+    "ovr": 65,
+    "potential": 74,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-07",
+    "name": "신도빈",
+    "real": false,
+    "position": "SG",
+    "age": 35,
+    "number": 7,
+    "rarity": "common",
+    "stats": {
+      "shooting": 68,
+      "passing": 63,
+      "defense": 58,
+      "rebound": 48,
+      "athletic": 56,
+      "stamina": 57
+    },
+    "ovr": 61,
+    "potential": 61,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.3
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-08",
+    "name": "류민범",
+    "real": false,
+    "position": "SF",
+    "age": 22,
+    "number": 6,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 56,
+      "passing": 51,
+      "defense": 54,
+      "rebound": 56,
+      "athletic": 61,
+      "stamina": 54
+    },
+    "ovr": 56,
+    "potential": 68,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-09",
+    "name": "최시우",
+    "real": false,
+    "position": "PF",
+    "age": 28,
+    "number": 33,
+    "rarity": "common",
+    "stats": {
+      "shooting": 52,
+      "passing": 50,
+      "defense": 52,
+      "rebound": 61,
+      "athletic": 61,
+      "stamina": 56
+    },
+    "ovr": 56,
+    "potential": 58,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-10",
+    "name": "임태수",
+    "real": false,
+    "position": "C",
+    "age": 27,
+    "number": 16,
+    "rarity": "common",
+    "stats": {
+      "shooting": 41,
+      "passing": 42,
+      "defense": 51,
+      "rebound": 61,
+      "athletic": 54,
+      "stamina": 47
+    },
+    "ovr": 53,
+    "potential": 55,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 0.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-11",
+    "name": "송성민",
+    "real": false,
+    "position": "PG",
+    "age": 19,
+    "number": 13,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 50,
+      "passing": 61,
+      "defense": 53,
+      "rebound": 37,
+      "athletic": 57,
+      "stamina": 58
+    },
+    "ovr": 55,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-12",
+    "name": "권현혁",
+    "real": false,
+    "position": "SF",
+    "age": 30,
+    "number": 35,
+    "rarity": "common",
+    "stats": {
+      "shooting": 51,
+      "passing": 49,
+      "defense": 50,
+      "rebound": 44,
+      "athletic": 57,
+      "stamina": 50
+    },
+    "ovr": 51,
+    "potential": 53,
+    "origin": "domestic",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 0.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-13",
+    "name": "Isaiah Quill",
+    "real": false,
+    "position": "C",
+    "age": 32,
+    "number": 39,
+    "rarity": "common",
+    "stats": {
+      "shooting": 48,
+      "passing": 47,
+      "defense": 64,
+      "rebound": 75,
+      "athletic": 56,
+      "stamina": 60
+    },
+    "ovr": 63,
+    "potential": 63,
+    "origin": "foreign",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryUsd": 500000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "suwon-kt-14",
+    "name": "Ryan Ellis",
+    "real": false,
+    "position": "SG",
+    "age": 24,
+    "number": 44,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 67,
+      "passing": 64,
+      "defense": 59,
+      "rebound": 46,
+      "athletic": 55,
+      "stamina": 61
+    },
+    "ovr": 61,
+    "potential": 69,
+    "origin": "foreign",
+    "teamId": "suwon-kt",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryUsd": 370000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-01",
+    "name": "최찬민",
+    "real": false,
+    "position": "PG",
+    "age": 21,
+    "number": 44,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 70,
+      "passing": 80,
+      "defense": 68,
+      "rebound": 56,
+      "athletic": 64,
+      "stamina": 74
+    },
+    "ovr": 72,
+    "potential": 81,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-02",
+    "name": "김준석",
+    "real": false,
+    "position": "SG",
+    "age": 35,
+    "number": 33,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 75,
+      "passing": 65,
+      "defense": 67,
+      "rebound": 56,
+      "athletic": 68,
+      "stamina": 66
+    },
+    "ovr": 68,
+    "potential": 68,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-03",
+    "name": "권준준",
+    "real": false,
+    "position": "SF",
+    "age": 33,
+    "number": 11,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 70,
+      "rebound": 59,
+      "athletic": 66,
+      "stamina": 66
+    },
+    "ovr": 66,
+    "potential": 66,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-04",
+    "name": "윤찬빈",
+    "real": false,
+    "position": "PF",
+    "age": 35,
+    "number": 25,
+    "rarity": "common",
+    "stats": {
+      "shooting": 61,
+      "passing": 62,
+      "defense": 64,
+      "rebound": 68,
+      "athletic": 69,
+      "stamina": 62
+    },
+    "ovr": 65,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-05",
+    "name": "서준석",
+    "real": false,
+    "position": "C",
+    "age": 32,
+    "number": 4,
+    "rarity": "common",
+    "stats": {
+      "shooting": 52,
+      "passing": 52,
+      "defense": 63,
+      "rebound": 76,
+      "athletic": 68,
+      "stamina": 57
+    },
+    "ovr": 65,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-06",
+    "name": "장승율",
+    "real": false,
+    "position": "PG",
+    "age": 28,
+    "number": 31,
+    "rarity": "common",
+    "stats": {
+      "shooting": 62,
+      "passing": 74,
+      "defense": 60,
+      "rebound": 48,
+      "athletic": 60,
+      "stamina": 65
+    },
+    "ovr": 65,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-07",
+    "name": "정건철",
+    "real": false,
+    "position": "SG",
+    "age": 22,
+    "number": 28,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 66,
+      "passing": 60,
+      "defense": 55,
+      "rebound": 49,
+      "athletic": 60,
+      "stamina": 57
+    },
+    "ovr": 60,
+    "potential": 67,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.2
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-08",
+    "name": "류찬원",
+    "real": false,
+    "position": "SF",
+    "age": 22,
+    "number": 18,
+    "rarity": "common",
+    "stats": {
+      "shooting": 58,
+      "passing": 59,
+      "defense": 55,
+      "rebound": 48,
+      "athletic": 57,
+      "stamina": 56
+    },
+    "ovr": 56,
+    "potential": 61,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-09",
+    "name": "송우석",
+    "real": false,
+    "position": "PF",
+    "age": 34,
+    "number": 34,
+    "rarity": "common",
+    "stats": {
+      "shooting": 52,
+      "passing": 48,
+      "defense": 52,
+      "rebound": 59,
+      "athletic": 62,
+      "stamina": 50
+    },
+    "ovr": 55,
+    "potential": 55,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-10",
+    "name": "김도율",
+    "real": false,
+    "position": "C",
+    "age": 30,
+    "number": 27,
+    "rarity": "common",
+    "stats": {
+      "shooting": 40,
+      "passing": 40,
+      "defense": 56,
+      "rebound": 64,
+      "athletic": 53,
+      "stamina": 51
+    },
+    "ovr": 55,
+    "potential": 56,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-11",
+    "name": "박동율",
+    "real": false,
+    "position": "PG",
+    "age": 23,
+    "number": 22,
+    "rarity": "common",
+    "stats": {
+      "shooting": 48,
+      "passing": 64,
+      "defense": 52,
+      "rebound": 37,
+      "athletic": 53,
+      "stamina": 59
+    },
+    "ovr": 55,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-12",
+    "name": "이시환",
+    "real": false,
+    "position": "SF",
+    "age": 23,
+    "number": 15,
+    "rarity": "common",
+    "stats": {
+      "shooting": 56,
+      "passing": 53,
+      "defense": 48,
+      "rebound": 42,
+      "athletic": 58,
+      "stamina": 56
+    },
+    "ovr": 53,
+    "potential": 56,
+    "origin": "domestic",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 0.8
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-13",
+    "name": "Trevor Tate",
+    "real": false,
+    "position": "C",
+    "age": 32,
+    "number": 35,
+    "rarity": "common",
+    "stats": {
+      "shooting": 51,
+      "passing": 52,
+      "defense": 61,
+      "rebound": 68,
+      "athletic": 62,
+      "stamina": 59
+    },
+    "ovr": 62,
+    "potential": 62,
+    "origin": "foreign",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryUsd": 680000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-14",
+    "name": "Devin Brooks",
+    "real": false,
+    "position": "C",
+    "age": 27,
+    "number": 41,
+    "rarity": "common",
+    "stats": {
+      "shooting": 47,
+      "passing": 52,
+      "defense": 64,
+      "rebound": 69,
+      "athletic": 57,
+      "stamina": 58
+    },
+    "ovr": 62,
+    "potential": 65,
+    "origin": "foreign",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryUsd": 280000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-01",
+    "name": "윤재규",
+    "real": false,
+    "position": "PG",
+    "age": 25,
+    "number": 1,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 67,
+      "passing": 79,
+      "defense": 68,
+      "rebound": 55,
+      "athletic": 68,
+      "stamina": 69
+    },
+    "ovr": 71,
+    "potential": 79,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-02",
+    "name": "강현율",
+    "real": false,
+    "position": "SG",
+    "age": 35,
+    "number": 4,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 76,
+      "passing": 71,
+      "defense": 70,
+      "rebound": 54,
+      "athletic": 71,
+      "stamina": 65
+    },
+    "ovr": 70,
+    "potential": 70,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.9
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-03",
+    "name": "조태혁",
+    "real": false,
+    "position": "SF",
+    "age": 31,
+    "number": 12,
+    "rarity": "common",
+    "stats": {
+      "shooting": 70,
+      "passing": 62,
+      "defense": 67,
+      "rebound": 59,
+      "athletic": 65,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-04",
+    "name": "정재훈",
+    "real": false,
+    "position": "PF",
+    "age": 34,
+    "number": 27,
+    "rarity": "common",
+    "stats": {
+      "shooting": 58,
+      "passing": 57,
+      "defense": 63,
+      "rebound": 70,
+      "athletic": 68,
+      "stamina": 68
+    },
+    "ovr": 65,
+    "potential": 65,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-05",
+    "name": "이재한",
+    "real": false,
+    "position": "C",
+    "age": 23,
+    "number": 6,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 47,
+      "passing": 51,
+      "defense": 68,
+      "rebound": 77,
+      "athletic": 66,
+      "stamina": 55
+    },
+    "ovr": 66,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.6
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-06",
+    "name": "홍시한",
+    "real": false,
+    "position": "PG",
+    "age": 29,
+    "number": 17,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 61,
+      "passing": 74,
+      "defense": 59,
+      "rebound": 43,
+      "athletic": 59,
+      "stamina": 67
+    },
+    "ovr": 64,
+    "potential": 66,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-07",
+    "name": "류태규",
+    "real": false,
+    "position": "SG",
+    "age": 22,
+    "number": 43,
+    "rarity": "ace",
+    "stats": {
+      "shooting": 67,
+      "passing": 61,
+      "defense": 53,
+      "rebound": 45,
+      "athletic": 61,
+      "stamina": 60
+    },
+    "ovr": 61,
+    "potential": 74,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 1,
+      "salaryEok": 1.3
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-08",
+    "name": "서동호",
+    "real": false,
+    "position": "SF",
+    "age": 24,
+    "number": 33,
+    "rarity": "common",
+    "stats": {
+      "shooting": 56,
+      "passing": 56,
+      "defense": 59,
+      "rebound": 57,
+      "athletic": 64,
+      "stamina": 55
+    },
+    "ovr": 58,
+    "potential": 62,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-09",
+    "name": "조도수",
+    "real": false,
+    "position": "PF",
+    "age": 22,
+    "number": 30,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 44,
+      "passing": 45,
+      "defense": 60,
+      "rebound": 58,
+      "athletic": 61,
+      "stamina": 52
+    },
+    "ovr": 55,
+    "potential": 72,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-10",
+    "name": "김준철",
+    "real": false,
+    "position": "C",
+    "age": 20,
+    "number": 28,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 36,
+      "passing": 44,
+      "defense": 55,
+      "rebound": 63,
+      "athletic": 55,
+      "stamina": 51
+    },
+    "ovr": 55,
+    "potential": 67,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-11",
+    "name": "이승민",
+    "real": false,
+    "position": "PG",
+    "age": 27,
+    "number": 42,
+    "rarity": "common",
+    "stats": {
+      "shooting": 53,
+      "passing": 64,
+      "defense": 51,
+      "rebound": 34,
+      "athletic": 52,
+      "stamina": 54
+    },
+    "ovr": 55,
+    "potential": 57,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-12",
+    "name": "황승호",
+    "real": false,
+    "position": "SF",
+    "age": 27,
+    "number": 20,
+    "rarity": "common",
+    "stats": {
+      "shooting": 47,
+      "passing": 44,
+      "defense": 55,
+      "rebound": 43,
+      "athletic": 56,
+      "stamina": 56
+    },
+    "ovr": 51,
+    "potential": 54,
+    "origin": "domestic",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryEok": 0.7
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-13",
+    "name": "Jalen Fenn",
+    "real": false,
+    "position": "SF",
+    "age": 32,
+    "number": 21,
+    "rarity": "common",
+    "stats": {
+      "shooting": 59,
+      "passing": 58,
+      "defense": 63,
+      "rebound": 56,
+      "athletic": 67,
+      "stamina": 64
+    },
+    "ovr": 62,
+    "potential": 62,
+    "origin": "foreign",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 3,
+      "salaryUsd": 430000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "ulsan-hyundai-mobis-14",
+    "name": "Isaiah Mercer",
+    "real": false,
+    "position": "C",
+    "age": 33,
+    "number": 39,
+    "rarity": "common",
+    "stats": {
+      "shooting": 43,
+      "passing": 51,
+      "defense": 58,
+      "rebound": 71,
+      "athletic": 63,
+      "stamina": 58
+    },
+    "ovr": 61,
+    "potential": 61,
+    "origin": "foreign",
+    "teamId": "ulsan-hyundai-mobis",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryUsd": 480000
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  }
+]
