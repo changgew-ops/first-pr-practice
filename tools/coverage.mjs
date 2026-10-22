@@ -22,7 +22,8 @@ const COLUMNS = [
   ['상대전적', (s) => Boolean(s.headToHead)],
   ['수상', (s) => Boolean(s.awards)],
   ['기록', (s) => has(`data/stats/${s.season}.csv`)],
-  ['소속', (s) => has(`data/players/team-${s.season}.csv`) || s.season === '2025-26'],
+  ['공식기록', (s) => has(`data/stats/official/${s.season}.csv`)],
+  ['소속', (s) => has(`data/players/team-${s.season}.csv`) || has(`data/stats/official/${s.season}.csv`) || s.season === '2025-26'],
   ['이벤트', (s) => events.has(s.season)],
   ['드래프트', (s) => draftFull.has(s.season) ? 2 : drafts.has(s.season) ? 1 : false]
 ];
@@ -31,7 +32,7 @@ const mark = (v) => (v === 2 ? '●' : v === 1 ? '◐' : v ? '●' : '·');
 const rows = [...seasons].reverse().map((s) => [s.season, ...COLUMNS.map(([, f]) => mark(f(s)))]);
 // 아직 시즌 문서가 없는 다음 시즌(등록선수 화면 등으로 일부만 있음)
 const next = '2026-27';
-const nextRow = [next, '·', '·', '·', '·', '·', '·', has('data/stats/2026-27.csv') ? '◐' : '·', has('data/players/registry.csv') ? '◐' : '·', events.has(next) ? '●' : '·', '·'];
+const nextRow = [next, '·', '·', '·', '·', '·', '·', has('data/stats/2026-27.csv') ? '◐' : '·', has('data/stats/official/2026-27.csv') ? '◐' : '·', has('data/players/registry.csv') ? '◐' : '·', events.has(next) ? '●' : '·', '·'];
 const header = ['시즌', ...COLUMNS.map(([n]) => n)];
 const table = [header, ...[nextRow, ...rows]];
 const md = [
@@ -43,7 +44,8 @@ const md = [
   '|' + header.map(() => '---').join('|') + '|',
   ...table.slice(1).map((r) => '| ' + r.join(' | ') + ' |'),
   '',
-  '- 기록: `data/stats/<시즌>.csv` (선수 시즌 누적, 플레이오프 포함)  - 소속: `data/players/team-<시즌>.csv` (팀 아이콘 판독; 2025-26 포함, 2026-27은 등록선수 화면)',
+  '- 기록: `data/stats/<시즌>.csv` (선수 시즌 누적, 플레이오프 포함; 게임의 능력치 계산에 쓰는 시트)  - 공식기록: `data/stats/official/<시즌>.csv` (KBL 공식 기록, 정규시즌·플레이오프·챔피언결정전·소속팀별, 1997~)',
+  '- 소속: `data/players/team-<시즌>.csv` (팀 아이콘 판독; 2025-26 포함, 2026-27은 등록선수 화면) 또는 공식 기록의 소속팀',
   '- 이벤트: `data/history/events/<시즌>.json` (트레이드·외국인·FA·은퇴·군 입대·코칭)  - 드래프트: `data/history/drafts/<연도>.json` (그 시즌에 합류한 신인)',
   ''
 ].join('\n');

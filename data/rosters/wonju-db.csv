@@ -1,16 +1,16 @@
-name,position,age,number,origin,nationality
-강상재,SF,31,26,domestic,
-정효근,PF,32,12,domestic,
-이용우,SG,26,7,domestic,
-김보배,PF,23,10,domestic,
-이정현(2),SG,39,3,domestic,
-이유진,SF,21,6,domestic,
-최성원,SG,30,19,domestic,
-정호영,SG,28,5,domestic,
-이윤기,SF,28,13,domestic,
-조은후,SG,26,2,domestic,
-김휴범,SG,23,0,domestic,
-이윤수,C,30,99,domestic,
-헨리 엘런슨,PF,29,8,foreign,미국
-레이션 해먼즈,PF,28,22,foreign,미국
-이선 알바노,PG,30,17,asia,필리핀
+name,position,age,number,origin,nationality,kblId
+강상재,SF,31,26,domestic,,291001
+정효근,PF,32,12,domestic,,290790
+이용우,SG,26,7,domestic,,291355
+김보배,PF,23,10,domestic,,291752
+이정현(2),SG,39,3,domestic,,290381
+이유진,SF,21,6,domestic,,291850
+최성원,SG,30,19,domestic,,291070
+정호영,SG,28,5,domestic,,291483
+이윤기,SF,28,13,domestic,,291351
+조은후,SG,26,2,domestic,,291499
+김휴범,SG,23,0,domestic,,291851
+이윤수,C,30,99,domestic,,291304
+헨리 엘런슨,PF,29,8,foreign,미국,291785
+레이션 해먼즈,PF,28,22,foreign,미국,291698
+이선 알바노,PG,30,17,asia,필리핀,291511

@@ -8,8 +8,9 @@
 | 1 | 순위·플레이오프 | (이미 1997~2025-26 있음) | `data/history/raw/<시즌>.json` | `npm run build:history` |
 | 2 | 라운드별 순위·MVP·상대전적·수상 | 나무위키 시즌 문서의 해당 표 | `raw/<시즌>.json`에 `rounds`·`headToHead`·`awards` 추가 | 누적·경기차·라운드 전적 = 누적 변화, 상대전적 대칭·합계 = 시즌 승패 |
 | 3 | 우승팀(PO 화면 없는 시즌) | 구단별 우승 연도(나무위키 KBL 문서) | `raw`에 `champion` | 구단별 우승 연도 테스트 |
-| 4 | 선수 기록 | KBL 기록실 xlsx(시트별 시즌) | `python3 tools/xlsx-to-stats-csv.py <xlsx> <시트> data/stats/<시즌>.csv` | 득점·리바운드·야투 합, 승+패 = 경기 수 |
-| 5 | 선수 소속 | 선수기록 화면(PTS 순, 1차 스탯) **녹화** | `tools/read-team-icons.py` (README의 명령) | 선수의 승·패가 구단 시즌 합계 이내, 시즌 중 이적은 위키 트레이드와 일치 |
+| 3.5 | **공식 기록(전 시즌)** | (이미 1997~2026-27 있음: `data/stats/official/`) | 선수 기록·소속의 **정답지**. 새 시즌이 끝나면 같은 형식의 xlsx를 받아 `tools/xlsx-to-kbl-official.py` | `tests/official-stats.test.mjs`: 득점·리바운드·승패 항등식, 구단 출전시간 합 = 200분×경기, 시리즈 결과와 선수 승수 |
+| 4 | 선수 기록 | KBL 기록실 xlsx(시트별 시즌). 2020-21 이전은 **공식 기록에서 바로 만들 수 있다** | `python3 tools/xlsx-to-stats-csv.py <xlsx> <시트> data/stats/<시즌>.csv` | 득점·리바운드·야투 합, 승+패 = 경기 수 |
+| 5 | 선수 소속 | 공식 기록이 있으면 필요 없다(`official/<시즌>.csv`의 소속). 없는 시즌만 선수기록 화면(PTS 순, 1차 스탯) **녹화** | `tools/read-team-icons.py` (README의 명령) | 선수의 승·패가 구단 시즌 합계 이내, 시즌 중 이적은 위키 트레이드와 일치 |
 | 6 | 시즌 이벤트 | 나무위키 시즌 문서의 오프시즌(코칭·트레이드·외국인·은퇴·FA·군 입대) | `season-events` 에이전트가 `data/history/events/<시즌>.json` | `node tools/check-events.mjs <시즌>`: FA 대상자 = 계약+미체결+제외, 새 소속 = 그 시즌 소속 CSV |
 | 7 | 신인 드래프트 | 나무위키 드래프트 문서 + 컴바인 스크린샷 | `draft-transcriber`가 `data/history/drafts/<연도>.json` | 추첨 공 합 200, 지명 순서 규칙, 지명자 ∈ 참가자 |
 | 7.5 | 선수 프로필(선택) | KBL 선수 상세 화면·나무위키 인물 문서 스크린샷 | `data/players/profiles.json` | 시즌별 기록 ≤ 시트, KBL 경력 = 시즌 소속 CSV |
@@ -30,3 +31,4 @@
 - 코로나 시즌(2021-22)의 라운드는 재편성 경기 때문에 팀마다 경기 수가 다르고 위키의 "라운드 전적"이 누적 변화와 맞지 않는다: `uniformRounds: false`, `roundRecordCheck: false`.
 - 동명이인: 이름 뒤에 (1),(2)를 붙인다. 구단과 시즌 소속으로 짝짓고, 안 되면 억지로 잇지 않는다.
 - 구단 이름은 그 시즌 이름 그대로 써도 된다(검증기가 줄임말·옛 이름을 안다).
+- 공식 기록이 있으면 아이콘 판독·위키 값은 **검산용**이다. 2021-22~2025-26 소속 CSV를 공식 기록과 대조해 아이콘 판독 오류 26건을 고쳤다(`team-overrides.csv`).

@@ -1,16 +1,16 @@
-name,position,age,number,origin,nationality
-한승희,SF,28,51,domestic,
-변준형,PG,30,5,domestic,
-박지훈,SG,31,6,domestic,
-박정웅,SG,20,4,domestic,
-문유현,SG,22,24,domestic,
-허일영,SF,41,10,domestic,
-김종규,C,35,15,domestic,
-표승빈,SF,24,7,domestic,
-이대헌,SF,34,21,domestic,
-김세창,SG,28,2,domestic,
-박찬호,C,30,13,domestic,
-김준형,PF,29,35,domestic,
-존 무니,C,28,33,foreign,미국
-데이본 리드,SF,31,9,foreign,미국
-렌즈 아반도,SG,28,12,asia,필리핀
+name,position,age,number,origin,nationality,kblId
+박지훈,SG,31,6,domestic,,291008
+한승희,SF,28,51,domestic,,291372
+변준형,PG,30,5,domestic,,291220
+박정웅,SG,20,4,domestic,,291746
+문유현,SG,22,24,domestic,,291857
+허일영,SF,41,10,domestic,,290284
+김종규,C,35,15,domestic,,290750
+표승빈,SF,24,7,domestic,,291648
+이대헌,SF,34,21,domestic,,290603
+김세창,SG,28,2,domestic,,291281
+박찬호,C,30,13,domestic,,291276
+김준형,PF,29,35,domestic,,291210
+존 무니,C,28,33,foreign,미국,291883
+데이본 리드,SF,31,9,foreign,미국,291888
+렌즈 아반도,SG,28,12,asia,필리핀,291583

@@ -21,17 +21,17 @@ name,team,age,position,number,origin,등록팀,25-26팀,minutes,games,포지션,
 이승현,,,,,,ulsan-hyundai-mobis,ulsan-hyundai-mobis,1574,58,PF,domestic
 저스틴 구탕,,,,,,seoul-samsung,seoul-samsung,1558,59,SF,asia
 칼 타마요,,,,,,changwon-lg,changwon-lg,1554,54,PF,asia
+박지훈(1),,,,,,anyang-jungkwanjang,anyang-jungkwanjang,1525,59,SG,domestic
 신승민,,,,,,,daegu-kogas,1512,54,SF,domestic
 케렘 칸터,,,,,,seoul-samsung,seoul-samsung,1495,60,C,foreign
 정성우,,,,,,daegu-kogas,daegu-kogas,1488,59,PG,domestic
 문정현,,,,,,suwon-kt,suwon-kt,1483,53,PF,domestic
+최승욱,,,,,,goyang-sono,goyang-sono,1465,64,SF,domestic
 이관희,,,,,,seoul-samsung,seoul-samsung,1451,60,SG,domestic
 송교창,,,,,,,busan-kcc,1425,46,SF,domestic
 한승희,,,,,,anyang-jungkwanjang,anyang-jungkwanjang,1419,64,SF,domestic
 변준형,,,,,,anyang-jungkwanjang,anyang-jungkwanjang,1396,50,PG,domestic
-박지훈(1),,,,,,anyang-jungkwanjang,anyang-jungkwanjang,1364,51,SG,domestic
 한호빈,,,,,,seoul-samsung,seoul-samsung,1364,53,PG,domestic
-최승욱,,,,,,goyang-sono,goyang-sono,1358,57,SF,domestic
 렌즈 아반도,,,,,,anyang-jungkwanjang,anyang-jungkwanjang,1339,60,SG,asia
 김낙현,,,,,,seoul-sk,seoul-sk,1335,45,PG,domestic
 안영준,,,,,,seoul-sk,seoul-sk,1311,40,SF,domestic
@@ -73,8 +73,8 @@ name,team,age,position,number,origin,등록팀,25-26팀,minutes,games,포지션,
 이규태,,,,,,seoul-samsung,seoul-samsung,753,44,SF,domestic
 김보배,,,,,,wonju-db,wonju-db,749,51,PF,domestic
 한희원,,,,,,suwon-kt,suwon-kt,746,52,SF,domestic
+이정현(2),,,,,,wonju-db,wonju-db,739,63,SG,domestic
 이두원,,,,,,suwon-kt,suwon-kt,721,47,C,domestic
-이정현(2),,,,,,wonju-db,wonju-db,718,57,SG,domestic
 이원석,,,,,,,seoul-samsung,717,40,PF,domestic
 최현민,,,,,,seoul-samsung,seoul-samsung,711,50,SF,domestic
 함지훈,,,,,,,ulsan-hyundai-mobis,684,53,SF,domestic
@@ -146,7 +146,6 @@ name,team,age,position,number,origin,등록팀,25-26팀,minutes,games,포지션,
 전준범,,,,,,seoul-sk,ulsan-hyundai-mobis,179,20,SF,domestic
 박지훈(2),,,,,,,daegu-kogas,165,22,SG,domestic
 트레이 포터,,,,,,suwon-kt,,164,7,C,foreign
-박지훈,,,,,,,,160,8,SF,domestic
 에릭 로메로,,,,,,,ulsan-hyundai-mobis,158,14,C,foreign
 홍경기,,,,,,,goyang-sono,154,18,SG,domestic
 이대균,,,,,,ulsan-hyundai-mobis,ulsan-hyundai-mobis,149,25,SF,domestic
@@ -158,12 +157,11 @@ name,team,age,position,number,origin,등록팀,25-26팀,minutes,games,포지션,
 박민재,,,,,,suwon-kt,suwon-kt,120,17,SF,domestic
 배병준,,,,,,ulsan-hyundai-mobis,changwon-lg,110,13,SG,domestic
 데이본 리드,,,,,,anyang-jungkwanjang,,109,4,SF,foreign
-최승욱(1),,,,,,,,107,7,SG,domestic
 카이린 갤러웨이,,,,,,,changwon-lg,93,9,C,foreign
 이주영,,,,,,busan-kcc,busan-kcc,87,14,SG,domestic
 망콕 마티앙,,,,,,,daegu-kogas,84,7,C,foreign
 정성조,,,,,,seoul-samsung,seoul-samsung,75,15,SG,domestic
-최승욱(2),,,,,,,,63,7,SG,domestic
+최승욱(2),,,,,,daegu-kogas,,63,7,SF,domestic
 이승우,,,,,,,ulsan-hyundai-mobis,63,13,SF,domestic
 김명진,,,,,,seoul-sk,seoul-sk,60,6,SF,domestic
 임동언,,,,,,seoul-samsung,seoul-samsung,58,10,SF,domestic
@@ -181,8 +179,7 @@ name,team,age,position,number,origin,등록팀,25-26팀,minutes,games,포지션,
 김태완,,,,,,ulsan-hyundai-mobis,ulsan-hyundai-mobis,27,6,SG,domestic
 김준형,,,,,,anyang-jungkwanjang,anyang-jungkwanjang,24,2,PF,domestic
 박종하,,,,,,goyang-sono,goyang-sono,23,12,SG,domestic
-이정현(신),,,,,,,,22,6,SF,domestic
-박진철,,,,,,seoul-samsung,seoul-samsung,21,6,C,domestic
+박진철,,,,,,seoul-samsung,goyang-sono,21,6,C,domestic
 김동준,,,,,,ulsan-hyundai-mobis,ulsan-hyundai-mobis,16,10,SG,domestic
 주현우,,,,,,anyang-jungkwanjang,anyang-jungkwanjang,16,1,PF,domestic
 프레디,,,,,,seoul-sk,seoul-sk,15,1,C,domestic
@@ -234,4 +231,3 @@ name,team,age,position,number,origin,등록팀,25-26팀,minutes,games,포지션,
 조혁재,,,,,,,,0,0,SF,domestic
 조환희,,,,,,,,0,0,SG,domestic
 지용현,,,,,,,,0,0,C,domestic
-최승욱,,,,,,goyang-sono,goyang-sono,0,0,SF,domestic

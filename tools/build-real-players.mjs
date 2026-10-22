@@ -27,8 +27,11 @@ function readCsv(p) {
 const checkTeam = (id, where) => { if (id && !teamIds.has(id)) throw new Error(`${where}: 알 수 없는 구단 id "${id}"`); return id || null; };
 
 const aliases = new Map(readCsv('data/players/name-aliases.csv').map((r) => [r.from, r.to]));
-const prev = applyAliases(parseStatsCsv(read('data/stats/2025-26.csv')), aliases);
-const cur = existsSync(path('data/stats/2026-27.csv')) ? applyAliases(parseStatsCsv(read('data/stats/2026-27.csv')), aliases) : [];
+// 기록 시트 이름 → KBL 선수번호 (tools/build-player-ids.mjs가 공식 기록과 대조해 만든다). 번호가 있으면 시즌 사이·등록선수 화면과 정확히 이어진다
+const seasonIds = new Map(readCsv('data/players/season-ids.csv').map((r) => [`${r.season}|${r.label}`, r.playerNo]));
+const withIds = (rows, season) => rows.map((r) => ({ ...r, kblId: seasonIds.get(`${season}|${r.name}`) ?? null }));
+const prev = applyAliases(withIds(parseStatsCsv(read('data/stats/2025-26.csv')), '2025-26'), aliases);
+const cur = existsSync(path('data/stats/2026-27.csv')) ? applyAliases(withIds(parseStatsCsv(read('data/stats/2026-27.csv')), '2026-27'), aliases) : [];
 const { players: merged, notes } = mergeSeasons(prev, cur);
 
 // 25-26 시트는 플레이오프까지 합산된 값이라, 구단 합계도 정규리그 + 플레이오프로 맞춘다
@@ -74,8 +77,6 @@ if (existsSync(path('data/players/profiles.json'))) {
   for (const pr of JSON.parse(read('data/players/profiles.json'))) if (pr.birth) births.set(pr.name, pr.birth);
 }
 
-const pool0 = buildPool(merged, rules, { teamTotals, teamMap });
-const { map: registry, extra, notes: regNotes } = resolveRegistry(entries, pool0, team2526);
 // KBL 공식 프로필 생년월일(births.csv): 드래프트 기록·프로필보다 우선한다. 풀의 이름(동명이인 번호 포함)으로 넣는다
 const birthsByName = new Map();
 if (existsSync(path('data/players/births.csv'))) {
@@ -87,6 +88,10 @@ const useOfficial = (poolName, e) => {
   const m = matchBirth(e, birthsByName);
   if (m.birth) { births.set(poolName, m.birth); officialCount++; } else if (m.why !== '후보 없음') birthNotes.push(`생년월일 ${poolName}(${e.team}): ${m.why}`);
 };
+// 등록선수 → KBL 선수번호 (같은 이름이 여럿이면 드래프트 연도·구단 계보로 가른다). 풀과 이을 때 먼저 쓴다
+for (const e of entries) e.kblId = matchBirth(e, birthsByName).playerNo ?? null;
+const pool0 = buildPool(merged, rules, { teamTotals, teamMap });
+const { map: registry, extra, notes: regNotes } = resolveRegistry(entries, pool0, team2526);
 for (const [poolName, e] of registry) useOfficial(poolName, e);
 for (const e of extra) useOfficial(`${e.name}@${e.team}`, e); // 기록 없는 선수는 이름이 겹칠 수 있어 구단까지 붙인다
 const all = [...buildPool(merged, rules, { teamTotals, teamMap, registry, births }), ...statlessPlayers(extra, teamMap, { births })]
@@ -136,7 +141,7 @@ if (!process.argv.includes('--apply')) {
     for (const p of out) dropped.push(`${display(p)}(${teamId})`);
     for (const t of swaps) adjusted.push(`${teamId} 포지션 보충 ${t}`);
     for (const r of relabeled) adjusted.push(`${teamId} ${r.name}: ${r.from} → ${r.to} (포지션이 비어서 바꿈)`);
-    const rows = ['name,position,age,number,origin,nationality', ...roster.map((p) => [display(p), p.position, p.age ?? '', p.number ?? '', p.origin, nationalityOf.get(p.name) ?? ''].join(','))];
+    const rows = ['name,position,age,number,origin,nationality,kblId', ...roster.map((p) => [display(p), p.position, p.age ?? '', p.number ?? '', p.origin, nationalityOf.get(p.name) ?? '', p.kblId ?? ''].join(','))];
     writeFileSync(path(`data/rosters/${teamId}.csv`), rows.join('\n') + '\n');
   }
   // 합계 기록 CSV (generate가 이 이름으로 능력치를 만든다). 기록 없는 선수는 줄이 없어 가상 능력치가 된다

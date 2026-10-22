@@ -1,16 +1,16 @@
-name,position,age,number,origin,nationality
-정성우,PG,33,3,domestic,
-박준영,SF,30,23,domestic,
-김준일,C,34,31,domestic,
-양우혁,SG,19,27,domestic,
-김국찬,SF,30,30,domestic,
-김민규,SF,24,13,domestic,
-전현우,SF,30,9,domestic,
-양재혁,SF,29,11,domestic,
-우동현,SG,30,8,domestic,
-박준은,SF,28,21,domestic,
-손준,C,25,24,domestic,
-권순우,SG,23,7,domestic,
-라건아,C,37,20,foreign,미국
-케베 알루마,PF,27,19,foreign,미국
-샘조세프 벨란겔,PG,27,0,asia,필리핀
+name,position,age,number,origin,nationality,kblId
+정성우,PG,33,3,domestic,,290901
+박준영,SF,30,23,domestic,,291226
+김준일,C,34,31,domestic,,290781
+양우혁,SG,19,27,domestic,,291862
+김국찬,SF,30,30,domestic,,291087
+김민규,SF,24,13,domestic,,291863
+전현우,SF,30,9,domestic,,291194
+양재혁,SF,29,11,domestic,,291274
+우동현,SG,30,8,domestic,,291182
+최승욱(2),SF,32,5,domestic,,291005
+박준은,SF,28,21,domestic,,291289
+손준,C,25,24,domestic,,291754
+라건아,C,37,20,foreign,미국,290524
+케베 알루마,PF,27,19,foreign,미국,291680
+샘조세프 벨란겔,PG,27,0,asia,필리핀,291556

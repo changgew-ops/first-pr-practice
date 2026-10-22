@@ -1,15 +1,15 @@
-name,position,age,number,origin,nationality
-허웅,SG,33,3,domestic,
-허훈,PG,31,7,domestic,
-장재석,C,35,31,domestic,
-윤기찬,SF,22,8,domestic,
-김동현,SG,24,5,domestic,
-최진광,SG,29,6,domestic,
-이호현,SG,33,1,domestic,
-김훈,SF,30,12,domestic,
-이주영,SG,25,10,domestic,
-이현호,SG,25,30,domestic,
-서정현,C,28,32,domestic,
-강태현,SF,21,27,domestic,
-숀 롱,C,33,36,foreign,미국
-루이스 킹,PF,27,23,foreign,미국
+name,position,age,number,origin,nationality,kblId
+허웅,SG,33,3,domestic,,290776
+허훈,PG,31,7,domestic,,291085
+장재석,C,35,31,domestic,,290539
+윤기찬,SF,22,8,domestic,,291859
+김동현,SG,24,5,domestic,,291490
+최진광,SG,29,6,domestic,,291293
+이호현,SG,33,1,domestic,,290788
+김훈,SF,30,12,domestic,,291287
+이주영,SG,25,10,domestic,,291651
+이현호,SG,25,30,domestic,,291770
+서정현,C,28,32,domestic,,291491
+강태현,SF,21,27,domestic,,291860
+숀 롱,C,33,36,foreign,미국,291342
+루이스 킹,PF,27,23,foreign,미국,291884

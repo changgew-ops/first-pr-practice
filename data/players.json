@@ -19,6 +19,7 @@
     "cost": 6,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291001",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
@@ -49,6 +50,7 @@
     "cost": 7,
     "potential": 68,
     "origin": "domestic",
+    "kblId": "290790",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
@@ -79,6 +81,7 @@
     "cost": 4,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "291355",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
@@ -109,6 +112,7 @@
     "cost": 6,
     "potential": 68,
     "origin": "domestic",
+    "kblId": "291752",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
@@ -128,17 +132,18 @@
     "number": 3,
     "rarity": "common",
     "stats": {
-      "shooting": 56,
+      "shooting": 55,
       "passing": 67,
-      "defense": 68,
-      "rebound": 55,
-      "athletic": 62,
-      "stamina": 57
+      "defense": 67,
+      "rebound": 56,
+      "athletic": 60,
+      "stamina": 56
     },
     "ovr": 60,
     "cost": 4,
     "potential": 60,
     "origin": "domestic",
+    "kblId": "290381",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
@@ -169,6 +174,7 @@
     "cost": 5,
     "potential": 70,
     "origin": "domestic",
+    "kblId": "291850",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 2,
@@ -199,6 +205,7 @@
     "cost": 5,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "291070",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 2,
@@ -220,7 +227,7 @@
     "stats": {
       "shooting": 65,
       "passing": 65,
-      "defense": 62,
+      "defense": 63,
       "rebound": 51,
       "athletic": 62,
       "stamina": 57
@@ -229,6 +236,7 @@
     "cost": 5,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "291483",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 2,
@@ -259,6 +267,7 @@
     "cost": 4,
     "potential": 60,
     "origin": "domestic",
+    "kblId": "291351",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
@@ -289,6 +298,7 @@
     "cost": 5,
     "potential": 66,
     "origin": "domestic",
+    "kblId": "291499",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
@@ -319,6 +329,7 @@
     "cost": 6,
     "potential": 66,
     "origin": "domestic",
+    "kblId": "291851",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 4,
@@ -349,6 +360,7 @@
     "cost": 6,
     "potential": 69,
     "origin": "domestic",
+    "kblId": "291304",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 4,
@@ -380,6 +392,7 @@
     "potential": 74,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291785",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
@@ -411,6 +424,7 @@
     "potential": 79,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291698",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
@@ -442,6 +456,7 @@
     "potential": 78,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291511",
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
@@ -461,7 +476,7 @@
     "number": 2,
     "rarity": "common",
     "stats": {
-      "shooting": 66,
+      "shooting": 65,
       "passing": 68,
       "defense": 65,
       "rebound": 57,
@@ -472,6 +487,7 @@
     "cost": 6,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "290440",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
@@ -502,6 +518,7 @@
     "cost": 6,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "290754",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 2,
@@ -532,6 +549,7 @@
     "cost": 4,
     "potential": 60,
     "origin": "domestic",
+    "kblId": "291374",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
@@ -562,6 +580,7 @@
     "cost": 5,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "291853",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 2,
@@ -592,6 +611,7 @@
     "cost": 4,
     "potential": 59,
     "origin": "domestic",
+    "kblId": "290501",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 3,
@@ -622,6 +642,7 @@
     "cost": 4,
     "potential": 58,
     "origin": "domestic",
+    "kblId": "290985",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
@@ -652,6 +673,7 @@
     "cost": 4,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "291597",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 3,
@@ -682,6 +704,7 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "290742",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 3,
@@ -712,6 +735,7 @@
     "cost": 5,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "291095",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
@@ -742,6 +766,7 @@
     "cost": 6,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "291750",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
@@ -772,6 +797,7 @@
     "cost": 5,
     "potential": 68,
     "origin": "domestic",
+    "kblId": "291763",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
@@ -802,6 +828,7 @@
     "cost": 6,
     "potential": 70,
     "origin": "domestic",
+    "kblId": "291764",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 2,
@@ -833,6 +860,7 @@
     "potential": 75,
     "origin": "foreign",
     "nationality": "튀르키예",
+    "kblId": "291787",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
@@ -864,6 +892,7 @@
     "potential": 65,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291237",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
@@ -888,13 +917,14 @@
       "defense": 79,
       "rebound": 65,
       "athletic": 71,
-      "stamina": 68
+      "stamina": 69
     },
     "ovr": 71,
     "cost": 8,
     "potential": 71,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291512",
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
@@ -925,6 +955,7 @@
     "cost": 8,
     "potential": 71,
     "origin": "domestic",
+    "kblId": "291488",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 3,
@@ -944,21 +975,22 @@
     "number": 77,
     "rarity": "common",
     "stats": {
-      "shooting": 60,
+      "shooting": 57,
       "passing": 57,
-      "defense": 62,
+      "defense": 60,
       "rebound": 54,
-      "athletic": 55,
-      "stamina": 65
+      "athletic": 54,
+      "stamina": 64
     },
-    "ovr": 59,
+    "ovr": 58,
     "cost": 4,
-    "potential": 59,
+    "potential": 58,
     "origin": "domestic",
+    "kblId": "290785",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 0.8
+      "salaryEok": 0.6
     },
     "assets": {
       "portrait": null,
@@ -985,6 +1017,7 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "290542",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 3,
@@ -1015,6 +1048,7 @@
     "cost": 6,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "290765",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
@@ -1045,6 +1079,7 @@
     "cost": 4,
     "potential": 58,
     "origin": "domestic",
+    "kblId": "290529",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
@@ -1075,6 +1110,7 @@
     "cost": 5,
     "potential": 66,
     "origin": "domestic",
+    "kblId": "291855",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 1,
@@ -1105,6 +1141,7 @@
     "cost": 5,
     "potential": 61,
     "origin": "domestic",
+    "kblId": "290997",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 1,
@@ -1135,6 +1172,7 @@
     "cost": 5,
     "potential": 77,
     "origin": "domestic",
+    "kblId": "291748",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 2,
@@ -1165,6 +1203,7 @@
     "cost": 6,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291747",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 3,
@@ -1195,6 +1234,7 @@
     "cost": 6,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "290662",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
@@ -1225,6 +1265,7 @@
     "cost": 6,
     "potential": 70,
     "origin": "domestic",
+    "kblId": "291641",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 3,
@@ -1255,6 +1296,7 @@
     "cost": 6,
     "potential": 73,
     "origin": "domestic",
+    "kblId": "291856",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 1,
@@ -1276,7 +1318,7 @@
     "stats": {
       "shooting": 62,
       "passing": 65,
-      "defense": 80,
+      "defense": 79,
       "rebound": 76,
       "athletic": 83,
       "stamina": 68
@@ -1286,6 +1328,7 @@
     "potential": 75,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291500",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
@@ -1317,6 +1360,7 @@
     "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291881",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 1,
@@ -1338,7 +1382,7 @@
     "stats": {
       "shooting": 69,
       "passing": 68,
-      "defense": 66,
+      "defense": 67,
       "rebound": 70,
       "athletic": 71,
       "stamina": 86
@@ -1348,6 +1392,7 @@
     "potential": 74,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291778",
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 1,
@@ -1378,6 +1423,7 @@
     "cost": 7,
     "potential": 68,
     "origin": "domestic",
+    "kblId": "291068",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
@@ -1399,19 +1445,20 @@
     "stats": {
       "shooting": 70,
       "passing": 62,
-      "defense": 77,
+      "defense": 76,
       "rebound": 68,
       "athletic": 75,
       "stamina": 79
     },
-    "ovr": 73,
+    "ovr": 72,
     "cost": 8,
-    "potential": 73,
+    "potential": 72,
     "origin": "domestic",
+    "kblId": "291084",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 6
+      "salaryEok": 5.3
     },
     "assets": {
       "portrait": null,
@@ -1438,6 +1485,7 @@
     "cost": 4,
     "potential": 66,
     "origin": "domestic",
+    "kblId": "291368",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
@@ -1468,6 +1516,7 @@
     "cost": 4,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291303",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
@@ -1491,13 +1540,14 @@
       "passing": 56,
       "defense": 57,
       "rebound": 71,
-      "athletic": 58,
+      "athletic": 59,
       "stamina": 59
     },
     "ovr": 61,
     "cost": 5,
     "potential": 61,
     "origin": "domestic",
+    "kblId": "290485",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 3,
@@ -1522,12 +1572,13 @@
       "defense": 67,
       "rebound": 63,
       "athletic": 66,
-      "stamina": 64
+      "stamina": 65
     },
     "ovr": 62,
     "cost": 5,
     "potential": 80,
     "origin": "domestic",
+    "kblId": "291846",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
@@ -1558,6 +1609,7 @@
     "cost": 5,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "290450",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
@@ -1588,6 +1640,7 @@
     "cost": 5,
     "potential": 61,
     "origin": "domestic",
+    "kblId": "290784",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
@@ -1618,6 +1671,7 @@
     "cost": 5,
     "potential": 73,
     "origin": "domestic",
+    "kblId": "291760",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 3,
@@ -1648,6 +1702,7 @@
     "cost": 5,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "291845",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 1,
@@ -1678,6 +1733,7 @@
     "cost": 5,
     "potential": 61,
     "origin": "domestic",
+    "kblId": "290740",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
@@ -1708,6 +1764,7 @@
     "cost": 5,
     "potential": 71,
     "origin": "domestic",
+    "kblId": "291844",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 1,
@@ -1739,6 +1796,7 @@
     "potential": 78,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291248",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
@@ -1770,6 +1828,7 @@
     "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291333",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 1,
@@ -1801,6 +1860,7 @@
     "potential": 68,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291784",
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
@@ -1831,6 +1891,7 @@
     "cost": 6,
     "potential": 71,
     "origin": "domestic",
+    "kblId": "291576",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
@@ -1861,6 +1922,7 @@
     "cost": 6,
     "potential": 72,
     "origin": "domestic",
+    "kblId": "291640",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
@@ -1891,6 +1953,7 @@
     "cost": 4,
     "potential": 58,
     "origin": "domestic",
+    "kblId": "290996",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 4,
@@ -1921,6 +1984,7 @@
     "cost": 5,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "291091",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 3,
@@ -1951,6 +2015,7 @@
     "cost": 5,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291771",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
@@ -1981,6 +2046,7 @@
     "cost": 5,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "291363",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
@@ -2011,6 +2077,7 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "290648",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
@@ -2041,6 +2108,7 @@
     "cost": 5,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "290478",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
@@ -2071,6 +2139,7 @@
     "cost": 6,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291291",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 3,
@@ -2101,6 +2170,7 @@
     "cost": 5,
     "potential": 69,
     "origin": "domestic",
+    "kblId": "291867",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
@@ -2131,6 +2201,7 @@
     "cost": 6,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291865",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 3,
@@ -2161,6 +2232,7 @@
     "cost": 6,
     "potential": 71,
     "origin": "domestic",
+    "kblId": "291866",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
@@ -2192,6 +2264,7 @@
     "potential": 81,
     "origin": "foreign",
     "nationality": "이집트",
+    "kblId": "291432",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
@@ -2223,6 +2296,7 @@
     "potential": 66,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291882",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
@@ -2254,6 +2328,7 @@
     "potential": 73,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291699",
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
@@ -2266,6 +2341,37 @@
   },
   {
     "id": "anyang-jungkwanjang-01",
+    "name": "박지훈",
+    "real": true,
+    "position": "SG",
+    "age": 31,
+    "number": 6,
+    "rarity": "rare",
+    "stats": {
+      "shooting": 69,
+      "passing": 76,
+      "defense": 70,
+      "rebound": 64,
+      "athletic": 69,
+      "stamina": 68
+    },
+    "ovr": 70,
+    "cost": 7,
+    "potential": 70,
+    "origin": "domestic",
+    "kblId": "291008",
+    "teamId": "anyang-jungkwanjang",
+    "contract": {
+      "yearsLeft": 2,
+      "salaryEok": 4.1
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "anyang-jungkwanjang-02",
     "name": "한승희",
     "real": true,
     "position": "SF",
@@ -2282,11 +2388,12 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 62,
+    "potential": 61,
     "origin": "domestic",
+    "kblId": "291372",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.1
     },
     "assets": {
@@ -2295,7 +2402,7 @@
     }
   },
   {
-    "id": "anyang-jungkwanjang-02",
+    "id": "anyang-jungkwanjang-03",
     "name": "변준형",
     "real": true,
     "position": "PG",
@@ -2304,7 +2411,7 @@
     "rarity": "rare",
     "stats": {
       "shooting": 64,
-      "passing": 76,
+      "passing": 77,
       "defense": 58,
       "rebound": 58,
       "athletic": 62,
@@ -2314,40 +2421,11 @@
     "cost": 6,
     "potential": 69,
     "origin": "domestic",
-    "teamId": "anyang-jungkwanjang",
-    "contract": {
-      "yearsLeft": 3,
-      "salaryEok": 2.7
-    },
-    "assets": {
-      "portrait": null,
-      "model": null
-    }
-  },
-  {
-    "id": "anyang-jungkwanjang-03",
-    "name": "박지훈",
-    "real": true,
-    "position": "SG",
-    "age": 31,
-    "number": 6,
-    "rarity": "rare",
-    "stats": {
-      "shooting": 66,
-      "passing": 77,
-      "defense": 69,
-      "rebound": 64,
-      "athletic": 69,
-      "stamina": 69
-    },
-    "ovr": 69,
-    "cost": 7,
-    "potential": 69,
-    "origin": "domestic",
+    "kblId": "291220",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 3.6
+      "salaryEok": 2.7
     },
     "assets": {
       "portrait": null,
@@ -2374,6 +2452,7 @@
     "cost": 5,
     "potential": 66,
     "origin": "domestic",
+    "kblId": "291746",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 4,
@@ -2404,6 +2483,7 @@
     "cost": 6,
     "potential": 76,
     "origin": "domestic",
+    "kblId": "291857",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 1,
@@ -2434,6 +2514,7 @@
     "cost": 5,
     "potential": 61,
     "origin": "domestic",
+    "kblId": "290284",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
@@ -2464,6 +2545,7 @@
     "cost": 6,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "290750",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 4,
@@ -2494,6 +2576,7 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "291648",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
@@ -2524,6 +2607,7 @@
     "cost": 5,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "290603",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 1,
@@ -2554,6 +2638,7 @@
     "cost": 6,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291281",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 1,
@@ -2584,6 +2669,7 @@
     "cost": 6,
     "potential": 68,
     "origin": "domestic",
+    "kblId": "291276",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 2,
@@ -2614,6 +2700,7 @@
     "cost": 6,
     "potential": 67,
     "origin": "domestic",
+    "kblId": "291210",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 4,
@@ -2645,6 +2732,7 @@
     "potential": 68,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291883",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
@@ -2676,6 +2764,7 @@
     "potential": 64,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291888",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
@@ -2707,6 +2796,7 @@
     "potential": 69,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291583",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 1,
@@ -2737,6 +2827,7 @@
     "cost": 6,
     "potential": 66,
     "origin": "domestic",
+    "kblId": "290776",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 1,
@@ -2767,6 +2858,7 @@
     "cost": 8,
     "potential": 71,
     "origin": "domestic",
+    "kblId": "291085",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
@@ -2797,6 +2889,7 @@
     "cost": 7,
     "potential": 69,
     "origin": "domestic",
+    "kblId": "290539",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 4,
@@ -2827,6 +2920,7 @@
     "cost": 4,
     "potential": 72,
     "origin": "domestic",
+    "kblId": "291859",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
@@ -2850,13 +2944,14 @@
       "passing": 52,
       "defense": 60,
       "rebound": 54,
-      "athletic": 52,
+      "athletic": 53,
       "stamina": 59
     },
     "ovr": 59,
     "cost": 4,
     "potential": 60,
     "origin": "domestic",
+    "kblId": "291490",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 1,
@@ -2887,6 +2982,7 @@
     "cost": 4,
     "potential": 58,
     "origin": "domestic",
+    "kblId": "291293",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 1,
@@ -2917,6 +3013,7 @@
     "cost": 5,
     "potential": 61,
     "origin": "domestic",
+    "kblId": "290788",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
@@ -2947,6 +3044,7 @@
     "cost": 4,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "291287",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
@@ -2977,6 +3075,7 @@
     "cost": 6,
     "potential": 72,
     "origin": "domestic",
+    "kblId": "291651",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 3,
@@ -3007,6 +3106,7 @@
     "cost": 6,
     "potential": 66,
     "origin": "domestic",
+    "kblId": "291770",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
@@ -3037,6 +3137,7 @@
     "cost": 6,
     "potential": 69,
     "origin": "domestic",
+    "kblId": "291491",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 1,
@@ -3067,6 +3168,7 @@
     "cost": 5,
     "potential": 79,
     "origin": "domestic",
+    "kblId": "291860",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
@@ -3098,6 +3200,7 @@
     "potential": 76,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291342",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 1,
@@ -3129,6 +3232,7 @@
     "potential": 66,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291884",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 4,
@@ -3159,6 +3263,7 @@
     "cost": 6,
     "potential": 71,
     "origin": "domestic",
+    "kblId": "291667",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 1,
@@ -3189,6 +3294,7 @@
     "cost": 6,
     "potential": 80,
     "origin": "domestic",
+    "kblId": "291842",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
@@ -3219,6 +3325,7 @@
     "cost": 6,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "291492",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 4,
@@ -3249,6 +3356,7 @@
     "cost": 5,
     "potential": 61,
     "origin": "domestic",
+    "kblId": "290454",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
@@ -3268,7 +3376,7 @@
     "number": 5,
     "rarity": "common",
     "stats": {
-      "shooting": 63,
+      "shooting": 64,
       "passing": 68,
       "defense": 65,
       "rebound": 54,
@@ -3279,6 +3387,7 @@
     "cost": 6,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "290407",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 1,
@@ -3309,6 +3418,7 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "290583",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 1,
@@ -3339,6 +3449,7 @@
     "cost": 6,
     "potential": 71,
     "origin": "domestic",
+    "kblId": "291586",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 3,
@@ -3369,6 +3480,7 @@
     "cost": 4,
     "potential": 60,
     "origin": "domestic",
+    "kblId": "290599",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
@@ -3399,6 +3511,7 @@
     "cost": 4,
     "potential": 59,
     "origin": "domestic",
+    "kblId": "290661",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 3,
@@ -3429,6 +3542,7 @@
     "cost": 4,
     "potential": 57,
     "origin": "domestic",
+    "kblId": "290763",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 4,
@@ -3459,6 +3573,7 @@
     "cost": 5,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "291352",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 4,
@@ -3489,6 +3604,7 @@
     "cost": 5,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "291843",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 1,
@@ -3520,6 +3636,7 @@
     "potential": 67,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291671",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
@@ -3551,6 +3668,7 @@
     "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291885",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 1,
@@ -3582,6 +3700,7 @@
     "potential": 70,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291692",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 3,
@@ -3603,7 +3722,7 @@
     "stats": {
       "shooting": 62,
       "passing": 72,
-      "defense": 61,
+      "defense": 62,
       "rebound": 48,
       "athletic": 52,
       "stamina": 66
@@ -3612,6 +3731,7 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "290901",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
@@ -3642,6 +3762,7 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "291226",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 4,
@@ -3672,6 +3793,7 @@
     "cost": 6,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "290781",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 3,
@@ -3702,6 +3824,7 @@
     "cost": 4,
     "potential": 77,
     "origin": "domestic",
+    "kblId": "291862",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
@@ -3725,13 +3848,14 @@
       "passing": 56,
       "defense": 64,
       "rebound": 60,
-      "athletic": 62,
+      "athletic": 63,
       "stamina": 59
     },
     "ovr": 60,
     "cost": 4,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "291087",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 3,
@@ -3762,6 +3886,7 @@
     "cost": 5,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "291863",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 3,
@@ -3792,6 +3917,7 @@
     "cost": 3,
     "potential": 59,
     "origin": "domestic",
+    "kblId": "291194",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
@@ -3822,6 +3948,7 @@
     "cost": 5,
     "potential": 62,
     "origin": "domestic",
+    "kblId": "291274",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 4,
@@ -3852,6 +3979,7 @@
     "cost": 5,
     "potential": 64,
     "origin": "domestic",
+    "kblId": "291182",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
@@ -3864,6 +3992,37 @@
   },
   {
     "id": "daegu-kogas-10",
+    "name": "최승욱(2)",
+    "real": true,
+    "position": "SF",
+    "age": 32,
+    "number": 5,
+    "rarity": "common",
+    "stats": {
+      "shooting": 65,
+      "passing": 59,
+      "defense": 64,
+      "rebound": 57,
+      "athletic": 65,
+      "stamina": 63
+    },
+    "ovr": 63,
+    "cost": 5,
+    "potential": 63,
+    "origin": "domestic",
+    "kblId": "291005",
+    "teamId": "daegu-kogas",
+    "contract": {
+      "yearsLeft": 4,
+      "salaryEok": 1.5
+    },
+    "assets": {
+      "portrait": null,
+      "model": null
+    }
+  },
+  {
+    "id": "daegu-kogas-11",
     "name": "박준은",
     "real": true,
     "position": "SF",
@@ -3880,11 +4039,12 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 65,
+    "potential": 62,
     "origin": "domestic",
+    "kblId": "291289",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3893,13 +4053,13 @@
     }
   },
   {
-    "id": "daegu-kogas-11",
+    "id": "daegu-kogas-12",
     "name": "손준",
     "real": true,
     "position": "C",
     "age": 25,
     "number": 24,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 50,
       "passing": 54,
@@ -3910,42 +4070,13 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 69,
+    "potential": 74,
     "origin": "domestic",
+    "kblId": "291754",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 4,
       "salaryEok": 2.3
-    },
-    "assets": {
-      "portrait": null,
-      "model": null
-    }
-  },
-  {
-    "id": "daegu-kogas-12",
-    "name": "권순우",
-    "real": true,
-    "position": "SG",
-    "age": 23,
-    "number": 7,
-    "rarity": "common",
-    "stats": {
-      "shooting": 61,
-      "passing": 57,
-      "defense": 53,
-      "rebound": 40,
-      "athletic": 50,
-      "stamina": 57
-    },
-    "ovr": 55,
-    "cost": 3,
-    "potential": 60,
-    "origin": "domestic",
-    "teamId": "daegu-kogas",
-    "contract": {
-      "yearsLeft": 3,
-      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -3973,10 +4104,11 @@
     "potential": 72,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "290524",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 1,
-      "salaryUsd": 670000
+      "yearsLeft": 4,
+      "salaryUsd": 310000
     },
     "assets": {
       "portrait": null,
@@ -4001,13 +4133,14 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 69,
+    "potential": 68,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291680",
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 3,
-      "salaryUsd": 280000
+      "salaryUsd": 590000
     },
     "assets": {
       "portrait": null,
@@ -4032,13 +4165,14 @@
     },
     "ovr": 68,
     "cost": 7,
-    "potential": 71,
+    "potential": 69,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291556",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
-      "salaryEok": 1.5
+      "yearsLeft": 4,
+      "salaryEok": 1.6
     },
     "assets": {
       "portrait": null,
@@ -4065,9 +4199,10 @@
     "cost": 6,
     "potential": 70,
     "origin": "domestic",
+    "kblId": "291189",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 2.7
     },
     "assets": {
@@ -4082,7 +4217,7 @@
     "position": "PG",
     "age": 25,
     "number": 3,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 65,
       "passing": 80,
@@ -4093,11 +4228,12 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 73,
+    "potential": 74,
     "origin": "domestic",
+    "kblId": "291649",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 2.7
     },
     "assets": {
@@ -4125,9 +4261,10 @@
     "cost": 6,
     "potential": 65,
     "origin": "domestic",
+    "kblId": "290787",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 2
     },
     "assets": {
@@ -4148,17 +4285,18 @@
       "passing": 44,
       "defense": 69,
       "rebound": 61,
-      "athletic": 59,
+      "athletic": 60,
       "stamina": 66
     },
-    "ovr": 59,
+    "ovr": 60,
     "cost": 4,
-    "potential": 60,
+    "potential": 61,
     "origin": "domestic",
+    "kblId": "291208",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
-      "salaryEok": 0.8
+      "yearsLeft": 1,
+      "salaryEok": 0.9
     },
     "assets": {
       "portrait": null,
@@ -4183,11 +4321,12 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 68,
+    "potential": 69,
     "origin": "domestic",
+    "kblId": "291275",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 2.3
     },
     "assets": {
@@ -4215,9 +4354,10 @@
     "cost": 4,
     "potential": 59,
     "origin": "domestic",
+    "kblId": "290489",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 0.8
     },
     "assets": {
@@ -4243,11 +4383,12 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 79,
+    "potential": 78,
     "origin": "domestic",
+    "kblId": "291849",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 1.5
     },
     "assets": {
@@ -4262,7 +4403,7 @@
     "position": "SG",
     "age": 24,
     "number": 8,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 63,
       "passing": 61,
@@ -4273,8 +4414,9 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 65,
+    "potential": 66,
     "origin": "domestic",
+    "kblId": "291847",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 4,
@@ -4303,8 +4445,9 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 63,
+    "potential": 64,
     "origin": "domestic",
+    "kblId": "291388",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 3,
@@ -4322,7 +4465,7 @@
     "position": "SG",
     "age": 27,
     "number": 11,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 69,
       "passing": 65,
@@ -4333,11 +4476,12 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 65,
+    "potential": 68,
     "origin": "domestic",
+    "kblId": "291375",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 2
     },
     "assets": {
@@ -4352,7 +4496,7 @@
     "position": "SF",
     "age": 25,
     "number": 21,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 62,
       "passing": 60,
@@ -4363,11 +4507,12 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 66,
+    "potential": 65,
     "origin": "domestic",
+    "kblId": "291756",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -4395,9 +4540,10 @@
     "cost": 5,
     "potential": 63,
     "origin": "domestic",
+    "kblId": "290553",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.5
     },
     "assets": {
@@ -4423,13 +4569,14 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 69,
+    "potential": 68,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291579",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 490000
+      "yearsLeft": 3,
+      "salaryUsd": 620000
     },
     "assets": {
       "portrait": null,
@@ -4454,13 +4601,14 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 70,
+    "potential": 68,
     "origin": "foreign",
     "nationality": "미국",
+    "kblId": "291886",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 3,
-      "salaryUsd": 440000
+      "salaryUsd": 280000
     },
     "assets": {
       "portrait": null,
@@ -4474,24 +4622,25 @@
     "position": "SG",
     "age": 25,
     "number": 26,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 69,
       "passing": 64,
-      "defense": 61,
+      "defense": 62,
       "rebound": 50,
       "athletic": 63,
       "stamina": 64
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 65,
+    "potential": 68,
     "origin": "asia",
     "nationality": "필리핀",
+    "kblId": "291887",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 1,
-      "salaryEok": 1.3
+      "yearsLeft": 3,
+      "salaryEok": 1.6
     },
     "assets": {
       "portrait": null,

@@ -11,6 +11,8 @@
     "sim:dummy": "node tools/run-league.mjs --years 20 --out data/dummy/league-20y.json",
     "coverage": "node tools/coverage.mjs",
     "check": "npm run build:history && npm test",
-    "web": "node tools/serve.mjs"
+    "web": "node tools/serve.mjs",
+    "build:ids": "node tools/build-player-ids.mjs",
+    "build:careers": "node tools/build-careers.mjs"
   }
 }

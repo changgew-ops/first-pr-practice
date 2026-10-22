@@ -43,13 +43,17 @@ export function mergeSeasons(prev, cur, { maxDistance = 0.9 } = {}) {
 
   const players = [];
   for (const [base, g] of byBase) {
-    // 가능한 모든 (prev, cur) 쌍을 거리순으로 정렬해 탐욕적으로 잇는다
-    const pairs = [];
-    g.prev.forEach((p, i) => g.cur.forEach((c, j) => pairs.push({ i, j, d: dist(profile(p.totals), profile(c.totals)) })));
-    pairs.sort((a, b) => a.d - b.d);
     const usedP = new Set();
     const usedC = new Set();
     const matched = [];
+    // 1) KBL 선수번호(kblId)가 같으면 같은 선수다 (공식 기록과 대조해 정한 번호)
+    g.prev.forEach((p, i) => g.cur.forEach((c, j) => {
+      if (p.kblId && p.kblId === c.kblId && !usedP.has(i) && !usedC.has(j)) { usedP.add(i); usedC.add(j); matched.push({ i, j, d: 0, byId: true }); }
+    }));
+    // 2) 번호가 없는 쪽은 가능한 모든 (prev, cur) 쌍을 거리순으로 정렬해 탐욕적으로 잇는다. 번호가 서로 다르면 다른 선수다
+    const pairs = [];
+    g.prev.forEach((p, i) => g.cur.forEach((c, j) => { if (!(p.kblId && c.kblId)) pairs.push({ i, j, d: dist(profile(p.totals), profile(c.totals)) }); }));
+    pairs.sort((a, b) => a.d - b.d);
     for (const m of pairs) {
       if (usedP.has(m.i) || usedC.has(m.j)) continue;
       if (m.d > maxDistance && (g.prev.length > 1 || g.cur.length > 1)) continue; // 동명이인 사이에서만 거리를 따진다
@@ -61,7 +65,7 @@ export function mergeSeasons(prev, cur, { maxDistance = 0.9 } = {}) {
       const p = g.prev[m.i];
       const c = g.cur[m.j];
       players.push({ name: p.name, totals: addTotals(p.totals, c.totals), prev: p, cur: c });
-      if (ambiguous) notes.push(`동명이인 ${base}: 25-26 "${p.name}"과 26-27 "${c.name}"을 이음 (스타일 거리 ${m.d.toFixed(2)})`);
+      if (ambiguous && !m.byId) notes.push(`동명이인 ${base}: 25-26 "${p.name}"과 26-27 "${c.name}"을 이음 (스타일 거리 ${m.d.toFixed(2)})`);
     }
     g.prev.forEach((p, i) => { if (!usedP.has(i)) players.push({ name: p.name, totals: addTotals(p.totals), prev: p, cur: null }); });
     g.cur.forEach((c, j) => {
@@ -184,8 +188,21 @@ export function resolveRegistry(entries, pool, team2526 = new Map()) {
     if (!groups.has(e.name)) groups.set(e.name, []);
     groups.get(e.name).push(e);
   }
+  // KBL 선수번호가 같은 항목은 곧바로 잇는다 (동명이인도 정확히 갈린다)
+  const byId = new Map(pool.filter((p) => p.kblId).map((p) => [p.kblId, p]));
+  for (const [name, list] of [...groups]) {
+    const rest = [];
+    for (const e of list) {
+      const hit = e.kblId && byId.get(e.kblId);
+      const others = variants.get(name) ?? [];
+      if (hit && !map.has(hit.name)) map.set(hit.name, e);
+      else if (e.kblId && others.length && others.every((v) => v.kblId && v.kblId !== e.kblId)) extra.push(e); // 같은 이름이지만 다른 선수(번호가 다르다): 기록 없는 선수
+      else rest.push(e);
+    }
+    if (rest.length) groups.set(name, rest); else groups.delete(name);
+  }
   for (const [name, list] of groups) {
-    const vs = variants.get(name) ?? [];
+    const vs = (variants.get(name) ?? []).filter((v) => !map.has(v.name));
     if (vs.length === 0) { extra.push(...list); continue; }
     if (vs.length === 1 && list.length === 1) { map.set(vs[0].name, list[0]); continue; }
     // 동명이인: 2025-26 소속이 같은 쪽 → 팀 후보에 들어 있는 쪽 순으로 짝짓는다
@@ -230,6 +247,7 @@ export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(
       age: given.age ?? (births.has(p.name) ? ageOn(births.get(p.name), asOf) : null) ?? ageFromDraft(reg?.draftYear) ?? null,
       number: given.number ?? reg?.number ?? null,
       teamId: given.team ?? reg?.team ?? null,
+      kblId: p.cur?.kblId ?? p.prev?.kblId ?? null,
       registered: Boolean(reg),
       candidateTeams: cands,
       games: p.totals.games,
@@ -254,6 +272,7 @@ export function statlessPlayers(entries, teamMap = new Map(), { births = new Map
       positionGiven: Boolean(given.position),
       origin: given.origin ?? originOf(e.kind),
       asiaQuota: e.kind === 'a',
+      kblId: e.kblId ?? null,
       age: given.age ?? (birth ? ageOn(birth, asOf) : null) ?? ageFromDraft(e.draftYear),
       number: given.number ?? e.number,
       teamId: given.team ?? e.team,

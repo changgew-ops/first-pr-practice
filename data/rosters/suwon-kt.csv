@@ -1,16 +1,16 @@
-name,position,age,number,origin,nationality
-문정현,PF,25,12,domestic,
-강성욱,PG,22,77,domestic,
-하윤기,C,27,0,domestic,
-정창영,SG,38,7,domestic,
-김선형,SG,38,5,domestic,
-한희원,SF,33,1,domestic,
-이두원,C,26,21,domestic,
-서민수,SF,33,34,domestic,
-문성곤,SF,33,10,domestic,
-전성현,SF,34,23,domestic,
-박지원,SG,28,9,domestic,
-박민재,SF,23,14,domestic,
-패리스 배스,PF,31,35,foreign,미국
-트레이 포터,C,30,22,foreign,미국
-미구엘 옥존,SG,26,8,asia,필리핀
+name,position,age,number,origin,nationality,kblId
+문정현,PF,25,12,domestic,,291667
+강성욱,PG,22,77,domestic,,291842
+하윤기,C,27,0,domestic,,291492
+정창영,SG,38,7,domestic,,290454
+김선형,SG,38,5,domestic,,290407
+한희원,SF,33,1,domestic,,290583
+이두원,C,26,21,domestic,,291586
+서민수,SF,33,34,domestic,,290599
+문성곤,SF,33,10,domestic,,290661
+전성현,SF,34,23,domestic,,290763
+박지원,SG,28,9,domestic,,291352
+박민재,SF,23,14,domestic,,291843
+패리스 배스,PF,31,35,foreign,미국,291671
+트레이 포터,C,30,22,foreign,미국,291885
+미구엘 옥존,SG,26,8,asia,필리핀,291692

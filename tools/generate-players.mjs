@@ -36,7 +36,8 @@ function readRosterCsv(teamId) {
       age: optionalNumber(row.age), // 빈 칸은 "모름"이라 생성기가 채운다 (Number('')은 0이라 쓰면 안 된다)
       number: optionalNumber(row.number),
       origin: row.origin === 'foreign' ? 'foreign' : row.origin === 'asia' ? 'asia' : 'domestic',
-      nationality: row.nationality || undefined
+      nationality: row.nationality || undefined,
+      kblId: row.kblId || undefined
     };
   });
 }
@@ -78,6 +79,7 @@ function buildPlayer(teamId, idx, spec, teamBase, slotOffset) {
     potential,
     origin,
     ...(spec.nationality ? { nationality: spec.nationality } : {}),
+    ...(spec.kblId ? { kblId: spec.kblId } : {}), // KBL 선수번호: 공식 프로필·시즌 기록과 이어진다
     teamId,
     contract: { yearsLeft: randInt(1, 4) },
     assets: { portrait: null, model: null }

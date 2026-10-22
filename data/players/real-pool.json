@@ -8,6 +8,7 @@
     "age": 25,
     "number": 28,
     "teamId": "goyang-sono",
+    "kblId": "291778",
     "registered": true,
     "candidateTeams": [
       "goyang-sono"
@@ -21,7 +22,7 @@
     "stats": {
       "shooting": 69,
       "passing": 69,
-      "defense": 65,
+      "defense": 66,
       "rebound": 67,
       "athletic": 69,
       "stamina": 87
@@ -39,6 +40,7 @@
     "age": 27,
     "number": 6,
     "teamId": "goyang-sono",
+    "kblId": "291488",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -71,6 +73,7 @@
     "age": 33,
     "number": 36,
     "teamId": "busan-kcc",
+    "kblId": "291342",
     "registered": true,
     "candidateTeams": [
       "busan-kcc"
@@ -102,6 +105,7 @@
     "age": 30,
     "number": 17,
     "teamId": "wonju-db",
+    "kblId": "291511",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -135,6 +139,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291788",
     "registered": false,
     "candidateTeams": [
       "goyang-sono"
@@ -166,6 +171,7 @@
     "age": 33,
     "number": 3,
     "teamId": "busan-kcc",
+    "kblId": "290776",
     "registered": true,
     "candidateTeams": [
       "busan-kcc"
@@ -197,6 +203,7 @@
     "age": 27,
     "number": 7,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291189",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis"
@@ -228,6 +235,7 @@
     "age": 27,
     "number": 0,
     "teamId": "daegu-kogas",
+    "kblId": "291556",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -260,6 +268,7 @@
     "age": 32,
     "number": 34,
     "teamId": "seoul-sk",
+    "kblId": "291248",
     "registered": true,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -295,6 +304,7 @@
     "age": 29,
     "number": 8,
     "teamId": "wonju-db",
+    "kblId": "291785",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -329,6 +339,7 @@
     "age": 31,
     "number": 7,
     "teamId": "busan-kcc",
+    "kblId": "291085",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -365,6 +376,7 @@
     "age": 34,
     "number": 50,
     "teamId": "changwon-lg",
+    "kblId": "291432",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -399,6 +411,7 @@
     "age": 28,
     "number": 22,
     "teamId": "wonju-db",
+    "kblId": "291698",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -431,6 +444,7 @@
     "age": 24,
     "number": 5,
     "teamId": "changwon-lg",
+    "kblId": "291576",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -466,6 +480,7 @@
     "age": 33,
     "number": 0,
     "teamId": "goyang-sono",
+    "kblId": "291500",
     "registered": true,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -479,12 +494,12 @@
       "2026-27": true
     },
     "stats": {
-      "shooting": 61,
+      "shooting": 62,
       "passing": 66,
       "defense": 77,
       "rebound": 73,
       "athletic": 79,
-      "stamina": 68
+      "stamina": 69
     },
     "ovr": 73,
     "cost": 8,
@@ -499,6 +514,7 @@
     "age": 25,
     "number": 1,
     "teamId": "changwon-lg",
+    "kblId": "291640",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -535,6 +551,7 @@
     "age": 32,
     "number": 16,
     "teamId": "changwon-lg",
+    "kblId": "290996",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -568,6 +585,7 @@
     "age": 25,
     "number": 3,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291649",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -601,6 +619,7 @@
     "age": 37,
     "number": 20,
     "teamId": "daegu-kogas",
+    "kblId": "290524",
     "registered": true,
     "candidateTeams": [
       "daegu-kogas",
@@ -633,6 +652,7 @@
     "age": 34,
     "number": 33,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "290787",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -666,6 +686,7 @@
     "age": 29,
     "number": 18,
     "teamId": "seoul-samsung",
+    "kblId": "291512",
     "registered": true,
     "candidateTeams": [
       "daegu-kogas",
@@ -698,6 +719,7 @@
     "age": 25,
     "number": 33,
     "teamId": "changwon-lg",
+    "kblId": "291699",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -726,6 +748,43 @@
     "ratedFromSample": true
   },
   {
+    "name": "박지훈(1)",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "asiaQuota": false,
+    "age": 31,
+    "number": 6,
+    "teamId": "anyang-jungkwanjang",
+    "kblId": "291008",
+    "registered": true,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 59,
+    "minutes": 1525,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 77,
+      "defense": 69,
+      "rebound": 62,
+      "athletic": 67,
+      "stamina": 68
+    },
+    "ovr": 69,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
     "name": "신승민",
     "position": "SF",
     "positionGiven": false,
@@ -734,6 +793,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291479",
     "registered": false,
     "candidateTeams": [
       "daegu-kogas"
@@ -765,6 +825,7 @@
     "age": 31,
     "number": 35,
     "teamId": "seoul-samsung",
+    "kblId": "291787",
     "registered": true,
     "candidateTeams": [
       "seoul-samsung"
@@ -796,6 +857,7 @@
     "age": 33,
     "number": 3,
     "teamId": "daegu-kogas",
+    "kblId": "290901",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -810,9 +872,9 @@
     "stats": {
       "shooting": 62,
       "passing": 72,
-      "defense": 60,
+      "defense": 61,
       "rebound": 47,
-      "athletic": 51,
+      "athletic": 52,
       "stamina": 66
     },
     "ovr": 63,
@@ -828,6 +890,7 @@
     "age": 25,
     "number": 12,
     "teamId": "suwon-kt",
+    "kblId": "291667",
     "registered": true,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -856,6 +919,39 @@
     "ratedFromSample": true
   },
   {
+    "name": "최승욱",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "asiaQuota": false,
+    "age": 33,
+    "number": 77,
+    "teamId": "goyang-sono",
+    "kblId": "290785",
+    "registered": true,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 64,
+    "minutes": 1465,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 57,
+      "passing": 57,
+      "defense": 60,
+      "rebound": 53,
+      "athletic": 53,
+      "stamina": 65
+    },
+    "ovr": 58,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
     "name": "이관희",
     "position": "SG",
     "positionGiven": false,
@@ -864,6 +960,7 @@
     "age": 38,
     "number": 2,
     "teamId": "seoul-samsung",
+    "kblId": "290440",
     "registered": true,
     "candidateTeams": [
       "seoul-samsung"
@@ -895,6 +992,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290897",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -932,6 +1030,7 @@
     "age": 28,
     "number": 51,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291372",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -966,6 +1065,7 @@
     "age": 30,
     "number": 5,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291220",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -984,7 +1084,7 @@
     },
     "stats": {
       "shooting": 64,
-      "passing": 77,
+      "passing": 78,
       "defense": 58,
       "rebound": 57,
       "athletic": 60,
@@ -992,42 +1092,6 @@
     },
     "ovr": 67,
     "cost": 6,
-    "ratedFromSample": true
-  },
-  {
-    "name": "박지훈(1)",
-    "position": "SG",
-    "positionGiven": false,
-    "origin": "domestic",
-    "asiaQuota": false,
-    "age": 31,
-    "number": 6,
-    "teamId": "anyang-jungkwanjang",
-    "registered": true,
-    "candidateTeams": [
-      "changwon-lg",
-      "anyang-jungkwanjang",
-      "wonju-db",
-      "seoul-sk",
-      "goyang-sono",
-      "busan-kcc"
-    ],
-    "games": 51,
-    "minutes": 1364,
-    "seasons": {
-      "2025-26": true,
-      "2026-27": false
-    },
-    "stats": {
-      "shooting": 66,
-      "passing": 78,
-      "defense": 68,
-      "rebound": 62,
-      "athletic": 67,
-      "stamina": 69
-    },
-    "ovr": 68,
-    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -1039,6 +1103,7 @@
     "age": 34,
     "number": 5,
     "teamId": "seoul-samsung",
+    "kblId": "290754",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -1064,38 +1129,6 @@
     "ratedFromSample": true
   },
   {
-    "name": "최승욱",
-    "position": "SF",
-    "positionGiven": false,
-    "origin": "domestic",
-    "asiaQuota": false,
-    "age": 33,
-    "number": 77,
-    "teamId": "goyang-sono",
-    "registered": true,
-    "candidateTeams": [
-      "goyang-sono",
-      "busan-kcc"
-    ],
-    "games": 57,
-    "minutes": 1358,
-    "seasons": {
-      "2025-26": true,
-      "2026-27": false
-    },
-    "stats": {
-      "shooting": 60,
-      "passing": 57,
-      "defense": 62,
-      "rebound": 53,
-      "athletic": 54,
-      "stamina": 66
-    },
-    "ovr": 59,
-    "cost": 4,
-    "ratedFromSample": true
-  },
-  {
     "name": "렌즈 아반도",
     "position": "SG",
     "positionGiven": false,
@@ -1104,6 +1137,7 @@
     "age": 28,
     "number": 12,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291583",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1140,6 +1174,7 @@
     "age": 31,
     "number": 4,
     "teamId": "seoul-sk",
+    "kblId": "291068",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1177,6 +1212,7 @@
     "age": 31,
     "number": 8,
     "teamId": "seoul-sk",
+    "kblId": "291084",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1214,6 +1250,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291791",
     "registered": false,
     "candidateTeams": [
       "goyang-sono",
@@ -1232,7 +1269,7 @@
       "defense": 79,
       "rebound": 71,
       "athletic": 82,
-      "stamina": 65
+      "stamina": 66
     },
     "ovr": 73,
     "cost": 8,
@@ -1247,6 +1284,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291588",
     "registered": false,
     "candidateTeams": [
       "wonju-db",
@@ -1281,6 +1319,7 @@
     "age": 30,
     "number": 23,
     "teamId": "daegu-kogas",
+    "kblId": "291226",
     "registered": true,
     "candidateTeams": [
       "seoul-sk",
@@ -1315,6 +1354,7 @@
     "age": 34,
     "number": 31,
     "teamId": "daegu-kogas",
+    "kblId": "290781",
     "registered": true,
     "candidateTeams": [
       "daegu-kogas",
@@ -1347,6 +1387,7 @@
     "age": 31,
     "number": 26,
     "teamId": "wonju-db",
+    "kblId": "291001",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1384,6 +1425,7 @@
     "age": 29,
     "number": 9,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291208",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -1418,6 +1460,7 @@
     "age": 22,
     "number": 77,
     "teamId": "suwon-kt",
+    "kblId": "291842",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1455,6 +1498,7 @@
     "age": 20,
     "number": 4,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291746",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1491,6 +1535,7 @@
     "age": 35,
     "number": 31,
     "teamId": "busan-kcc",
+    "kblId": "290539",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -1523,6 +1568,7 @@
     "age": 22,
     "number": 8,
     "teamId": "busan-kcc",
+    "kblId": "291859",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1559,6 +1605,7 @@
     "age": 30,
     "number": 25,
     "teamId": "seoul-sk",
+    "kblId": "291784",
     "registered": true,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -1594,6 +1641,7 @@
     "age": 24,
     "number": 5,
     "teamId": "busan-kcc",
+    "kblId": "291490",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -1626,6 +1674,7 @@
     "age": 32,
     "number": 12,
     "teamId": "wonju-db",
+    "kblId": "290790",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1663,6 +1712,7 @@
     "age": 26,
     "number": 22,
     "teamId": "seoul-sk",
+    "kblId": "291368",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1700,6 +1750,7 @@
     "age": 26,
     "number": 7,
     "teamId": "wonju-db",
+    "kblId": "291355",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1736,6 +1787,7 @@
     "age": 26,
     "number": 23,
     "teamId": "seoul-sk",
+    "kblId": "291303",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -1770,6 +1822,7 @@
     "age": 36,
     "number": 13,
     "teamId": "goyang-sono",
+    "kblId": "290542",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -1802,6 +1855,7 @@
     "age": 35,
     "number": 4,
     "teamId": "goyang-sono",
+    "kblId": "290765",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1838,6 +1892,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290993",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -1875,6 +1930,7 @@
     "age": 28,
     "number": 19,
     "teamId": "seoul-samsung",
+    "kblId": "291374",
     "registered": true,
     "candidateTeams": [
       "seoul-samsung"
@@ -1906,6 +1962,7 @@
     "age": 29,
     "number": 6,
     "teamId": "busan-kcc",
+    "kblId": "291293",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -1938,6 +1995,7 @@
     "age": 29,
     "number": 11,
     "teamId": "changwon-lg",
+    "kblId": "291091",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1976,6 +2034,7 @@
     "age": 27,
     "number": 0,
     "teamId": "suwon-kt",
+    "kblId": "291492",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -1996,7 +2055,7 @@
       "2026-27": true
     },
     "stats": {
-      "shooting": 61,
+      "shooting": 60,
       "passing": 57,
       "defense": 55,
       "rebound": 68,
@@ -2016,6 +2075,7 @@
     "age": 36,
     "number": 9,
     "teamId": "goyang-sono",
+    "kblId": "290529",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -2048,6 +2108,7 @@
     "age": 36,
     "number": null,
     "teamId": null,
+    "kblId": "291430",
     "registered": false,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -2081,6 +2142,7 @@
     "age": 23,
     "number": 12,
     "teamId": "goyang-sono",
+    "kblId": "291855",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2117,6 +2179,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291793",
     "registered": false,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -2129,7 +2192,7 @@
       "2026-27": false
     },
     "stats": {
-      "shooting": 64,
+      "shooting": 63,
       "passing": 65,
       "defense": 71,
       "rebound": 74,
@@ -2149,6 +2212,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290741",
     "registered": false,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -2182,6 +2246,7 @@
     "age": 22,
     "number": 24,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291857",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2205,7 +2270,7 @@
       "passing": 72,
       "defense": 75,
       "rebound": 57,
-      "athletic": 67,
+      "athletic": 68,
       "stamina": 65
     },
     "ovr": 67,
@@ -2221,6 +2286,7 @@
     "age": 37,
     "number": 14,
     "teamId": "seoul-sk",
+    "kblId": "290485",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -2255,6 +2321,7 @@
     "age": 32,
     "number": 31,
     "teamId": "seoul-sk",
+    "kblId": "291333",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -2290,6 +2357,7 @@
     "age": 19,
     "number": 36,
     "teamId": "seoul-sk",
+    "kblId": "291846",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2327,6 +2395,7 @@
     "age": 38,
     "number": 7,
     "teamId": "suwon-kt",
+    "kblId": "290454",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -2344,13 +2413,13 @@
     "stats": {
       "shooting": 64,
       "passing": 60,
-      "defense": 64,
+      "defense": 65,
       "rebound": 49,
       "athletic": 56,
       "stamina": 60
     },
-    "ovr": 60,
-    "cost": 4,
+    "ovr": 61,
+    "cost": 5,
     "ratedFromSample": true
   },
   {
@@ -2362,6 +2431,7 @@
     "age": 38,
     "number": 5,
     "teamId": "suwon-kt",
+    "kblId": "290407",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2402,6 +2472,7 @@
     "age": 24,
     "number": 7,
     "teamId": "changwon-lg",
+    "kblId": "291771",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2420,7 +2491,7 @@
       "defense": 63,
       "rebound": 56,
       "athletic": 60,
-      "stamina": 56
+      "stamina": 57
     },
     "ovr": 61,
     "cost": 5,
@@ -2435,6 +2506,7 @@
     "age": 24,
     "number": 23,
     "teamId": "seoul-samsung",
+    "kblId": "291853",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -2469,6 +2541,7 @@
     "age": 23,
     "number": 10,
     "teamId": "wonju-db",
+    "kblId": "291752",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2506,6 +2579,7 @@
     "age": 33,
     "number": 1,
     "teamId": "suwon-kt",
+    "kblId": "290583",
     "registered": true,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -2534,6 +2608,40 @@
     "ratedFromSample": true
   },
   {
+    "name": "이정현(2)",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "asiaQuota": false,
+    "age": 39,
+    "number": 3,
+    "teamId": "wonju-db",
+    "kblId": "290381",
+    "registered": true,
+    "candidateTeams": [
+      "wonju-db",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 63,
+    "minutes": 739,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 67,
+      "defense": 66,
+      "rebound": 55,
+      "athletic": 60,
+      "stamina": 57
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
     "name": "이두원",
     "position": "C",
     "positionGiven": false,
@@ -2542,6 +2650,7 @@
     "age": 26,
     "number": 21,
     "teamId": "suwon-kt",
+    "kblId": "291586",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2571,39 +2680,6 @@
     "ratedFromSample": true
   },
   {
-    "name": "이정현(2)",
-    "position": "SG",
-    "positionGiven": false,
-    "origin": "domestic",
-    "asiaQuota": false,
-    "age": 39,
-    "number": 3,
-    "teamId": "wonju-db",
-    "registered": true,
-    "candidateTeams": [
-      "wonju-db",
-      "goyang-sono",
-      "busan-kcc"
-    ],
-    "games": 57,
-    "minutes": 718,
-    "seasons": {
-      "2025-26": true,
-      "2026-27": false
-    },
-    "stats": {
-      "shooting": 56,
-      "passing": 67,
-      "defense": 67,
-      "rebound": 55,
-      "athletic": 60,
-      "stamina": 57
-    },
-    "ovr": 60,
-    "cost": 4,
-    "ratedFromSample": true
-  },
-  {
     "name": "이원석",
     "position": "PF",
     "positionGiven": false,
@@ -2612,6 +2688,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291478",
     "registered": false,
     "candidateTeams": [
       "goyang-sono",
@@ -2647,6 +2724,7 @@
     "age": 36,
     "number": 8,
     "teamId": "seoul-samsung",
+    "kblId": "290501",
     "registered": true,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -2680,6 +2758,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290100",
     "registered": false,
     "candidateTeams": [
       "ulsan-hyundai-mobis",
@@ -2712,6 +2791,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291777",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -2752,6 +2832,7 @@
     "age": 19,
     "number": 27,
     "teamId": "daegu-kogas",
+    "kblId": "291862",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -2790,6 +2871,7 @@
     "age": 28,
     "number": 10,
     "teamId": "changwon-lg",
+    "kblId": "291363",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2827,6 +2909,7 @@
     "age": 32,
     "number": 55,
     "teamId": "goyang-sono",
+    "kblId": "290997",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -2861,6 +2944,7 @@
     "age": 39,
     "number": 41,
     "teamId": "seoul-sk",
+    "kblId": "290450",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -2898,6 +2982,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291786",
     "registered": false,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -2933,6 +3018,7 @@
     "age": 30,
     "number": 30,
     "teamId": "daegu-kogas",
+    "kblId": "291087",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -2971,6 +3057,7 @@
     "age": 41,
     "number": 10,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "290284",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3007,6 +3094,7 @@
     "age": 30,
     "number": 17,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291275",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3043,6 +3131,7 @@
     "age": 24,
     "number": 13,
     "teamId": "daegu-kogas",
+    "kblId": "291863",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3063,7 +3152,7 @@
       "2026-27": true
     },
     "stats": {
-      "shooting": 67,
+      "shooting": 66,
       "passing": 54,
       "defense": 64,
       "rebound": 59,
@@ -3083,6 +3172,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291580",
     "registered": false,
     "candidateTeams": [
       "busan-kcc"
@@ -3114,6 +3204,7 @@
     "age": 34,
     "number": 3,
     "teamId": "seoul-sk",
+    "kblId": "290784",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3151,6 +3242,7 @@
     "age": 32,
     "number": 7,
     "teamId": "seoul-samsung",
+    "kblId": "290985",
     "registered": true,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -3190,6 +3282,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291792",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -3227,6 +3320,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291670",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -3262,6 +3356,7 @@
     "age": 26,
     "number": 9,
     "teamId": "seoul-samsung",
+    "kblId": "291597",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -3298,6 +3393,7 @@
     "age": 35,
     "number": 15,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "290750",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3334,6 +3430,7 @@
     "age": 30,
     "number": 9,
     "teamId": "daegu-kogas",
+    "kblId": "291194",
     "registered": true,
     "candidateTeams": [
       "daegu-kogas",
@@ -3366,6 +3463,7 @@
     "age": 33,
     "number": 34,
     "teamId": "suwon-kt",
+    "kblId": "290599",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3403,6 +3501,7 @@
     "age": 21,
     "number": 6,
     "teamId": "wonju-db",
+    "kblId": "291850",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3442,6 +3541,7 @@
     "age": 40,
     "number": null,
     "teamId": null,
+    "kblId": "291144",
     "registered": false,
     "candidateTeams": [
       "wonju-db",
@@ -3476,6 +3576,7 @@
     "age": 37,
     "number": 1,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "290489",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -3512,6 +3613,7 @@
     "age": 30,
     "number": 19,
     "teamId": "wonju-db",
+    "kblId": "291070",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3552,6 +3654,7 @@
     "age": 33,
     "number": 10,
     "teamId": "suwon-kt",
+    "kblId": "290661",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -3587,6 +3690,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291795",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -3627,6 +3731,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291341",
     "registered": false,
     "candidateTeams": [
       "anyang-jungkwanjang",
@@ -3666,6 +3771,7 @@
     "age": 19,
     "number": 15,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291849",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3706,6 +3812,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291668",
     "registered": false,
     "candidateTeams": [
       "goyang-sono",
@@ -3742,6 +3849,7 @@
     "age": 34,
     "number": 23,
     "teamId": "suwon-kt",
+    "kblId": "290763",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3779,6 +3887,7 @@
     "age": 26,
     "number": 8,
     "teamId": "suwon-kt",
+    "kblId": "291692",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3819,6 +3928,7 @@
     "age": 28,
     "number": 5,
     "teamId": "wonju-db",
+    "kblId": "291483",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3856,6 +3966,7 @@
     "age": 33,
     "number": 6,
     "teamId": "changwon-lg",
+    "kblId": "290648",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3892,6 +4003,7 @@
     "age": 24,
     "number": 8,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291847",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3932,6 +4044,7 @@
     "age": 22,
     "number": 1,
     "teamId": "seoul-sk",
+    "kblId": "291760",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -3972,6 +4085,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291789",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -4012,6 +4126,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291660",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -4036,7 +4151,7 @@
       "passing": 65,
       "defense": 58,
       "rebound": 50,
-      "athletic": 59,
+      "athletic": 60,
       "stamina": 60
     },
     "ovr": 61,
@@ -4052,6 +4167,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291877",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -4089,6 +4205,7 @@
     "age": 33,
     "number": 1,
     "teamId": "busan-kcc",
+    "kblId": "290788",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4108,7 +4225,7 @@
       "2026-27": true
     },
     "stats": {
-      "shooting": 65,
+      "shooting": 66,
       "passing": 64,
       "defense": 56,
       "rebound": 48,
@@ -4128,6 +4245,7 @@
     "age": 36,
     "number": 43,
     "teamId": "seoul-samsung",
+    "kblId": "290742",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4168,6 +4286,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291871",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -4208,6 +4327,7 @@
     "age": 28,
     "number": 19,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291388",
     "registered": true,
     "candidateTeams": [
       "goyang-sono",
@@ -4242,6 +4362,7 @@
     "age": 28,
     "number": 13,
     "teamId": "wonju-db",
+    "kblId": "291351",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4282,6 +4403,7 @@
     "age": 27,
     "number": 11,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291375",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4311,6 +4433,7 @@
     "age": 26,
     "number": 2,
     "teamId": "wonju-db",
+    "kblId": "291499",
     "registered": true,
     "candidateTeams": [
       "wonju-db",
@@ -4346,6 +4469,7 @@
     "age": 37,
     "number": 3,
     "teamId": "changwon-lg",
+    "kblId": "290478",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4385,6 +4509,7 @@
     "age": 31,
     "number": 35,
     "teamId": "suwon-kt",
+    "kblId": "291671",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4414,6 +4539,7 @@
     "age": 29,
     "number": 11,
     "teamId": "daegu-kogas",
+    "kblId": "291274",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4454,6 +4580,7 @@
     "age": 30,
     "number": 12,
     "teamId": "busan-kcc",
+    "kblId": "291287",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4493,6 +4620,7 @@
     "age": 28,
     "number": 33,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291883",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4522,6 +4650,7 @@
     "age": 21,
     "number": 14,
     "teamId": "goyang-sono",
+    "kblId": "291748",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4562,6 +4691,7 @@
     "age": 24,
     "number": 7,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291648",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4599,6 +4729,7 @@
     "age": 23,
     "number": 12,
     "teamId": "seoul-sk",
+    "kblId": "291845",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4639,6 +4770,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290417",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -4679,6 +4811,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291759",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -4719,6 +4852,7 @@
     "age": 27,
     "number": 44,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291579",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4748,6 +4882,7 @@
     "age": 34,
     "number": 21,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "290603",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4788,6 +4923,7 @@
     "age": 27,
     "number": 19,
     "teamId": "daegu-kogas",
+    "kblId": "291680",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4817,6 +4953,7 @@
     "age": 27,
     "number": 23,
     "teamId": "busan-kcc",
+    "kblId": "291884",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4846,6 +4983,7 @@
     "age": 29,
     "number": 31,
     "teamId": "goyang-sono",
+    "kblId": "291881",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4875,6 +5013,7 @@
     "age": 28,
     "number": 9,
     "teamId": "suwon-kt",
+    "kblId": "291352",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4915,6 +5054,7 @@
     "age": 31,
     "number": 27,
     "teamId": "seoul-samsung",
+    "kblId": "291095",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -4955,6 +5095,7 @@
     "age": 32,
     "number": 8,
     "teamId": "changwon-lg",
+    "kblId": "291882",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -4984,6 +5125,7 @@
     "age": 26,
     "number": 0,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291886",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -5013,6 +5155,7 @@
     "age": 30,
     "number": 8,
     "teamId": "daegu-kogas",
+    "kblId": "291182",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5053,6 +5196,7 @@
     "age": 24,
     "number": 20,
     "teamId": "goyang-sono",
+    "kblId": "291747",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5093,6 +5237,7 @@
     "age": 35,
     "number": 17,
     "teamId": "seoul-sk",
+    "kblId": "290740",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5133,6 +5278,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290503",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5173,6 +5319,7 @@
     "age": 30,
     "number": 22,
     "teamId": "suwon-kt",
+    "kblId": "291885",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -5194,35 +5341,6 @@
     "ratedFromSample": false
   },
   {
-    "name": "박지훈",
-    "position": "SF",
-    "positionGiven": false,
-    "origin": "domestic",
-    "asiaQuota": false,
-    "age": null,
-    "number": null,
-    "teamId": null,
-    "registered": false,
-    "candidateTeams": null,
-    "games": 8,
-    "minutes": 160,
-    "seasons": {
-      "2025-26": false,
-      "2026-27": true
-    },
-    "stats": {
-      "shooting": 66,
-      "passing": 60,
-      "defense": 65,
-      "rebound": 59,
-      "athletic": 66,
-      "stamina": 64
-    },
-    "ovr": 64,
-    "cost": 6,
-    "ratedFromSample": false
-  },
-  {
     "name": "에릭 로메로",
     "position": "C",
     "positionGiven": false,
@@ -5231,6 +5349,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291790",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5271,6 +5390,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290435",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5311,6 +5431,7 @@
     "age": 25,
     "number": 21,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291756",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5351,6 +5472,7 @@
     "age": 30,
     "number": 31,
     "teamId": "changwon-lg",
+    "kblId": "291291",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5390,6 +5512,7 @@
     "age": 31,
     "number": 13,
     "teamId": "seoul-samsung",
+    "kblId": "291237",
     "registered": true,
     "candidateTeams": null,
     "games": 6,
@@ -5419,6 +5542,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291876",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5459,6 +5583,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291878",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5499,6 +5624,7 @@
     "age": 25,
     "number": 26,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291887",
     "registered": true,
     "candidateTeams": null,
     "games": 7,
@@ -5528,6 +5654,7 @@
     "age": 23,
     "number": 14,
     "teamId": "suwon-kt",
+    "kblId": "291843",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5568,6 +5695,7 @@
     "age": 36,
     "number": 23,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "290553",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5608,6 +5736,7 @@
     "age": 31,
     "number": 9,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291888",
     "registered": true,
     "candidateTeams": null,
     "games": 4,
@@ -5629,35 +5758,6 @@
     "ratedFromSample": false
   },
   {
-    "name": "최승욱(1)",
-    "position": "SG",
-    "positionGiven": false,
-    "origin": "domestic",
-    "asiaQuota": false,
-    "age": null,
-    "number": null,
-    "teamId": null,
-    "registered": false,
-    "candidateTeams": null,
-    "games": 7,
-    "minutes": 107,
-    "seasons": {
-      "2025-26": false,
-      "2026-27": true
-    },
-    "stats": {
-      "shooting": 68,
-      "passing": 64,
-      "defense": 59,
-      "rebound": 50,
-      "athletic": 61,
-      "stamina": 64
-    },
-    "ovr": 63,
-    "cost": 5,
-    "ratedFromSample": false
-  },
-  {
     "name": "카이린 갤러웨이",
     "position": "C",
     "positionGiven": false,
@@ -5666,6 +5766,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291879",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5706,6 +5807,7 @@
     "age": 25,
     "number": 10,
     "teamId": "busan-kcc",
+    "kblId": "291651",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5746,6 +5848,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291783",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5771,7 +5874,7 @@
       "defense": 68,
       "rebound": 76,
       "athletic": 65,
-      "stamina": 59
+      "stamina": 60
     },
     "ovr": 67,
     "cost": 6,
@@ -5786,6 +5889,7 @@
     "age": 26,
     "number": 77,
     "teamId": "seoul-samsung",
+    "kblId": "291750",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5819,14 +5923,15 @@
   },
   {
     "name": "최승욱(2)",
-    "position": "SG",
+    "position": "SF",
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
-    "age": null,
-    "number": null,
-    "teamId": null,
-    "registered": false,
+    "age": 32,
+    "number": 5,
+    "teamId": "daegu-kogas",
+    "kblId": "291005",
+    "registered": true,
     "candidateTeams": null,
     "games": 7,
     "minutes": 63,
@@ -5835,15 +5940,15 @@
       "2026-27": true
     },
     "stats": {
-      "shooting": 70,
-      "passing": 62,
-      "defense": 62,
-      "rebound": 50,
-      "athletic": 63,
+      "shooting": 65,
+      "passing": 59,
+      "defense": 64,
+      "rebound": 57,
+      "athletic": 65,
       "stamina": 63
     },
-    "ovr": 64,
-    "cost": 6,
+    "ovr": 63,
+    "cost": 5,
     "ratedFromSample": false
   },
   {
@@ -5855,6 +5960,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291485",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -5895,6 +6001,7 @@
     "age": 23,
     "number": 20,
     "teamId": "seoul-sk",
+    "kblId": "291844",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5935,6 +6042,7 @@
     "age": 24,
     "number": 11,
     "teamId": "seoul-samsung",
+    "kblId": "291763",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -5975,6 +6083,7 @@
     "age": 32,
     "number": 7,
     "teamId": "goyang-sono",
+    "kblId": "290662",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6015,6 +6124,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291603",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -6055,6 +6165,7 @@
     "age": 23,
     "number": 13,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291848",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6095,6 +6206,7 @@
     "age": 25,
     "number": 3,
     "teamId": "seoul-samsung",
+    "kblId": "291764",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6135,6 +6247,7 @@
     "age": 32,
     "number": null,
     "teamId": null,
+    "kblId": "291436",
     "registered": false,
     "candidateTeams": null,
     "games": 2,
@@ -6164,6 +6277,7 @@
     "age": 28,
     "number": 2,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291281",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6204,6 +6318,7 @@
     "age": 28,
     "number": 21,
     "teamId": "daegu-kogas",
+    "kblId": "291289",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6244,6 +6359,7 @@
     "age": 23,
     "number": 0,
     "teamId": "wonju-db",
+    "kblId": "291851",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6284,6 +6400,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290488",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -6324,6 +6441,7 @@
     "age": 30,
     "number": 13,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291276",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6364,6 +6482,7 @@
     "age": 19,
     "number": 44,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291858",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6404,6 +6523,7 @@
     "age": 25,
     "number": 24,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291594",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6444,6 +6564,7 @@
     "age": 29,
     "number": 35,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291210",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6484,6 +6605,7 @@
     "age": 25,
     "number": 3,
     "teamId": "goyang-sono",
+    "kblId": "291641",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6516,35 +6638,6 @@
     "ratedFromSample": false
   },
   {
-    "name": "이정현(신)",
-    "position": "SF",
-    "positionGiven": false,
-    "origin": "domestic",
-    "asiaQuota": false,
-    "age": null,
-    "number": null,
-    "teamId": null,
-    "registered": false,
-    "candidateTeams": null,
-    "games": 6,
-    "minutes": 22,
-    "seasons": {
-      "2025-26": false,
-      "2026-27": true
-    },
-    "stats": {
-      "shooting": 64,
-      "passing": 60,
-      "defense": 63,
-      "rebound": 58,
-      "athletic": 65,
-      "stamina": 63
-    },
-    "ovr": 63,
-    "cost": 5,
-    "ratedFromSample": false
-  },
-  {
     "name": "박진철",
     "position": "C",
     "positionGiven": false,
@@ -6553,6 +6646,7 @@
     "age": 29,
     "number": 15,
     "teamId": "seoul-samsung",
+    "kblId": "291370",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6593,6 +6687,7 @@
     "age": 27,
     "number": 5,
     "teamId": "ulsan-hyundai-mobis",
+    "kblId": "291494",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6633,6 +6728,7 @@
     "age": 28,
     "number": 14,
     "teamId": "anyang-jungkwanjang",
+    "kblId": "291482",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6673,6 +6769,7 @@
     "age": 23,
     "number": 21,
     "teamId": "seoul-sk",
+    "kblId": "291869",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6713,6 +6810,7 @@
     "age": 26,
     "number": 11,
     "teamId": "wonju-db",
+    "kblId": "291589",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6753,6 +6851,7 @@
     "age": 24,
     "number": 9,
     "teamId": "changwon-lg",
+    "kblId": "291867",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6793,6 +6892,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291766",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -6833,6 +6933,7 @@
     "age": 33,
     "number": 11,
     "teamId": "suwon-kt",
+    "kblId": "290783",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -6873,6 +6974,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291655",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -6913,6 +7015,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291761",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -6953,6 +7056,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "290585",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -6993,6 +7097,7 @@
     "age": 23,
     "number": 2,
     "teamId": "changwon-lg",
+    "kblId": "291865",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7033,6 +7138,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291646",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -7073,6 +7179,7 @@
     "age": 25,
     "number": 24,
     "teamId": "daegu-kogas",
+    "kblId": "291754",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7113,6 +7220,7 @@
     "age": 23,
     "number": 4,
     "teamId": "changwon-lg",
+    "kblId": "291866",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7153,6 +7261,7 @@
     "age": 26,
     "number": 21,
     "teamId": "seoul-samsung",
+    "kblId": "291592",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7193,6 +7302,7 @@
     "age": 28,
     "number": 17,
     "teamId": "suwon-kt",
+    "kblId": "291476",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7233,6 +7343,7 @@
     "age": 32,
     "number": 24,
     "teamId": "wonju-db",
+    "kblId": "290904",
     "registered": true,
     "candidateTeams": null,
     "games": 2,
@@ -7262,6 +7373,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291209",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -7302,6 +7414,7 @@
     "age": 23,
     "number": 37,
     "teamId": "wonju-db",
+    "kblId": "291753",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7342,6 +7455,7 @@
     "age": 23,
     "number": 17,
     "teamId": "goyang-sono",
+    "kblId": "291856",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7382,6 +7496,7 @@
     "age": 25,
     "number": 30,
     "teamId": "busan-kcc",
+    "kblId": "291770",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7422,6 +7537,7 @@
     "age": 28,
     "number": 32,
     "teamId": "busan-kcc",
+    "kblId": "291491",
     "registered": true,
     "candidateTeams": null,
     "games": 2,
@@ -7451,6 +7567,7 @@
     "age": 21,
     "number": 27,
     "teamId": "busan-kcc",
+    "kblId": "291860",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7491,6 +7608,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291601",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -7531,6 +7649,7 @@
     "age": 22,
     "number": 14,
     "teamId": "busan-kcc",
+    "kblId": "291861",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7571,6 +7690,7 @@
     "age": 30,
     "number": 99,
     "teamId": "wonju-db",
+    "kblId": "291304",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7611,6 +7731,7 @@
     "age": 24,
     "number": 1,
     "teamId": "goyang-sono",
+    "kblId": "291391",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7651,6 +7772,7 @@
     "age": 19,
     "number": 13,
     "teamId": "busan-kcc",
+    "kblId": "291769",
     "registered": true,
     "candidateTeams": null,
     "games": 1,
@@ -7680,6 +7802,7 @@
     "age": 23,
     "number": 11,
     "teamId": "goyang-sono",
+    "kblId": "291749",
     "registered": true,
     "candidateTeams": [
       "changwon-lg",
@@ -7720,6 +7843,7 @@
     "age": null,
     "number": null,
     "teamId": null,
+    "kblId": "291662",
     "registered": false,
     "candidateTeams": [
       "changwon-lg",
@@ -7760,6 +7884,7 @@
     "age": 23,
     "number": 16,
     "teamId": "wonju-db",
+    "kblId": "291852",
     "registered": true,
     "candidateTeams": null,
     "games": 1,
@@ -7786,6 +7911,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291755",
     "age": 23,
     "number": 7,
     "teamId": "daegu-kogas",
@@ -7808,6 +7934,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291498",
     "age": 28,
     "number": 7,
     "teamId": "seoul-sk",
@@ -7830,6 +7957,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291486",
     "age": 27,
     "number": 0,
     "teamId": "changwon-lg",
@@ -7852,6 +7980,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291277",
     "age": 28,
     "number": 1,
     "teamId": "anyang-jungkwanjang",
@@ -7874,6 +8003,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291489",
     "age": 26,
     "number": 20,
     "teamId": "changwon-lg",
@@ -7896,6 +8026,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291497",
     "age": 27,
     "number": 11,
     "teamId": "seoul-sk",
@@ -7918,6 +8049,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291854",
     "age": 24,
     "number": 1,
     "teamId": "seoul-samsung",
@@ -7940,6 +8072,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291606",
     "age": 26,
     "number": 10,
     "teamId": "goyang-sono",
@@ -7962,6 +8095,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291376",
     "age": 28,
     "number": 1,
     "teamId": "daegu-kogas",
@@ -7984,6 +8118,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291599",
     "age": 24,
     "number": 10,
     "teamId": "daegu-kogas",
@@ -8006,6 +8141,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291864",
     "age": 23,
     "number": 22,
     "teamId": "daegu-kogas",
@@ -8028,6 +8164,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291349",
     "age": 29,
     "number": 21,
     "teamId": "changwon-lg",
@@ -8050,6 +8187,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291386",
     "age": 25,
     "number": 1,
     "teamId": "wonju-db",
@@ -8072,6 +8210,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291383",
     "age": 29,
     "number": 35,
     "teamId": "seoul-sk",
@@ -8094,6 +8233,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291266",
     "age": 28,
     "number": 6,
     "teamId": "seoul-sk",
@@ -8116,6 +8256,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291605",
     "age": 26,
     "number": 15,
     "teamId": "goyang-sono",
@@ -8138,6 +8279,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291653",
     "age": 21,
     "number": 6,
     "teamId": "seoul-samsung",
@@ -8160,6 +8302,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291768",
     "age": 24,
     "number": 0,
     "teamId": "busan-kcc",
@@ -8182,6 +8325,7 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291765",
     "age": 24,
     "number": 2,
     "teamId": "suwon-kt",
@@ -8204,31 +8348,10 @@
     "positionGiven": false,
     "origin": "domestic",
     "asiaQuota": false,
+    "kblId": "291868",
     "age": 24,
     "number": 25,
     "teamId": "changwon-lg",
-    "registered": true,
-    "candidateTeams": null,
-    "games": 0,
-    "minutes": 0,
-    "seasons": {
-      "2025-26": false,
-      "2026-27": false
-    },
-    "stats": null,
-    "ovr": null,
-    "cost": null,
-    "ratedFromSample": false
-  },
-  {
-    "name": "최승욱",
-    "position": "SF",
-    "positionGiven": false,
-    "origin": "domestic",
-    "asiaQuota": false,
-    "age": 32,
-    "number": 5,
-    "teamId": "daegu-kogas",
     "registered": true,
     "candidateTeams": null,
     "games": 0,
