@@ -1300,7 +1300,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "goyang-sono",
       "ulsan-hyundai-mobis",
@@ -1367,7 +1367,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "anyang-jungkwanjang",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -1431,7 +1431,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "busan-kcc",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -1498,7 +1498,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "busan-kcc",
     "candidateTeams": [
       "goyang-sono",
       "busan-kcc"
@@ -1598,7 +1598,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "wonju-db",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -1822,7 +1822,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "changwon-lg",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -1858,7 +1858,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2052,7 +2052,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "anyang-jungkwanjang",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2154,7 +2154,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2291,7 +2291,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "goyang-sono",
       "ulsan-hyundai-mobis",
@@ -2323,7 +2323,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "wonju-db",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2392,7 +2392,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2458,7 +2458,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "goyang-sono",
       "busan-kcc",
@@ -2522,7 +2522,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "ulsan-hyundai-mobis",
       "daegu-kogas"
@@ -2552,7 +2552,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2626,7 +2626,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "changwon-lg",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2661,7 +2661,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "goyang-sono",
     "candidateTeams": [
       "wonju-db",
       "seoul-sk",
@@ -2693,7 +2693,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2865,7 +2865,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2932,7 +2932,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -2967,7 +2967,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "anyang-jungkwanjang",
       "wonju-db",
@@ -3004,7 +3004,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "busan-kcc",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3072,7 +3072,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "goyang-sono",
       "busan-kcc",
@@ -3140,7 +3140,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "daegu-kogas",
       "seoul-samsung"
@@ -3170,7 +3170,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "wonju-db",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3205,7 +3205,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "wonju-db",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3346,7 +3346,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "wonju-db",
       "seoul-sk",
@@ -3417,7 +3417,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "anyang-jungkwanjang",
       "wonju-db",
@@ -3454,7 +3454,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3492,7 +3492,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "goyang-sono",
       "busan-kcc",
@@ -3561,7 +3561,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "wonju-db",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3596,7 +3596,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "changwon-lg",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3630,7 +3630,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3668,7 +3668,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3744,7 +3744,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3817,7 +3817,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "busan-kcc",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3854,7 +3854,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3892,7 +3892,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -3930,7 +3930,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "goyang-sono",
       "busan-kcc",
@@ -3962,7 +3962,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4027,7 +4027,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "goyang-sono",
     "candidateTeams": [
       "wonju-db",
       "seoul-sk",
@@ -4060,7 +4060,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "changwon-lg",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4124,7 +4124,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4162,7 +4162,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "busan-kcc",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4226,7 +4226,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "goyang-sono",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4264,7 +4264,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "anyang-jungkwanjang",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4326,7 +4326,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4364,7 +4364,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4402,7 +4402,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4467,7 +4467,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4586,7 +4586,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4651,7 +4651,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4689,7 +4689,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4781,7 +4781,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4819,7 +4819,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "anyang-jungkwanjang",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4857,7 +4857,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4895,7 +4895,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -4987,7 +4987,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5025,7 +5025,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "goyang-sono",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5063,7 +5063,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5101,7 +5101,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "changwon-lg",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5165,7 +5165,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5203,7 +5203,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5268,7 +5268,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "suwon-kt",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5306,7 +5306,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "changwon-lg",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5398,7 +5398,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "changwon-lg",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5436,7 +5436,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "busan-kcc",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5474,7 +5474,7 @@
     "origin": "foreign",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "daegu-kogas",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5512,7 +5512,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5577,7 +5577,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5615,7 +5615,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5653,7 +5653,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-samsung",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5691,7 +5691,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "goyang-sono",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5729,7 +5729,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5767,7 +5767,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5870,7 +5870,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "anyang-jungkwanjang",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -5908,7 +5908,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -6060,7 +6060,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "anyang-jungkwanjang",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -6277,7 +6277,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "ulsan-hyundai-mobis",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
@@ -6353,7 +6353,7 @@
     "origin": "domestic",
     "age": null,
     "number": null,
-    "teamId": null,
+    "teamId": "seoul-sk",
     "candidateTeams": [
       "changwon-lg",
       "anyang-jungkwanjang",
