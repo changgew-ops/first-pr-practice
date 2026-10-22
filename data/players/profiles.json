@@ -1,49 +1,436 @@
 [
   {
-    "name": "정인덕", "birth": "1994-07-12", "heightCm": 195, "school": "중앙대", "nationality": ["대한민국"], "position": ["포워드"],
+    "name": "정인덕",
+    "birth": "1994-07-12",
+    "heightCm": 195,
+    "school": "중앙대",
+    "nationality": [
+      "대한민국"
+    ],
+    "position": [
+      "포워드"
+    ],
     "source": "KBL 선수 상세 화면(2026-10-22)",
     "seasons": [
-      {"team": "changwon-lg", "season": "2016-17", "games": 3, "wins": 1, "losses": 2},
-      {"team": "changwon-lg", "season": "2017-18", "games": 9, "wins": 2, "losses": 7},
-      {"team": "changwon-lg", "season": "2021-22", "games": 6, "wins": 3, "losses": 3},
-      {"team": "changwon-lg", "season": "2022-23", "games": 38, "wins": 27, "losses": 11},
-      {"team": "changwon-lg", "season": "2023-24", "games": 47, "wins": 31, "losses": 16},
-      {"team": "changwon-lg", "season": "2024-25", "games": 54, "wins": 34, "losses": 20},
-      {"team": "changwon-lg", "season": "2025-26", "games": 54, "wins": 36, "losses": 18}
+      {
+        "team": "changwon-lg",
+        "season": "2016-17",
+        "games": 3,
+        "wins": 1,
+        "losses": 2
+      },
+      {
+        "team": "changwon-lg",
+        "season": "2017-18",
+        "games": 9,
+        "wins": 2,
+        "losses": 7
+      },
+      {
+        "team": "changwon-lg",
+        "season": "2021-22",
+        "games": 6,
+        "wins": 3,
+        "losses": 3
+      },
+      {
+        "team": "changwon-lg",
+        "season": "2022-23",
+        "games": 38,
+        "wins": 27,
+        "losses": 11
+      },
+      {
+        "team": "changwon-lg",
+        "season": "2023-24",
+        "games": 47,
+        "wins": 31,
+        "losses": 16
+      },
+      {
+        "team": "changwon-lg",
+        "season": "2024-25",
+        "games": 54,
+        "wins": 34,
+        "losses": 20
+      },
+      {
+        "team": "changwon-lg",
+        "season": "2025-26",
+        "games": 54,
+        "wins": 36,
+        "losses": 18
+      }
     ]
   },
   {
-    "name": "대릴 먼로", "nameEn": "Darryl Monroe Jr.", "birth": "1986-01-30", "heightCm": 197, "weightKg": 104, "nationality": ["미국"], "position": ["센터", "파워 포워드"],
-    "school": "조지 메이슨 대학교", "kblEntry": "2018 외국인 자유계약(고양 오리온)", "source": "나무위키 인물 문서(2026-10-22)",
+    "name": "대릴 먼로",
+    "nameEn": "Darryl Monroe Jr.",
+    "birth": "1986-01-30",
+    "heightCm": 197,
+    "weightKg": 104,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "센터",
+      "파워 포워드"
+    ],
+    "school": "조지 메이슨 대학교",
+    "kblEntry": "2018 외국인 자유계약(고양 오리온)",
+    "source": "나무위키 인물 문서(2026-10-22)",
     "career": [
-      {"team": "goyang-sono", "years": "2018~2019"},
-      {"team": "anyang-jungkwanjang", "years": "2021~2024"},
-      {"team": "changwon-lg", "years": "2024~2025"},
-      {"team": "seoul-sk", "years": "2025~2026"}
+      {
+        "team": "goyang-sono",
+        "years": "2018~2019"
+      },
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2021~2024"
+      },
+      {
+        "team": "changwon-lg",
+        "years": "2024~2025"
+      },
+      {
+        "team": "seoul-sk",
+        "years": "2025~2026"
+      }
     ]
   },
   {
-    "name": "라타비우스 윌리엄스", "nameEn": "Latavious Bernard Williams", "birth": "1989-03-29", "heightCm": 200, "weightKg": 109, "wingspanCm": 216, "nationality": ["미국"], "position": ["센터"],
-    "school": "크리스천 라이프 센터 아카데미", "draft": "2010 NBA 드래프트 2라운드 48순위(MIA)", "kblEntry": "2020 외국인 자유계약(안양 KGC인삼공사)", "source": "나무위키 인물 문서(2026-10-22)",
+    "name": "라타비우스 윌리엄스",
+    "nameEn": "Latavious Bernard Williams",
+    "birth": "1989-03-29",
+    "heightCm": 200,
+    "weightKg": 109,
+    "wingspanCm": 216,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "크리스천 라이프 센터 아카데미",
+    "draft": "2010 NBA 드래프트 2라운드 48순위(MIA)",
+    "kblEntry": "2020 외국인 자유계약(안양 KGC인삼공사)",
+    "source": "나무위키 인물 문서(2026-10-22)",
     "career": [
-      {"team": "anyang-jungkwanjang", "years": "2020~2021"},
-      {"team": "busan-kcc", "years": "2021~2022"}
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2020~2021"
+      },
+      {
+        "team": "busan-kcc",
+        "years": "2021~2022"
+      }
     ]
   },
   {
-    "name": "오마리 스펠맨", "nameEn": "Omari Rasulala Spellman", "birth": "1997-07-21", "heightCm": 203, "weightKg": 111, "wingspanCm": 218, "nationality": ["미국", "레바논"], "position": ["파워 포워드", "센터"],
-    "school": "빌라노바 대학교", "draft": "2018 NBA 드래프트 1라운드 30순위(애틀랜타 호크스)", "kblEntry": "2021 외국인 자유 계약(안양 KGC)", "source": "나무위키 인물 문서(2026-10-22)",
+    "name": "오마리 스펠맨",
+    "nameEn": "Omari Rasulala Spellman",
+    "birth": "1997-07-21",
+    "heightCm": 203,
+    "weightKg": 111,
+    "wingspanCm": 218,
+    "nationality": [
+      "미국",
+      "레바논"
+    ],
+    "position": [
+      "파워 포워드",
+      "센터"
+    ],
+    "school": "빌라노바 대학교",
+    "draft": "2018 NBA 드래프트 1라운드 30순위(애틀랜타 호크스)",
+    "kblEntry": "2021 외국인 자유 계약(안양 KGC)",
+    "source": "나무위키 인물 문서(2026-10-22)",
     "career": [
-      {"team": "anyang-jungkwanjang", "years": "2021~2023"},
-      {"team": "wonju-db", "years": "2025"}
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2021~2023"
+      },
+      {
+        "team": "wonju-db",
+        "years": "2025"
+      }
     ]
   },
   {
-    "name": "라숀 토마스", "nameEn": "Rashawn Shaquille Thomas", "birth": "1994-08-15", "heightCm": 198, "weightKg": 108, "nationality": ["미국"], "position": ["포워드"],
-    "school": "텍사스 A&M 대학교", "kblEntry": "2021 외국인 선수 자유계약(울산 현대모비스)", "source": "나무위키 인물 문서(2026-10-22)",
+    "name": "라숀 토마스",
+    "nameEn": "Rashawn Shaquille Thomas",
+    "birth": "1994-08-15",
+    "heightCm": 198,
+    "weightKg": 108,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "포워드"
+    ],
+    "school": "텍사스 A&M 대학교",
+    "kblEntry": "2021 외국인 선수 자유계약(울산 현대모비스)",
+    "source": "나무위키 인물 문서(2026-10-22)",
     "career": [
-      {"team": "ulsan-hyundai-mobis", "years": "2021~2022"},
-      {"team": "anyang-jungkwanjang", "years": "2026"}
+      {
+        "team": "ulsan-hyundai-mobis",
+        "years": "2021~2022"
+      },
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2026"
+      }
     ]
+  },
+  {
+    "name": "얼 클락",
+    "nameEn": "Earl Rashad Clark",
+    "birth": "1988-01-17",
+    "heightCm": 204,
+    "weightKg": 108,
+    "wingspanCm": 220,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "포워드"
+    ],
+    "school": "루이빌 대학교",
+    "draft": "2009 NBA 드래프트 1라운드 14순위(피닉스 선즈)",
+    "kblEntry": "2020 외국인 선수 자유계약(안양 KGC)",
+    "career": [
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2020"
+      },
+      {
+        "team": "ulsan-hyundai-mobis",
+        "years": "2021"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "미로슬라브 라둘리차",
+    "nameEn": "Miroslav Raduljica",
+    "birth": "1988-01-05",
+    "heightCm": 213,
+    "weightKg": 113,
+    "wingspanCm": 218,
+    "nationality": [
+      "세르비아"
+    ],
+    "position": [
+      "센터"
+    ],
+    "kblEntry": "2021 KBL 외국인 선수 자유계약(고양 오리온)",
+    "career": [
+      {
+        "team": "goyang-sono",
+        "years": "2021"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "머피 할로웨이",
+    "nameEn": "Murphy McQuite Holloway",
+    "birth": "1990-04-24",
+    "heightCm": 196,
+    "weightKg": 110,
+    "wingspanCm": 212,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "파워 포워드",
+      "센터"
+    ],
+    "kblEntry": "2018 외국인 자유계약(인천 전자랜드)",
+    "note": "신장 196.2cm. 은퇴 후 미시시피 대학교 코치(2023~)",
+    "career": [
+      {
+        "team": "daegu-kogas",
+        "years": "2018"
+      },
+      {
+        "team": "daegu-kogas",
+        "years": "2019~2020"
+      },
+      {
+        "team": "goyang-sono",
+        "years": "2021~2022"
+      },
+      {
+        "team": "daegu-kogas",
+        "years": "2022~2023"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "앤드류 니콜슨",
+    "nameEn": "Andrew Fabian Nicholson",
+    "birth": "1989-12-08",
+    "heightCm": 206,
+    "weightKg": 113,
+    "wingspanCm": 223,
+    "nationality": [
+      "캐나다"
+    ],
+    "position": [
+      "파워 포워드"
+    ],
+    "school": "세인트 보나벤처 대학교",
+    "draft": "2012 NBA 드래프트 1라운드 19순위(올랜도 매직)",
+    "kblEntry": "2021 외국인 선수 자유계약(대구 한국가스공사)",
+    "career": [
+      {
+        "team": "daegu-kogas",
+        "years": "2021~2022"
+      },
+      {
+        "team": "daegu-kogas",
+        "years": "2023~2025"
+      },
+      {
+        "team": "seoul-samsung",
+        "years": "2025~2026"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "클리프 알렉산더",
+    "nameEn": "Cliffton Nirgel Alexander",
+    "birth": "1995-11-16",
+    "heightCm": 201,
+    "weightKg": 113,
+    "wingspanCm": 222,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "캔자스 대학교",
+    "kblEntry": "2021 외국인 자유 계약(kt)",
+    "career": [
+      {
+        "team": "suwon-kt",
+        "years": "2020~2021"
+      },
+      {
+        "team": "daegu-kogas",
+        "years": "2021~2022"
+      },
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2024~2025"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "캐디 라렌",
+    "nameEn": "Cady Lalanne",
+    "birth": "1992-04-22",
+    "heightCm": 205,
+    "weightKg": 113,
+    "nationality": [
+      "아이티"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "매사추세츠 대학교",
+    "kblEntry": "2019 외국인 자유 계약(창원 LG)",
+    "career": [
+      {
+        "team": "changwon-lg",
+        "years": "2019~2021"
+      },
+      {
+        "team": "suwon-kt",
+        "years": "2021~2022"
+      },
+      {
+        "team": "anyang-jungkwanjang",
+        "years": "2024~2025"
+      },
+      {
+        "team": "busan-kcc",
+        "years": "2025"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "마이크 마이어스",
+    "aliases": [
+      "마이클 마이어스"
+    ],
+    "nameEn": "Michael Myers",
+    "birth": "1992-07-02",
+    "heightCm": 203,
+    "weightKg": 113,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "센터"
+    ],
+    "school": "메릴랜드 이스턴 쇼어 대학",
+    "kblEntry": "2021 외국인 자유계약(kt)",
+    "career": [
+      {
+        "team": "suwon-kt",
+        "years": "2021~2022"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
+  },
+  {
+    "name": "아이재아 힉스",
+    "aliases": [
+      "아이제아 힉스",
+      "아이제이아 힉스"
+    ],
+    "nameEn": "Isaiah Dwayne Hicks",
+    "birth": "1994-07-24",
+    "heightCm": 202,
+    "weightKg": 104,
+    "nationality": [
+      "미국"
+    ],
+    "position": [
+      "파워 포워드",
+      "센터"
+    ],
+    "school": "노스캐롤라이나 대학교",
+    "kblEntry": "2020 외국인 선수 자유계약(서울 삼성)",
+    "career": [
+      {
+        "team": "seoul-samsung",
+        "years": "2020~2022"
+      },
+      {
+        "team": "daegu-kogas",
+        "years": "2023"
+      },
+      {
+        "team": "seoul-sk",
+        "years": "2024~2025"
+      },
+      {
+        "team": "suwon-kt",
+        "years": "2025~2026"
+      },
+      {
+        "team": "seoul-sk",
+        "years": "2026"
+      }
+    ],
+    "source": "나무위키 인물 문서(2026-10-22)"
   }
 ]

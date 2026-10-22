@@ -1742,7 +1742,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
-      "salaryUsd": 580000
+      "salaryUsd": 380000
     },
     "assets": {
       "portrait": null,
@@ -1754,7 +1754,7 @@
     "name": "아이재아 힉스",
     "real": true,
     "position": "PF",
-    "age": 26,
+    "age": 32,
     "number": 31,
     "rarity": "rare",
     "stats": {
@@ -1767,13 +1767,13 @@
     },
     "ovr": 69,
     "cost": 7,
-    "potential": 71,
+    "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "seoul-sk",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 330000
+      "yearsLeft": 1,
+      "salaryUsd": 520000
     },
     "assets": {
       "portrait": null,
@@ -1798,13 +1798,13 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 73,
+    "potential": 72,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "seoul-sk",
     "contract": {
-      "yearsLeft": 2,
-      "salaryEok": 1.3
+      "yearsLeft": 4,
+      "salaryEok": 1.9
     },
     "assets": {
       "portrait": null,
@@ -1829,11 +1829,11 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 68,
+    "potential": 71,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 1,
       "salaryEok": 2.3
     },
     "assets": {
@@ -1859,11 +1859,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 67,
+    "potential": 72,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 1.7
     },
     "assets": {
@@ -1893,7 +1893,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 0.6
     },
     "assets": {
@@ -1923,7 +1923,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -1953,7 +1953,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 1.1
     },
     "assets": {
@@ -1979,11 +1979,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 65,
+    "potential": 63,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 1.3
     },
     "assets": {
@@ -2013,7 +2013,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 1.5
     },
     "assets": {
@@ -2043,7 +2043,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -2069,7 +2069,7 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 67,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
@@ -2103,7 +2103,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.5
     },
     "assets": {
@@ -2133,7 +2133,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 2
     },
     "assets": {
@@ -2159,11 +2159,11 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 71,
+    "potential": 70,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 2
     },
     "assets": {
@@ -2195,7 +2195,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
-      "salaryUsd": 470000
+      "salaryUsd": 520000
     },
     "assets": {
       "portrait": null,
@@ -2220,13 +2220,13 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 66,
+    "potential": 67,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 420000
+      "yearsLeft": 1,
+      "salaryUsd": 360000
     },
     "assets": {
       "portrait": null,
@@ -2251,13 +2251,13 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 68,
+    "potential": 73,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 3,
-      "salaryEok": 1.6
+      "yearsLeft": 1,
+      "salaryEok": 1.2
     },
     "assets": {
       "portrait": null,
@@ -2282,11 +2282,11 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 61,
+    "potential": 62,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.1
     },
     "assets": {
@@ -2316,7 +2316,7 @@
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 2.7
     },
     "assets": {
@@ -2346,7 +2346,7 @@
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 3.6
     },
     "assets": {
@@ -2361,7 +2361,7 @@
     "position": "SG",
     "age": 20,
     "number": 4,
-    "rarity": "ace",
+    "rarity": "rare",
     "stats": {
       "shooting": 53,
       "passing": 62,
@@ -2372,11 +2372,11 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 76,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 1.1
     },
     "assets": {
@@ -2391,7 +2391,7 @@
     "position": "SG",
     "age": 22,
     "number": 24,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 64,
       "passing": 71,
@@ -2402,11 +2402,11 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 72,
+    "potential": 76,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 2.7
     },
     "assets": {
@@ -2436,7 +2436,7 @@
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 1.1
     },
     "assets": {
@@ -2466,7 +2466,7 @@
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.7
     },
     "assets": {
@@ -2481,7 +2481,7 @@
     "position": "SF",
     "age": 25,
     "number": 7,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 64,
       "passing": 59,
@@ -2492,11 +2492,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 68,
+    "potential": 63,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.3
     },
     "assets": {
@@ -2526,7 +2526,7 @@
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -2541,7 +2541,7 @@
     "position": "SG",
     "age": 29,
     "number": 2,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 69,
       "passing": 64,
@@ -2552,11 +2552,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 64,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.7
     },
     "assets": {
@@ -2582,11 +2582,11 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 67,
+    "potential": 68,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 2.3
     },
     "assets": {
@@ -2616,7 +2616,7 @@
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.7
     },
     "assets": {
@@ -2642,13 +2642,13 @@
     },
     "ovr": 68,
     "cost": 7,
-    "potential": 70,
+    "potential": 68,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
-      "salaryUsd": 570000
+      "salaryUsd": 580000
     },
     "assets": {
       "portrait": null,
@@ -2678,8 +2678,8 @@
     "nationality": "미국",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 1,
-      "salaryUsd": 270000
+      "yearsLeft": 3,
+      "salaryUsd": 370000
     },
     "assets": {
       "portrait": null,
@@ -2704,13 +2704,13 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 71,
+    "potential": 68,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 3,
-      "salaryEok": 1.8
+      "yearsLeft": 2,
+      "salaryEok": 1.5
     },
     "assets": {
       "portrait": null,
@@ -2739,7 +2739,7 @@
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 2.3
     },
     "assets": {
@@ -2799,7 +2799,7 @@
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 3.6
     },
     "assets": {
@@ -2814,7 +2814,7 @@
     "position": "SF",
     "age": 22,
     "number": 8,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 69,
       "passing": 53,
@@ -2825,7 +2825,7 @@
     },
     "ovr": 57,
     "cost": 4,
-    "potential": 62,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
@@ -2885,11 +2885,11 @@
     },
     "ovr": 58,
     "cost": 4,
-    "potential": 59,
+    "potential": 58,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 0.6
     },
     "assets": {
@@ -2919,7 +2919,7 @@
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 1.1
     },
     "assets": {
@@ -2945,11 +2945,11 @@
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 63,
+    "potential": 61,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 0.9
     },
     "assets": {
@@ -2964,7 +2964,7 @@
     "position": "SG",
     "age": 25,
     "number": 10,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 71,
       "passing": 64,
@@ -2975,11 +2975,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 65,
+    "potential": 70,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 1.7
     },
     "assets": {
@@ -3005,11 +3005,11 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 73,
+    "potential": 69,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 2
     },
     "assets": {
@@ -3035,11 +3035,11 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 69,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 2.3
     },
     "assets": {
@@ -3065,7 +3065,7 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 70,
+    "potential": 72,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
@@ -3095,13 +3095,13 @@
     },
     "ovr": 76,
     "cost": 10,
-    "potential": 79,
+    "potential": 76,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 3,
-      "salaryUsd": 600000
+      "yearsLeft": 4,
+      "salaryUsd": 440000
     },
     "assets": {
       "portrait": null,
@@ -3126,13 +3126,13 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 69,
+    "potential": 68,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 4,
-      "salaryUsd": 260000
+      "salaryUsd": 490000
     },
     "assets": {
       "portrait": null,
@@ -3157,7 +3157,7 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 67,
+    "potential": 70,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
@@ -3176,7 +3176,7 @@
     "position": "PG",
     "age": 22,
     "number": 77,
-    "rarity": "legend",
+    "rarity": "ace",
     "stats": {
       "shooting": 57,
       "passing": 73,
@@ -3187,11 +3187,11 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 83,
+    "potential": 75,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 2.7
     },
     "assets": {
@@ -3217,7 +3217,7 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 64,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
@@ -3251,7 +3251,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.1
     },
     "assets": {
@@ -3311,7 +3311,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 1.5
     },
     "assets": {
@@ -3337,11 +3337,11 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 72,
+    "potential": 69,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 2.3
     },
     "assets": {
@@ -3371,7 +3371,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 0.9
     },
     "assets": {
@@ -3401,7 +3401,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 0.8
     },
     "assets": {
@@ -3431,7 +3431,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 0.5
     },
     "assets": {
@@ -3457,11 +3457,11 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 63,
+    "potential": 64,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 1.5
     },
     "assets": {
@@ -3487,11 +3487,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 67,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3522,8 +3522,8 @@
     "nationality": "미국",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 3,
-      "salaryUsd": 410000
+      "yearsLeft": 1,
+      "salaryUsd": 350000
     },
     "assets": {
       "portrait": null,
@@ -3553,8 +3553,8 @@
     "nationality": "미국",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
-      "salaryUsd": 470000
+      "yearsLeft": 3,
+      "salaryUsd": 390000
     },
     "assets": {
       "portrait": null,
@@ -3579,12 +3579,12 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 69,
+    "potential": 68,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.2
     },
     "assets": {
@@ -3614,7 +3614,7 @@
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 1.5
     },
     "assets": {
@@ -3640,11 +3640,11 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 64,
+    "potential": 63,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 1.1
     },
     "assets": {
@@ -3674,7 +3674,7 @@
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.7
     },
     "assets": {
@@ -3700,11 +3700,11 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 72,
+    "potential": 73,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 0.8
     },
     "assets": {
@@ -3734,7 +3734,7 @@
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 0.9
     },
     "assets": {
@@ -3760,11 +3760,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 69,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3794,7 +3794,7 @@
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 0.5
     },
     "assets": {
@@ -3820,11 +3820,11 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 63,
+    "potential": 64,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 1.1
     },
     "assets": {
@@ -3850,11 +3850,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 65,
+    "potential": 63,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3880,11 +3880,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 63,
+    "potential": 62,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3899,7 +3899,7 @@
     "position": "C",
     "age": 25,
     "number": 24,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 50,
       "passing": 54,
@@ -3910,7 +3910,7 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 73,
+    "potential": 74,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
@@ -3932,19 +3932,19 @@
     "rarity": "common",
     "stats": {
       "shooting": 67,
-      "passing": 60,
-      "defense": 54,
-      "rebound": 49,
-      "athletic": 58,
-      "stamina": 59
+      "passing": 59,
+      "defense": 57,
+      "rebound": 40,
+      "athletic": 62,
+      "stamina": 57
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 62,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 1,
       "salaryEok": 0.9
     },
     "assets": {
@@ -3975,8 +3975,8 @@
     "nationality": "미국",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 3,
-      "salaryUsd": 320000
+      "yearsLeft": 4,
+      "salaryUsd": 450000
     },
     "assets": {
       "portrait": null,
@@ -4001,13 +4001,13 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 69,
+    "potential": 68,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
-      "salaryUsd": 660000
+      "yearsLeft": 4,
+      "salaryUsd": 300000
     },
     "assets": {
       "portrait": null,
@@ -4021,7 +4021,7 @@
     "position": "PG",
     "age": 23,
     "number": 0,
-    "rarity": "ace",
+    "rarity": "rare",
     "stats": {
       "shooting": 67,
       "passing": 76,
@@ -4032,13 +4032,13 @@
     },
     "ovr": 68,
     "cost": 7,
-    "potential": 75,
+    "potential": 71,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
-      "salaryEok": 1.5
+      "yearsLeft": 4,
+      "salaryEok": 1.9
     },
     "assets": {
       "portrait": null,
@@ -4063,11 +4063,11 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 69,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 2.7
     },
     "assets": {
@@ -4082,7 +4082,7 @@
     "position": "PG",
     "age": 25,
     "number": 3,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 65,
       "passing": 80,
@@ -4093,11 +4093,11 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 73,
+    "potential": 74,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 2.7
     },
     "assets": {
@@ -4127,7 +4127,7 @@
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 2
     },
     "assets": {
@@ -4153,7 +4153,7 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 61,
+    "potential": 62,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
@@ -4183,7 +4183,7 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 69,
+    "potential": 68,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
@@ -4217,7 +4217,7 @@
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 0.8
     },
     "assets": {
@@ -4247,7 +4247,7 @@
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 1.5
     },
     "assets": {
@@ -4262,7 +4262,7 @@
     "position": "SG",
     "age": 24,
     "number": 8,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 63,
       "passing": 61,
@@ -4273,11 +4273,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 65,
+    "potential": 69,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -4303,11 +4303,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 62,
+    "potential": 64,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -4333,11 +4333,11 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 66,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 2
     },
     "assets": {
@@ -4352,7 +4352,7 @@
     "position": "SF",
     "age": 25,
     "number": 21,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 62,
       "passing": 60,
@@ -4363,11 +4363,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 64,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -4397,7 +4397,7 @@
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 1.5
     },
     "assets": {
@@ -4423,13 +4423,13 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 68,
+    "potential": 70,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
-      "salaryUsd": 380000
+      "yearsLeft": 2,
+      "salaryUsd": 580000
     },
     "assets": {
       "portrait": null,
@@ -4454,13 +4454,13 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 67,
+    "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 1,
-      "salaryUsd": 610000
+      "salaryUsd": 290000
     },
     "assets": {
       "portrait": null,
@@ -4474,7 +4474,7 @@
     "position": "SG",
     "age": 28,
     "number": 26,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 69,
       "passing": 64,
@@ -4485,13 +4485,13 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 66,
+    "potential": 64,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
-      "salaryEok": 1.7
+      "yearsLeft": 3,
+      "salaryEok": 1.6
     },
     "assets": {
       "portrait": null,

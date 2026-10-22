@@ -9,14 +9,14 @@ const ids = new Set(teams.map((t) => t.id));
 const teamCsv = (season) => new Map(read(`data/players/team-${season}.csv`).split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#') && l !== 'name,team').map((l) => l.split(',').slice(0, 2)));
 const seasonName = (y) => `${y}-${String(y + 1).slice(2)}`;
 
-// "2021~2024" = 2021-22 ~ 2023-24 시즌, "2025" 한 해만 쓰면 그 해에 끝나는 시즌(2024-25), "2018~2019" = 2018-19
-function seasonsOf(years) {
+// "2021~2024" = 2021-22 ~ 2023-24 시즌. 한 해만 쓴 표기는 문서마다 시작 연도(2021 = 2021-22)나 끝나는 연도(2025 = 2024-25)로 달라 두 시즌 중 하나로 본다
+function seasonCandidates(years) {
   const m = /^(\d{4})(?:~(\d{4}))?$/.exec(years);
   assert.ok(m, `경력 표기 ${years}`);
   const start = Number(m[1]);
   const end = m[2] ? Number(m[2]) : null;
-  if (end === null) return [seasonName(start - 1)];
-  return Array.from({ length: end - start }, (_, i) => seasonName(start + i));
+  if (end === null) return [[seasonName(start)], [seasonName(start - 1)]]; // 둘 중 하나
+  return Array.from({ length: end - start }, (_, i) => [seasonName(start + i)]); // 각각 맞아야 한다
 }
 
 test('프로필: 형식(생년월일·구단 id·키)이 올바르고 이름이 겹치지 않는다', () => {
@@ -34,18 +34,27 @@ test('프로필의 KBL 경력이 시즌별 소속 CSV와 같다 (같은 이름�
   const csvs = new Map(['2021-22', '2022-23', '2023-24', '2024-25', '2025-26'].map((s) => [s, teamCsv(s)]));
   let checked = 0;
   for (const p of profiles) {
-    const expected = [
-      ...(p.career ?? []).flatMap((c) => seasonsOf(c.years).map((season) => ({ season, team: c.team }))),
-      ...(p.seasons ?? []).map((s) => ({ season: s.season, team: s.team }))
-    ];
-    for (const { season, team } of expected) {
-      const csv = csvs.get(season);
-      if (!csv?.has(p.name)) continue; // 그 시즌 기록에 없는 이름(해외 리그 시즌, 아직 없는 시즌)
-      assert.equal(csv.get(p.name), team, `${p.name} ${season}`);
+    const names = [p.name, ...(p.aliases ?? [])];
+    const teamIn = (season) => { const csv = csvs.get(season); const n = names.find((x) => csv?.has(x)); return n ? csv.get(n) : undefined; };
+    // 한 시즌에 두 구단이 주장될 수 있다(시즌 중 이적): 그 시즌 소속 CSV(마지막 소속)는 주장된 구단 중 하나여야 한다
+    const claimed = new Map();
+    const claim = (season, team) => claimed.set(season, new Set([...(claimed.get(season) ?? []), team]));
+    for (const c of p.career ?? []) for (const options of seasonCandidates(c.years)) for (const season of options) claim(season, c.team);
+    for (const c of p.career ?? []) {
+      for (const options of seasonCandidates(c.years)) {
+        const present = options.filter((season) => teamIn(season) !== undefined);
+        if (!present.length) continue; // 그 시즌 기록에 없는 이름(해외 리그 시즌, 아직 없는 시즌)
+        assert.ok(present.some((season) => claimed.get(season).has(teamIn(season))), `${p.name} ${c.years} ${c.team}: ${present.map((s) => `${s}=${teamIn(s)}`).join(', ')}`);
+        checked++;
+      }
+    }
+    for (const s of p.seasons ?? []) {
+      if (teamIn(s.season) === undefined) continue;
+      assert.equal(teamIn(s.season), s.team, `${p.name} ${s.season}`);
       checked++;
     }
   }
-  assert.ok(checked >= 12, `대조한 시즌 ${checked}개`);
+  assert.ok(checked >= 25, `대조한 시즌 ${checked}개`);
 });
 
 test('프로필(정규시즌) + 구단 플레이오프 ≥ 선수 기록 시트(플레이오프 포함 누적): 정인덕', async () => {
