@@ -455,7 +455,7 @@ export function buildEvents(eventDir, teams, { seasonTeams = new Map() } = {}) {
         if (typeof c.salaryEok !== 'number' || !(c.salaryEok > 0)) fail(`${where}: 보수총액(억 원) ${c.salaryEok}`);
         const want = seasonTeams.get(season)?.get(c.name);
         if (want && to && !SPECIAL_GROUPS.has(to) && want !== to) warn(`${where}: 새 소속 ${c.toTeam}이(가) 그 시즌 소속 CSV(${want})와 다릅니다`);
-        return { fromFranchiseId: from, name: c.name, position: c.position ?? null, toFranchiseId: to, stayed: c.toTeam === '잔류', date: c.date, years: c.years, salaryEok: c.salaryEok, compensation: c.compensation ?? '없음', window: c.window ?? null };
+        return { fromFranchiseId: from, name: c.name, position: c.position ?? null, toFranchiseId: to, stayed: c.toTeam === '잔류', date: c.date, years: c.years, salaryEok: c.salaryEok, compensation: c.compensation ?? '없음', window: c.window ?? null, ...(c.note ? { note: c.note } : {}) };
       });
       const unsigned = new Map();
       for (const g of raw.fa.unsigned ?? []) unsigned.set(groupId(g.team, 'FA 미체결'), names(g.names, `FA 미체결 ${g.team}`));
@@ -474,7 +474,7 @@ export function buildEvents(eventDir, teams, { seasonTeams = new Map() } = {}) {
       for (const gid of unsigned.keys()) if (!targets.has(gid)) fail(`FA 미체결 ${gid}: 대상자 명단에 그 구단이 없습니다`);
       fa = { withdrawn: [...withdrawn].map(([franchiseId, n]) => ({ franchiseId, names: n })), targets: [...targets].map(([franchiseId, n]) => ({ franchiseId, names: n })), contracts, unsigned: [...unsigned].map(([franchiseId, n]) => ({ franchiseId, names: n })) };
     }
-    events.push({ season, coaching, trades, foreign, retirements, voluntaryLeave, military, ...(fa ? { fa } : {}) });
+    events.push({ season, ...(raw.note ? { note: raw.note } : {}), coaching, trades, foreign, retirements, voluntaryLeave, military, ...(fa ? { fa } : {}) });
   }
   return { events, errors, warnings };
 }
