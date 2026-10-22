@@ -15,8 +15,8 @@ export function render(ctx) {
   const sig = roster.map((p) => `${p.id}:${p.ovr}`).join(',');
   if (!autoCache || autoCache.key !== key || autoCache.sig !== sig) autoCache = { key, sig, draft: autoDraft(roster, rules) };
   const auto = autoCache.draft;
-  const applied = s.lineup ?? auto; // 지금 경기에 쓰이는 편성
-  if (!edit || edit.key !== key) edit = { key, draft: { starters: [...applied.starters], bench: [...applied.bench] } };
+  const appliedNow = () => s.lineup ?? auto; // 지금 경기에 쓰이는 편성(적용할 때마다 바뀐다)
+  if (!edit || edit.key !== key) edit = { key, draft: { starters: [...appliedNow().starters], bench: [...appliedNow().bench] } };
   edit.draft = prune(edit.draft, roster);
 
   const host = h('div', { class: 'stack' });
@@ -24,6 +24,7 @@ export function render(ctx) {
     const draft = edit.draft;
     const e = evalDraft(draft, roster, rules);
     const autoEval = evalDraft(auto, roster, rules);
+    const applied = appliedNow();
     const dirty = !sameDraft(draft, applied);
     const customApplied = Boolean(s.lineup);
     const cap = rules.lineup.costCap;
