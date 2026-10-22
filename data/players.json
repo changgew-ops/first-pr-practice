@@ -22,7 +22,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 2
+      "salaryEok": 4.8
     },
     "assets": {
       "portrait": null,
@@ -52,7 +52,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.9
+      "salaryEok": 3.7
     },
     "assets": {
       "portrait": null,
@@ -82,7 +82,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.7
+      "salaryEok": 2.8
     },
     "assets": {
       "portrait": null,
@@ -112,7 +112,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.9
+      "salaryEok": 4.2
     },
     "assets": {
       "portrait": null,
@@ -142,7 +142,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.9
+      "salaryEok": 4.2
     },
     "assets": {
       "portrait": null,
@@ -172,7 +172,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.7
+      "salaryEok": 2.5
     },
     "assets": {
       "portrait": null,
@@ -202,7 +202,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.5
+      "salaryEok": 1.6
     },
     "assets": {
       "portrait": null,
@@ -232,7 +232,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.3
+      "salaryEok": 1
     },
     "assets": {
       "portrait": null,
@@ -262,7 +262,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.2
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -292,7 +292,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.2
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -322,7 +322,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -352,7 +352,7 @@
     "teamId": "wonju-db",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -442,7 +442,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 2.2
+      "salaryEok": 5.1
     },
     "assets": {
       "portrait": null,
@@ -472,7 +472,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 2
+      "salaryEok": 3.8
     },
     "assets": {
       "portrait": null,
@@ -502,7 +502,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 2
+      "salaryEok": 3.8
     },
     "assets": {
       "portrait": null,
@@ -532,7 +532,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.9
+      "salaryEok": 3
     },
     "assets": {
       "portrait": null,
@@ -562,7 +562,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.9
+      "salaryEok": 3
     },
     "assets": {
       "portrait": null,
@@ -592,7 +592,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.9
+      "salaryEok": 2.6
     },
     "assets": {
       "portrait": null,
@@ -622,7 +622,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.6
+      "salaryEok": 1.3
     },
     "assets": {
       "portrait": null,
@@ -652,7 +652,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.4
+      "salaryEok": 0.9
     },
     "assets": {
       "portrait": null,
@@ -682,7 +682,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.4
+      "salaryEok": 0.9
     },
     "assets": {
       "portrait": null,
@@ -712,7 +712,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.2
+      "salaryEok": 0.6
     },
     "assets": {
       "portrait": null,
@@ -742,7 +742,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.2
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -772,7 +772,7 @@
     "teamId": "seoul-samsung",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.1
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -862,7 +862,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 2.1
+      "salaryEok": 4.3
     },
     "assets": {
       "portrait": null,
@@ -892,7 +892,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 2.1
+      "salaryEok": 3.8
     },
     "assets": {
       "portrait": null,
@@ -922,7 +922,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 2
+      "salaryEok": 3
     },
     "assets": {
       "portrait": null,
@@ -952,7 +952,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 2
+      "salaryEok": 3
     },
     "assets": {
       "portrait": null,
@@ -982,7 +982,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 2.2
+      "salaryEok": 4.5
     },
     "assets": {
       "portrait": null,
@@ -1012,7 +1012,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.8
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -1042,7 +1042,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.8
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -1072,7 +1072,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.4
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -1102,7 +1102,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.5
+      "salaryEok": 1
     },
     "assets": {
       "portrait": null,
@@ -1132,7 +1132,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.4
+      "salaryEok": 0.8
     },
     "assets": {
       "portrait": null,
@@ -1162,7 +1162,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.2
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -1192,7 +1192,7 @@
     "teamId": "goyang-sono",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.1
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -1282,7 +1282,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 2.1
+      "salaryEok": 6.6
     },
     "assets": {
       "portrait": null,
@@ -1312,7 +1312,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.9
+      "salaryEok": 3.6
     },
     "assets": {
       "portrait": null,
@@ -1342,7 +1342,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.8
+      "salaryEok": 3.2
     },
     "assets": {
       "portrait": null,
@@ -1372,7 +1372,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.7
+      "salaryEok": 2.4
     },
     "assets": {
       "portrait": null,
@@ -1402,7 +1402,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.9
+      "salaryEok": 4.1
     },
     "assets": {
       "portrait": null,
@@ -1432,7 +1432,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.6
+      "salaryEok": 1.8
     },
     "assets": {
       "portrait": null,
@@ -1462,7 +1462,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.6
+      "salaryEok": 1.8
     },
     "assets": {
       "portrait": null,
@@ -1492,7 +1492,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.2
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -1522,7 +1522,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.2
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -1552,7 +1552,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.1
+      "salaryEok": 0.6
     },
     "assets": {
       "portrait": null,
@@ -1582,7 +1582,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -1612,7 +1612,7 @@
     "teamId": "seoul-sk",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -1702,7 +1702,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.6
+      "salaryEok": 2.3
     },
     "assets": {
       "portrait": null,
@@ -1732,7 +1732,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -1762,7 +1762,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.4
+      "salaryEok": 1.5
     },
     "assets": {
       "portrait": null,
@@ -1792,7 +1792,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.5
+      "salaryEok": 1.7
     },
     "assets": {
       "portrait": null,
@@ -1822,7 +1822,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.8
+      "salaryEok": 3.6
     },
     "assets": {
       "portrait": null,
@@ -1852,7 +1852,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.3
+      "salaryEok": 1.1
     },
     "assets": {
       "portrait": null,
@@ -1882,7 +1882,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.2
+      "salaryEok": 0.8
     },
     "assets": {
       "portrait": null,
@@ -1912,7 +1912,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -1942,7 +1942,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -1972,7 +1972,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 0.8
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -2002,7 +2002,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 0.9
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -2032,7 +2032,7 @@
     "teamId": "changwon-lg",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 0.6
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -2122,7 +2122,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 2
+      "salaryEok": 4.9
     },
     "assets": {
       "portrait": null,
@@ -2152,7 +2152,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.9
+      "salaryEok": 4.3
     },
     "assets": {
       "portrait": null,
@@ -2182,7 +2182,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.9
+      "salaryEok": 3.8
     },
     "assets": {
       "portrait": null,
@@ -2212,7 +2212,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.9
+      "salaryEok": 4.3
     },
     "assets": {
       "portrait": null,
@@ -2242,7 +2242,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.7
+      "salaryEok": 2.5
     },
     "assets": {
       "portrait": null,
@@ -2272,7 +2272,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.6
+      "salaryEok": 2.1
     },
     "assets": {
       "portrait": null,
@@ -2302,7 +2302,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.5
+      "salaryEok": 1.6
     },
     "assets": {
       "portrait": null,
@@ -2332,7 +2332,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.2
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -2362,7 +2362,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.2
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -2392,7 +2392,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.2
+      "salaryEok": 0.8
     },
     "assets": {
       "portrait": null,
@@ -2422,7 +2422,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.2
+      "salaryEok": 0.7
     },
     "assets": {
       "portrait": null,
@@ -2452,7 +2452,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 0.8
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -2542,7 +2542,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.8
+      "salaryEok": 3.6
     },
     "assets": {
       "portrait": null,
@@ -2572,7 +2572,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.9
+      "salaryEok": 4.1
     },
     "assets": {
       "portrait": null,
@@ -2602,7 +2602,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.7
+      "salaryEok": 3.1
     },
     "assets": {
       "portrait": null,
@@ -2632,7 +2632,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.7
+      "salaryEok": 3.1
     },
     "assets": {
       "portrait": null,
@@ -2662,7 +2662,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.6
+      "salaryEok": 2.3
     },
     "assets": {
       "portrait": null,
@@ -2692,7 +2692,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -2722,7 +2722,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.5
+      "salaryEok": 1.7
     },
     "assets": {
       "portrait": null,
@@ -2752,7 +2752,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.2
+      "salaryEok": 0.8
     },
     "assets": {
       "portrait": null,
@@ -2782,7 +2782,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -2812,7 +2812,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -2842,7 +2842,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -2872,7 +2872,7 @@
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 0.8
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -2962,7 +2962,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.7
+      "salaryEok": 3.1
     },
     "assets": {
       "portrait": null,
@@ -2992,7 +2992,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.8
+      "salaryEok": 3.6
     },
     "assets": {
       "portrait": null,
@@ -3022,7 +3022,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.5
+      "salaryEok": 1.7
     },
     "assets": {
       "portrait": null,
@@ -3052,7 +3052,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.5
+      "salaryEok": 1.7
     },
     "assets": {
       "portrait": null,
@@ -3082,7 +3082,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.7
+      "salaryEok": 2.7
     },
     "assets": {
       "portrait": null,
@@ -3112,7 +3112,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -3142,7 +3142,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.3
+      "salaryEok": 1.1
     },
     "assets": {
       "portrait": null,
@@ -3172,7 +3172,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -3202,7 +3202,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -3232,7 +3232,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 0.8
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -3262,7 +3262,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -3292,7 +3292,7 @@
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 0.7
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -3382,7 +3382,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 2
+      "salaryEok": 5.3
     },
     "assets": {
       "portrait": null,
@@ -3412,7 +3412,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.7
+      "salaryEok": 3.1
     },
     "assets": {
       "portrait": null,
@@ -3442,7 +3442,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.6
+      "salaryEok": 2.3
     },
     "assets": {
       "portrait": null,
@@ -3472,7 +3472,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -3502,7 +3502,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -3532,7 +3532,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -3562,7 +3562,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.2
+      "salaryEok": 0.9
     },
     "assets": {
       "portrait": null,
@@ -3592,7 +3592,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1
+      "salaryEok": 0.5
     },
     "assets": {
       "portrait": null,
@@ -3622,7 +3622,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -3652,7 +3652,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -3682,7 +3682,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -3712,7 +3712,7 @@
     "teamId": "daegu-kogas",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 0.8
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,
@@ -3802,7 +3802,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.9
+      "salaryEok": 4.7
     },
     "assets": {
       "portrait": null,
@@ -3832,7 +3832,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.9
+      "salaryEok": 4.1
     },
     "assets": {
       "portrait": null,
@@ -3862,7 +3862,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -3892,7 +3892,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.6
+      "salaryEok": 2
     },
     "assets": {
       "portrait": null,
@@ -3922,7 +3922,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.6
+      "salaryEok": 2.3
     },
     "assets": {
       "portrait": null,
@@ -3952,7 +3952,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.5
+      "salaryEok": 1.7
     },
     "assets": {
       "portrait": null,
@@ -3982,7 +3982,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 1,
-      "salaryEok": 1.3
+      "salaryEok": 1.1
     },
     "assets": {
       "portrait": null,
@@ -4012,7 +4012,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1.1
+      "salaryEok": 0.6
     },
     "assets": {
       "portrait": null,
@@ -4042,7 +4042,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -4072,7 +4072,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 4,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -4102,7 +4102,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 2,
-      "salaryEok": 1
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -4132,7 +4132,7 @@
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 0.7
+      "salaryEok": 0.3
     },
     "assets": {
       "portrait": null,

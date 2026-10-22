@@ -6,7 +6,26 @@
   "salaryCap": {
     "domesticEok": 30,
     "foreignUsdTotal": 1000000,
-    "foreignUsdPerPlayer": 700000
+    "foreignUsdPerPlayer": 700000,
+    "soft": {
+      "_note": "KBL 소프트캡(2021-22~): 캡을 넘겨도 되지만 초과분의 30%(10% 이하)/40%(10~20%)/50%(20% 초과)를 기금으로 낸다. 최대 초과 비율과 면제 계약은 게임용 값.",
+      "penaltyTiers": [
+        [
+          0.1,
+          0.3
+        ],
+        [
+          0.2,
+          0.4
+        ],
+        [
+          1000,
+          0.5
+        ]
+      ],
+      "maxOverRatio": 0.2,
+      "exemptContractEok": 0.4
+    }
   },
   "roster": {
     "domestic": 12,
@@ -190,7 +209,7 @@
     "renewMin": 0.2,
     "renewMax": 0.95,
     "foreignRenewProbability": 0.5,
-    "renewSalaryFactor": 0.85,
+    "renewSalaryFactor": 1.0,
     "contractYears": [
       1,
       4
@@ -217,5 +236,68 @@
     },
     "freeAgentPoolMax": 40,
     "emergencySalaryEok": 0.3
+  },
+  "transactions": {
+    "_note": "이적 규칙. 트레이드 세부 규정은 공식 확인 전이라 게임용 단순 규칙이다.",
+    "foreignTradable": false,
+    "trade": {
+      "offseasonDomesticRange": [
+        10,
+        14
+      ],
+      "deadlineDay": 36,
+      "acceptMargin": 1.05,
+      "worthScale": 8,
+      "expiringDiscount": 0.6,
+      "maxOffers": 5,
+      "coreProtected": 3
+    },
+    "freeAgency": {
+      "rounds": 5,
+      "demandDropPerRound": 0.04,
+      "minOfferRatio": 0.9,
+      "acceptScore": 0.98,
+      "contenderPremium": 0.05,
+      "aiRaisePerRound": 0.03,
+      "offersPerTeamPerRound": 3,
+      "loyaltyBonus": 0.05,
+      "successWeight": 0.1,
+      "starterBonus": 0.05,
+      "moodRange": 0.06,
+      "priceWeight": 1.5,
+      "compensationWeight": 0.5,
+      "reserveFundsEok": -10
+    },
+    "compensation": {
+      "_note": "2020년 정비 기준(전년 보수 순위별). 2026년 6월 완화 방침의 세부는 확인하지 못했다.",
+      "tiers": [
+        {
+          "maxRank": 30,
+          "cashOnlyRatio": 2.0,
+          "withPlayerCashRatio": 0.5
+        },
+        {
+          "maxRank": 40,
+          "cashOnlyRatio": 1.0
+        },
+        {
+          "maxRank": 50,
+          "cashOnlyRatio": 0.5
+        }
+      ],
+      "protectedPlayers": 5
+    },
+    "funds": {
+      "start": 20,
+      "revenueBase": 36,
+      "revenuePerWinPct": 16,
+      "playoffBonus": {
+        "6강": 1,
+        "4강": 2,
+        "결승": 3,
+        "우승": 6
+      },
+      "foreignUsdToEok": 1.4e-05
+    }
   }
 }

@@ -6,6 +6,7 @@ import { addBox } from './stats.mjs';
 import { updateSkillsFromSeason } from './stats-rating.mjs';
 import { trainPlayer, autoFocus } from './training.mjs';
 import { runOffseason } from './offseason.mjs';
+import { initialFunds, settleSeason } from './funds.mjs';
 import { calcOvr, calcCost } from './rating.mjs';
 
 export function createLeague(players, rules) {
@@ -35,11 +36,12 @@ function withStats(p, stats) {
 
 /**
  * 시즌 한 해를 진행하고 다음 시즌 상태를 돌려준다.
- * options.manager: 훈련을 직접 관리하는 구단 id (없으면 훈련 없음)
+ * options.manager: 단장이 맡은 구단 id (훈련을 관리하고, 시즌 종료 때 트레이드·재계약·FA 결정을 내린다)
+ * options.policy: 단장의 의사결정 콜백 (src/offseason.mjs 머리말 참고). 없으면 자동 규칙
  * options.inSeasonUpdates: 시즌 중 기록 기반 능력치 갱신 (기본 true)
  */
 export function playLeagueYear(league, teamData, rules, rng, options = {}) {
-  const { manager = null, inSeasonUpdates = true } = options;
+  const { manager = null, inSeasonUpdates = true, policy = null } = options;
   let players = league.players;
   const start = new Map(players.map((p) => [p.id, { ...p.stats }])); // 시즌 시작 능력치
   const totals = new Map();
@@ -76,6 +78,9 @@ export function playLeagueYear(league, teamData, rules, rng, options = {}) {
 
   applyUpdates(); // 시즌 전체 기록 반영
   const seasonPlayers = players; // 시즌 종료 처리(노화·은퇴·드래프트) 직전 상태
-  const { league: next, report } = runOffseason({ ...league, players }, result.standings, teamData, rules, rng);
+  // 시즌 정산(수입 − 연봉 − 소프트캡 기금) 후 시즌 종료 처리
+  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), seasonPlayers, result.standings, result.playoffs, teamData, rules);
+  const { league: next, report } = runOffseason({ ...league, players, funds: settled.funds }, result.standings, teamData, rules, rng, { manager, policy });
+  report.ledger = settled.ledger;
   return { league: next, report, result, totals, seasonPlayers, startStats: start };
 }

@@ -32,8 +32,11 @@ export function rarityOf(ovr, pot) {
   return 'common';
 }
 
-// 국내 선수 연봉(억 원) 기본식. 생성기는 구단 캡에 맞춰 비례 축소하고, 재계약은 0.85를 곱해 쓴다.
-export const rawSalaryEok = (ovr) => Math.max(0.3, 0.4 + (ovr - 45) * 0.06);
+// 국내 선수 시장 연봉(억 원). 능력(OVR)에 대해 가파르게 오르는 곡선이다.
+// 상한 8억, OVR 65 약 2억, OVR 70 약 3억, OVR 77 이상 8억 (2025-26 KBL 최고 보수 8억대를 참고).
+// 생성기는 구단 캡에 맞춰 비례 축소하고, 재계약·FA 협상은 이 값을 기준 요구액으로 쓴다.
+export const MAX_SALARY_EOK = 8;
+export const rawSalaryEok = (ovr) => Math.min(MAX_SALARY_EOK, 0.3 + 20 * Math.pow(Math.max(0, (ovr - 45) / 40), 3.5));
 
 export function createFactory(rng, rules, usedNames = new Set()) {
   const rand = (min, max) => min + rng() * (max - min);

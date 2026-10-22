@@ -1,8 +1,19 @@
-// 시즌 종료 처리: 노화·성장 → 은퇴 → 계약 만료(재계약/FA) → 신인 드래프트 → 로스터 정리.
-// 이전 게임(카드야구 매니지먼트)의 "젊으면 성장, 나이 들면 노쇠, 나이에 따른 확률 은퇴, 시즌 후 드래프트" 구조를
-// 농구에 맞게 가져왔다. FA 시장(AI 간 경쟁)과 트레이드는 이적 단계에서 확장하고, 여기서는 단순한 자동 처리만 한다.
+// 시즌 종료 처리. 순서:
+//   1) 노화·성장 → 은퇴          (이전 게임의 "젊으면 성장·나이 들면 노쇠·확률 은퇴" 구조를 농구에 맞게 조정)
+//   2) 트레이드 창               (계약이 끝나는 선수를 두고 AI 구단의 제안이 오고, 단장이 응답한다)
+//   3) 재계약 협상               (선수는 제안 금액·구단 성적·충성도를 보고 수락한다. 못 한 선수는 FA로)
+//   4) FA 시장                   (여러 라운드, AI 구단과 단장이 경쟁. 원소속 구단에 FA 보상)
+//   5) 신인 드래프트
+//   6) 로스터 확정               (인원 정리·보충)
+// 단장(options.manager)의 결정은 options.policy 콜백으로 받고, 콜백이 없으면 AI와 같은 자동 규칙을 쓴다.
 import { STAT_KEYS, calcOvr, calcCost } from './rating.mjs';
-import { createFactory, FOREIGN_POSITIONS, POSITIONS, DOMESTIC_SLOTS, rarityOf, rawSalaryEok, clamp } from './factory.mjs';
+import { createFactory, FOREIGN_POSITIONS, POSITIONS, rarityOf, clamp } from './factory.mjs';
+import {
+  domesticOf, foreignOf, payrollEok, valueOf, demandEok, needBonus, hardLimitEok
+} from './valuation.mjs';
+import { offerScore, capAllows, preferredYears, runFreeAgency } from './freeagency.mjs';
+import { generateOffers, validateTrade, executeTrade, proposeTrade } from './trade.mjs';
+import { initialFunds } from './funds.mjs';
 
 const PHYSICAL = ['athletic', 'stamina'];
 const SKILLS = ['shooting', 'passing', 'defense', 'rebound'];
@@ -55,47 +66,48 @@ export function progressPlayer(p, rules, rng) {
 }
 
 // ---------- 공용 보조 ----------
-const domesticOf = (players, teamId) => players.filter((p) => p.teamId === teamId && p.origin === 'domestic');
-const foreignOf = (players, teamId) => players.filter((p) => p.teamId === teamId && p.origin === 'foreign');
-const salaryTotal = (list) => list.reduce((s, p) => s + p.contract.salaryEok, 0);
-const renewSalary = (ovr, off) => Math.floor(rawSalaryEok(ovr) * off.renewSalaryFactor * 10) / 10;
 const EPS = 1e-9;
-
-// 선수 가치: 현재 능력 + 성장 여지(젊을수록 크게) − 노쇠
-function value(p) {
-  const room = Math.max(0, p.potential - p.ovr);
-  const youth = p.age <= 24 ? 0.5 : p.age <= 27 ? 0.25 : 0;
-  return p.ovr + room * youth - Math.max(0, p.age - 31) * 0.8;
-}
+const round1 = (v) => Math.round(v * 10) / 10;
 
 /**
  * 시즌 종료 처리.
- * league: { season, players, freeAgents, nextId, usedNames }
- * standings: 정규리그 최종 순위 (드래프트 순서용, 하위 팀부터 지명)
+ * league: { season, players, freeAgents, nextId, usedNames, funds }
+ * standings: 정규리그 최종 순위 (드래프트 순서·구단 성향용)
+ * options.manager: 단장이 맡은 구단 id, options.policy: 단장의 의사결정 콜백 (아래 참고)
+ *   policy.trade({ offers, league, ctx })                 → 수락할 제안 id 배열
+ *   policy.proposals({ league, ctx })                     → 단장이 먼저 거는 트레이드 배열
+ *   policy.resign({ expiring, league, ctx })              → { [선수id]: { salaryEok, years } | null(재계약 안 함) }
+ *   policy.freeAgency({ round, pool, state, demandNow })  → [{ playerId, salaryEok, years }]
+ *   policy.compensation({ player, options, state })       → { type: 'cash' } | { type: 'player', playerId }
+ *   policy.draft({ available, team })                     → 지명할 신인 id
  * 반환: { league: 다음 시즌 상태, report }
  */
-export function runOffseason(league, standings, teamData, rules, rng) {
+export function runOffseason(league, standings, teamData, rules, rng, options = {}) {
+  const { manager = null, policy = null } = options;
   const off = rules.offseason;
   const usedNames = new Set(league.usedNames);
   const f = createFactory(rng, rules, usedNames);
   let nextId = league.nextId;
   const newId = () => `y${league.season + 1}-${String(nextId++).padStart(4, '0')}`;
-  const report = { season: league.season, retired: [], progressed: [], renewed: [], expired: [], drafted: [], released: [], signed: [], foreignReplaced: [] };
-
+  const ranks = new Map(standings.map((s, i) => [s.id, i + 1]));
+  const winPct = new Map(standings.map((s) => [s.id, s.wins / Math.max(1, s.wins + s.losses)]));
+  const ctx = { season: league.season, ranks, winPct, managerTeamId: manager, teamCount: teamData.length };
+  let funds = league.funds ?? initialFunds(teamData, rules);
+  const report = {
+    season: league.season, retired: [], progressed: [], renewed: [], expired: [], refused: [], drafted: [], released: [],
+    signed: [], foreignReplaced: [], trades: [], tradeOffers: [], signings: [], compensations: []
+  };
   const avg = (list, fn) => (list.length ? list.reduce((s, p) => s + fn(p), 0) / list.length : 0);
   report.before = { avgOvr: avg(league.players, (p) => p.ovr), avgAge: avg(league.players, (p) => p.age) };
 
   // 1) 노화·성장 + 은퇴
-  const keep = [];
-  const progressAll = (list, rosterLabel) => {
+  const progressAll = (list, label) => {
     const out = [];
     for (const old of list) {
       const p = progressPlayer(old, rules, rng);
-      const quits = p.origin === 'foreign'
-        ? p.age > rules.aging.foreignMaxAge
-        : rng() < retireProbability(p.age, p.ovr, rules.aging);
+      const quits = p.origin === 'foreign' ? p.age > rules.aging.foreignMaxAge : rng() < retireProbability(p.age, p.ovr, rules.aging);
       if (quits) {
-        report.retired.push({ id: p.id, name: p.name, teamId: p.teamId, age: p.age, ovr: p.ovr, from: rosterLabel });
+        report.retired.push({ id: p.id, name: p.name, teamId: p.teamId, age: p.age, ovr: p.ovr, from: label });
         continue;
       }
       report.progressed.push({ id: p.id, name: p.name, teamId: p.teamId, age: p.age, from: old.ovr, to: p.ovr });
@@ -103,48 +115,91 @@ export function runOffseason(league, standings, teamData, rules, rng) {
     }
     return out;
   };
-  const active = progressAll(league.players, 'team');
+  let players = progressAll(league.players, 'team').map((p) => ({ ...p, contract: { ...p.contract, yearsLeft: p.contract.yearsLeft - 1 } }));
   let pool = progressAll(league.freeAgents, 'fa');
 
-  // 2) 계약 만료: 국내는 재계약 확률·샐러리캡을 보고 결정, 못 한 선수는 FA 풀로
-  const byTeam = new Map(teamData.map((t) => [t.id, []]));
-  for (const p of active) byTeam.get(p.teamId).push({ ...p, contract: { ...p.contract, yearsLeft: p.contract.yearsLeft - 1 } });
+  // 지난 시즌 국내 선수 보수 순위 (FA 보상 기준)
+  const salaryRank = new Map([...players].filter((p) => p.origin === 'domestic')
+    .sort((a, b) => b.contract.salaryEok - a.contract.salaryEok).map((p, i) => [p.id, i + 1]));
 
-  const next = [];
+  // 2) 트레이드 창: 계약이 끝나는 선수를 노린 제안이 온다
+  if (manager) {
+    let work = { ...league, players };
+    const offers = generateOffers(work, manager, ctx, rules, rng, { window: 'offseason' });
+    report.tradeOffers = offers.map((o) => ({ id: o.id, teamId: o.teamId, give: o.give.map((p) => p.id), get: o.get.map((p) => p.id), expiringTarget: o.expiringTarget }));
+    const accepted = new Set(policy?.trade ? policy.trade({ offers, league: work, ctx }) : []);
+    for (const o of offers) {
+      if (!accepted.has(o.id)) continue;
+      if (!validateTrade(work, o.trade, rules, { window: 'offseason' }).ok) continue;
+      work = executeTrade(work, o.trade);
+      report.trades.push({ with: o.teamId, received: o.give.map((p) => p.id), sent: o.get.map((p) => p.id), source: 'offer' });
+    }
+    for (const t of policy?.proposals ? policy.proposals({ league: work, ctx }) : []) {
+      const r = proposeTrade(work, t, ctx, rules, { window: 'offseason' });
+      report.trades.push({ with: t.teamA === manager ? t.teamB : t.teamA, executed: r.executed, reason: r.reason ?? null, source: 'proposal', trade: t });
+      work = r.league;
+    }
+    players = work.players;
+  }
+
+  // 3) 재계약 협상
+  const kept = [];
+  const rosterOf = (list, teamId) => list.filter((p) => p.teamId === teamId && p.origin === 'domestic');
+  const toPool = (p, teamId) => {
+    pool.push({ ...p, teamId: null, contract: { yearsLeft: 0 }, prevTeamId: teamId, prevSalaryEok: p.contract.salaryEok, prevRank: salaryRank.get(p.id) ?? 999 });
+    report.expired.push({ id: p.id, name: p.name, teamId, ovr: p.ovr, foreign: p.origin === 'foreign' });
+  };
   for (const team of teamData) {
-    const roster = byTeam.get(team.id);
-    const staying = roster.filter((p) => p.contract.yearsLeft > 0);
-    const expiring = roster.filter((p) => p.contract.yearsLeft <= 0);
-    let domesticSalary = salaryTotal(staying.filter((p) => p.origin === 'domestic'));
-    for (const p of staying) next.push(p);
+    const mine = players.filter((p) => p.teamId === team.id);
+    const staying = mine.filter((p) => p.contract.yearsLeft > 0);
+    const expiring = mine.filter((p) => p.contract.yearsLeft <= 0);
+    kept.push(...staying);
+    let payroll = payrollEok(staying, team.id);
+    const isManager = team.id === manager;
+    const decisions = isManager && policy?.resign
+      ? policy.resign({ expiring: expiring.filter((p) => p.origin === 'domestic'), league: { ...league, players }, ctx }) ?? {}
+      : null;
 
-    for (const p of expiring.filter((q) => q.origin === 'domestic').sort((a, b) => b.ovr - a.ovr)) {
-      const prob = clamp(off.renewBase + (p.ovr - 50) * off.renewPerOvr, off.renewMin, off.renewMax);
-      const salary = renewSalary(p.ovr, off);
-      if (rng() < prob && domesticSalary + salary <= rules.salaryCap.domesticEok + EPS) {
-        domesticSalary += salary;
-        const years = f.randInt(off.contractYears[0], off.contractYears[1]);
-        next.push({ ...p, contract: { salaryEok: salary, yearsLeft: years } });
-        report.renewed.push({ id: p.id, name: p.name, teamId: team.id, salaryEok: salary, years });
+    for (const p of expiring.filter((q) => q.origin === 'domestic').sort((a, b) => valueOf(b) - valueOf(a))) {
+      let offer = null;
+      if (decisions) {
+        const d = decisions[p.id];
+        if (d) offer = { salaryEok: d.salaryEok, years: d.years ?? preferredYears(p) };
       } else {
-        pool.push({ ...p, teamId: null, contract: { yearsLeft: 0 } });
-        report.expired.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr });
+        const wantProb = clamp(off.renewBase + (p.ovr - 50) * off.renewPerOvr, off.renewMin, off.renewMax);
+        if (rng() < wantProb) offer = { salaryEok: demandEok(p), years: f.randInt(off.contractYears[0], off.contractYears[1]) };
       }
+      if (!offer) { toPool(p, team.id); continue; }
+      if (!capAllows(payroll, offer.salaryEok, rules, { isManager })) { toPool(p, team.id); continue; }
+      const verdict = offerScore(p, offer.salaryEok, team.id, rosterOf(kept, team.id), ctx, rules);
+      if (!verdict.accept) {
+        report.refused.push({ id: p.id, name: p.name, teamId: team.id, offerEok: offer.salaryEok, demandEok: verdict.demand });
+        toPool(p, team.id);
+        continue;
+      }
+      payroll += offer.salaryEok;
+      kept.push({ ...p, contract: { salaryEok: offer.salaryEok, yearsLeft: offer.years } });
+      report.renewed.push({ id: p.id, name: p.name, teamId: team.id, salaryEok: offer.salaryEok, years: offer.years });
     }
     for (const p of expiring.filter((q) => q.origin === 'foreign')) {
       if (rng() < off.foreignRenewProbability) {
         const years = f.randInt(1, 2);
-        next.push({ ...p, contract: { salaryUsd: p.contract.salaryUsd, yearsLeft: years } });
+        kept.push({ ...p, contract: { salaryUsd: p.contract.salaryUsd, yearsLeft: years } });
         report.renewed.push({ id: p.id, name: p.name, teamId: team.id, years });
       } else {
         report.expired.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr, foreign: true });
       }
     }
   }
+  players = kept;
 
-  // 3) 신인 드래프트: 하위 팀부터 라운드마다 지명
-  const nextYear = league.season + 1;
-  const takenNumbers = (teamId) => new Set(next.filter((p) => p.teamId === teamId).map((p) => p.number));
+  // 4) FA 시장
+  const market = runFreeAgency({ players, pool, funds }, teamData, ctx, rules, rng, policy);
+  players = market.players; pool = market.pool; funds = market.funds;
+  report.signings = market.signings; report.compensations = market.compensations;
+
+  // 5) 신인 드래프트: 하위 팀부터 라운드마다 지명 (신인 계약은 캡 면제, 한도는 캡 × 1.2)
+  const takenNumbers = (teamId) => new Set(players.filter((p) => p.teamId === teamId).map((p) => p.number));
   const freeNumber = (teamId) => {
     const used = takenNumbers(teamId);
     for (let i = 0; i < 300; i++) { const n = f.randInt(0, 45); if (!used.has(n)) return n; }
@@ -167,50 +222,54 @@ export function runOffseason(league, standings, teamData, rules, rng) {
   }
   const order = [...standings].reverse().map((s) => s.id);
   let pickNo = 0;
-  const targetCount = Object.fromEntries(POSITIONS.map((pos) => [pos, DOMESTIC_SLOTS.filter((x) => x === pos).length]));
   for (let round = 0; round < dr.rounds; round++) {
     for (const teamId of order) {
-      const mine = next.filter((p) => p.teamId === teamId && p.origin === 'domestic');
-      const room = rules.salaryCap.domesticEok - salaryTotal(mine);
-      const salary = Math.max(off.rookieSalaryEok.min, Math.round((off.rookieSalaryEok.first - pickNo * off.rookieSalaryEok.dropPerPick) * 10) / 10);
-      if (room + EPS < salary || prospects.length === 0) { pickNo++; continue; }
-      const need = (pos) => { const c = mine.filter((p) => p.position === pos).length; return c === 0 ? 6 : c < targetCount[pos] ? 2 : 0; };
-      let bestIdx = 0;
-      let bestScore = -Infinity;
-      prospects.forEach((p, i) => {
-        const score = p.potential * 0.6 + p.ovr * 0.4 + need(p.position);
-        if (score > bestScore) { bestScore = score; bestIdx = i; }
-      });
-      const [pick] = prospects.splice(bestIdx, 1);
-      const signed = { ...pick, teamId, number: freeNumber(teamId), contract: { salaryEok: salary, yearsLeft: dr.rookieYears } };
-      next.push(signed);
-      report.drafted.push({ id: signed.id, name: signed.name, teamId, pick: pickNo + 1, ovr: signed.ovr, potential: signed.potential, position: signed.position });
+      const mine = domesticOf(players, teamId);
+      const salary = Math.max(off.rookieSalaryEok.min, round1(off.rookieSalaryEok.first - pickNo * off.rookieSalaryEok.dropPerPick));
       pickNo++;
+      if (prospects.length === 0 || mine.length >= rules.roster.domestic + 2) continue;
+      if (payrollEok(players, teamId) + salary > hardLimitEok(rules) + EPS) continue;
+      let idx;
+      if (teamId === manager && policy?.draft) {
+        idx = prospects.findIndex((p) => p.id === policy.draft({ available: prospects, team: teamId }));
+      }
+      if (idx === undefined || idx < 0) {
+        let bestScore = -Infinity;
+        prospects.forEach((p, i) => {
+          const score = p.potential * 0.6 + p.ovr * 0.4 + needBonus(mine, p.position);
+          if (score > bestScore) { bestScore = score; idx = i; }
+        });
+      }
+      const [pick] = prospects.splice(idx, 1);
+      const signed = { ...pick, teamId, number: freeNumber(teamId), contract: { salaryEok: salary, yearsLeft: dr.rookieYears } };
+      players.push(signed);
+      report.drafted.push({ id: signed.id, name: signed.name, teamId, pick: pickNo, ovr: signed.ovr, potential: signed.potential, position: signed.position });
     }
   }
-  pool.push(...prospects); // 지명받지 못한 선수는 FA 풀로
+  pool.push(...prospects.map((p) => ({ ...p })));
 
-  // 4) 로스터 정리: 국내 12명을 넘으면 방출, 모자라면 FA에서 영입 (포지션 균형 우선)
+  // 6) 로스터 확정: 국내 12명을 넘으면 방출, 모자라면 FA에서 영입 (포지션 균형 우선)
   const releaseOne = (teamId) => {
-    const mine = next.filter((p) => p.teamId === teamId && p.origin === 'domestic');
+    const mine = domesticOf(players, teamId);
     const counts = Object.fromEntries(POSITIONS.map((pos) => [pos, mine.filter((p) => p.position === pos).length]));
-    const candidates = mine.filter((p) => counts[p.position] > 1);
-    const target = [...candidates].sort((a, b) => value(a) - value(b))[0];
-    next.splice(next.indexOf(target), 1);
+    const target = [...mine.filter((p) => counts[p.position] > 1)].sort((a, b) => valueOf(a) - valueOf(b))[0];
+    players.splice(players.indexOf(target), 1);
     pool.push({ ...target, teamId: null, contract: { yearsLeft: 0 } });
     report.released.push({ id: target.id, name: target.name, teamId });
   };
   const signOne = (teamId) => {
-    const mine = next.filter((p) => p.teamId === teamId && p.origin === 'domestic');
-    const room = rules.salaryCap.domesticEok - salaryTotal(mine);
-    const need = (pos) => { const c = mine.filter((p) => p.position === pos).length; return c === 0 ? 8 : c < targetCount[pos] ? 2 : 0; };
-    const options = pool.filter((p) => p.origin === 'domestic' && renewSalary(p.ovr, off) <= room + EPS);
+    const mine = domesticOf(players, teamId);
+    const payroll = payrollEok(players, teamId);
+    const price = (p) => round1(demandEok(p));
+    const options = pool.filter((p) => p.origin === 'domestic' && capAllows(payroll, price(p), rules));
     let chosen;
+    let salary;
     if (options.length) {
-      chosen = options.reduce((b, p) => (value(p) + need(p.position) > value(b) + need(b.position) ? p : b));
+      chosen = options.reduce((b, p) => (valueOf(p) + needBonus(mine, p.position, 8) > valueOf(b) + needBonus(mine, b.position, 8) ? p : b));
       pool.splice(pool.indexOf(chosen), 1);
+      salary = price(chosen);
     } else {
-      // 영입할 FA가 없으면 최저 연봉의 신인급 선수를 새로 만든다
+      // 캡 여유 안에서 영입할 FA가 없으면 최저 연봉(캡 면제)의 신인급 선수를 새로 만든다
       const position = [...POSITIONS].sort((a, b) => mine.filter((p) => p.position === a).length - mine.filter((p) => p.position === b).length)[0];
       const stats = f.makeStats(position, 46);
       const ovr = calcOvr(position, stats);
@@ -219,23 +278,24 @@ export function runOffseason(league, standings, teamData, rules, rng) {
         rarity: rarityOf(ovr, ovr), stats, ovr, cost: calcCost(ovr), potential: ovr, origin: 'domestic', teamId: null,
         contract: { yearsLeft: 0 }, assets: { portrait: null, model: null }
       };
+      salary = off.emergencySalaryEok;
     }
-    const salary = options.includes(chosen) ? renewSalary(chosen.ovr, off) : off.emergencySalaryEok;
     const signed = { ...chosen, teamId, number: freeNumber(teamId), contract: { salaryEok: salary, yearsLeft: f.randInt(1, 2) } };
-    next.push(signed);
+    for (const k of ['prevTeamId', 'prevSalaryEok', 'prevRank']) delete signed[k];
+    players.push(signed);
     report.signed.push({ id: signed.id, name: signed.name, teamId, ovr: signed.ovr });
   };
   for (const team of teamData) {
-    while (domesticOf(next, team.id).length > rules.roster.domestic) releaseOne(team.id);
-    while (domesticOf(next, team.id).length < rules.roster.domestic) signOne(team.id);
+    while (domesticOf(players, team.id).length > rules.roster.domestic) releaseOne(team.id);
+    while (domesticOf(players, team.id).length < rules.roster.domestic) signOne(team.id);
   }
 
-  // 5) 외국 선수: 부족하면 새로 영입 (리그 외국 선수 평균 수준, 샐러리캡 안에서)
-  const foreignAll = next.filter((p) => p.origin === 'foreign');
+  // 외국 선수: 부족하면 새로 영입 (리그 외국 선수 평균 수준, 샐러리캡 안에서)
+  const foreignAll = players.filter((p) => p.origin === 'foreign');
   const foreignMean = foreignAll.length ? avg(foreignAll, (p) => p.ovr) : 70;
   for (const team of teamData) {
-    while (foreignOf(next, team.id).length < rules.roster.foreign) {
-      const mine = foreignOf(next, team.id);
+    while (foreignOf(players, team.id).length < rules.roster.foreign) {
+      const mine = foreignOf(players, team.id);
       const left = rules.salaryCap.foreignUsdTotal - mine.reduce((s, p) => s + p.contract.salaryUsd, 0);
       const slotsAfter = rules.roster.foreign - mine.length - 1;
       const maxHere = Math.min(rules.salaryCap.foreignUsdPerPlayer, left - slotsAfter * 200000);
@@ -249,15 +309,15 @@ export function runOffseason(league, standings, teamData, rules, rng) {
         rarity: rarityOf(ovr, ovr), stats, ovr, cost: calcCost(ovr), potential: f.makePotential(age, ovr), origin: 'foreign',
         teamId: team.id, contract: { salaryUsd: usd, yearsLeft: f.randInt(1, 2) }, assets: { portrait: null, model: null }
       };
-      next.push(p);
+      players.push(p);
       report.foreignReplaced.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr });
     }
   }
 
-  // 6) FA 풀은 상위 일부만 유지 (국내 선수 위주)
-  pool = pool.filter((p) => p.origin === 'domestic').sort((a, b) => value(b) - value(a)).slice(0, off.freeAgentPoolMax);
+  // FA 풀은 상위 일부만 유지 (국내 선수 위주). 이전 구단 정보는 새 시즌에 필요 없다
+  pool = pool.filter((p) => p.origin === 'domestic').sort((a, b) => valueOf(b) - valueOf(a)).slice(0, off.freeAgentPoolMax)
+    .map((p) => { const q = { ...p }; for (const k of ['prevTeamId', 'prevSalaryEok', 'prevRank']) delete q[k]; return q; });
 
-  report.after = { avgOvr: avg(next, (p) => p.ovr), avgAge: avg(next, (p) => p.age) };
-  const nextLeague = { ...league, season: nextYear, players: next, freeAgents: pool, nextId, usedNames: [...usedNames] };
-  return { league: nextLeague, report };
+  report.after = { avgOvr: avg(players, (p) => p.ovr), avgAge: avg(players, (p) => p.age) };
+  return { league: { ...league, season: league.season + 1, players, freeAgents: pool, nextId, usedNames: [...usedNames], funds }, report };
 }
