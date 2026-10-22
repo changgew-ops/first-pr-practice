@@ -180,7 +180,7 @@ export function liveSeason(session) {
     .map(([id, t]) => ({ id, name: names.get(id).name, teamId: names.get(id).teamId, games: t.games, ppg: t.points / t.games, rpg: t.rebounds / t.games, apg: t.assists / t.games, spg: t.steals / t.games, bpg: t.blocks / t.games }));
   const roundDefs = session.data.rules.playoffs.rounds;
   const rounds = po ? roundDefs.map((def) => ({
-    name: def.name, bestOf: def.bestOf,
+    name: def.name === '챔피언결정전' ? '결승' : def.name, bestOf: def.bestOf, // 이력(seasons.json)은 마지막 라운드를 '결승'이라 부른다
     series: po.series.filter((x) => x.round === def.name).map((x) => ({ a: x.higherId, winsA: x.wins[x.higherId], b: x.lowerId, winsB: x.wins[x.lowerId], winner: x.winnerId }))
   })).filter((r) => r.series.length) : null;
   return {
