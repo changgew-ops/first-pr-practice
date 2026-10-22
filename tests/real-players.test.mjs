@@ -139,7 +139,7 @@ test('statlessPlayers: 등록 정보만으로 선수를 만든다 (능력치는 
   const [p] = statlessPlayers([{ name: '신인', team: 'seoul-sk', number: 7, position: 'G', kind: 'a', draftYear: 2025 }]);
   assert.equal(p.teamId, 'seoul-sk');
   assert.equal(p.position, 'SG');
-  assert.equal(p.origin, 'domestic');
+  assert.equal(p.origin, 'asia');
   assert.equal(p.asiaQuota, true);
   assert.equal(p.age, 23);
   assert.equal(p.stats, null);

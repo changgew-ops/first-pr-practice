@@ -1,15 +1,16 @@
-name,position,age,number,origin
-이선 알바노,PG,,17,domestic
-강상재,SF,32,26,domestic
-정효근,PF,34,12,domestic
-이용우,SG,28,7,domestic
-김보배,PF,23,10,domestic
-이정현(2),SG,38,3,domestic
-이유진,SF,21,6,domestic
-최성원,SG,31,19,domestic
-정호영,SG,27,5,domestic
-이윤기,SF,28,13,domestic
-조은후,SG,27,2,domestic
-이윤수,C,29,99,domestic
-헨리 엘런슨,PF,,8,foreign
-레이션 해먼즈,PF,,22,foreign
+name,position,age,number,origin,nationality
+강상재,SF,32,26,domestic,
+정효근,PF,34,12,domestic,
+이용우,SG,28,7,domestic,
+김보배,PF,23,10,domestic,
+이정현(2),SG,38,3,domestic,
+이유진,SF,21,6,domestic,
+최성원,SG,31,19,domestic,
+정호영,SG,27,5,domestic,
+이윤기,SF,28,13,domestic,
+조은후,SG,27,2,domestic,
+김휴범,SG,23,0,domestic,
+이윤수,C,29,99,domestic,
+헨리 엘런슨,PF,,8,foreign,미국
+레이션 해먼즈,PF,,22,foreign,미국
+이선 알바노,PG,,17,asia,필리핀

@@ -35,7 +35,8 @@ function readRosterCsv(teamId) {
       position: row.position,
       age: optionalNumber(row.age), // 빈 칸은 "모름"이라 생성기가 채운다 (Number('')은 0이라 쓰면 안 된다)
       number: optionalNumber(row.number),
-      origin: row.origin === 'foreign' ? 'foreign' : 'domestic'
+      origin: row.origin === 'foreign' ? 'foreign' : row.origin === 'asia' ? 'asia' : 'domestic',
+      nationality: row.nationality || undefined
     };
   });
 }
@@ -56,7 +57,7 @@ const matchedStatNames = new Set();
 function buildPlayer(teamId, idx, spec, teamBase, slotOffset) {
   const origin = spec.origin;
   const seededRng = mulberry32(hashString(`${SEED}:${spec.name}`));
-  const age = spec.age ?? (origin === 'foreign' ? 24 + Math.floor(seededRng() * 10) : 19 + Math.floor(seededRng() * 17));
+  const age = spec.age ?? (origin === 'foreign' ? 24 + Math.floor(seededRng() * 10) : origin === 'asia' ? 22 + Math.floor(seededRng() * 9) : 19 + Math.floor(seededRng() * 17));
   const target = teamBase + slotOffset + (origin === 'foreign' ? 8 : 0);
   const fromRecords = statRatingByName.get(spec.name);
   if (fromRecords) matchedStatNames.add(spec.name);
@@ -76,6 +77,7 @@ function buildPlayer(teamId, idx, spec, teamBase, slotOffset) {
     cost: calcCost(ovr),
     potential,
     origin,
+    ...(spec.nationality ? { nationality: spec.nationality } : {}),
     teamId,
     contract: { yearsLeft: randInt(1, 4) },
     assets: { portrait: null, model: null }
@@ -91,6 +93,8 @@ function assignSalaries(players) {
   domestic.forEach((p, i) => {
     p.contract.salaryEok = Math.floor(raw[i] * scale * 10) / 10;
   });
+  // 아시아쿼터: 국내 연봉 캡 밖, 게임용 가정 범위
+  for (const p of players.filter((q) => q.origin === 'asia')) p.contract.salaryEok = Math.round(rand(...rules.asiaQuota.salaryEok) * 10) / 10;
   const foreign = players.filter((p) => p.origin === 'foreign');
   let left = rules.salaryCap.foreignUsdTotal;
   foreign.forEach((p, i) => {
@@ -106,6 +110,7 @@ function buildTeam(team) {
   const fromCsv = readRosterCsv(team.id).map((r) => ({ ...r, real: true }));
   const domesticCsv = fromCsv.filter((r) => r.origin === 'domestic').slice(0, rules.roster.domestic);
   const foreignCsv = fromCsv.filter((r) => r.origin === 'foreign').slice(0, rules.roster.foreign);
+  const asiaCsv = fromCsv.filter((r) => r.origin === 'asia').slice(0, rules.roster.asia);
   for (const r of fromCsv) usedNames.add(r.name);
 
   const usedNumbers = new Set(fromCsv.map((r) => r.number).filter(Number.isFinite));
@@ -131,6 +136,7 @@ function buildTeam(team) {
   while (specs.filter((s) => s.origin === 'foreign').length < rules.roster.foreign) {
     specs.push({ name: uniqueName('foreign'), position: pick(FOREIGN_POSITIONS), origin: 'foreign', number: freeNumber() });
   }
+  for (const r of asiaCsv) specs.push(r); // 아시아쿼터는 선택이라 빈자리를 가상 선수로 채우지 않는다
   for (const s of specs) if (!Number.isFinite(s.number)) s.number = freeNumber();
 
   // 슬롯 순서대로 주전급 → 벤치로 목표 OVR 보정

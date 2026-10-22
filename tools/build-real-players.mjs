@@ -102,6 +102,12 @@ if (!process.argv.includes('--apply')) {
   for (const p of assigned) baseCount.set(baseName(p.name), (baseCount.get(baseName(p.name)) ?? 0) + 1);
   const display = (p) => (baseCount.get(baseName(p.name)) === 1 ? baseName(p.name) : p.name);
   mkdirSync(path('data/rosters'), { recursive: true });
+  // 국적(현재 시즌 외국인 선수·아시아쿼터 계약 이벤트에서)
+  const nationalityOf = new Map();
+  if (existsSync(path('data/history/events.json'))) {
+    const ev = JSON.parse(read('data/history/events.json')).find((e) => e.season === '2026-27');
+    for (const fo of ev?.foreign ?? []) nationalityOf.set(aliases.get(fo.name) ?? fo.name, fo.nationality[0]);
+  }
   const byTeam = new Map();
   for (const p of assigned) (byTeam.get(p.teamId) ?? byTeam.set(p.teamId, []).get(p.teamId)).push(p);
   const dropped = [];
@@ -111,7 +117,7 @@ if (!process.argv.includes('--apply')) {
     for (const p of out) dropped.push(`${display(p)}(${teamId})`);
     for (const t of swaps) adjusted.push(`${teamId} 포지션 보충 ${t}`);
     for (const r of relabeled) adjusted.push(`${teamId} ${r.name}: ${r.from} → ${r.to} (포지션이 비어서 바꿈)`);
-    const rows = ['name,position,age,number,origin', ...roster.map((p) => [display(p), p.position, p.age ?? '', p.number ?? '', p.origin].join(','))];
+    const rows = ['name,position,age,number,origin,nationality', ...roster.map((p) => [display(p), p.position, p.age ?? '', p.number ?? '', p.origin, nationalityOf.get(p.name) ?? ''].join(','))];
     writeFileSync(path(`data/rosters/${teamId}.csv`), rows.join('\n') + '\n');
   }
   // 합계 기록 CSV (generate가 이 이름으로 능력치를 만든다). 기록 없는 선수는 줄이 없어 가상 능력치가 된다

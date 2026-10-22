@@ -12,8 +12,11 @@ export function invariants(league, label) {
     const roster = league.players.filter((p) => p.teamId === team.id);
     const dom = roster.filter((p) => p.origin === 'domestic');
     const foreign = roster.filter((p) => p.origin === 'foreign');
+    const asia = roster.filter((p) => p.origin === 'asia');
     assert.equal(dom.length, rules.roster.domestic, `${label} ${team.name} 국내 ${dom.length}명`);
     assert.equal(foreign.length, rules.roster.foreign, `${label} ${team.name} 외국 ${foreign.length}명`);
+    assert.ok(asia.length <= rules.roster.asia, `${label} ${team.name} 아시아쿼터 ${asia.length}명`);
+    for (const p of asia) assert.ok(p.contract.salaryEok >= rules.asiaQuota.salaryEok[0] - 1e-9 && p.contract.salaryEok <= rules.asiaQuota.salaryEok[1] + 1e-9, `${label} ${p.name} 아시아쿼터 연봉 ${p.contract.salaryEok}`);
     // 소프트캡: 캡을 넘길 수 있지만 한도(캡 × 1.2)는 넘지 못한다
     const cap = dom.reduce((s, p) => s + p.contract.salaryEok, 0);
     assert.ok(cap <= rules.salaryCap.domesticEok * (1 + rules.salaryCap.soft.maxOverRatio) + 1e-6, `${label} ${team.name} 국내 연봉 ${cap.toFixed(1)}`);

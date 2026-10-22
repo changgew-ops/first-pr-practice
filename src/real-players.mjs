@@ -9,6 +9,9 @@ import { calcOvr, calcCost } from './rating.mjs';
 const baseName = (n) => n.replace(/\(\d+\)$/, '');
 const hasDup = (n) => /\(\d+\)$/.test(n);
 
+/** 등록선수 화면의 구분(d 국내, f 외국, a 아시아쿼터) → 게임의 origin */
+export const originOf = (kind) => (kind === 'f' ? 'foreign' : kind === 'a' ? 'asia' : 'domestic');
+
 /** 이름에 공백이 있으면 외국 선수(아시아쿼터 포함)로 본다. 귀화 선수 등 예외는 team-map.csv의 origin으로 바로잡는다 */
 export const guessOrigin = (name) => (/\s/.test(baseName(name)) ? 'foreign' : 'domestic');
 
@@ -158,7 +161,7 @@ export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(
       name: p.name,
       position,
       positionGiven: Boolean(given.position),
-      origin: given.origin ?? (reg ? (reg.kind === 'f' ? 'foreign' : 'domestic') : guessOrigin(p.name)),
+      origin: given.origin ?? (reg ? originOf(reg.kind) : guessOrigin(p.name)),
       asiaQuota: reg?.kind === 'a',
       age: given.age ?? (births.has(p.name) ? ageOn(births.get(p.name), asOf) : null) ?? ageFromDraft(reg?.draftYear) ?? null,
       number: given.number ?? reg?.number ?? null,
@@ -184,7 +187,7 @@ export function statlessPlayers(entries, teamMap = new Map(), { births = new Map
       name: e.name,
       position: given.position ?? positionFromRegistry(e.position, null),
       positionGiven: Boolean(given.position),
-      origin: given.origin ?? (e.kind === 'f' ? 'foreign' : 'domestic'),
+      origin: given.origin ?? originOf(e.kind),
       asiaQuota: e.kind === 'a',
       age: given.age ?? (births.has(e.name) ? ageOn(births.get(e.name), asOf) : null) ?? ageFromDraft(e.draftYear),
       number: given.number ?? e.number,
@@ -201,14 +204,15 @@ export function statlessPlayers(entries, teamMap = new Map(), { births = new Map
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C'];
 
 /**
- * 한 구단의 후보 선수들(출전 시간 순)에서 로스터를 고른다: 국내 domestic명 + 외국 foreign명, 다섯 포지션이 모두 있어야 한다.
+ * 한 구단의 후보 선수들(출전 시간 순)에서 로스터를 고른다: 국내 domestic명 + 외국 foreign명 + 아시아쿼터 최대 asia명, 다섯 포지션이 모두 있어야 한다.
  * 1) 출전 시간이 많은 순으로 뽑고, 2) 비는 포지션은 후보 중 그 포지션 선수를 대신 넣고(포지션이 겹치는 선수 중 출전 시간이 가장 적은 사람과 교체),
  * 3) 후보에도 없으면 포지션이 가까운 겹치는 선수의 포지션을 바꾼다. 반환: { roster, dropped, swaps: [문장], relabeled: [{ name, from, to }] }
  */
-export function pickRoster(list, { domestic = 12, foreign = 2 } = {}) {
+export function pickRoster(list, { domestic = 12, foreign = 2, asia = 1 } = {}) {
   const roster = [
     ...list.filter((p) => p.origin === 'domestic').slice(0, domestic),
-    ...list.filter((p) => p.origin === 'foreign').slice(0, foreign)
+    ...list.filter((p) => p.origin === 'foreign').slice(0, foreign),
+    ...list.filter((p) => p.origin === 'asia').slice(0, asia)
   ].map((p) => ({ ...p }));
   const swaps = [];
   const relabeled = [];

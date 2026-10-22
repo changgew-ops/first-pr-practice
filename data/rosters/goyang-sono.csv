@@ -1,15 +1,16 @@
-name,position,age,number,origin
-케빈 켐바오,PF,,28,domestic
-이정현(1),PG,27,6,domestic
-최승욱,SF,34,77,domestic
-임동섭,SF,36,13,domestic
-이재도,PG,35,4,domestic
-정희재,SF,36,9,domestic
-강지훈,C,23,12,domestic
-김진유,SG,32,55,domestic
-이근준,SF,21,14,domestic
-소준혁,SG,24,20,domestic
-이동엽,SG,33,7,domestic
-박종하,SG,25,3,domestic
-자니 오브라이언트,C,,0,foreign
-스카티 제임스,PF,,31,foreign
+name,position,age,number,origin,nationality
+이정현(1),PG,27,6,domestic,
+최승욱,SF,34,77,domestic,
+임동섭,SF,36,13,domestic,
+이재도,PG,35,4,domestic,
+정희재,SF,36,9,domestic,
+강지훈,C,23,12,domestic,
+김진유,SG,32,55,domestic,
+이근준,SF,21,14,domestic,
+소준혁,SG,24,20,domestic,
+이동엽,SG,33,7,domestic,
+박종하,SG,25,3,domestic,
+신지원,C,23,17,domestic,
+자니 오브라이언트,C,,0,foreign,미국
+스카티 제임스,PF,,31,foreign,미국
+케빈 켐바오,PF,,28,asia,필리핀

@@ -25,7 +25,8 @@ export function offerScore(p, offerEok, teamId, roster, ctx, rules, round = 1) {
   const starter = p.ovr >= (ovrs[6] ?? 0); // 상위 7명 안이면 출전 기회가 넉넉하다
   const loyalty = teamId === p.prevTeamId || teamId === p.teamId ? fa.loyaltyBonus : 0;
   const mood = (hash01(`${p.id}:${ctx.season}`) - 0.5) * 2 * fa.moodRange;
-  const score = ratio + fa.successWeight * (winPct - 0.5) + (starter ? fa.starterBonus : 0) + loyalty + mood;
+  const prestige = ctx.prestige?.get(teamId) ?? 0.5; // 명문 구단 선호(전통 점수)
+  const score = ratio + fa.successWeight * (winPct - 0.5) + fa.prestigeWeight * (prestige - 0.5) + (starter ? fa.starterBonus : 0) + loyalty + mood;
   return { ratio, score, accept: ratio >= fa.minOfferRatio && score >= fa.acceptScore, demand };
 }
 

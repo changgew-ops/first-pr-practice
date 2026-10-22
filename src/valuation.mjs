@@ -6,7 +6,10 @@ export const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
 export const domesticOf = (players, teamId) => players.filter((p) => p.teamId === teamId && p.origin === 'domestic');
 export const foreignOf = (players, teamId) => players.filter((p) => p.teamId === teamId && p.origin === 'foreign');
+export const asiaOf = (players, teamId) => players.filter((p) => p.teamId === teamId && p.origin === 'asia');
 export const payrollEok = (players, teamId) => domesticOf(players, teamId).reduce((s, p) => s + p.contract.salaryEok, 0);
+/** 아시아쿼터 연봉(억 원). 국내 연봉 캡에는 들어가지 않지만 구단 지출에는 들어간다 */
+export const asiaPayrollEok = (players, teamId) => asiaOf(players, teamId).reduce((s, p) => s + p.contract.salaryEok, 0);
 export const foreignPayrollUsd = (players, teamId) => foreignOf(players, teamId).reduce((s, p) => s + p.contract.salaryUsd, 0);
 
 /** 선수 가치: 현재 능력 + 성장 여지(젊을수록 크게) − 노쇠 */

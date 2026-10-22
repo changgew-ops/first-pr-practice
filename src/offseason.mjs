@@ -9,11 +9,12 @@
 import { STAT_KEYS, calcOvr, calcCost } from './rating.mjs';
 import { createFactory, FOREIGN_POSITIONS, POSITIONS, rarityOf, clamp } from './factory.mjs';
 import {
-  domesticOf, foreignOf, payrollEok, valueOf, demandEok, needBonus, hardLimitEok
+  domesticOf, foreignOf, asiaOf, payrollEok, valueOf, demandEok, needBonus, hardLimitEok
 } from './valuation.mjs';
 import { offerScore, capAllows, preferredYears, runFreeAgency } from './freeagency.mjs';
 import { generateOffers, validateTrade, executeTrade, proposeTrade } from './trade.mjs';
 import { initialFunds } from './funds.mjs';
+import { prestigeTable } from './legacy.mjs';
 
 const PHYSICAL = ['athletic', 'stamina'];
 const SKILLS = ['shooting', 'passing', 'defense', 'rebound'];
@@ -91,11 +92,12 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   const newId = () => `y${league.season + 1}-${String(nextId++).padStart(4, '0')}`;
   const ranks = new Map(standings.map((s, i) => [s.id, i + 1]));
   const winPct = new Map(standings.map((s) => [s.id, s.wins / Math.max(1, s.wins + s.losses)]));
-  const ctx = { season: league.season, ranks, winPct, managerTeamId: manager, teamCount: teamData.length };
+  const prestige = new Map(Object.entries(prestigeTable(league.legacy, rules)).map(([id, v]) => [id, v.score]));
+  const ctx = { season: league.season, ranks, winPct, prestige, managerTeamId: manager, teamCount: teamData.length };
   let funds = league.funds ?? initialFunds(teamData, rules);
   const report = {
     season: league.season, retired: [], progressed: [], renewed: [], expired: [], refused: [], drafted: [], released: [],
-    signed: [], foreignReplaced: [], trades: [], tradeOffers: [], signings: [], compensations: []
+    signed: [], foreignReplaced: [], asiaReplaced: [], trades: [], tradeOffers: [], signings: [], compensations: []
   };
   const avg = (list, fn) => (list.length ? list.reduce((s, p) => s + fn(p), 0) / list.length : 0);
   report.before = { avgOvr: avg(league.players, (p) => p.ovr), avgAge: avg(league.players, (p) => p.age) };
@@ -105,7 +107,9 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     const out = [];
     for (const old of list) {
       const p = progressPlayer(old, rules, rng);
-      const quits = p.origin === 'foreign' ? p.age > rules.aging.foreignMaxAge : rng() < retireProbability(p.age, p.ovr, rules.aging);
+      const quits = p.origin === 'foreign' ? p.age > rules.aging.foreignMaxAge
+        : p.origin === 'asia' ? p.age > rules.asiaQuota.maxAge
+        : rng() < retireProbability(p.age, p.ovr, rules.aging);
       if (quits) {
         report.retired.push({ id: p.id, name: p.name, teamId: p.teamId, age: p.age, ovr: p.ovr, from: label });
         continue;
@@ -188,6 +192,17 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
         report.renewed.push({ id: p.id, name: p.name, teamId: team.id, years });
       } else {
         report.expired.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr, foreign: true });
+      }
+    }
+    // 아시아쿼터: 계약이 끝나면 재계약하거나 떠난다(FA 시장에 나오지 않는다)
+    for (const p of expiring.filter((q) => q.origin === 'asia')) {
+      if (rng() < rules.asiaQuota.renewProbability) {
+        const years = f.randInt(...rules.asiaQuota.contractYears);
+        const salaryEok = Math.round(f.rand(...rules.asiaQuota.salaryEok) * 10) / 10;
+        kept.push({ ...p, contract: { salaryEok, yearsLeft: years } });
+        report.renewed.push({ id: p.id, name: p.name, teamId: team.id, salaryEok, years, asia: true });
+      } else {
+        report.expired.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr, asia: true });
       }
     }
   }
@@ -312,6 +327,25 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       players.push(p);
       report.foreignReplaced.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr });
     }
+  }
+
+  // 아시아쿼터: 비어 있는 구단은 확률적으로 새로 영입한다(구단당 0~1명, 국내 연봉 캡 밖). 연봉·국적은 게임용 가정
+  const aq = rules.asiaQuota;
+  const asiaAll = players.filter((p) => p.origin === 'asia');
+  const asiaMean = asiaAll.length ? avg(asiaAll, (p) => p.ovr) : 60;
+  for (const team of teamData) {
+    if (asiaOf(players, team.id).length >= aq.max || rng() >= aq.signProbability) continue;
+    const position = f.pick(aq.positions);
+    const stats = f.makeStats(position, asiaMean + aq.ovrOffset + f.rand(-4, 6));
+    const ovr = calcOvr(position, stats);
+    const age = f.randInt(22, 30);
+    const p = {
+      id: newId(), name: f.uniqueName('asia'), real: false, position, age, number: freeNumber(team.id),
+      rarity: rarityOf(ovr, ovr), stats, ovr, cost: calcCost(ovr), potential: f.makePotential(age, ovr), origin: 'asia', nationality: f.pick(aq.nationalities),
+      teamId: team.id, contract: { salaryEok: Math.round(f.rand(...aq.salaryEok) * 10) / 10, yearsLeft: f.randInt(...aq.contractYears) }, assets: { portrait: null, model: null }
+    };
+    players.push(p);
+    report.asiaReplaced.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr });
   }
 
   // 포지션 정리: 비는 포지션이 있으면 겹치는 포지션의 선수 한 명을 가장 가까운 포지션으로 돌린다 (실제 로스터의 포지션은 유연하다)

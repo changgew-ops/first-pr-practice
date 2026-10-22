@@ -29,7 +29,8 @@
   },
   "roster": {
     "domestic": 12,
-    "foreign": 2
+    "foreign": 2,
+    "asia": 1
   },
   "foreignPlayers": {
     "registered": 2,
@@ -266,7 +267,8 @@
       "moodRange": 0.06,
       "priceWeight": 1.5,
       "compensationWeight": 0.5,
-      "reserveFundsEok": -10
+      "reserveFundsEok": -10,
+      "prestigeWeight": 0.1
     },
     "compensation": {
       "_note": "2020년 정비 기준(전년 보수 순위별). 2026년 6월 완화 방침의 세부는 확인하지 못했다.",
@@ -297,7 +299,59 @@
         "결승": 3,
         "우승": 6
       },
-      "foreignUsdToEok": 1.4e-05
-    }
+      "foreignUsdToEok": 1.4e-05,
+      "prestigeSpread": 0.25
+    },
+    "asiaTradable": false
+  },
+  "asiaQuota": {
+    "_note": "아시아쿼터(2022-23 도입, 2026-27부터 교체 시기 제한 없음). 국내 선수 취급으로 코트 위 외국 선수 수에 들어가지 않는다. 구단당 0~1명(KCC는 2026-27 현재 없음). 연봉·계약·재계약 확률은 공식 값을 확인하지 못한 게임용 가정이다.",
+    "max": 1,
+    "signProbability": 0.9,
+    "salaryEok": [
+      1.0,
+      2.0
+    ],
+    "contractYears": [
+      1,
+      2
+    ],
+    "renewProbability": 0.6,
+    "maxAge": 36,
+    "nationalities": [
+      "필리핀",
+      "일본",
+      "대만",
+      "말레이시아",
+      "태국",
+      "인도네시아",
+      "베트남"
+    ],
+    "positions": [
+      "PG",
+      "SG",
+      "SG",
+      "SF"
+    ],
+    "ovrOffset": -2
+  },
+  "legacy": {
+    "_note": "구단 전통 점수(0~1): 실제 시즌 이력에서 시작해 시뮬레이션 시즌을 이어 붙인다. 수입(팬 기반)과 FA·재계약 선수의 구단 선호에 쓴다. 가중치는 게임용 가정.",
+    "window": 5,
+    "winPctFloor": 0.3,
+    "winPctCeil": 0.7,
+    "stagePoints": {
+      "6강": 0.25,
+      "4강": 0.5,
+      "결승": 0.8,
+      "우승": 1.0
+    },
+    "weights": {
+      "form": 0.4,
+      "playoffs": 0.3,
+      "titles": 0.3
+    },
+    "titlesCap": 10,
+    "regularTitleWeight": 0.5
   }
 }

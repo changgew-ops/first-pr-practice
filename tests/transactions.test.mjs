@@ -5,6 +5,7 @@ import {
   softCapPenaltyEok, demandEok, valueOf, worthOf, strategyOf, hash01, payrollEok, domesticOf, hardLimitEok
 } from '../src/valuation.mjs';
 import { settleSeason, transferFunds, initialFunds } from '../src/funds.mjs';
+import { asiaOf, asiaPayrollEok } from '../src/valuation.mjs';
 import { validateTrade, executeTrade, aiEvaluate, generateOffers, proposeTrade, teamWorth } from '../src/trade.mjs';
 import { offerScore, capAllows, compensationFor, runFreeAgency } from '../src/freeagency.mjs';
 import { runOffseason } from '../src/offseason.mjs';
@@ -361,4 +362,47 @@ test('다음 시즌: 시즌 정산 후에도 구단 자금이 숫자로 유지�
     invariants(league, `Y${y + 1}`);
     for (const v of Object.values(league.funds)) assert.ok(Number.isFinite(v));
   }
+});
+
+// ---------- 아시아쿼터 ----------
+test('아시아쿼터: 국내 연봉 캡에는 안 들어가지만 구단 지출에는 들어간다', () => {
+  const l = fresh();
+  const team = teamData.find((t) => asiaOf(l.players, t.id).length === 1).id;
+  const asiaPay = asiaPayrollEok(l.players, team);
+  assert.ok(asiaPay > 0);
+  assert.equal(payrollEok(l.players, team), dom(l, team).reduce((a, p) => a + p.contract.salaryEok, 0)); // 국내 선수만
+  const funds = initialFunds(teamData, rules);
+  const playoffs = { championId: standings[0].id, series: [
+    { higherId: standings[2].id, lowerId: standings[5].id }, { higherId: standings[3].id, lowerId: standings[4].id },
+    { higherId: standings[0].id, lowerId: standings[3].id }, { higherId: standings[1].id, lowerId: standings[2].id },
+    { higherId: standings[0].id, lowerId: standings[1].id }] };
+  const withAsia = settleSeason(funds, l.players, standings, playoffs, teamData, rules).ledger[team].payroll;
+  const without = settleSeason(funds, l.players.filter((p) => !(p.teamId === team && p.origin === 'asia')), standings, playoffs, teamData, rules).ledger[team].payroll;
+  assert.ok(Math.abs(withAsia - without - asiaPay) < 0.02);
+});
+
+test('아시아쿼터: 트레이드할 수 없다', () => {
+  const l = fresh();
+  const team = teamData.find((t) => t.id !== 'seoul-sk' && asiaOf(l.players, t.id).length === 1).id;
+  const aq = asiaOf(l.players, team)[0];
+  const r = validateTrade(l, { teamA: team, teamB: 'seoul-sk', giveA: [aq.id], giveB: [dom(l, 'seoul-sk')[0].id] }, rules);
+  assert.equal(r.ok, false);
+  assert.ok(r.errors.some((e) => e.includes('아시아쿼터')));
+});
+
+test('아시아쿼터: 시즌 종료 처리 후에도 구단당 최대 1명, 연봉 범위·국적 유지, 빈 구단은 새로 영입, FA 풀에는 안 나온다', () => {
+  let l = fresh();
+  const rng = mulberry32(21);
+  let signedNew = 0;
+  for (let y = 0; y < 8; y++) {
+    const r = runOffseason(l, standings, teamData, rules, rng);
+    l = r.league;
+    invariants(l, `AQ Y${y + 1}`);
+    signedNew += r.report.asiaReplaced.length;
+    for (const p of r.report.asiaReplaced) assert.ok(l.players.find((x) => x.id === p.id)?.nationality, p.name);
+    assert.ok(l.freeAgents.every((p) => p.origin !== 'asia'));
+  }
+  assert.ok(signedNew >= 3, `8년 동안 새 아시아쿼터 영입 ${signedNew}명`);
+  const filled = teamData.filter((t) => asiaOf(l.players, t.id).length === 1).length;
+  assert.ok(filled >= 7, `아시아쿼터가 있는 구단 ${filled}개`);
 });

@@ -6,11 +6,13 @@ import { addBox } from './stats.mjs';
 import { updateSkillsFromSeason } from './stats-rating.mjs';
 import { trainPlayer, autoFocus } from './training.mjs';
 import { runOffseason } from './offseason.mjs';
+import { seedLegacy, appendSeason, prestigeTable } from './legacy.mjs';
 import { initialFunds, settleSeason } from './funds.mjs';
 import { calcOvr, calcCost } from './rating.mjs';
 
-export function createLeague(players, rules) {
+export function createLeague(players, rules, { history = null, teamData = null } = {}) {
   return {
+    ...(history && teamData ? { legacy: seedLegacy(history.seasons ?? history, teamData) } : {}),
     season: Number(String(rules.season).slice(0, 4)),
     players: players.map((p) => ({ ...p, stats: { ...p.stats }, contract: { ...p.contract } })),
     freeAgents: [],
@@ -79,8 +81,9 @@ export function playLeagueYear(league, teamData, rules, rng, options = {}) {
   applyUpdates(); // 시즌 전체 기록 반영
   const seasonPlayers = players; // 시즌 종료 처리(노화·은퇴·드래프트) 직전 상태
   // 시즌 정산(수입 − 연봉 − 소프트캡 기금) 후 시즌 종료 처리
-  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), seasonPlayers, result.standings, result.playoffs, teamData, rules);
-  const { league: next, report } = runOffseason({ ...league, players, funds: settled.funds }, result.standings, teamData, rules, rng, { manager, policy });
+  const legacy = league.legacy ? appendSeason(league.legacy, `${league.season}-${String(league.season + 1).slice(2)}`, result, rules) : undefined;
+  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), seasonPlayers, result.standings, result.playoffs, teamData, rules, prestigeTable(league.legacy, rules)); // 수입은 이번 시즌 이전의 전통으로
+  const { league: next, report } = runOffseason({ ...league, players, funds: settled.funds, ...(legacy ? { legacy } : {}) }, result.standings, teamData, rules, rng, { manager, policy });
   report.ledger = settled.ledger;
   return { league: next, report, result, totals, seasonPlayers, startStats: start };
 }

@@ -30,10 +30,13 @@ for (const team of teams) {
   const roster = players.filter((p) => p.teamId === team.id);
   const domestic = roster.filter((p) => p.origin === 'domestic');
   const foreign = roster.filter((p) => p.origin === 'foreign');
+  const asia = roster.filter((p) => p.origin === 'asia');
 
-  test(`${team.name}: 국내 ${rules.roster.domestic}명, 외국 ${rules.roster.foreign}명`, () => {
+  test(`${team.name}: 국내 ${rules.roster.domestic}명, 외국 ${rules.roster.foreign}명, 아시아쿼터 ${rules.roster.asia}명 이하`, () => {
     assert.equal(domestic.length, rules.roster.domestic);
     assert.equal(foreign.length, rules.roster.foreign);
+    assert.ok(asia.length <= rules.roster.asia);
+    for (const p of asia) assert.ok(p.nationality, `${p.name} 국적`);
   });
 
   test(`${team.name}: 국내 선수 연봉 합계가 캡 이내`, () => {

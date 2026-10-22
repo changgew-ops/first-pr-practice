@@ -22,6 +22,7 @@ export function validateTrade(league, trade, rules, { window = 'offseason', day 
     const p = byId.get(id);
     if (!p || p.teamId !== teamId) errors.push(`${id}는 ${teamId} 소속이 아닙니다`);
     else if (p.origin === 'foreign' && !rules.transactions.foreignTradable) errors.push(`${p.name}: 외국 선수는 트레이드할 수 없습니다`);
+    else if (p.origin === 'asia' && !rules.transactions.asiaTradable) errors.push(`${p.name}: 아시아쿼터 선수는 트레이드할 수 없습니다`);
     return p;
   });
   const outA = check(giveA, teamA).filter(Boolean);

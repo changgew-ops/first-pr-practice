@@ -44,11 +44,12 @@ export function createFactory(rng, rules, usedNames = new Set()) {
   const pick = (arr) => arr[Math.floor(rng() * arr.length)];
 
   function uniqueName(origin) {
-    const base = () => (origin === 'foreign'
+    const latin = origin === 'foreign' || origin === 'asia'; // 아시아쿼터도 로마자 이름 풀을 쓴다
+    const base = () => (latin
       ? `${pick(FOREIGN_FIRST)} ${pick(FOREIGN_LAST)}`
       : `${pick(SURNAMES)}${pick(GIVEN_A)}${pick(GIVEN_B)}`);
     // 이름 조합이 소진되면(수십 년 진행 시) 접미사를 붙여 구분한다
-    const suffixes = origin === 'foreign' ? ['', ' Jr.', ' II', ' III', ' IV'] : ['', '2세', '3세', '4세'];
+    const suffixes = latin ? ['', ' Jr.', ' II', ' III', ' IV'] : ['', '2세', '3세', '4세'];
     for (const suffix of suffixes) {
       for (let i = 0; i < 200; i++) {
         const name = base() + suffix;

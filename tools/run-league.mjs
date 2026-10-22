@@ -8,6 +8,8 @@ import { dirname, join, resolve } from 'node:path';
 import { createLeague, playLeagueYear } from '../src/league.mjs';
 import { mulberry32 } from '../src/rng.mjs';
 import { createManagerBot } from '../src/manager-bot.mjs';
+import { loadHistory } from '../src/history.mjs';
+import { prestigeTable } from '../src/legacy.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (f) => JSON.parse(readFileSync(join(ROOT, 'data', f), 'utf8'));
@@ -28,7 +30,7 @@ const outFile = str('out', null);
 const log = [];
 
 const rng = mulberry32(seed);
-let league = createLeague(players, rules);
+let league = createLeague(players, rules, { history: loadHistory(), teamData }); // 실제 시즌 이력(전통)에서 시작
 const titles = new Map(teamData.map((t) => [t.id, 0]));
 const winPct = new Map(teamData.map((t) => [t.id, 0]));
 const rows = [];
@@ -77,6 +79,8 @@ console.log('시즌   우승               평균OVR 나이  은퇴 만료 재�
 for (const r of rows) {
   console.log(`${r.season}  ${r.champion.padEnd(14, '　')} ${r.avgOvr.toFixed(1).padStart(6)} ${r.avgAge.toFixed(1).padStart(5)} ${String(r.retired).padStart(4)} ${String(r.expired).padStart(4)} ${String(r.renewed).padStart(6)} ${String(r.refused).padStart(4)} ${String(r.fa).padStart(4)}(${String(r.moves).padStart(2)}) ${r.comp.toFixed(1).padStart(6)} ${String(r.trades).padStart(5)}/${r.offers}   ${r.payMin.toFixed(0)}~${r.payMax.toFixed(0)} ${String(r.over).padStart(5)}${manager ? String(r.mgrRank).padStart(7) : ''}`);
 }
+console.log('\n구단별 전통 점수(시작 → 끝)');
+for (const [id, v] of Object.entries(prestigeTable(league.legacy, rules)).sort((a, b) => b[1].score - a[1].score)) console.log(`${nameOf.get(id).padEnd(14, '　')} ${v.score.toFixed(2)}  통산 우승 ${v.titles}회 정규시즌 ${v.regularTitles}회`);
 console.log('\n구단별 우승 / 평균 승률');
 for (const [id, n] of [...titles.entries()].sort((a, b) => b[1] - a[1])) {
   console.log(`${nameOf.get(id).padEnd(14, '　')} 우승 ${String(n).padStart(2)}회  평균 승률 ${((winPct.get(id) / years) * 100).toFixed(0)}%`);
