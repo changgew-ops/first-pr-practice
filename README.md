@@ -23,12 +23,15 @@ and opening a PR for review.
 ```bash
 npm run generate                              # 가상 선수 데이터 생성 (data/players.json)
 npm test                                      # 데이터·시뮬레이션 검증
+npm run build:history                         # 팀 이력(data/history/raw → seasons.json, franchises.json) 검증·빌드
 node tools/run-season.mjs                     # 1시즌 + 플레이오프 결과 출력
 node tools/run-season.mjs --seasons 500       # 여러 시즌 밸런스 통계
 node tools/run-league.mjs --years 20          # 여러 해 연속 (육성·시즌 중 갱신·은퇴·드래프트 포함)
 node tools/run-league.mjs --years 20 --manager busan-kcc          # 그 구단의 훈련을 자동 관리
 node tools/run-league.mjs --years 20 --manager busan-kcc --bot    # 트레이드·재계약·FA도 자동 단장이 결정
 ```
+
+팀 이력(1997~2025-26)은 `data/history/README.md`를 보세요.
 
 실제 선수 이름과 기록을 쓰려면 `data/rosters/README.md`와 `data/stats/README.md`를 보세요.
 

@@ -1,0 +1,4432 @@
+[
+  {
+    "season": "1997",
+    "startYear": 1997,
+    "note": "KBL 출범 첫 시즌(8개 구단, 팀당 21경기). 홈·원정 열의 합이 승패와 맞지 않음(사이트 표시값 그대로). 플레이오프 화면 없음.",
+    "gamesPerTeam": 21,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "부산기아",
+        "wins": 16,
+        "losses": 5,
+        "pct": 0.762,
+        "home": "7-0",
+        "away": "5-2"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 14,
+        "losses": 7,
+        "pct": 0.667,
+        "home": "6-1",
+        "away": "3-4"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "wonju-db",
+        "displayName": "원주나래",
+        "wins": 13,
+        "losses": 8,
+        "pct": 0.619,
+        "home": "7-0",
+        "away": "3-4"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구동양",
+        "wins": 11,
+        "losses": 10,
+        "pct": 0.524,
+        "home": "3-4",
+        "away": "2-5"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "suwon-kt",
+        "displayName": "광주나산",
+        "wins": 9,
+        "losses": 12,
+        "pct": 0.429,
+        "home": "6-1",
+        "away": "1-6"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천대우증권",
+        "wins": 8,
+        "losses": 13,
+        "pct": 0.381,
+        "home": "4-3",
+        "away": "1-6"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "busan-kcc",
+        "displayName": "대전현대",
+        "wins": 7,
+        "losses": 14,
+        "pct": 0.333,
+        "home": "2-5",
+        "away": "2-5"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "seoul-samsung",
+        "displayName": "수원삼성",
+        "wins": 6,
+        "losses": 15,
+        "pct": 0.286,
+        "home": "3-4",
+        "away": "1-6"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "1997-98",
+    "startYear": 1997,
+    "note": "팀당 45경기. 홈·원정 열의 합이 승패와 맞지 않음(사이트 표시값 그대로). 3·4위 동률(26-19). 플레이오프 화면 없음.",
+    "gamesPerTeam": 45,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "busan-kcc",
+        "displayName": "대전현대",
+        "wins": 31,
+        "losses": 14,
+        "pct": 0.689,
+        "home": "14-4",
+        "away": "9-9"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "changwon-lg",
+        "displayName": "경남LG",
+        "wins": 28,
+        "losses": 17,
+        "pct": 0.622,
+        "home": "13-5",
+        "away": "12-6"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "부산기아",
+        "wins": 26,
+        "losses": 19,
+        "pct": 0.578,
+        "home": "10-8",
+        "away": "9-9"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "wonju-db",
+        "displayName": "원주나래",
+        "wins": 26,
+        "losses": 19,
+        "pct": 0.578,
+        "home": "13-5",
+        "away": "9-8"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구동양",
+        "wins": 23,
+        "losses": 22,
+        "pct": 0.511,
+        "home": "10-8",
+        "away": "8-10"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천대우증권",
+        "wins": 22,
+        "losses": 23,
+        "pct": 0.489,
+        "home": "7-11",
+        "away": "10-8"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "suwon-kt",
+        "displayName": "광주나산",
+        "wins": 21,
+        "losses": 24,
+        "pct": 0.467,
+        "home": "8-10",
+        "away": "9-9"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 18,
+        "losses": 27,
+        "pct": 0.4,
+        "home": "6-12",
+        "away": "9-10"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "seoul-samsung",
+        "displayName": "수원삼성",
+        "wins": 17,
+        "losses": 28,
+        "pct": 0.378,
+        "home": "6-12",
+        "away": "7-11"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-sk",
+        "displayName": "청주SK",
+        "wins": 13,
+        "losses": 32,
+        "pct": 0.289,
+        "home": "4-14",
+        "away": "7-11"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "1998-99",
+    "startYear": 1998,
+    "note": "팀당 45경기. 홈·원정 열의 합이 36경기분뿐이라 승패와 맞지 않음(사이트 표시값 그대로). 3·4위 동률(27-18), 5·6위 동률(25-20). 플레이오프 화면 없음.",
+    "gamesPerTeam": 45,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "busan-kcc",
+        "displayName": "대전현대",
+        "wins": 33,
+        "losses": 12,
+        "pct": 0.733,
+        "home": "14-4",
+        "away": "12-6"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "부산기아",
+        "wins": 31,
+        "losses": 14,
+        "pct": 0.689,
+        "home": "13-5",
+        "away": "11-7"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천대우",
+        "wins": 27,
+        "losses": 18,
+        "pct": 0.6,
+        "home": "12-6",
+        "away": "8-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "wonju-db",
+        "displayName": "원주나래",
+        "wins": 27,
+        "losses": 18,
+        "pct": 0.6,
+        "home": "12-6",
+        "away": "10-8"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 25,
+        "losses": 20,
+        "pct": 0.556,
+        "home": "11-7",
+        "away": "9-9"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "seoul-samsung",
+        "displayName": "수원삼성",
+        "wins": 25,
+        "losses": 20,
+        "pct": 0.556,
+        "home": "12-6",
+        "away": "11-7"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 22,
+        "losses": 23,
+        "pct": 0.489,
+        "home": "8-10",
+        "away": "8-10"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "seoul-sk",
+        "displayName": "청주SK",
+        "wins": 19,
+        "losses": 26,
+        "pct": 0.422,
+        "home": "8-10",
+        "away": "7-11"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "suwon-kt",
+        "displayName": "광주나산",
+        "wins": 13,
+        "losses": 32,
+        "pct": 0.289,
+        "home": "7-11",
+        "away": "5-13"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구동양",
+        "wins": 3,
+        "losses": 42,
+        "pct": 0.067,
+        "home": "2-16",
+        "away": "0-18"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "1999-2000",
+    "startYear": 1999,
+    "note": "팀당 45경기. 홈·원정 열의 합이 36경기분뿐이라 승패와 맞지 않음(사이트 표시값 그대로). 5·6위 동률(21-24), 7·8위 동률(20-25). 플레이오프 화면 없음.",
+    "gamesPerTeam": 45,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "busan-kcc",
+        "displayName": "대전현대",
+        "wins": 33,
+        "losses": 12,
+        "pct": 0.733,
+        "home": "15-3",
+        "away": "12-6"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "seoul-sk",
+        "displayName": "청주SK",
+        "wins": 32,
+        "losses": 13,
+        "pct": 0.711,
+        "home": "15-3",
+        "away": "12-6"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "seoul-samsung",
+        "displayName": "수원삼성",
+        "wins": 23,
+        "losses": 22,
+        "pct": 0.511,
+        "home": "11-7",
+        "away": "10-8"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "wonju-db",
+        "displayName": "원주삼보",
+        "wins": 22,
+        "losses": 23,
+        "pct": 0.489,
+        "home": "10-8",
+        "away": "7-11"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 21,
+        "losses": 24,
+        "pct": 0.467,
+        "home": "8-10",
+        "away": "7-11"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "부산기아",
+        "wins": 21,
+        "losses": 24,
+        "pct": 0.467,
+        "home": "10-8",
+        "away": "9-9"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 20,
+        "losses": 25,
+        "pct": 0.444,
+        "home": "7-11",
+        "away": "7-11"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구동양",
+        "wins": 20,
+        "losses": 25,
+        "pct": 0.444,
+        "home": "8-10",
+        "away": "7-11"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "suwon-kt",
+        "displayName": "광주 골드뱅크",
+        "wins": 18,
+        "losses": 27,
+        "pct": 0.4,
+        "home": "7-11",
+        "away": "6-12"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천신세기",
+        "wins": 15,
+        "losses": 30,
+        "pct": 0.333,
+        "home": "8-10",
+        "away": "4-14"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2000-01",
+    "startYear": 2000,
+    "note": "팀당 45경기. 홈·원정 열의 합이 36경기분뿐이라 승패와 맞지 않음(사이트 표시값 그대로). 2·3위 동률(30-15), 8·9위 동률(17-28). 플레이오프 화면 없음.",
+    "gamesPerTeam": 45,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "seoul-samsung",
+        "displayName": "수원삼성",
+        "wins": 34,
+        "losses": 11,
+        "pct": 0.756,
+        "home": "14-4",
+        "away": "11-7"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 30,
+        "losses": 15,
+        "pct": 0.667,
+        "home": "16-2",
+        "away": "10-8"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "seoul-sk",
+        "displayName": "청주SK",
+        "wins": 30,
+        "losses": 15,
+        "pct": 0.667,
+        "home": "11-7",
+        "away": "13-5"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 26,
+        "losses": 19,
+        "pct": 0.578,
+        "home": "9-9",
+        "away": "12-6"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천신세기",
+        "wins": 23,
+        "losses": 22,
+        "pct": 0.511,
+        "home": "10-8",
+        "away": "10-8"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "busan-kcc",
+        "displayName": "대전현대",
+        "wins": 20,
+        "losses": 25,
+        "pct": 0.444,
+        "home": "7-11",
+        "away": "6-12"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "wonju-db",
+        "displayName": "원주삼보",
+        "wins": 19,
+        "losses": 26,
+        "pct": 0.422,
+        "home": "9-9",
+        "away": "7-11"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "suwon-kt",
+        "displayName": "여수 골드뱅크",
+        "wins": 17,
+        "losses": 28,
+        "pct": 0.378,
+        "home": "7-11",
+        "away": "6-12"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "부산기아",
+        "wins": 17,
+        "losses": 28,
+        "pct": 0.378,
+        "home": "10-8",
+        "away": "5-13"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구동양",
+        "wins": 9,
+        "losses": 36,
+        "pct": 0.2,
+        "home": "5-13",
+        "away": "2-16"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2001-02",
+    "startYear": 2001,
+    "note": "3·4위 동률(30-24), 5·6위 동률(28-26), 9·10위 동률(18-36). 플레이오프 화면 없음.",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구동양",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "20-7",
+        "away": "16-11"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "17-10",
+        "away": "15-12"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "15-12",
+        "away": "15-12"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천SK",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "18-9",
+        "away": "12-15"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "14-13",
+        "away": "14-13"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "15-12",
+        "away": "13-14"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "suwon-kt",
+        "displayName": "여수 코리아텐더",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "15-12",
+        "away": "11-16"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "15-12",
+        "away": "9-18"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "wonju-db",
+        "displayName": "원주삼보",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "13-14",
+        "away": "5-22"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "10-17",
+        "away": "8-19"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2002-03",
+    "startYear": 2002,
+    "note": "승·패 열이 화면 잔상에 가려져, 승률과 홈·원정 기록의 합으로 승패를 확정(전 팀 일치). 1·2위 동률(38-16). 플레이오프 화면 없음.",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구동양",
+        "wins": 38,
+        "losses": 16,
+        "pct": 0.704,
+        "home": "21-6",
+        "away": "17-10"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 38,
+        "losses": 16,
+        "pct": 0.704,
+        "home": "18-9",
+        "away": "20-7"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "wonju-db",
+        "displayName": "원주TG",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "15-12",
+        "away": "17-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "suwon-kt",
+        "displayName": "여수 코리아텐더",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "15-12",
+        "away": "13-14"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "16-11",
+        "away": "12-15"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 25,
+        "losses": 29,
+        "pct": 0.463,
+        "home": "16-11",
+        "away": "9-18"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천SK",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "14-13",
+        "away": "9-18"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 22,
+        "losses": 32,
+        "pct": 0.407,
+        "home": "10-17",
+        "away": "12-15"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "12-15",
+        "away": "8-19"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 16,
+        "losses": 38,
+        "pct": 0.296,
+        "home": "12-15",
+        "away": "4-23"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2003-04",
+    "startYear": 2003,
+    "note": "3·4위 동률(32-22), 5·6위 동률(28-26), 7·8위 동률(19-35). 플레이오프 화면 없음.",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "wonju-db",
+        "displayName": "원주TG삼보",
+        "wins": 40,
+        "losses": 14,
+        "pct": 0.741,
+        "home": "22-5",
+        "away": "18-9"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 39,
+        "losses": 15,
+        "pct": 0.722,
+        "home": "21-6",
+        "away": "18-9"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "19-8",
+        "away": "13-14"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "20-7",
+        "away": "12-15"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "17-10",
+        "away": "11-16"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "17-10",
+        "away": "11-16"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "11-16",
+        "away": "8-19"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KTF",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "9-18",
+        "away": "10-17"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "11-16",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 15,
+        "losses": 39,
+        "pct": 0.278,
+        "home": "9-18",
+        "away": "6-21"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2004-05",
+    "startYear": 2004,
+    "note": "7·8위 동률(24-30), 9·10위 동률(17-37). 플레이오프 화면 없음.",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "wonju-db",
+        "displayName": "원주TG삼보",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "18-9",
+        "away": "18-9"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 34,
+        "losses": 20,
+        "pct": 0.63,
+        "home": "17-10",
+        "away": "17-10"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양SBS",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "16-11",
+        "away": "17-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KTF",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "17-10",
+        "away": "15-12"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "14-13",
+        "away": "13-14"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "17-10",
+        "away": "9-18"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "12-15",
+        "away": "12-15"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "13-14",
+        "away": "11-16"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 17,
+        "losses": 37,
+        "pct": 0.315,
+        "home": "9-18",
+        "away": "8-19"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 17,
+        "losses": 37,
+        "pct": 0.315,
+        "home": "14-13",
+        "away": "3-24"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2005-06",
+    "startYear": 2005,
+    "note": "4·5위 동률(29-25). 플레이오프 화면 없음.",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "21-6",
+        "away": "15-12"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "20-7",
+        "away": "12-15"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "17-10",
+        "away": "14-13"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KTF",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "17-10",
+        "away": "12-15"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "19-8",
+        "away": "10-17"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "13-14",
+        "away": "15-12"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KT&G",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "16-11",
+        "away": "11-16"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "15-12",
+        "away": "11-16"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "14-13",
+        "away": "10-17"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 8,
+        "losses": 46,
+        "pct": 0.148,
+        "home": "4-23",
+        "away": "4-23"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2006-07",
+    "startYear": 2006,
+    "note": "2·3위 동률(32-22), 8·9위 동률(23-31). 플레이오프 화면 없음.",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "23-4",
+        "away": "13-14"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "18-9",
+        "away": "14-13"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KTF",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "15-12",
+        "away": "17-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "17-10",
+        "away": "14-13"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "14-13",
+        "away": "15-12"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KT&G",
+        "wins": 25,
+        "losses": 29,
+        "pct": 0.463,
+        "home": "12-15",
+        "away": "13-14"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "10-17",
+        "away": "14-13"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "13-14",
+        "away": "10-17"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "16-11",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 15,
+        "losses": 39,
+        "pct": 0.278,
+        "home": "8-19",
+        "away": "7-20"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2007-08",
+    "startYear": 2007,
+    "note": "5·6·7위 동률(29-25). 6강이 3전 2선승제(이 시즌 한정으로 보임).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 38,
+        "losses": 16,
+        "pct": 0.704,
+        "home": "18-9",
+        "away": "20-7"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "15-12",
+        "away": "18-9"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "17-10",
+        "away": "15-12"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KT&G",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "17-10",
+        "away": "13-14"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "12-15",
+        "away": "17-10"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "15-12",
+        "away": "14-13"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "19-8",
+        "away": "10-17"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KTF",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "17-10",
+        "away": "7-20"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 14,
+        "losses": 40,
+        "pct": 0.259,
+        "home": "6-21",
+        "away": "8-19"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 12,
+        "losses": 42,
+        "pct": 0.222,
+        "home": "7-20",
+        "away": "5-22"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "wonju-db": 1,
+        "busan-kcc": 2,
+        "seoul-samsung": 3,
+        "anyang-jungkwanjang": 4,
+        "seoul-sk": 5,
+        "changwon-lg": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 3,
+          "series": [
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 2,
+              "b": "seoul-sk",
+              "winsB": 0,
+              "winner": "anyang-jungkwanjang"
+            },
+            {
+              "a": "seoul-samsung",
+              "winsA": 2,
+              "b": "changwon-lg",
+              "winsB": 0,
+              "winner": "seoul-samsung"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 3,
+              "b": "anyang-jungkwanjang",
+              "winsB": 1,
+              "winner": "wonju-db"
+            },
+            {
+              "a": "busan-kcc",
+              "winsA": 0,
+              "b": "seoul-samsung",
+              "winsB": 3,
+              "winner": "seoul-samsung"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 4,
+              "b": "seoul-samsung",
+              "winsB": 1,
+              "winner": "wonju-db"
+            }
+          ]
+        }
+      ],
+      "championId": "wonju-db",
+      "runnerUpId": "seoul-samsung"
+    }
+  },
+  {
+    "season": "2008-09",
+    "startYear": 2008,
+    "note": "5·6·7위 동률(29-25).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 35,
+        "losses": 19,
+        "pct": 0.648,
+        "home": "19-8",
+        "away": "16-11"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "17-10",
+        "away": "16-11"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "19-8",
+        "away": "12-15"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "16-11",
+        "away": "14-13"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "19-8",
+        "away": "10-17"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "14-13",
+        "away": "15-12"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KT&G",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "17-10",
+        "away": "12-15"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "14-13",
+        "away": "10-17"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "9-18",
+        "away": "9-18"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KTF",
+        "wins": 12,
+        "losses": 42,
+        "pct": 0.222,
+        "home": "7-20",
+        "away": "5-22"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "ulsan-hyundai-mobis": 1,
+        "wonju-db": 2,
+        "busan-kcc": 3,
+        "seoul-samsung": 4,
+        "changwon-lg": 5,
+        "daegu-kogas": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "seoul-samsung",
+              "winsA": 3,
+              "b": "changwon-lg",
+              "winsB": 1,
+              "winner": "seoul-samsung"
+            },
+            {
+              "a": "busan-kcc",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 2,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 1,
+              "b": "seoul-samsung",
+              "winsB": 3,
+              "winner": "seoul-samsung"
+            },
+            {
+              "a": "wonju-db",
+              "winsA": 2,
+              "b": "busan-kcc",
+              "winsB": 3,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "seoul-samsung",
+              "winsA": 3,
+              "b": "busan-kcc",
+              "winsB": 4,
+              "winner": "busan-kcc"
+            }
+          ]
+        }
+      ],
+      "championId": "busan-kcc",
+      "runnerUpId": "seoul-samsung"
+    }
+  },
+  {
+    "season": "2009-10",
+    "startYear": 2009,
+    "note": "1·2위 동률(40-14), 9·10위 동률(15-39), 7·8위 동률(16-38).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 40,
+        "losses": 14,
+        "pct": 0.741,
+        "home": "19-8",
+        "away": "21-6"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 40,
+        "losses": 14,
+        "pct": 0.741,
+        "home": "21-6",
+        "away": "19-8"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 35,
+        "losses": 19,
+        "pct": 0.648,
+        "home": "18-9",
+        "away": "17-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 34,
+        "losses": 20,
+        "pct": 0.63,
+        "home": "19-8",
+        "away": "15-12"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "16-11",
+        "away": "17-10"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "14-13",
+        "away": "12-15"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 16,
+        "losses": 38,
+        "pct": 0.296,
+        "home": "10-17",
+        "away": "6-21"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KT&G",
+        "wins": 16,
+        "losses": 38,
+        "pct": 0.296,
+        "home": "9-18",
+        "away": "7-20"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 15,
+        "losses": 39,
+        "pct": 0.278,
+        "home": "7-20",
+        "away": "8-19"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 15,
+        "losses": 39,
+        "pct": 0.278,
+        "home": "8-19",
+        "away": "7-20"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "ulsan-hyundai-mobis": 1,
+        "suwon-kt": 2,
+        "busan-kcc": 3,
+        "changwon-lg": 4,
+        "wonju-db": 5,
+        "seoul-samsung": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "changwon-lg",
+              "winsA": 0,
+              "b": "wonju-db",
+              "winsB": 3,
+              "winner": "wonju-db"
+            },
+            {
+              "a": "busan-kcc",
+              "winsA": 3,
+              "b": "seoul-samsung",
+              "winsB": 1,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 3,
+              "b": "wonju-db",
+              "winsB": 1,
+              "winner": "ulsan-hyundai-mobis"
+            },
+            {
+              "a": "suwon-kt",
+              "winsA": 1,
+              "b": "busan-kcc",
+              "winsB": 3,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 4,
+              "b": "busan-kcc",
+              "winsB": 2,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        }
+      ],
+      "championId": "ulsan-hyundai-mobis",
+      "runnerUpId": "busan-kcc"
+    }
+  },
+  {
+    "season": "2010-11",
+    "startYear": 2010,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 41,
+        "losses": 13,
+        "pct": 0.759,
+        "home": "20-7",
+        "away": "21-6"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 38,
+        "losses": 16,
+        "pct": 0.704,
+        "home": "21-6",
+        "away": "17-10"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 34,
+        "losses": 20,
+        "pct": 0.63,
+        "home": "17-10",
+        "away": "17-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "17-10",
+        "away": "14-13"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "17-10",
+        "away": "11-16"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "16-11",
+        "away": "11-16"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "10-17",
+        "away": "10-17"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "10-17",
+        "away": "10-17"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양한국인삼공사",
+        "wins": 16,
+        "losses": 38,
+        "pct": 0.296,
+        "home": "10-17",
+        "away": "6-21"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "goyang-sono",
+        "displayName": "대구오리온스",
+        "wins": 15,
+        "losses": 39,
+        "pct": 0.278,
+        "home": "7-20",
+        "away": "8-19"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "suwon-kt": 1,
+        "daegu-kogas": 2,
+        "busan-kcc": 3,
+        "wonju-db": 4,
+        "changwon-lg": 5,
+        "seoul-samsung": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 3,
+              "b": "changwon-lg",
+              "winsB": 0,
+              "winner": "wonju-db"
+            },
+            {
+              "a": "busan-kcc",
+              "winsA": 3,
+              "b": "seoul-samsung",
+              "winsB": 0,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "suwon-kt",
+              "winsA": 1,
+              "b": "wonju-db",
+              "winsB": 3,
+              "winner": "wonju-db"
+            },
+            {
+              "a": "daegu-kogas",
+              "winsA": 1,
+              "b": "busan-kcc",
+              "winsB": 3,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 2,
+              "b": "busan-kcc",
+              "winsB": 4,
+              "winner": "busan-kcc"
+            }
+          ]
+        }
+      ],
+      "championId": "busan-kcc",
+      "runnerUpId": "wonju-db"
+    }
+  },
+  {
+    "season": "2011-12",
+    "startYear": 2011,
+    "note": "6강 일부 가려짐(화면 잔상): 보이는 승수와 4강 진출팀으로 확정. 3·4위 동률(31-23).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 44,
+        "losses": 10,
+        "pct": 0.815,
+        "home": "22-5",
+        "away": "22-5"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "20-7",
+        "away": "16-11"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "16-11",
+        "away": "15-12"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "17-10",
+        "away": "14-13"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "13-14",
+        "away": "16-11"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "15-12",
+        "away": "11-16"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 21,
+        "losses": 33,
+        "pct": 0.389,
+        "home": "10-17",
+        "away": "11-16"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온스",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "11-16",
+        "away": "9-18"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "12-15",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 13,
+        "losses": 41,
+        "pct": 0.241,
+        "home": "6-21",
+        "away": "7-20"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "wonju-db": 1,
+        "anyang-jungkwanjang": 2,
+        "suwon-kt": 3,
+        "busan-kcc": 4,
+        "ulsan-hyundai-mobis": 5,
+        "daegu-kogas": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "busan-kcc",
+              "winsA": 0,
+              "b": "ulsan-hyundai-mobis",
+              "winsB": 3,
+              "winner": "ulsan-hyundai-mobis"
+            },
+            {
+              "a": "suwon-kt",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 2,
+              "winner": "suwon-kt"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 3,
+              "b": "ulsan-hyundai-mobis",
+              "winsB": 1,
+              "winner": "wonju-db"
+            },
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 3,
+              "b": "suwon-kt",
+              "winsB": 1,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 2,
+              "b": "anyang-jungkwanjang",
+              "winsB": 4,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        }
+      ],
+      "championId": "anyang-jungkwanjang",
+      "runnerUpId": "wonju-db"
+    }
+  },
+  {
+    "season": "2012-13",
+    "startYear": 2012,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 44,
+        "losses": 10,
+        "pct": 0.815,
+        "home": "25-2",
+        "away": "19-8"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 41,
+        "losses": 13,
+        "pct": 0.759,
+        "home": "22-5",
+        "away": "19-8"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "13-14",
+        "away": "20-7"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "18-9",
+        "away": "12-15"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온스",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "15-12",
+        "away": "12-15"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 22,
+        "losses": 32,
+        "pct": 0.407,
+        "home": "13-14",
+        "away": "9-18"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "10-17",
+        "away": "10-17"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "13-14",
+        "away": "7-20"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "13-14",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 13,
+        "losses": 41,
+        "pct": 0.241,
+        "home": "9-18",
+        "away": "4-23"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "seoul-sk": 1,
+        "ulsan-hyundai-mobis": 2,
+        "daegu-kogas": 3,
+        "anyang-jungkwanjang": 4,
+        "goyang-sono": 5,
+        "seoul-samsung": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 3,
+              "b": "goyang-sono",
+              "winsB": 2,
+              "winner": "anyang-jungkwanjang"
+            },
+            {
+              "a": "daegu-kogas",
+              "winsA": 3,
+              "b": "seoul-samsung",
+              "winsB": 0,
+              "winner": "daegu-kogas"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "anyang-jungkwanjang",
+              "winsB": 1,
+              "winner": "seoul-sk"
+            },
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 0,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 4,
+              "b": "seoul-sk",
+              "winsB": 0,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        }
+      ],
+      "championId": "ulsan-hyundai-mobis",
+      "runnerUpId": "seoul-sk"
+    }
+  },
+  {
+    "season": "2013-14",
+    "startYear": 2013,
+    "note": "1·2위 동률(40-14).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 40,
+        "losses": 14,
+        "pct": 0.741,
+        "home": "19-8",
+        "away": "21-6"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 40,
+        "losses": 14,
+        "pct": 0.741,
+        "home": "22-5",
+        "away": "18-9"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 37,
+        "losses": 17,
+        "pct": 0.685,
+        "home": "21-6",
+        "away": "16-11"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "15-12",
+        "away": "13-14"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "15-12",
+        "away": "12-15"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온스",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "17-10",
+        "away": "10-17"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "13-14",
+        "away": "7-20"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "10-17",
+        "away": "9-18"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "12-15",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 13,
+        "losses": 41,
+        "pct": 0.241,
+        "home": "5-22",
+        "away": "8-19"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "changwon-lg": 1,
+        "ulsan-hyundai-mobis": 2,
+        "seoul-sk": 3,
+        "daegu-kogas": 4,
+        "suwon-kt": 5,
+        "goyang-sono": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "daegu-kogas",
+              "winsA": 2,
+              "b": "suwon-kt",
+              "winsB": 3,
+              "winner": "suwon-kt"
+            },
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "goyang-sono",
+              "winsB": 1,
+              "winner": "seoul-sk"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "changwon-lg",
+              "winsA": 3,
+              "b": "suwon-kt",
+              "winsB": 0,
+              "winner": "changwon-lg"
+            },
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 3,
+              "b": "seoul-sk",
+              "winsB": 1,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 4,
+              "b": "changwon-lg",
+              "winsB": 2,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        }
+      ],
+      "championId": "ulsan-hyundai-mobis",
+      "runnerUpId": "changwon-lg"
+    }
+  },
+  {
+    "season": "2014-15",
+    "startYear": 2014,
+    "note": "6강 일부 가려짐(화면 잔상): 보이는 승수와 4강 진출팀으로 확정. 2·3위 동률(37-17).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 39,
+        "losses": 15,
+        "pct": 0.722,
+        "home": "21-6",
+        "away": "18-9"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 37,
+        "losses": 17,
+        "pct": 0.685,
+        "home": "19-8",
+        "away": "18-9"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 37,
+        "losses": 17,
+        "pct": 0.685,
+        "home": "20-7",
+        "away": "17-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "16-11",
+        "away": "16-11"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온스",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "15-12",
+        "away": "16-11"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 25,
+        "losses": 29,
+        "pct": 0.463,
+        "home": "15-12",
+        "away": "10-17"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "11-16",
+        "away": "12-15"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "11-16",
+        "away": "12-15"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 12,
+        "losses": 42,
+        "pct": 0.222,
+        "home": "5-22",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 11,
+        "losses": 43,
+        "pct": 0.204,
+        "home": "6-21",
+        "away": "5-22"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "ulsan-hyundai-mobis": 1,
+        "wonju-db": 2,
+        "seoul-sk": 3,
+        "changwon-lg": 4,
+        "goyang-sono": 5,
+        "daegu-kogas": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "changwon-lg",
+              "winsA": 3,
+              "b": "goyang-sono",
+              "winsB": 2,
+              "winner": "changwon-lg"
+            },
+            {
+              "a": "seoul-sk",
+              "winsA": 0,
+              "b": "daegu-kogas",
+              "winsB": 3,
+              "winner": "daegu-kogas"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 3,
+              "b": "changwon-lg",
+              "winsB": 2,
+              "winner": "ulsan-hyundai-mobis"
+            },
+            {
+              "a": "wonju-db",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 2,
+              "winner": "wonju-db"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 4,
+              "b": "wonju-db",
+              "winsB": 0,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        }
+      ],
+      "championId": "ulsan-hyundai-mobis",
+      "runnerUpId": "wonju-db"
+    }
+  },
+  {
+    "season": "2015-16",
+    "startYear": 2015,
+    "note": "6강 일부 가려짐(화면 잔상): 보이는 승수와 4강 진출팀으로 확정. 1·2위 동률(36-18).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "22-5",
+        "away": "14-13"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "19-8",
+        "away": "17-10"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "19-8",
+        "away": "13-14"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "20-7",
+        "away": "10-17"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "19-8",
+        "away": "10-17"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "14-13",
+        "away": "12-15"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "13-14",
+        "away": "10-17"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 21,
+        "losses": 33,
+        "pct": 0.389,
+        "home": "14-13",
+        "away": "7-20"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "13-14",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 17,
+        "losses": 37,
+        "pct": 0.315,
+        "home": "9-18",
+        "away": "8-19"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "busan-kcc": 1,
+        "ulsan-hyundai-mobis": 2,
+        "goyang-sono": 3,
+        "anyang-jungkwanjang": 4,
+        "seoul-samsung": 5,
+        "wonju-db": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 3,
+              "b": "seoul-samsung",
+              "winsB": 1,
+              "winner": "anyang-jungkwanjang"
+            },
+            {
+              "a": "goyang-sono",
+              "winsA": 3,
+              "b": "wonju-db",
+              "winsB": 0,
+              "winner": "goyang-sono"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "busan-kcc",
+              "winsA": 3,
+              "b": "anyang-jungkwanjang",
+              "winsB": 1,
+              "winner": "busan-kcc"
+            },
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 0,
+              "b": "goyang-sono",
+              "winsB": 3,
+              "winner": "goyang-sono"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "goyang-sono",
+              "winsA": 4,
+              "b": "busan-kcc",
+              "winsB": 2,
+              "winner": "goyang-sono"
+            }
+          ]
+        }
+      ],
+      "championId": "goyang-sono",
+      "runnerUpId": "busan-kcc"
+    }
+  },
+  {
+    "season": "2016-17",
+    "startYear": 2016,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 39,
+        "losses": 15,
+        "pct": 0.722,
+        "home": "23-4",
+        "away": "16-11"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "21-6",
+        "away": "15-12"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 34,
+        "losses": 20,
+        "pct": 0.63,
+        "home": "20-7",
+        "away": "14-13"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산모비스",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "18-9",
+        "away": "10-17"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "wonju-db",
+        "displayName": "원주동부",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "16-11",
+        "away": "10-17"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "16-11",
+        "away": "10-17"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "14-13",
+        "away": "9-18"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "14-13",
+        "away": "9-18"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "11-16",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 17,
+        "losses": 37,
+        "pct": 0.315,
+        "home": "9-18",
+        "away": "8-19"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "anyang-jungkwanjang": 1,
+        "goyang-sono": 2,
+        "seoul-samsung": 3,
+        "ulsan-hyundai-mobis": 4,
+        "wonju-db": 5,
+        "daegu-kogas": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 3,
+              "b": "wonju-db",
+              "winsB": 0,
+              "winner": "ulsan-hyundai-mobis"
+            },
+            {
+              "a": "seoul-samsung",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 2,
+              "winner": "seoul-samsung"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 3,
+              "b": "ulsan-hyundai-mobis",
+              "winsB": 0,
+              "winner": "anyang-jungkwanjang"
+            },
+            {
+              "a": "goyang-sono",
+              "winsA": 2,
+              "b": "seoul-samsung",
+              "winsB": 3,
+              "winner": "seoul-samsung"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "seoul-samsung",
+              "winsA": 2,
+              "b": "anyang-jungkwanjang",
+              "winsB": 4,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        }
+      ],
+      "championId": "anyang-jungkwanjang",
+      "runnerUpId": "seoul-samsung"
+    }
+  },
+  {
+    "season": "2017-18",
+    "startYear": 2017,
+    "note": "5·6위 동률(29-25).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "wonju-db",
+        "displayName": "원주DB",
+        "wins": 37,
+        "losses": 17,
+        "pct": 0.685,
+        "home": "20-7",
+        "away": "17-10"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "19-8",
+        "away": "17-10"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 35,
+        "losses": 19,
+        "pct": 0.648,
+        "home": "19-8",
+        "away": "16-11"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산현대모비스",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "14-13",
+        "away": "19-8"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "17-10",
+        "away": "12-15"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 29,
+        "losses": 25,
+        "pct": 0.537,
+        "home": "19-8",
+        "away": "10-17"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 25,
+        "losses": 29,
+        "pct": 0.463,
+        "home": "13-14",
+        "away": "12-15"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "10-17",
+        "away": "9-18"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 17,
+        "losses": 37,
+        "pct": 0.315,
+        "home": "12-15",
+        "away": "5-22"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 10,
+        "losses": 44,
+        "pct": 0.185,
+        "home": "6-21",
+        "away": "4-23"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "wonju-db": 1,
+        "seoul-sk": 2,
+        "busan-kcc": 3,
+        "ulsan-hyundai-mobis": 4,
+        "anyang-jungkwanjang": 5,
+        "daegu-kogas": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 1,
+              "b": "anyang-jungkwanjang",
+              "winsB": 3,
+              "winner": "anyang-jungkwanjang"
+            },
+            {
+              "a": "busan-kcc",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 2,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 3,
+              "b": "anyang-jungkwanjang",
+              "winsB": 0,
+              "winner": "wonju-db"
+            },
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "busan-kcc",
+              "winsB": 1,
+              "winner": "seoul-sk"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 2,
+              "b": "seoul-sk",
+              "winsB": 4,
+              "winner": "seoul-sk"
+            }
+          ]
+        }
+      ],
+      "championId": "seoul-sk",
+      "runnerUpId": "wonju-db"
+    }
+  },
+  {
+    "season": "2018-19",
+    "startYear": 2018,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산현대모비스",
+        "wins": 43,
+        "losses": 11,
+        "pct": 0.796,
+        "home": "24-3",
+        "away": "19-8"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 35,
+        "losses": 19,
+        "pct": 0.648,
+        "home": "22-5",
+        "away": "13-14"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "21-6",
+        "away": "9-18"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "18-9",
+        "away": "10-17"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "14-13",
+        "away": "13-14"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "17-10",
+        "away": "10-17"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 25,
+        "losses": 29,
+        "pct": 0.463,
+        "home": "15-12",
+        "away": "10-17"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "wonju-db",
+        "displayName": "원주DB",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "13-14",
+        "away": "11-16"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "13-14",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 11,
+        "losses": 43,
+        "pct": 0.204,
+        "home": "5-22",
+        "away": "6-21"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "ulsan-hyundai-mobis": 1,
+        "daegu-kogas": 2,
+        "changwon-lg": 3,
+        "busan-kcc": 4,
+        "goyang-sono": 5,
+        "suwon-kt": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "busan-kcc",
+              "winsA": 3,
+              "b": "goyang-sono",
+              "winsB": 1,
+              "winner": "busan-kcc"
+            },
+            {
+              "a": "changwon-lg",
+              "winsA": 3,
+              "b": "suwon-kt",
+              "winsB": 2,
+              "winner": "changwon-lg"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 3,
+              "b": "busan-kcc",
+              "winsB": 1,
+              "winner": "ulsan-hyundai-mobis"
+            },
+            {
+              "a": "daegu-kogas",
+              "winsA": 3,
+              "b": "changwon-lg",
+              "winsB": 0,
+              "winner": "daegu-kogas"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 4,
+              "b": "daegu-kogas",
+              "winsB": 1,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        }
+      ],
+      "championId": "ulsan-hyundai-mobis",
+      "runnerUpId": "daegu-kogas"
+    }
+  },
+  {
+    "season": "2019-20",
+    "startYear": 2019,
+    "note": "코로나19로 시즌 조기 종료(팀당 약 42~43경기), 플레이오프 없음. 1위 동률.",
+    "gamesPerTeam": 43,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "wonju-db",
+        "displayName": "원주DB",
+        "wins": 28,
+        "losses": 15,
+        "pct": 0.651,
+        "home": "14-8",
+        "away": "14-7"
+      },
+      {
+        "rank": 1,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 28,
+        "losses": 15,
+        "pct": 0.651,
+        "home": "17-4",
+        "away": "11-11"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 26,
+        "losses": 17,
+        "pct": 0.605,
+        "home": "14-8",
+        "away": "12-9"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 23,
+        "losses": 19,
+        "pct": 0.548,
+        "home": "12-8",
+        "away": "11-11"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 21,
+        "losses": 21,
+        "pct": 0.5,
+        "home": "11-10",
+        "away": "10-11"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 21,
+        "losses": 22,
+        "pct": 0.488,
+        "home": "12-9",
+        "away": "9-13"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 19,
+        "losses": 24,
+        "pct": 0.442,
+        "home": "10-10",
+        "away": "9-14"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산현대모비스",
+        "wins": 18,
+        "losses": 24,
+        "pct": 0.429,
+        "home": "6-14",
+        "away": "12-10"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 16,
+        "losses": 26,
+        "pct": 0.381,
+        "home": "7-15",
+        "away": "9-11"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온",
+        "wins": 13,
+        "losses": 30,
+        "pct": 0.302,
+        "home": "8-16",
+        "away": "5-14"
+      }
+    ],
+    "playoffs": null
+  },
+  {
+    "season": "2020-21",
+    "startYear": 2020,
+    "note": "6~8위 3팀 동률(24-30).",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주KCC",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "19-8",
+        "away": "17-10"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산현대모비스",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "16-11",
+        "away": "16-11"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양KGC",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "16-11",
+        "away": "14-13"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양오리온",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "13-14",
+        "away": "15-12"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "daegu-kogas",
+        "displayName": "인천전자랜드",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "15-12",
+        "away": "12-15"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "suwon-kt",
+        "displayName": "부산KT",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "13-14",
+        "away": "13-14"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울삼성",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "13-14",
+        "away": "11-16"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울SK",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "12-15",
+        "away": "12-15"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "wonju-db",
+        "displayName": "원주DB",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "13-14",
+        "away": "11-16"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원LG",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "12-15",
+        "away": "7-20"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "busan-kcc": 1,
+        "ulsan-hyundai-mobis": 2,
+        "anyang-jungkwanjang": 3,
+        "goyang-sono": 4,
+        "daegu-kogas": 5,
+        "suwon-kt": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "goyang-sono",
+              "winsA": 1,
+              "b": "daegu-kogas",
+              "winsB": 3,
+              "winner": "daegu-kogas"
+            },
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 3,
+              "b": "suwon-kt",
+              "winsB": 0,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "busan-kcc",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 2,
+              "winner": "busan-kcc"
+            },
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 0,
+              "b": "anyang-jungkwanjang",
+              "winsB": 3,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "busan-kcc",
+              "winsA": 0,
+              "b": "anyang-jungkwanjang",
+              "winsB": 4,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        }
+      ],
+      "championId": "anyang-jungkwanjang",
+      "runnerUpId": "busan-kcc"
+    }
+  },
+  {
+    "season": "2021-22",
+    "startYear": 2021,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울 SK",
+        "wins": 40,
+        "losses": 14,
+        "pct": 0.741,
+        "home": "21-6",
+        "away": "19-8"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "suwon-kt",
+        "displayName": "수원 KT",
+        "wins": 37,
+        "losses": 17,
+        "pct": 0.685,
+        "home": "21-7",
+        "away": "16-10"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양 KGC",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "18-9",
+        "away": "14-13"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산 현대모비스",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "15-12",
+        "away": "15-12"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양 오리온",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "15-12",
+        "away": "12-15"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "daegu-kogas",
+        "displayName": "대구 한국가스공사",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "14-13",
+        "away": "13-14"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원 LG",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "16-11",
+        "away": "8-19"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "wonju-db",
+        "displayName": "원주 DB",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "13-14",
+        "away": "10-17"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주 KCC",
+        "wins": 21,
+        "losses": 33,
+        "pct": 0.389,
+        "home": "11-16",
+        "away": "10-17"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울 삼성",
+        "wins": 9,
+        "losses": 45,
+        "pct": 0.167,
+        "home": "6-20",
+        "away": "3-25"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "seoul-sk": 1,
+        "suwon-kt": 2,
+        "anyang-jungkwanjang": 3,
+        "ulsan-hyundai-mobis": 4,
+        "goyang-sono": 5,
+        "daegu-kogas": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 0,
+              "b": "goyang-sono",
+              "winsB": 3,
+              "winner": "goyang-sono"
+            },
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 0,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "goyang-sono",
+              "winsB": 0,
+              "winner": "seoul-sk"
+            },
+            {
+              "a": "suwon-kt",
+              "winsA": 1,
+              "b": "anyang-jungkwanjang",
+              "winsB": 3,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 4,
+              "b": "anyang-jungkwanjang",
+              "winsB": 0,
+              "winner": "seoul-sk"
+            }
+          ]
+        }
+      ],
+      "championId": "seoul-sk",
+      "runnerUpId": "anyang-jungkwanjang"
+    }
+  },
+  {
+    "season": "2022-23",
+    "startYear": 2022,
+    "note": "6강 일부 가려짐(화면 잔상): 보이는 승수와 4강 진출팀으로 확정",
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양 KGC",
+        "wins": 37,
+        "losses": 17,
+        "pct": 0.685,
+        "home": "20-7",
+        "away": "17-10"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원 LG",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "15-12",
+        "away": "21-6"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울 SK",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "18-9",
+        "away": "18-9"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산 현대모비스",
+        "wins": 34,
+        "losses": 20,
+        "pct": 0.63,
+        "home": "17-10",
+        "away": "17-10"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양 캐롯",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "17-10",
+        "away": "11-16"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "busan-kcc",
+        "displayName": "전주 KCC",
+        "wins": 24,
+        "losses": 30,
+        "pct": 0.444,
+        "home": "13-14",
+        "away": "11-16"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "wonju-db",
+        "displayName": "원주 DB",
+        "wins": 22,
+        "losses": 32,
+        "pct": 0.407,
+        "home": "15-12",
+        "away": "7-20"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "suwon-kt",
+        "displayName": "수원 KT",
+        "wins": 21,
+        "losses": 33,
+        "pct": 0.389,
+        "home": "12-15",
+        "away": "9-18"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "daegu-kogas",
+        "displayName": "대구 한국가스공사",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "11-16",
+        "away": "7-20"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울 삼성",
+        "wins": 14,
+        "losses": 40,
+        "pct": 0.259,
+        "home": "9-18",
+        "away": "5-22"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "anyang-jungkwanjang": 1,
+        "changwon-lg": 2,
+        "seoul-sk": 3,
+        "ulsan-hyundai-mobis": 4,
+        "goyang-sono": 5,
+        "busan-kcc": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 2,
+              "b": "goyang-sono",
+              "winsB": 3,
+              "winner": "goyang-sono"
+            },
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "busan-kcc",
+              "winsB": 0,
+              "winner": "seoul-sk"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 3,
+              "b": "goyang-sono",
+              "winsB": 1,
+              "winner": "anyang-jungkwanjang"
+            },
+            {
+              "a": "changwon-lg",
+              "winsA": 0,
+              "b": "seoul-sk",
+              "winsB": 3,
+              "winner": "seoul-sk"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "anyang-jungkwanjang",
+              "winsB": 4,
+              "winner": "anyang-jungkwanjang"
+            }
+          ]
+        }
+      ],
+      "championId": "anyang-jungkwanjang",
+      "runnerUpId": "seoul-sk"
+    }
+  },
+  {
+    "season": "2023-24",
+    "startYear": 2023,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "wonju-db",
+        "displayName": "원주 DB",
+        "wins": 41,
+        "losses": 13,
+        "pct": 0.759,
+        "home": "21-6",
+        "away": "20-7"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원 LG",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "19-8",
+        "away": "17-10"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "suwon-kt",
+        "displayName": "수원 KT",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "17-10",
+        "away": "16-11"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울 SK",
+        "wins": 31,
+        "losses": 23,
+        "pct": 0.574,
+        "home": "16-11",
+        "away": "15-12"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "busan-kcc",
+        "displayName": "부산 KCC",
+        "wins": 30,
+        "losses": 24,
+        "pct": 0.556,
+        "home": "20-7",
+        "away": "10-17"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산 현대모비스",
+        "wins": 26,
+        "losses": 28,
+        "pct": 0.481,
+        "home": "17-10",
+        "away": "9-18"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "daegu-kogas",
+        "displayName": "대구 한국가스공사",
+        "wins": 21,
+        "losses": 33,
+        "pct": 0.389,
+        "home": "12-15",
+        "away": "9-18"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양 소노",
+        "wins": 20,
+        "losses": 34,
+        "pct": 0.37,
+        "home": "11-16",
+        "away": "9-18"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양 정관장",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "10-17",
+        "away": "8-19"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울 삼성",
+        "wins": 14,
+        "losses": 40,
+        "pct": 0.259,
+        "home": "10-17",
+        "away": "4-23"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "wonju-db": 1,
+        "changwon-lg": 2,
+        "suwon-kt": 3,
+        "seoul-sk": 4,
+        "busan-kcc": 5,
+        "ulsan-hyundai-mobis": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 0,
+              "b": "busan-kcc",
+              "winsB": 3,
+              "winner": "busan-kcc"
+            },
+            {
+              "a": "suwon-kt",
+              "winsA": 3,
+              "b": "ulsan-hyundai-mobis",
+              "winsB": 1,
+              "winner": "suwon-kt"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "wonju-db",
+              "winsA": 1,
+              "b": "busan-kcc",
+              "winsB": 3,
+              "winner": "busan-kcc"
+            },
+            {
+              "a": "changwon-lg",
+              "winsA": 2,
+              "b": "suwon-kt",
+              "winsB": 3,
+              "winner": "suwon-kt"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "suwon-kt",
+              "winsA": 1,
+              "b": "busan-kcc",
+              "winsB": 4,
+              "winner": "busan-kcc"
+            }
+          ]
+        }
+      ],
+      "championId": "busan-kcc",
+      "runnerUpId": "suwon-kt"
+    }
+  },
+  {
+    "season": "2024-25",
+    "startYear": 2024,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울 SK",
+        "wins": 41,
+        "losses": 13,
+        "pct": 0.759,
+        "home": "21-6",
+        "away": "20-7"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원 LG",
+        "wins": 34,
+        "losses": 20,
+        "pct": 0.63,
+        "home": "20-7",
+        "away": "14-13"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산 현대모비스",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "16-11",
+        "away": "17-10"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "suwon-kt",
+        "displayName": "수원 KT",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "18-8",
+        "away": "14-13"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "daegu-kogas",
+        "displayName": "대구 한국가스공사",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "15-12",
+        "away": "12-13"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양 정관장",
+        "wins": 25,
+        "losses": 29,
+        "pct": 0.463,
+        "home": "13-13",
+        "away": "12-15"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "wonju-db",
+        "displayName": "원주 DB",
+        "wins": 23,
+        "losses": 31,
+        "pct": 0.426,
+        "home": "14-13",
+        "away": "9-18"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양 소노",
+        "wins": 19,
+        "losses": 35,
+        "pct": 0.352,
+        "home": "11-16",
+        "away": "8-19"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "busan-kcc",
+        "displayName": "부산 KCC",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "8-19",
+        "away": "10-17"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울 삼성",
+        "wins": 16,
+        "losses": 38,
+        "pct": 0.296,
+        "home": "6-21",
+        "away": "10-17"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "seoul-sk": 1,
+        "changwon-lg": 2,
+        "ulsan-hyundai-mobis": 3,
+        "suwon-kt": 4,
+        "daegu-kogas": 5,
+        "anyang-jungkwanjang": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "suwon-kt",
+              "winsA": 3,
+              "b": "daegu-kogas",
+              "winsB": 2,
+              "winner": "suwon-kt"
+            },
+            {
+              "a": "ulsan-hyundai-mobis",
+              "winsA": 3,
+              "b": "anyang-jungkwanjang",
+              "winsB": 0,
+              "winner": "ulsan-hyundai-mobis"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "suwon-kt",
+              "winsB": 1,
+              "winner": "seoul-sk"
+            },
+            {
+              "a": "changwon-lg",
+              "winsA": 3,
+              "b": "ulsan-hyundai-mobis",
+              "winsB": 0,
+              "winner": "changwon-lg"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 3,
+              "b": "changwon-lg",
+              "winsB": 4,
+              "winner": "changwon-lg"
+            }
+          ]
+        }
+      ],
+      "championId": "changwon-lg",
+      "runnerUpId": "seoul-sk"
+    }
+  },
+  {
+    "season": "2025-26",
+    "startYear": 2025,
+    "gamesPerTeam": 54,
+    "teams": [
+      {
+        "rank": 1,
+        "franchiseId": "changwon-lg",
+        "displayName": "창원 LG",
+        "wins": 36,
+        "losses": 18,
+        "pct": 0.667,
+        "home": "18-9",
+        "away": "18-9"
+      },
+      {
+        "rank": 2,
+        "franchiseId": "anyang-jungkwanjang",
+        "displayName": "안양 정관장",
+        "wins": 35,
+        "losses": 19,
+        "pct": 0.648,
+        "home": "20-7",
+        "away": "15-12"
+      },
+      {
+        "rank": 3,
+        "franchiseId": "wonju-db",
+        "displayName": "원주 DB",
+        "wins": 33,
+        "losses": 21,
+        "pct": 0.611,
+        "home": "17-10",
+        "away": "16-11"
+      },
+      {
+        "rank": 4,
+        "franchiseId": "seoul-sk",
+        "displayName": "서울 SK",
+        "wins": 32,
+        "losses": 22,
+        "pct": 0.593,
+        "home": "18-9",
+        "away": "14-13"
+      },
+      {
+        "rank": 5,
+        "franchiseId": "goyang-sono",
+        "displayName": "고양 소노",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "15-12",
+        "away": "13-14"
+      },
+      {
+        "rank": 6,
+        "franchiseId": "busan-kcc",
+        "displayName": "부산 KCC",
+        "wins": 28,
+        "losses": 26,
+        "pct": 0.519,
+        "home": "15-12",
+        "away": "13-14"
+      },
+      {
+        "rank": 7,
+        "franchiseId": "suwon-kt",
+        "displayName": "수원 KT",
+        "wins": 27,
+        "losses": 27,
+        "pct": 0.5,
+        "home": "15-12",
+        "away": "12-15"
+      },
+      {
+        "rank": 8,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "displayName": "울산 현대모비스",
+        "wins": 18,
+        "losses": 36,
+        "pct": 0.333,
+        "home": "11-16",
+        "away": "7-20"
+      },
+      {
+        "rank": 9,
+        "franchiseId": "daegu-kogas",
+        "displayName": "대구 한국가스공사",
+        "wins": 17,
+        "losses": 37,
+        "pct": 0.315,
+        "home": "11-16",
+        "away": "6-21"
+      },
+      {
+        "rank": 10,
+        "franchiseId": "seoul-samsung",
+        "displayName": "서울 삼성",
+        "wins": 16,
+        "losses": 38,
+        "pct": 0.296,
+        "home": "8-19",
+        "away": "8-19"
+      }
+    ],
+    "playoffs": {
+      "seeds": {
+        "changwon-lg": 1,
+        "anyang-jungkwanjang": 2,
+        "wonju-db": 3,
+        "seoul-sk": 4,
+        "goyang-sono": 5,
+        "busan-kcc": 6
+      },
+      "rounds": [
+        {
+          "name": "6강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "seoul-sk",
+              "winsA": 0,
+              "b": "goyang-sono",
+              "winsB": 3,
+              "winner": "goyang-sono"
+            },
+            {
+              "a": "wonju-db",
+              "winsA": 0,
+              "b": "busan-kcc",
+              "winsB": 3,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "4강",
+          "bestOf": 5,
+          "series": [
+            {
+              "a": "changwon-lg",
+              "winsA": 0,
+              "b": "goyang-sono",
+              "winsB": 3,
+              "winner": "goyang-sono"
+            },
+            {
+              "a": "anyang-jungkwanjang",
+              "winsA": 1,
+              "b": "busan-kcc",
+              "winsB": 3,
+              "winner": "busan-kcc"
+            }
+          ]
+        },
+        {
+          "name": "결승",
+          "bestOf": 7,
+          "series": [
+            {
+              "a": "goyang-sono",
+              "winsA": 1,
+              "b": "busan-kcc",
+              "winsB": 4,
+              "winner": "busan-kcc"
+            }
+          ]
+        }
+      ],
+      "championId": "busan-kcc",
+      "runnerUpId": "goyang-sono"
+    }
+  }
+]

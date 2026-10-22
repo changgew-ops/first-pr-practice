@@ -52,6 +52,19 @@ test('parseStatsCsv: 별칭 컬럼, 주석, 오류 처리', () => {
   assert.throws(() => parseStatsCsv('name,games,minutes,pts,reb,ast,stl,blk,fgm,fga,tpm,tpa,ftm,fta\n가나다,10,x,1,1,1,1,1,1,1,1,1,1,1\n'), /올바르지 않습니다/);
 });
 
+test('parseStatsCsv: KBL 용어 설명의 추가 항목(OREB·DREB·TO 등)을 받고, reb 없이 OREB+DREB로 리바운드를 만든다', () => {
+  const header = 'name,games,minutes,pts,oreb,dreb,ast,stl,blk,fgm,fga,tpm,tpa,ftm,fta,TO,PF,FBAs,GD,DK,DKA,PP,PPA,+/-,SAST,DFL';
+  const row = '가나다,10,300,100,8,22,20,5,2,40,90,10,30,10,14,15,12,3,4,2,3,18,30,25,6,9';
+  const [r] = parseStatsCsv(`${header}\n${row}\n`);
+  assert.equal(r.totals.rebounds, 30);
+  assert.equal(r.totals.points, 100);
+  assert.equal(r.extra.turnovers, 15);
+  assert.equal(r.extra.plusMinus, 25);
+  assert.equal(r.extra.deflections, 9);
+  assert.equal(r.extra.screenAssists, 6);
+  assert.throws(() => parseStatsCsv(`${header.replace(',dreb', '')}\n${row}\n`), /필요한 컬럼/);
+});
+
 test('기록 → 능력치: 시뮬레이션 기록으로 원래 능력치를 되찾는다', () => {
   const totals = simulateTotals(100, 2);
   const byId = new Map(players.map((p) => [p.id, p]));
