@@ -67,7 +67,13 @@ const line = (t) => [t.games, t.minutes, t.points, t.rebounds, t.assists, t.stea
 export const LINE_KEYS = ['games', 'minutes', 'points', 'rebounds', 'assists', 'steals', 'blocks'];
 
 function summarizeYear(game, data, season, out) {
-  const { result, report, totals, seasonPlayers } = out;
+  const entry = summarizeSeason(game, data, season, { result: out.result, totals: out.totals, seasonPlayers: out.seasonPlayers }, out.report.ledger);
+  return attachOffseason(entry, out.report, out.league.funds);
+}
+
+/** 시즌 결과(순위·플레이오프·리더·우리 팀 경기·장부)만 묶는다. 오프시즌 보고서는 attachOffseason으로 나중에 붙인다 */
+export function summarizeSeason(game, data, season, finished, ledger) {
+  const { result, totals, seasonPlayers } = finished;
   const my = game.managerId;
   const names = new Map(seasonPlayers.map((p) => [p.id, p]));
   const lines = {};
@@ -81,27 +87,33 @@ function summarizeYear(game, data, season, out) {
     const home = g.homeId === my;
     myGames.push({ day: Math.floor(i / (data.teams.length / 2)) + 1, home, oppId: home ? g.awayId : g.homeId, my: home ? g.homePts : g.awayPts, opp: home ? g.awayPts : g.homePts, win: g.winnerId === my, ot: g.overtimes });
   });
-  const mine = (x) => x.teamId === my;
-  const moved = report.progressed.map((p) => ({ ...p, delta: p.to - p.from }));
   const stage = (id) => stageOf(result.playoffs, id);
   return {
-    season: seasonLabel(season), startYear: season,
+    season: seasonLabel(season), startYear: season, myTeamId: my,
     standings: result.standings.map((s, i) => ({ rank: i + 1, ...s })),
     series: result.playoffs.series.map((x) => ({ round: x.round, higherId: x.higherId, lowerId: x.lowerId, winnerId: x.winnerId, wins: x.wins, games: x.games.map((g) => [g.homeId === x.higherId ? g.homePts : g.awayPts, g.homeId === x.higherId ? g.awayPts : g.homePts]) })),
     championId: result.championId,
     stage: Object.fromEntries(data.teams.map((t) => [t.id, stage(t.id)])),
     leaders, lines, myGames,
-    ledger: report.ledger, fundsAfter: out.league.funds,
+    ledger,
+    playerNames: Object.fromEntries([...names].map(([id, p]) => [id, p.name]))
+  };
+}
+
+/** 오프시즌 보고서를 시즌 결과에 붙인다 (fundsAfter: 오프시즌까지 끝난 뒤 구단 자금) */
+export function attachOffseason(entry, report, fundsAfter) {
+  const moved = report.progressed.map((p) => ({ ...p, delta: p.to - p.from }));
+  return {
+    ...entry, fundsAfter,
     report: {
       before: report.before, after: report.after,
       retired: report.retired, drafted: report.drafted,
-      progressed: { mine: moved.filter(mine).sort((a, b) => b.delta - a.delta), risers: [...moved].sort((a, b) => b.delta - a.delta).slice(0, 8), fallers: [...moved].sort((a, b) => a.delta - b.delta).slice(0, 8) },
+      progressed: { mine: moved.filter((x) => x.teamId === entry.myTeamId).sort((a, b) => b.delta - a.delta), risers: [...moved].sort((a, b) => b.delta - a.delta).slice(0, 8), fallers: [...moved].sort((a, b) => a.delta - b.delta).slice(0, 8) },
       renewed: report.renewed, expired: report.expired, refused: report.refused,
       signings: report.signings, compensations: report.compensations,
       trades: report.trades.filter((t) => t.executed !== false), tradeOffers: report.tradeOffers,
       released: report.released, signed: report.signed, foreignReplaced: report.foreignReplaced, asiaReplaced: report.asiaReplaced
-    },
-    playerNames: Object.fromEntries([...names].map(([id, p]) => [id, p.name]))
+    }
   };
 }
 
