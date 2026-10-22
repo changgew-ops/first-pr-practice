@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { STAT_KEYS, calcOvr, calcCost } from '../src/rating.mjs';
+import { mulberry32, hashString } from '../src/rng.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SEED = 20261022;
@@ -12,19 +13,6 @@ const rules = JSON.parse(readFileSync(join(ROOT, 'data/league-rules.json'), 'utf
 const teams = JSON.parse(readFileSync(join(ROOT, 'data/teams.json'), 'utf8'));
 
 // ---------- 난수 ----------
-function mulberry32(a) {
-  return function () {
-    a |= 0; a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-function hashString(s) {
-  let h = 2166136261;
-  for (const c of s) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); }
-  return h >>> 0;
-}
 const rng = mulberry32(SEED);
 const rand = (min, max) => min + rng() * (max - min);
 const randInt = (min, max) => Math.floor(rand(min, max + 1));
