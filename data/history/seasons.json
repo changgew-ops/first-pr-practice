@@ -4084,6 +4084,7 @@
   {
     "season": "2024-25",
     "startYear": 2024,
+    "note": "4라운드 고양 소노의 승률은 나무위키에 .315로 적혀 있으나 11승 25패의 계산값(.306)으로 적었다",
     "gamesPerTeam": 54,
     "teams": [
       {
@@ -4187,6 +4188,740 @@
         "away": "10-17"
       }
     ],
+    "rounds": [
+      {
+        "round": 1,
+        "teams": [
+          {
+            "rank": 1,
+            "franchiseId": "daegu-kogas",
+            "games": 9,
+            "wins": 7,
+            "losses": 2,
+            "pct": 0.778,
+            "gamesBehind": 0,
+            "roundWins": 7,
+            "roundLosses": 2
+          },
+          {
+            "rank": 1,
+            "franchiseId": "seoul-sk",
+            "games": 9,
+            "wins": 7,
+            "losses": 2,
+            "pct": 0.778,
+            "gamesBehind": 0,
+            "roundWins": 7,
+            "roundLosses": 2
+          },
+          {
+            "rank": 3,
+            "franchiseId": "ulsan-hyundai-mobis",
+            "games": 9,
+            "wins": 6,
+            "losses": 3,
+            "pct": 0.667,
+            "gamesBehind": 1,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 4,
+            "franchiseId": "suwon-kt",
+            "games": 9,
+            "wins": 5,
+            "losses": 4,
+            "pct": 0.556,
+            "gamesBehind": 2,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 4,
+            "franchiseId": "goyang-sono",
+            "games": 9,
+            "wins": 5,
+            "losses": 4,
+            "pct": 0.556,
+            "gamesBehind": 2,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 6,
+            "franchiseId": "busan-kcc",
+            "games": 9,
+            "wins": 4,
+            "losses": 5,
+            "pct": 0.444,
+            "gamesBehind": 3,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 6,
+            "franchiseId": "anyang-jungkwanjang",
+            "games": 9,
+            "wins": 4,
+            "losses": 5,
+            "pct": 0.444,
+            "gamesBehind": 3,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 8,
+            "franchiseId": "changwon-lg",
+            "games": 9,
+            "wins": 3,
+            "losses": 6,
+            "pct": 0.333,
+            "gamesBehind": 4,
+            "roundWins": 3,
+            "roundLosses": 6
+          },
+          {
+            "rank": 9,
+            "franchiseId": "wonju-db",
+            "games": 9,
+            "wins": 2,
+            "losses": 7,
+            "pct": 0.222,
+            "gamesBehind": 5,
+            "roundWins": 2,
+            "roundLosses": 7
+          },
+          {
+            "rank": 9,
+            "franchiseId": "seoul-samsung",
+            "games": 9,
+            "wins": 2,
+            "losses": 7,
+            "pct": 0.222,
+            "gamesBehind": 5,
+            "roundWins": 2,
+            "roundLosses": 7
+          }
+        ],
+        "mvp": {
+          "name": "자밀 워니",
+          "franchiseId": "seoul-sk"
+        }
+      },
+      {
+        "round": 2,
+        "teams": [
+          {
+            "rank": 1,
+            "franchiseId": "seoul-sk",
+            "games": 18,
+            "wins": 13,
+            "losses": 5,
+            "pct": 0.722,
+            "gamesBehind": 0,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 1,
+            "franchiseId": "ulsan-hyundai-mobis",
+            "games": 18,
+            "wins": 13,
+            "losses": 5,
+            "pct": 0.722,
+            "gamesBehind": 0,
+            "roundWins": 7,
+            "roundLosses": 2
+          },
+          {
+            "rank": 3,
+            "franchiseId": "daegu-kogas",
+            "games": 18,
+            "wins": 11,
+            "losses": 7,
+            "pct": 0.611,
+            "gamesBehind": 2,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 4,
+            "franchiseId": "suwon-kt",
+            "games": 18,
+            "wins": 10,
+            "losses": 8,
+            "pct": 0.556,
+            "gamesBehind": 3,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 5,
+            "franchiseId": "busan-kcc",
+            "games": 18,
+            "wins": 9,
+            "losses": 9,
+            "pct": 0.5,
+            "gamesBehind": 4,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 6,
+            "franchiseId": "wonju-db",
+            "games": 18,
+            "wins": 8,
+            "losses": 10,
+            "pct": 0.444,
+            "gamesBehind": 5,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 6,
+            "franchiseId": "changwon-lg",
+            "games": 18,
+            "wins": 8,
+            "losses": 10,
+            "pct": 0.444,
+            "gamesBehind": 5,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 8,
+            "franchiseId": "anyang-jungkwanjang",
+            "games": 18,
+            "wins": 7,
+            "losses": 11,
+            "pct": 0.389,
+            "gamesBehind": 6,
+            "roundWins": 3,
+            "roundLosses": 6
+          },
+          {
+            "rank": 9,
+            "franchiseId": "seoul-samsung",
+            "games": 18,
+            "wins": 6,
+            "losses": 12,
+            "pct": 0.333,
+            "gamesBehind": 7,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 10,
+            "franchiseId": "goyang-sono",
+            "games": 18,
+            "wins": 5,
+            "losses": 13,
+            "pct": 0.278,
+            "gamesBehind": 8,
+            "roundWins": 0,
+            "roundLosses": 9
+          }
+        ],
+        "mvp": {
+          "name": "자밀 워니",
+          "franchiseId": "seoul-sk"
+        }
+      },
+      {
+        "round": 3,
+        "teams": [
+          {
+            "rank": 1,
+            "franchiseId": "seoul-sk",
+            "games": 27,
+            "wins": 21,
+            "losses": 6,
+            "pct": 0.778,
+            "gamesBehind": 0,
+            "roundWins": 8,
+            "roundLosses": 1
+          },
+          {
+            "rank": 2,
+            "franchiseId": "ulsan-hyundai-mobis",
+            "games": 27,
+            "wins": 19,
+            "losses": 8,
+            "pct": 0.704,
+            "gamesBehind": 2,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 3,
+            "franchiseId": "daegu-kogas",
+            "games": 27,
+            "wins": 16,
+            "losses": 11,
+            "pct": 0.593,
+            "gamesBehind": 5,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 4,
+            "franchiseId": "suwon-kt",
+            "games": 27,
+            "wins": 15,
+            "losses": 12,
+            "pct": 0.556,
+            "gamesBehind": 6,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 5,
+            "franchiseId": "changwon-lg",
+            "games": 27,
+            "wins": 14,
+            "losses": 13,
+            "pct": 0.519,
+            "gamesBehind": 7,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 6,
+            "franchiseId": "wonju-db",
+            "games": 27,
+            "wins": 13,
+            "losses": 14,
+            "pct": 0.481,
+            "gamesBehind": 8,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 7,
+            "franchiseId": "busan-kcc",
+            "games": 27,
+            "wins": 11,
+            "losses": 16,
+            "pct": 0.407,
+            "gamesBehind": 10,
+            "roundWins": 2,
+            "roundLosses": 7
+          },
+          {
+            "rank": 8,
+            "franchiseId": "seoul-samsung",
+            "games": 27,
+            "wins": 10,
+            "losses": 17,
+            "pct": 0.37,
+            "gamesBehind": 11,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 9,
+            "franchiseId": "goyang-sono",
+            "games": 27,
+            "wins": 9,
+            "losses": 18,
+            "pct": 0.333,
+            "gamesBehind": 12,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 10,
+            "franchiseId": "anyang-jungkwanjang",
+            "games": 27,
+            "wins": 7,
+            "losses": 20,
+            "pct": 0.259,
+            "gamesBehind": 14,
+            "roundWins": 0,
+            "roundLosses": 9
+          }
+        ],
+        "mvp": {
+          "name": "칼 타마요",
+          "franchiseId": "changwon-lg"
+        }
+      },
+      {
+        "round": 4,
+        "teams": [
+          {
+            "rank": 1,
+            "franchiseId": "seoul-sk",
+            "games": 36,
+            "wins": 29,
+            "losses": 7,
+            "pct": 0.806,
+            "gamesBehind": 0,
+            "roundWins": 8,
+            "roundLosses": 1
+          },
+          {
+            "rank": 2,
+            "franchiseId": "ulsan-hyundai-mobis",
+            "games": 36,
+            "wins": 22,
+            "losses": 14,
+            "pct": 0.611,
+            "gamesBehind": 7,
+            "roundWins": 3,
+            "roundLosses": 6
+          },
+          {
+            "rank": 2,
+            "franchiseId": "changwon-lg",
+            "games": 36,
+            "wins": 22,
+            "losses": 14,
+            "pct": 0.611,
+            "gamesBehind": 7,
+            "roundWins": 8,
+            "roundLosses": 1
+          },
+          {
+            "rank": 4,
+            "franchiseId": "daegu-kogas",
+            "games": 36,
+            "wins": 20,
+            "losses": 16,
+            "pct": 0.556,
+            "gamesBehind": 9,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 4,
+            "franchiseId": "suwon-kt",
+            "games": 36,
+            "wins": 20,
+            "losses": 16,
+            "pct": 0.556,
+            "gamesBehind": 9,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 6,
+            "franchiseId": "wonju-db",
+            "games": 36,
+            "wins": 16,
+            "losses": 20,
+            "pct": 0.444,
+            "gamesBehind": 13,
+            "roundWins": 3,
+            "roundLosses": 6
+          },
+          {
+            "rank": 7,
+            "franchiseId": "busan-kcc",
+            "games": 36,
+            "wins": 15,
+            "losses": 21,
+            "pct": 0.417,
+            "gamesBehind": 14,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 8,
+            "franchiseId": "anyang-jungkwanjang",
+            "games": 36,
+            "wins": 13,
+            "losses": 23,
+            "pct": 0.361,
+            "gamesBehind": 16,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 9,
+            "franchiseId": "seoul-samsung",
+            "games": 36,
+            "wins": 12,
+            "losses": 24,
+            "pct": 0.333,
+            "gamesBehind": 17,
+            "roundWins": 2,
+            "roundLosses": 7
+          },
+          {
+            "rank": 10,
+            "franchiseId": "goyang-sono",
+            "games": 36,
+            "wins": 11,
+            "losses": 25,
+            "pct": 0.306,
+            "gamesBehind": 18,
+            "roundWins": 2,
+            "roundLosses": 7
+          }
+        ],
+        "mvp": {
+          "name": "자밀 워니",
+          "franchiseId": "seoul-sk"
+        }
+      },
+      {
+        "round": 5,
+        "teams": [
+          {
+            "rank": 1,
+            "franchiseId": "seoul-sk",
+            "games": 45,
+            "wins": 36,
+            "losses": 9,
+            "pct": 0.8,
+            "gamesBehind": 0,
+            "roundWins": 7,
+            "roundLosses": 2
+          },
+          {
+            "rank": 2,
+            "franchiseId": "changwon-lg",
+            "games": 45,
+            "wins": 28,
+            "losses": 17,
+            "pct": 0.622,
+            "gamesBehind": 8,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 3,
+            "franchiseId": "suwon-kt",
+            "games": 45,
+            "wins": 27,
+            "losses": 18,
+            "pct": 0.6,
+            "gamesBehind": 9,
+            "roundWins": 7,
+            "roundLosses": 2
+          },
+          {
+            "rank": 3,
+            "franchiseId": "ulsan-hyundai-mobis",
+            "games": 45,
+            "wins": 27,
+            "losses": 18,
+            "pct": 0.6,
+            "gamesBehind": 9,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 5,
+            "franchiseId": "daegu-kogas",
+            "games": 45,
+            "wins": 24,
+            "losses": 21,
+            "pct": 0.533,
+            "gamesBehind": 12,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 6,
+            "franchiseId": "wonju-db",
+            "games": 45,
+            "wins": 20,
+            "losses": 25,
+            "pct": 0.444,
+            "gamesBehind": 16,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 7,
+            "franchiseId": "anyang-jungkwanjang",
+            "games": 45,
+            "wins": 18,
+            "losses": 27,
+            "pct": 0.4,
+            "gamesBehind": 18,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 8,
+            "franchiseId": "busan-kcc",
+            "games": 45,
+            "wins": 16,
+            "losses": 29,
+            "pct": 0.356,
+            "gamesBehind": 20,
+            "roundWins": 1,
+            "roundLosses": 8
+          },
+          {
+            "rank": 9,
+            "franchiseId": "seoul-samsung",
+            "games": 45,
+            "wins": 15,
+            "losses": 30,
+            "pct": 0.333,
+            "gamesBehind": 21,
+            "roundWins": 3,
+            "roundLosses": 6
+          },
+          {
+            "rank": 10,
+            "franchiseId": "goyang-sono",
+            "games": 45,
+            "wins": 14,
+            "losses": 31,
+            "pct": 0.311,
+            "gamesBehind": 22,
+            "roundWins": 3,
+            "roundLosses": 6
+          }
+        ],
+        "mvp": {
+          "name": "안영준",
+          "franchiseId": "seoul-sk"
+        }
+      },
+      {
+        "round": 6,
+        "teams": [
+          {
+            "rank": 1,
+            "franchiseId": "seoul-sk",
+            "games": 54,
+            "wins": 41,
+            "losses": 13,
+            "pct": 0.759,
+            "gamesBehind": 0,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 2,
+            "franchiseId": "changwon-lg",
+            "games": 54,
+            "wins": 34,
+            "losses": 20,
+            "pct": 0.63,
+            "gamesBehind": 7,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 3,
+            "franchiseId": "ulsan-hyundai-mobis",
+            "games": 54,
+            "wins": 33,
+            "losses": 21,
+            "pct": 0.611,
+            "gamesBehind": 8,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 4,
+            "franchiseId": "suwon-kt",
+            "games": 54,
+            "wins": 33,
+            "losses": 21,
+            "pct": 0.611,
+            "gamesBehind": 8,
+            "roundWins": 6,
+            "roundLosses": 3
+          },
+          {
+            "rank": 5,
+            "franchiseId": "daegu-kogas",
+            "games": 54,
+            "wins": 28,
+            "losses": 26,
+            "pct": 0.519,
+            "gamesBehind": 13,
+            "roundWins": 4,
+            "roundLosses": 5
+          },
+          {
+            "rank": 6,
+            "franchiseId": "anyang-jungkwanjang",
+            "games": 54,
+            "wins": 25,
+            "losses": 29,
+            "pct": 0.463,
+            "gamesBehind": 16,
+            "roundWins": 7,
+            "roundLosses": 2
+          },
+          {
+            "rank": 7,
+            "franchiseId": "wonju-db",
+            "games": 54,
+            "wins": 23,
+            "losses": 31,
+            "pct": 0.426,
+            "gamesBehind": 18,
+            "roundWins": 3,
+            "roundLosses": 6
+          },
+          {
+            "rank": 8,
+            "franchiseId": "goyang-sono",
+            "games": 54,
+            "wins": 19,
+            "losses": 35,
+            "pct": 0.352,
+            "gamesBehind": 22,
+            "roundWins": 5,
+            "roundLosses": 4
+          },
+          {
+            "rank": 9,
+            "franchiseId": "busan-kcc",
+            "games": 54,
+            "wins": 18,
+            "losses": 36,
+            "pct": 0.333,
+            "gamesBehind": 23,
+            "roundWins": 2,
+            "roundLosses": 7
+          },
+          {
+            "rank": 10,
+            "franchiseId": "seoul-samsung",
+            "games": 54,
+            "wins": 16,
+            "losses": 38,
+            "pct": 0.296,
+            "gamesBehind": 25,
+            "roundWins": 1,
+            "roundLosses": 8
+          }
+        ],
+        "mvp": {
+          "name": "박지훈",
+          "franchiseId": "anyang-jungkwanjang"
+        }
+      }
+    ],
+    "awards": {
+      "정규시즌 MVP(국내)": "안영준",
+      "정규시즌 MVP(외국)": "자밀 워니",
+      "베스트5": [
+        "자밀 워니",
+        "김선형",
+        "안영준",
+        "칼 타마요",
+        "아셈 마레이"
+      ],
+      "최우수 수비상": "정성우",
+      "식스맨상": "박준영",
+      "기량발전상": "양준석",
+      "페어플레이상": "정인덕",
+      "인기상": "허웅",
+      "신인상": "조엘 카굴랑안",
+      "감독상": "전희철"
+    },
     "playoffs": {
       "seeds": {
         "seoul-sk": 1,

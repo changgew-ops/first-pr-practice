@@ -180,6 +180,7 @@ export function buildHistory(rawDir, teams) {
       gamesPerTeam: Math.max(...games),
       teams: rows,
       ...(rounds ? { rounds } : {}),
+      ...(raw.awards ? { awards: raw.awards } : {}),
       playoffs
     });
   }

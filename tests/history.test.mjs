@@ -170,3 +170,16 @@ test('라운드 검증: 누적과 맞지 않는 라운드 전적·경기 수·�
   assert.match(run((c) => { c.rounds[2].rows[0][2] = 28; }), /경기 수/);
   assert.match(run((c) => { c.rounds[5].rows[0][3] = 35; c.rounds[5].rows[0][4] = 19; c.rounds[5].rows[0][5] = 0.648; }), /최종|라운드 전적/);
 });
+
+test('2024-25 라운드·수상: 6개 라운드가 검증을 통과하고 최종 순위와 같으며 수상 기록이 있다', () => {
+  const s = seasons.find((x) => x.season === '2024-25');
+  assert.equal(s.rounds.length, 6);
+  for (const f of s.teams) {
+    const t = s.rounds[5].teams.find((x) => x.franchiseId === f.franchiseId);
+    assert.equal(`${t.wins}-${t.losses}`, `${f.wins}-${f.losses}`);
+  }
+  assert.deepEqual(s.rounds.map((r) => r.mvp.name), ['자밀 워니', '자밀 워니', '칼 타마요', '자밀 워니', '안영준', '박지훈']);
+  assert.equal(s.awards['정규시즌 MVP(국내)'], '안영준');
+  assert.equal(s.awards['베스트5'].length, 5);
+  assert.equal(s.awards['감독상'], '전희철');
+});
