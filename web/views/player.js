@@ -67,5 +67,5 @@ function careerCard(ctx, p) {
   const tabBar = h('div', { class: 'pad', style: { paddingBottom: '0' } });
   const draw2 = (kind) => { tabBar.replaceChildren(tabs([['reg', '정규시즌'], ['po', '플레이오프']], kind, draw2)); draw(kind); };
   draw2('reg');
-  return h('div', { class: 'card flush' }, h('div', { class: 'pad', style: { paddingBottom: '0' } }, h('h3', { style: { margin: 0 } }, 'KBL 공식 시즌 기록'), h('p', { class: 'note' }, '1997년 이후 이 선수가 뛴 시즌. 같은 시즌 이적은 팀마다 줄이 나뉩니다. 출처: KBL 공식 기록(2026-10-23 조회)')), tabBar, host);
+  return h('div', { class: 'card flush' }, h('div', { class: 'pad', style: { paddingBottom: '0' } }, h('h3', { style: { margin: 0 } }, 'KBL 공식 시즌 기록 (실제)'), h('p', { class: 'note' }, '1997년 이후 이 선수가 실제로 뛴 시즌. 2026-27은 아직 진행 중인 실제 기록이고, 게임에서 진행한 시즌은 아래 표에 따로 쌓입니다. 같은 시즌 이적은 팀마다 줄이 나뉩니다. 출처: KBL 공식 기록(2026-10-23 조회)')), tabBar, host);
 }

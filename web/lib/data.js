@@ -1,6 +1,8 @@
 // 정적 데이터 불러오기. 저장소 루트를 그대로 서빙하므로 ../data/ 경로를 쓴다.
+// 개발 서버(저장소 루트 서빙)에서는 ../data/. 데이터를 다른 곳에 두고 서빙하는 쪽(예: 아티팩트 묶음)은 페이지에서 KBL_DATA_BASE를 먼저 정해 준다
+const BASE = globalThis.KBL_DATA_BASE ?? '../data/';
 const get = async (path) => {
-  const res = await fetch(`../data/${path}`);
+  const res = await fetch(`${BASE}${path}`);
   if (!res.ok) throw new Error(`${path}: ${res.status}`);
   return res;
 };
