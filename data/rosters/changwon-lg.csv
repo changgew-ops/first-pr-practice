@@ -2,15 +2,15 @@ name,position,age,number,origin,nationality
 양준석,PG,24,5,domestic,
 유기상,SG,25,1,domestic,
 정인덕,SF,32,16,domestic,
-양홍석,PF,31,11,domestic,
+양홍석,PF,29,11,domestic,
 최형찬,SG,24,7,domestic,
 윤원상,SG,28,10,domestic,
 한상혁,SG,33,6,domestic,
-장민국,PF,36,3,domestic,
-박정현,C,29,31,domestic,
+장민국,PF,37,3,domestic,
+박정현,C,30,31,domestic,
 임정현,SF,24,9,domestic,
 김선우,SG,23,2,domestic,
 김준영,SG,23,4,domestic,
 아셈 마레이,C,34,50,foreign,이집트
-아치 굿윈,SG,,8,foreign,미국
-칼 타마요,PF,,33,asia,필리핀
+아치 굿윈,SG,32,8,foreign,미국
+칼 타마요,PF,25,33,asia,필리핀

@@ -4,7 +4,7 @@
     "name": "강상재",
     "real": true,
     "position": "SF",
-    "age": 32,
+    "age": 31,
     "number": 26,
     "rarity": "rare",
     "stats": {
@@ -34,7 +34,7 @@
     "name": "정효근",
     "real": true,
     "position": "PF",
-    "age": 34,
+    "age": 32,
     "number": 12,
     "rarity": "rare",
     "stats": {
@@ -64,7 +64,7 @@
     "name": "이용우",
     "real": true,
     "position": "SG",
-    "age": 28,
+    "age": 26,
     "number": 7,
     "rarity": "common",
     "stats": {
@@ -77,7 +77,7 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 60,
+    "potential": 62,
     "origin": "domestic",
     "teamId": "wonju-db",
     "contract": {
@@ -124,7 +124,7 @@
     "name": "이정현(2)",
     "real": true,
     "position": "SG",
-    "age": 38,
+    "age": 39,
     "number": 3,
     "rarity": "common",
     "stats": {
@@ -184,7 +184,7 @@
     "name": "최성원",
     "real": true,
     "position": "SG",
-    "age": 31,
+    "age": 30,
     "number": 19,
     "rarity": "common",
     "stats": {
@@ -197,11 +197,11 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 63,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "wonju-db",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.5
     },
     "assets": {
@@ -214,7 +214,7 @@
     "name": "정호영",
     "real": true,
     "position": "SG",
-    "age": 27,
+    "age": 28,
     "number": 5,
     "rarity": "common",
     "stats": {
@@ -227,11 +227,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 63,
+    "potential": 64,
     "origin": "domestic",
     "teamId": "wonju-db",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -257,7 +257,7 @@
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 61,
+    "potential": 60,
     "origin": "domestic",
     "teamId": "wonju-db",
     "contract": {
@@ -274,9 +274,9 @@
     "name": "조은후",
     "real": true,
     "position": "SG",
-    "age": 27,
+    "age": 26,
     "number": 2,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 63,
       "passing": 65,
@@ -287,11 +287,11 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 61,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "wonju-db",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.1
     },
     "assets": {
@@ -306,7 +306,7 @@
     "position": "SG",
     "age": 23,
     "number": 0,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 69,
       "passing": 64,
@@ -317,11 +317,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 65,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "wonju-db",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.7
     },
     "assets": {
@@ -334,7 +334,7 @@
     "name": "이윤수",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 30,
     "number": 99,
     "rarity": "rare",
     "stats": {
@@ -364,9 +364,9 @@
     "name": "헨리 엘런슨",
     "real": true,
     "position": "PF",
-    "age": 31,
+    "age": 29,
     "number": 8,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 72,
       "passing": 64,
@@ -377,13 +377,13 @@
     },
     "ovr": 73,
     "cost": 8,
-    "potential": 73,
+    "potential": 74,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "wonju-db",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 320000
+      "yearsLeft": 3,
+      "salaryUsd": 640000
     },
     "assets": {
       "portrait": null,
@@ -395,7 +395,7 @@
     "name": "레이션 해먼즈",
     "real": true,
     "position": "PF",
-    "age": 32,
+    "age": 28,
     "number": 22,
     "rarity": "ace",
     "stats": {
@@ -408,13 +408,13 @@
     },
     "ovr": 76,
     "cost": 10,
-    "potential": 76,
+    "potential": 79,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "wonju-db",
     "contract": {
-      "yearsLeft": 2,
-      "salaryUsd": 380000
+      "yearsLeft": 3,
+      "salaryUsd": 270000
     },
     "assets": {
       "portrait": null,
@@ -426,7 +426,7 @@
     "name": "이선 알바노",
     "real": true,
     "position": "PG",
-    "age": 27,
+    "age": 30,
     "number": 17,
     "rarity": "ace",
     "stats": {
@@ -444,8 +444,8 @@
     "nationality": "필리핀",
     "teamId": "wonju-db",
     "contract": {
-      "yearsLeft": 4,
-      "salaryEok": 1.7
+      "yearsLeft": 1,
+      "salaryEok": 1.6
     },
     "assets": {
       "portrait": null,
@@ -457,7 +457,7 @@
     "name": "이관희",
     "real": true,
     "position": "SG",
-    "age": 37,
+    "age": 38,
     "number": 2,
     "rarity": "common",
     "stats": {
@@ -487,7 +487,7 @@
     "name": "한호빈",
     "real": true,
     "position": "PG",
-    "age": 35,
+    "age": 34,
     "number": 5,
     "rarity": "common",
     "stats": {
@@ -530,7 +530,7 @@
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 62,
+    "potential": 60,
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
@@ -564,7 +564,7 @@
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 1.1
     },
     "assets": {
@@ -594,7 +594,7 @@
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 0.8
     },
     "assets": {
@@ -624,7 +624,7 @@
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 0.6
     },
     "assets": {
@@ -650,7 +650,7 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 63,
+    "potential": 64,
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
@@ -667,7 +667,7 @@
     "name": "이대성",
     "real": true,
     "position": "SG",
-    "age": 35,
+    "age": 36,
     "number": 43,
     "rarity": "common",
     "stats": {
@@ -684,7 +684,7 @@
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.5
     },
     "assets": {
@@ -714,7 +714,7 @@
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -729,7 +729,7 @@
     "position": "SG",
     "age": 26,
     "number": 77,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 68,
       "passing": 64,
@@ -740,11 +740,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 70,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 1.7
     },
     "assets": {
@@ -759,7 +759,7 @@
     "position": "SF",
     "age": 24,
     "number": 11,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 64,
       "passing": 59,
@@ -770,11 +770,11 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 64,
+    "potential": 68,
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.5
     },
     "assets": {
@@ -800,11 +800,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 72,
+    "potential": 70,
     "origin": "domestic",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.7
     },
     "assets": {
@@ -817,9 +817,9 @@
     "name": "케렘 칸터",
     "real": true,
     "position": "C",
-    "age": 26,
+    "age": 31,
     "number": 35,
-    "rarity": "legend",
+    "rarity": "ace",
     "stats": {
       "shooting": 77,
       "passing": 68,
@@ -830,13 +830,13 @@
     },
     "ovr": 75,
     "cost": 9,
-    "potential": 83,
+    "potential": 75,
     "origin": "foreign",
     "nationality": "튀르키예",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 3,
-      "salaryUsd": 400000
+      "yearsLeft": 4,
+      "salaryUsd": 460000
     },
     "assets": {
       "portrait": null,
@@ -848,9 +848,9 @@
     "name": "크리스 맥컬러",
     "real": true,
     "position": "PF",
-    "age": 26,
+    "age": 31,
     "number": 13,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 58,
       "passing": 57,
@@ -861,13 +861,13 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 69,
+    "potential": 65,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "seoul-samsung",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 420000
+      "yearsLeft": 1,
+      "salaryUsd": 380000
     },
     "assets": {
       "portrait": null,
@@ -879,7 +879,7 @@
     "name": "저스틴 구탕",
     "real": true,
     "position": "SF",
-    "age": 25,
+    "age": 29,
     "number": 18,
     "rarity": "rare",
     "stats": {
@@ -892,7 +892,7 @@
     },
     "ovr": 71,
     "cost": 8,
-    "potential": 73,
+    "potential": 71,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "seoul-samsung",
@@ -923,11 +923,11 @@
     },
     "ovr": 71,
     "cost": 8,
-    "potential": 73,
+    "potential": 71,
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 4.7
     },
     "assets": {
@@ -940,7 +940,7 @@
     "name": "최승욱",
     "real": true,
     "position": "SF",
-    "age": 34,
+    "age": 33,
     "number": 77,
     "rarity": "common",
     "stats": {
@@ -1017,7 +1017,7 @@
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 1.7
     },
     "assets": {
@@ -1073,11 +1073,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 70,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -1122,7 +1122,7 @@
     "position": "SF",
     "age": 21,
     "number": 14,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 61,
       "passing": 58,
@@ -1133,11 +1133,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 67,
+    "potential": 77,
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -1163,11 +1163,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 68,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 1.7
     },
     "assets": {
@@ -1180,7 +1180,7 @@
     "name": "이동엽",
     "real": true,
     "position": "SG",
-    "age": 33,
+    "age": 32,
     "number": 7,
     "rarity": "common",
     "stats": {
@@ -1197,7 +1197,7 @@
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 1.7
     },
     "assets": {
@@ -1223,7 +1223,7 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 71,
+    "potential": 70,
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
@@ -1253,11 +1253,11 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 71,
+    "potential": 73,
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 1,
       "salaryEok": 2.3
     },
     "assets": {
@@ -1270,7 +1270,7 @@
     "name": "자니 오브라이언트",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 33,
     "number": 0,
     "rarity": "ace",
     "stats": {
@@ -1301,7 +1301,7 @@
     "name": "스카티 제임스",
     "real": true,
     "position": "PF",
-    "age": 26,
+    "age": 29,
     "number": 31,
     "rarity": "rare",
     "stats": {
@@ -1314,7 +1314,7 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 73,
+    "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "goyang-sono",
@@ -1332,7 +1332,7 @@
     "name": "케빈 켐바오",
     "real": true,
     "position": "PF",
-    "age": 22,
+    "age": 25,
     "number": 28,
     "rarity": "ace",
     "stats": {
@@ -1345,7 +1345,7 @@
     },
     "ovr": 72,
     "cost": 8,
-    "potential": 78,
+    "potential": 74,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "goyang-sono",
@@ -1423,9 +1423,9 @@
     "name": "오재현",
     "real": true,
     "position": "SG",
-    "age": 28,
+    "age": 26,
     "number": 22,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 57,
       "passing": 66,
@@ -1436,7 +1436,7 @@
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 62,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "seoul-sk",
     "contract": {
@@ -1453,9 +1453,9 @@
     "name": "김형빈",
     "real": true,
     "position": "SF",
-    "age": 29,
+    "age": 26,
     "number": 23,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 63,
       "passing": 49,
@@ -1466,7 +1466,7 @@
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 63,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "seoul-sk",
     "contract": {
@@ -1483,7 +1483,7 @@
     "name": "최부경",
     "real": true,
     "position": "PF",
-    "age": 36,
+    "age": 37,
     "number": 14,
     "rarity": "common",
     "stats": {
@@ -1513,9 +1513,9 @@
     "name": "에디 다니엘",
     "real": true,
     "position": "SF",
-    "age": 23,
+    "age": 19,
     "number": 36,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 57,
       "passing": 53,
@@ -1526,7 +1526,7 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 70,
+    "potential": 80,
     "origin": "domestic",
     "teamId": "seoul-sk",
     "contract": {
@@ -1543,7 +1543,7 @@
     "name": "오세근",
     "real": true,
     "position": "SF",
-    "age": 37,
+    "age": 39,
     "number": 41,
     "rarity": "common",
     "stats": {
@@ -1785,7 +1785,7 @@
     "name": "알빈 톨렌티노",
     "real": true,
     "position": "SF",
-    "age": 25,
+    "age": 30,
     "number": 25,
     "rarity": "rare",
     "stats": {
@@ -1798,7 +1798,7 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 72,
+    "potential": 68,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "seoul-sk",
@@ -1906,7 +1906,7 @@
     "name": "양홍석",
     "real": true,
     "position": "PF",
-    "age": 31,
+    "age": 29,
     "number": 11,
     "rarity": "common",
     "stats": {
@@ -1923,7 +1923,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.3
     },
     "assets": {
@@ -1953,7 +1953,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.1
     },
     "assets": {
@@ -1979,11 +1979,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 63,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -2013,7 +2013,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 1.5
     },
     "assets": {
@@ -2026,7 +2026,7 @@
     "name": "장민국",
     "real": true,
     "position": "PF",
-    "age": 36,
+    "age": 37,
     "number": 3,
     "rarity": "common",
     "stats": {
@@ -2043,7 +2043,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -2056,7 +2056,7 @@
     "name": "박정현",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 30,
     "number": 31,
     "rarity": "rare",
     "stats": {
@@ -2069,7 +2069,7 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 66,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
@@ -2103,7 +2103,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.5
     },
     "assets": {
@@ -2133,7 +2133,7 @@
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 2
     },
     "assets": {
@@ -2159,11 +2159,11 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 70,
+    "potential": 71,
     "origin": "domestic",
     "teamId": "changwon-lg",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 2
     },
     "assets": {
@@ -2207,7 +2207,7 @@
     "name": "아치 굿윈",
     "real": true,
     "position": "SG",
-    "age": 30,
+    "age": 32,
     "number": 8,
     "rarity": "rare",
     "stats": {
@@ -2220,7 +2220,7 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 67,
+    "potential": 66,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "changwon-lg",
@@ -2238,7 +2238,7 @@
     "name": "칼 타마요",
     "real": true,
     "position": "PF",
-    "age": 24,
+    "age": 25,
     "number": 33,
     "rarity": "rare",
     "stats": {
@@ -2329,7 +2329,7 @@
     "name": "박지훈",
     "real": true,
     "position": "SG",
-    "age": 32,
+    "age": 31,
     "number": 6,
     "rarity": "rare",
     "stats": {
@@ -2419,7 +2419,7 @@
     "name": "허일영",
     "real": true,
     "position": "SF",
-    "age": 39,
+    "age": 41,
     "number": 10,
     "rarity": "common",
     "stats": {
@@ -2479,7 +2479,7 @@
     "name": "표승빈",
     "real": true,
     "position": "SF",
-    "age": 25,
+    "age": 24,
     "number": 7,
     "rarity": "common",
     "stats": {
@@ -2509,7 +2509,7 @@
     "name": "이대헌",
     "real": true,
     "position": "SF",
-    "age": 33,
+    "age": 34,
     "number": 21,
     "rarity": "common",
     "stats": {
@@ -2539,7 +2539,7 @@
     "name": "김세창",
     "real": true,
     "position": "SG",
-    "age": 29,
+    "age": 28,
     "number": 2,
     "rarity": "rare",
     "stats": {
@@ -2569,7 +2569,7 @@
     "name": "박찬호",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 30,
     "number": 13,
     "rarity": "rare",
     "stats": {
@@ -2599,7 +2599,7 @@
     "name": "김준형",
     "real": true,
     "position": "PF",
-    "age": 30,
+    "age": 29,
     "number": 35,
     "rarity": "rare",
     "stats": {
@@ -2629,7 +2629,7 @@
     "name": "존 무니",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 28,
     "number": 33,
     "rarity": "rare",
     "stats": {
@@ -2648,7 +2648,7 @@
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
-      "salaryUsd": 580000
+      "salaryUsd": 450000
     },
     "assets": {
       "portrait": null,
@@ -2660,9 +2660,9 @@
     "name": "데이본 리드",
     "real": true,
     "position": "SF",
-    "age": 27,
+    "age": 31,
     "number": 9,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 63,
       "passing": 61,
@@ -2673,13 +2673,13 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 66,
+    "potential": 64,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "anyang-jungkwanjang",
     "contract": {
       "yearsLeft": 3,
-      "salaryUsd": 370000
+      "salaryUsd": 470000
     },
     "assets": {
       "portrait": null,
@@ -2691,7 +2691,7 @@
     "name": "렌즈 아반도",
     "real": true,
     "position": "SG",
-    "age": 25,
+    "age": 28,
     "number": 12,
     "rarity": "rare",
     "stats": {
@@ -2704,13 +2704,13 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 68,
+    "potential": 69,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "anyang-jungkwanjang",
     "contract": {
-      "yearsLeft": 2,
-      "salaryEok": 1.5
+      "yearsLeft": 1,
+      "salaryEok": 1.6
     },
     "assets": {
       "portrait": null,
@@ -2722,7 +2722,7 @@
     "name": "허웅",
     "real": true,
     "position": "SG",
-    "age": 34,
+    "age": 33,
     "number": 3,
     "rarity": "rare",
     "stats": {
@@ -2739,7 +2739,7 @@
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 2.3
     },
     "assets": {
@@ -2769,7 +2769,7 @@
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 4.7
     },
     "assets": {
@@ -2782,7 +2782,7 @@
     "name": "장재석",
     "real": true,
     "position": "C",
-    "age": 36,
+    "age": 35,
     "number": 31,
     "rarity": "rare",
     "stats": {
@@ -2825,11 +2825,11 @@
     },
     "ovr": 57,
     "cost": 4,
-    "potential": 66,
+    "potential": 72,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 0.5
     },
     "assets": {
@@ -2842,7 +2842,7 @@
     "name": "김동현",
     "real": true,
     "position": "SG",
-    "age": 27,
+    "age": 24,
     "number": 5,
     "rarity": "common",
     "stats": {
@@ -2855,7 +2855,7 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 59,
+    "potential": 60,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
@@ -2889,7 +2889,7 @@
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 0.6
     },
     "assets": {
@@ -2902,7 +2902,7 @@
     "name": "이호현",
     "real": true,
     "position": "SG",
-    "age": 34,
+    "age": 33,
     "number": 1,
     "rarity": "common",
     "stats": {
@@ -2919,7 +2919,7 @@
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 1.1
     },
     "assets": {
@@ -2932,7 +2932,7 @@
     "name": "김훈",
     "real": true,
     "position": "SF",
-    "age": 29,
+    "age": 30,
     "number": 12,
     "rarity": "common",
     "stats": {
@@ -2945,11 +2945,11 @@
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 61,
+    "potential": 62,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 0.9
     },
     "assets": {
@@ -2975,11 +2975,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 70,
+    "potential": 72,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.7
     },
     "assets": {
@@ -3005,11 +3005,11 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 69,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 2
     },
     "assets": {
@@ -3022,7 +3022,7 @@
     "name": "서정현",
     "real": true,
     "position": "C",
-    "age": 27,
+    "age": 28,
     "number": 32,
     "rarity": "rare",
     "stats": {
@@ -3035,11 +3035,11 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 66,
+    "potential": 69,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 1,
       "salaryEok": 2.3
     },
     "assets": {
@@ -3054,7 +3054,7 @@
     "position": "SF",
     "age": 21,
     "number": 27,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 64,
       "passing": 60,
@@ -3065,11 +3065,11 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 72,
+    "potential": 79,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 1.5
     },
     "assets": {
@@ -3082,7 +3082,7 @@
     "name": "숀 롱",
     "real": true,
     "position": "C",
-    "age": 28,
+    "age": 33,
     "number": 36,
     "rarity": "ace",
     "stats": {
@@ -3100,8 +3100,8 @@
     "nationality": "미국",
     "teamId": "busan-kcc",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 440000
+      "yearsLeft": 1,
+      "salaryUsd": 590000
     },
     "assets": {
       "portrait": null,
@@ -3126,13 +3126,13 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 68,
+    "potential": 66,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "busan-kcc",
     "contract": {
       "yearsLeft": 4,
-      "salaryUsd": 490000
+      "salaryUsd": 390000
     },
     "assets": {
       "portrait": null,
@@ -3157,11 +3157,11 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 70,
+    "potential": 71,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 1.7
     },
     "assets": {
@@ -3187,11 +3187,11 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 75,
+    "potential": 80,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 2.7
     },
     "assets": {
@@ -3221,7 +3221,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.7
     },
     "assets": {
@@ -3234,7 +3234,7 @@
     "name": "정창영",
     "real": true,
     "position": "SG",
-    "age": 37,
+    "age": 38,
     "number": 7,
     "rarity": "common",
     "stats": {
@@ -3251,7 +3251,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryEok": 1.1
     },
     "assets": {
@@ -3264,7 +3264,7 @@
     "name": "김선형",
     "real": true,
     "position": "SG",
-    "age": 37,
+    "age": 38,
     "number": 5,
     "rarity": "common",
     "stats": {
@@ -3281,7 +3281,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.7
     },
     "assets": {
@@ -3311,7 +3311,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.5
     },
     "assets": {
@@ -3324,7 +3324,7 @@
     "name": "이두원",
     "real": true,
     "position": "C",
-    "age": 25,
+    "age": 26,
     "number": 21,
     "rarity": "rare",
     "stats": {
@@ -3337,7 +3337,7 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 69,
+    "potential": 71,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
@@ -3371,7 +3371,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 0.9
     },
     "assets": {
@@ -3401,7 +3401,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 0.8
     },
     "assets": {
@@ -3414,7 +3414,7 @@
     "name": "전성현",
     "real": true,
     "position": "SF",
-    "age": 35,
+    "age": 34,
     "number": 23,
     "rarity": "common",
     "stats": {
@@ -3461,7 +3461,7 @@
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 4,
       "salaryEok": 1.5
     },
     "assets": {
@@ -3476,7 +3476,7 @@
     "position": "SF",
     "age": 23,
     "number": 14,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 61,
       "passing": 58,
@@ -3487,11 +3487,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 66,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3522,7 +3522,7 @@
     "nationality": "미국",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 2,
       "salaryUsd": 350000
     },
     "assets": {
@@ -3535,7 +3535,7 @@
     "name": "트레이 포터",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 30,
     "number": 22,
     "rarity": "rare",
     "stats": {
@@ -3553,8 +3553,8 @@
     "nationality": "미국",
     "teamId": "suwon-kt",
     "contract": {
-      "yearsLeft": 3,
-      "salaryUsd": 390000
+      "yearsLeft": 1,
+      "salaryUsd": 340000
     },
     "assets": {
       "portrait": null,
@@ -3579,13 +3579,13 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 68,
+    "potential": 70,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "suwon-kt",
     "contract": {
       "yearsLeft": 3,
-      "salaryEok": 1.2
+      "salaryEok": 1.5
     },
     "assets": {
       "portrait": null,
@@ -3614,7 +3614,7 @@
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 1.5
     },
     "assets": {
@@ -3674,7 +3674,7 @@
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 1.7
     },
     "assets": {
@@ -3689,7 +3689,7 @@
     "position": "SG",
     "age": 19,
     "number": 27,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 63,
       "passing": 67,
@@ -3700,11 +3700,11 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 73,
+    "potential": 77,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 2,
       "salaryEok": 0.8
     },
     "assets": {
@@ -3717,7 +3717,7 @@
     "name": "김국찬",
     "real": true,
     "position": "SF",
-    "age": 31,
+    "age": 30,
     "number": 30,
     "rarity": "common",
     "stats": {
@@ -3730,11 +3730,11 @@
     },
     "ovr": 60,
     "cost": 4,
-    "potential": 60,
+    "potential": 62,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 0.9
     },
     "assets": {
@@ -3749,7 +3749,7 @@
     "position": "SF",
     "age": 24,
     "number": 13,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 66,
       "passing": 54,
@@ -3760,11 +3760,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 67,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3790,7 +3790,7 @@
     },
     "ovr": 56,
     "cost": 3,
-    "potential": 57,
+    "potential": 59,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
@@ -3820,11 +3820,11 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 64,
+    "potential": 62,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 1.1
     },
     "assets": {
@@ -3850,11 +3850,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 63,
+    "potential": 64,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 2,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3867,7 +3867,7 @@
     "name": "박준은",
     "real": true,
     "position": "SF",
-    "age": 29,
+    "age": 28,
     "number": 21,
     "rarity": "common",
     "stats": {
@@ -3880,11 +3880,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 62,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 1,
       "salaryEok": 1.3
     },
     "assets": {
@@ -3899,7 +3899,7 @@
     "position": "C",
     "age": 25,
     "number": 24,
-    "rarity": "ace",
+    "rarity": "rare",
     "stats": {
       "shooting": 50,
       "passing": 54,
@@ -3910,7 +3910,7 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 74,
+    "potential": 69,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
@@ -3931,21 +3931,21 @@
     "number": 7,
     "rarity": "common",
     "stats": {
-      "shooting": 67,
-      "passing": 59,
-      "defense": 57,
+      "shooting": 61,
+      "passing": 57,
+      "defense": 53,
       "rebound": 40,
-      "athletic": 62,
+      "athletic": 50,
       "stamina": 57
     },
-    "ovr": 60,
-    "cost": 4,
-    "potential": 65,
+    "ovr": 55,
+    "cost": 3,
+    "potential": 60,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 1,
-      "salaryEok": 0.9
+      "yearsLeft": 3,
+      "salaryEok": 0.4
     },
     "assets": {
       "portrait": null,
@@ -3957,7 +3957,7 @@
     "name": "라건아",
     "real": true,
     "position": "C",
-    "age": 31,
+    "age": 37,
     "number": 20,
     "rarity": "rare",
     "stats": {
@@ -3975,8 +3975,8 @@
     "nationality": "미국",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 450000
+      "yearsLeft": 1,
+      "salaryUsd": 670000
     },
     "assets": {
       "portrait": null,
@@ -3988,7 +3988,7 @@
     "name": "케베 알루마",
     "real": true,
     "position": "PF",
-    "age": 30,
+    "age": 27,
     "number": 19,
     "rarity": "rare",
     "stats": {
@@ -4001,13 +4001,13 @@
     },
     "ovr": 66,
     "cost": 6,
-    "potential": 68,
+    "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
-      "salaryUsd": 300000
+      "yearsLeft": 3,
+      "salaryUsd": 280000
     },
     "assets": {
       "portrait": null,
@@ -4019,7 +4019,7 @@
     "name": "샘조세프 벨란겔",
     "real": true,
     "position": "PG",
-    "age": 23,
+    "age": 27,
     "number": 0,
     "rarity": "rare",
     "stats": {
@@ -4037,8 +4037,8 @@
     "nationality": "필리핀",
     "teamId": "daegu-kogas",
     "contract": {
-      "yearsLeft": 4,
-      "salaryEok": 1.9
+      "yearsLeft": 2,
+      "salaryEok": 1.5
     },
     "assets": {
       "portrait": null,
@@ -4050,7 +4050,7 @@
     "name": "서명진",
     "real": true,
     "position": "PG",
-    "age": 30,
+    "age": 27,
     "number": 7,
     "rarity": "rare",
     "stats": {
@@ -4063,11 +4063,11 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 67,
+    "potential": 70,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 2.7
     },
     "assets": {
@@ -4082,7 +4082,7 @@
     "position": "PG",
     "age": 25,
     "number": 3,
-    "rarity": "ace",
+    "rarity": "rare",
     "stats": {
       "shooting": 65,
       "passing": 80,
@@ -4093,11 +4093,11 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 74,
+    "potential": 73,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 2.7
     },
     "assets": {
@@ -4127,7 +4127,7 @@
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 2
     },
     "assets": {
@@ -4140,7 +4140,7 @@
     "name": "조한진",
     "real": true,
     "position": "SF",
-    "age": 30,
+    "age": 29,
     "number": 9,
     "rarity": "common",
     "stats": {
@@ -4153,11 +4153,11 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 62,
+    "potential": 60,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 4,
       "salaryEok": 0.8
     },
     "assets": {
@@ -4170,7 +4170,7 @@
     "name": "김경원",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 30,
     "number": 17,
     "rarity": "rare",
     "stats": {
@@ -4187,7 +4187,7 @@
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 4,
+      "yearsLeft": 3,
       "salaryEok": 2.3
     },
     "assets": {
@@ -4200,7 +4200,7 @@
     "name": "정준원",
     "real": true,
     "position": "SF",
-    "age": 36,
+    "age": 37,
     "number": 1,
     "rarity": "common",
     "stats": {
@@ -4230,9 +4230,9 @@
     "name": "김건하",
     "real": true,
     "position": "PG",
-    "age": 23,
+    "age": 19,
     "number": 15,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 60,
       "passing": 74,
@@ -4243,7 +4243,7 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 66,
+    "potential": 79,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
@@ -4262,7 +4262,7 @@
     "position": "SG",
     "age": 24,
     "number": 8,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 63,
       "passing": 61,
@@ -4273,11 +4273,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 69,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 4,
       "salaryEok": 1.3
     },
     "assets": {
@@ -4303,11 +4303,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 64,
+    "potential": 63,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.3
     },
     "assets": {
@@ -4320,9 +4320,9 @@
     "name": "이우석",
     "real": true,
     "position": "SG",
-    "age": 28,
+    "age": 27,
     "number": 11,
-    "rarity": "rare",
+    "rarity": "common",
     "stats": {
       "shooting": 69,
       "passing": 65,
@@ -4333,11 +4333,11 @@
     },
     "ovr": 65,
     "cost": 6,
-    "potential": 67,
+    "potential": 65,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
+      "yearsLeft": 3,
       "salaryEok": 2
     },
     "assets": {
@@ -4363,11 +4363,11 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 67,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 1,
+      "yearsLeft": 3,
       "salaryEok": 1.3
     },
     "assets": {
@@ -4397,7 +4397,7 @@
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
+      "yearsLeft": 1,
       "salaryEok": 1.5
     },
     "assets": {
@@ -4410,7 +4410,7 @@
     "name": "게이지 프림",
     "real": true,
     "position": "C",
-    "age": 29,
+    "age": 27,
     "number": 44,
     "rarity": "rare",
     "stats": {
@@ -4423,13 +4423,13 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 70,
+    "potential": 69,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 2,
-      "salaryUsd": 580000
+      "yearsLeft": 4,
+      "salaryUsd": 490000
     },
     "assets": {
       "portrait": null,
@@ -4441,7 +4441,7 @@
     "name": "다리우스 베즐리",
     "real": true,
     "position": "PF",
-    "age": 27,
+    "age": 26,
     "number": 0,
     "rarity": "rare",
     "stats": {
@@ -4454,13 +4454,13 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 69,
+    "potential": 70,
     "origin": "foreign",
     "nationality": "미국",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 1,
-      "salaryUsd": 290000
+      "yearsLeft": 3,
+      "salaryUsd": 440000
     },
     "assets": {
       "portrait": null,
@@ -4472,7 +4472,7 @@
     "name": "제리 아바디아노",
     "real": true,
     "position": "SG",
-    "age": 28,
+    "age": 25,
     "number": 26,
     "rarity": "common",
     "stats": {
@@ -4485,13 +4485,13 @@
     },
     "ovr": 64,
     "cost": 6,
-    "potential": 64,
+    "potential": 65,
     "origin": "asia",
     "nationality": "필리핀",
     "teamId": "ulsan-hyundai-mobis",
     "contract": {
-      "yearsLeft": 3,
-      "salaryEok": 1.6
+      "yearsLeft": 1,
+      "salaryEok": 1.3
     },
     "assets": {
       "portrait": null,

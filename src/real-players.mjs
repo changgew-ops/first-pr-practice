@@ -101,6 +101,70 @@ export function ageOn(birth, date) {
 /** 드래프트 연도로 나이를 어림한다 (대졸 기준 드래프트 때 22세). 드래프트 연도가 없으면 null */
 export const ageFromDraft = (draftYear, seasonYear = 2026) => (draftYear ? seasonYear - draftYear + 22 : null);
 
+/** 따옴표를 쓰는 CSV 한 줄을 칸으로 나눈다 (births.csv의 영문 이름에 따옴표·쉼표가 있다) */
+export function splitCsvLine(line) {
+  const cells = [];
+  let cur = '', quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (quoted) {
+      if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; } else if (ch === '"') quoted = false; else cur += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ',') { cells.push(cur); cur = ''; } else cur += ch;
+  }
+  cells.push(cur);
+  return cells;
+}
+
+/** births.csv(KBL 공식 프로필 생년월일) 텍스트 → 행 목록. '#' 줄은 건너뛴다 */
+export function parseBirthsCsv(text) {
+  const lines = text.split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
+  const head = splitCsvLine(lines.shift());
+  return lines.map((l) => { const c = splitCsvLine(l); return Object.fromEntries(head.map((h, i) => [h, (c[i] ?? '').trim()])); });
+}
+
+// 기록상 구단 표기(옛 이름 포함)에서 구단 계보를 알아보는 단어. 동명이인을 가를 마지막 단서로만 쓴다
+const TEAM_WORDS = {
+  'wonju-db': /DB|동부|TG|삼보|원주/,
+  'seoul-samsung': /삼성/,
+  'goyang-sono': /소노|오리온|데이원|캐롯|동양/,
+  'seoul-sk': /SK|나이츠|진로/,
+  'changwon-lg': /LG/,
+  'anyang-jungkwanjang': /정관장|KGC|KT&G|인삼/,
+  'busan-kcc': /KCC|현대|이지스/,
+  'suwon-kt': /(?<!안양)(KT|kt)(?!&G)|소닉붐|수원/,
+  'daegu-kogas': /가스공사|전자랜드|대우|신세기/,
+  'ulsan-hyundai-mobis': /모비스|피버스/
+};
+export const DRAFT_AGE = [18, 32]; // 드래프트 때 만 나이(연도 차)로 보는 범위. 벗어나면 다른 사람으로 본다
+
+/**
+ * 등록선수 한 명의 공식 생년월일을 찾는다. 같은 이름(·구분)의 후보에서
+ *  1) 생년월일이 같은 행(선수검색 + 추가 확인 명단)은 한 사람으로 합치고
+ *  2) 드래프트 연도가 있으면 드래프트 때 나이가 범위 안인 후보만 남기고
+ *  3) 아직 둘 이상이면 기록상 구단이 현재 구단 계보와 맞는 후보만 남긴다.
+ * 한 명으로 정해지지 않으면 birth null(추정하지 않는다). 반환: { birth, playerNo } | { birth: null, why }
+ */
+export function matchBirth(entry, byName) {
+  const kind = { d: 'domestic', f: 'foreign', a: 'asia' }[entry.kind];
+  const seen = new Map();
+  for (const r of byName.get(entry.name) ?? []) {
+    if (!r.birth || (kind && r.kind !== kind)) continue;
+    if (!seen.has(r.birth) || (r.list === 'main' && seen.get(r.birth).list !== 'main')) seen.set(r.birth, r);
+  }
+  let c = [...seen.values()];
+  if (!c.length) return { birth: null, why: '후보 없음' };
+  if (entry.draftYear) {
+    c = c.filter((r) => { const a = entry.draftYear - Number(r.birth.slice(0, 4)); return a >= DRAFT_AGE[0] && a <= DRAFT_AGE[1]; });
+    if (!c.length) return { birth: null, why: `드래프트 ${entry.draftYear} 때 나이가 범위 밖` };
+  }
+  if (c.length > 1 && TEAM_WORDS[entry.team]) {
+    const t = c.filter((r) => TEAM_WORDS[entry.team].test(r.team));
+    if (t.length) c = t;
+  }
+  return c.length === 1 ? { birth: c[0].birth, playerNo: c[0].playerNo } : { birth: null, why: `후보 ${c.length}명(${c.map((r) => r.birth).join(', ')})` };
+}
+
 /**
  * 등록선수 화면의 항목을 선수 풀의 이름에 이어 준다. 같은 이름이 둘 이상이면(동명이인) 2025-26 소속(team2526)과
  * 팀 후보로 짝을 찾고, 그래도 안 되면 짝짓지 않고 notes에 남긴다. 반환: { map: Map<풀 이름, 항목>, extra: [풀에 없는 항목], notes }
@@ -183,13 +247,14 @@ export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(
 export function statlessPlayers(entries, teamMap = new Map(), { births = new Map(), asOf = '2026-10-01' } = {}) {
   return entries.map((e) => {
     const given = teamMap.get(e.name) ?? {};
+    const birth = births.get(`${e.name}@${e.team}`) ?? births.get(e.name); // 같은 이름의 기록 없는 선수가 둘이면 구단까지 붙인 키가 먼저다
     return {
       name: e.name,
       position: given.position ?? positionFromRegistry(e.position, null),
       positionGiven: Boolean(given.position),
       origin: given.origin ?? originOf(e.kind),
       asiaQuota: e.kind === 'a',
-      age: given.age ?? (births.has(e.name) ? ageOn(births.get(e.name), asOf) : null) ?? ageFromDraft(e.draftYear),
+      age: given.age ?? (birth ? ageOn(birth, asOf) : null) ?? ageFromDraft(e.draftYear),
       number: given.number ?? e.number,
       teamId: given.team ?? e.team,
       registered: true,

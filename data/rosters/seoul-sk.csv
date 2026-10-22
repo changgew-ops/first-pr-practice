@@ -1,11 +1,11 @@
 name,position,age,number,origin,nationality
 김낙현,PG,31,4,domestic,
 안영준,SF,31,8,domestic,
-오재현,SG,28,22,domestic,
-김형빈,SF,29,23,domestic,
-최부경,PF,36,14,domestic,
-에디 다니엘,SF,23,36,domestic,
-오세근,SF,37,41,domestic,
+오재현,SG,26,22,domestic,
+김형빈,SF,26,23,domestic,
+최부경,PF,37,14,domestic,
+에디 다니엘,SF,19,36,domestic,
+오세근,SF,39,41,domestic,
 최원혁,SG,34,3,domestic,
 이민서,PG,22,1,domestic,
 안성우,SG,23,12,domestic,
@@ -13,4 +13,4 @@ name,position,age,number,origin,nationality
 김명진,SF,23,20,domestic,
 자밀 워니,C,32,34,foreign,미국
 아이재아 힉스,PF,32,31,foreign,미국
-알빈 톨렌티노,SF,,25,asia,필리핀
+알빈 톨렌티노,SF,30,25,asia,필리핀

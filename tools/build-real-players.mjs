@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { parseStatsCsv } from '../src/stats-import.mjs';
-import { mergeSeasons, buildPool, applyAliases, resolveRegistry, statlessPlayers, pickRoster } from '../src/real-players.mjs';
+import { mergeSeasons, buildPool, applyAliases, resolveRegistry, statlessPlayers, pickRoster, parseBirthsCsv, matchBirth } from '../src/real-players.mjs';
 import { loadHistory } from '../src/history.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -76,6 +76,19 @@ if (existsSync(path('data/players/profiles.json'))) {
 
 const pool0 = buildPool(merged, rules, { teamTotals, teamMap });
 const { map: registry, extra, notes: regNotes } = resolveRegistry(entries, pool0, team2526);
+// KBL 공식 프로필 생년월일(births.csv): 드래프트 기록·프로필보다 우선한다. 풀의 이름(동명이인 번호 포함)으로 넣는다
+const birthsByName = new Map();
+if (existsSync(path('data/players/births.csv'))) {
+  for (const r of parseBirthsCsv(read('data/players/births.csv'))) birthsByName.set(r.name, [...(birthsByName.get(r.name) ?? []), r]);
+}
+const birthNotes = [];
+let officialCount = 0;
+const useOfficial = (poolName, e) => {
+  const m = matchBirth(e, birthsByName);
+  if (m.birth) { births.set(poolName, m.birth); officialCount++; } else if (m.why !== '후보 없음') birthNotes.push(`생년월일 ${poolName}(${e.team}): ${m.why}`);
+};
+for (const [poolName, e] of registry) useOfficial(poolName, e);
+for (const e of extra) useOfficial(`${e.name}@${e.team}`, e); // 기록 없는 선수는 이름이 겹칠 수 있어 구단까지 붙인다
 const all = [...buildPool(merged, rules, { teamTotals, teamMap, registry, births }), ...statlessPlayers(extra, teamMap, { births })]
   .sort((a, b) => b.minutes - a.minutes);
 mkdirSync(path('data/players'), { recursive: true });
@@ -98,7 +111,8 @@ if (!process.argv.includes('--apply')) {
   console.log(`2025-26 → 현재 소속이 바뀐 선수 ${moved.length}명`);
   const unplaced = all.filter((p) => !p.registered && p.minutes >= 600).map((p) => `${p.name}(${p.minutes}분)`);
   if (unplaced.length) console.log(`등록선수에 없지만 출전 600분 이상: ${unplaced.join(', ')}`);
-  for (const n of [...notes, ...regNotes]) console.log('  ' + n);
+  for (const n of [...notes, ...regNotes, ...birthNotes]) console.log('  ' + n);
+  console.log(`공식 생년월일 ${officialCount}명 반영 (등록선수 ${entries.length}명 중)`);
   console.log('→ data/players/real-pool.json, data/players/team-map.csv');
 } else {
   const assigned = all.filter((p) => p.teamId && teamIds.has(p.teamId));
