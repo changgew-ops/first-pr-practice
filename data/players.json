@@ -16,6 +16,7 @@
       "stamina": 78
     },
     "ovr": 72,
+    "cost": 8,
     "potential": 75,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -45,6 +46,7 @@
       "stamina": 71
     },
     "ovr": 70,
+    "cost": 7,
     "potential": 73,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -74,6 +76,7 @@
       "stamina": 65
     },
     "ovr": 68,
+    "cost": 7,
     "potential": 70,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -103,6 +106,7 @@
       "stamina": 70
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 78,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -132,6 +136,7 @@
       "stamina": 67
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 79,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -161,6 +166,7 @@
       "stamina": 72
     },
     "ovr": 67,
+    "cost": 6,
     "potential": 67,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -190,6 +196,7 @@
       "stamina": 67
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 67,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -219,6 +226,7 @@
       "stamina": 66
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 66,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -248,6 +256,7 @@
       "stamina": 56
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 72,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -277,6 +286,7 @@
       "stamina": 51
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 62,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -306,6 +316,7 @@
       "stamina": 59
     },
     "ovr": 57,
+    "cost": 4,
     "potential": 59,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -335,6 +346,7 @@
       "stamina": 59
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 58,
     "origin": "domestic",
     "teamId": "wonju-db",
@@ -364,6 +376,7 @@
       "stamina": 63
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 66,
     "origin": "foreign",
     "teamId": "wonju-db",
@@ -393,6 +406,7 @@
       "stamina": 62
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 70,
     "origin": "foreign",
     "teamId": "wonju-db",
@@ -422,6 +436,7 @@
       "stamina": 74
     },
     "ovr": 76,
+    "cost": 10,
     "potential": 87,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -451,6 +466,7 @@
       "stamina": 77
     },
     "ovr": 73,
+    "cost": 8,
     "potential": 75,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -480,6 +496,7 @@
       "stamina": 69
     },
     "ovr": 73,
+    "cost": 8,
     "potential": 73,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -509,6 +526,7 @@
       "stamina": 72
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 72,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -538,6 +556,7 @@
       "stamina": 61
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 77,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -567,6 +586,7 @@
       "stamina": 74
     },
     "ovr": 70,
+    "cost": 7,
     "potential": 70,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -596,6 +616,7 @@
       "stamina": 62
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 78,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -625,6 +646,7 @@
       "stamina": 65
     },
     "ovr": 63,
+    "cost": 5,
     "potential": 64,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -654,6 +676,7 @@
       "stamina": 64
     },
     "ovr": 63,
+    "cost": 5,
     "potential": 65,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -683,6 +706,7 @@
       "stamina": 53
     },
     "ovr": 60,
+    "cost": 4,
     "potential": 60,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -712,6 +736,7 @@
       "stamina": 63
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 59,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -741,6 +766,7 @@
       "stamina": 55
     },
     "ovr": 57,
+    "cost": 4,
     "potential": 57,
     "origin": "domestic",
     "teamId": "seoul-samsung",
@@ -770,6 +796,7 @@
       "stamina": 61
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 65,
     "origin": "foreign",
     "teamId": "seoul-samsung",
@@ -799,6 +826,7 @@
       "stamina": 65
     },
     "ovr": 66,
+    "cost": 6,
     "potential": 67,
     "origin": "foreign",
     "teamId": "seoul-samsung",
@@ -828,6 +856,7 @@
       "stamina": 79
     },
     "ovr": 75,
+    "cost": 9,
     "potential": 75,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -857,6 +886,7 @@
       "stamina": 74
     },
     "ovr": 74,
+    "cost": 9,
     "potential": 74,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -886,6 +916,7 @@
       "stamina": 74
     },
     "ovr": 72,
+    "cost": 8,
     "potential": 72,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -915,6 +946,7 @@
       "stamina": 66
     },
     "ovr": 72,
+    "cost": 8,
     "potential": 84,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -944,6 +976,7 @@
       "stamina": 68
     },
     "ovr": 76,
+    "cost": 10,
     "potential": 80,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -973,6 +1006,7 @@
       "stamina": 73
     },
     "ovr": 69,
+    "cost": 7,
     "potential": 75,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -1002,6 +1036,7 @@
       "stamina": 70
     },
     "ovr": 69,
+    "cost": 7,
     "potential": 69,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -1031,6 +1066,7 @@
       "stamina": 61
     },
     "ovr": 62,
+    "cost": 5,
     "potential": 65,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -1060,6 +1096,7 @@
       "stamina": 64
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 64,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -1089,6 +1126,7 @@
       "stamina": 52
     },
     "ovr": 63,
+    "cost": 5,
     "potential": 63,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -1118,6 +1156,7 @@
       "stamina": 63
     },
     "ovr": 60,
+    "cost": 4,
     "potential": 65,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -1147,6 +1186,7 @@
       "stamina": 55
     },
     "ovr": 57,
+    "cost": 4,
     "potential": 57,
     "origin": "domestic",
     "teamId": "goyang-sono",
@@ -1176,6 +1216,7 @@
       "stamina": 62
     },
     "ovr": 67,
+    "cost": 6,
     "potential": 67,
     "origin": "foreign",
     "teamId": "goyang-sono",
@@ -1205,6 +1246,7 @@
       "stamina": 65
     },
     "ovr": 68,
+    "cost": 7,
     "potential": 68,
     "origin": "foreign",
     "teamId": "goyang-sono",
@@ -1234,6 +1276,7 @@
       "stamina": 77
     },
     "ovr": 75,
+    "cost": 9,
     "potential": 90,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1263,6 +1306,7 @@
       "stamina": 70
     },
     "ovr": 70,
+    "cost": 7,
     "potential": 85,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1292,6 +1336,7 @@
       "stamina": 71
     },
     "ovr": 69,
+    "cost": 7,
     "potential": 71,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1321,6 +1366,7 @@
       "stamina": 65
     },
     "ovr": 67,
+    "cost": 6,
     "potential": 67,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1350,6 +1396,7 @@
       "stamina": 67
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 71,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1379,6 +1426,7 @@
       "stamina": 67
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 72,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1408,6 +1456,7 @@
       "stamina": 66
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 75,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1437,6 +1486,7 @@
       "stamina": 59
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 63,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1466,6 +1516,7 @@
       "stamina": 55
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 60,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1495,6 +1546,7 @@
       "stamina": 52
     },
     "ovr": 58,
+    "cost": 4,
     "potential": 58,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1524,6 +1576,7 @@
       "stamina": 55
     },
     "ovr": 57,
+    "cost": 4,
     "potential": 57,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1553,6 +1606,7 @@
       "stamina": 56
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 57,
     "origin": "domestic",
     "teamId": "seoul-sk",
@@ -1582,6 +1636,7 @@
       "stamina": 66
     },
     "ovr": 62,
+    "cost": 5,
     "potential": 64,
     "origin": "foreign",
     "teamId": "seoul-sk",
@@ -1611,6 +1666,7 @@
       "stamina": 57
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 68,
     "origin": "foreign",
     "teamId": "seoul-sk",
@@ -1640,6 +1696,7 @@
       "stamina": 69
     },
     "ovr": 66,
+    "cost": 6,
     "potential": 79,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1669,6 +1726,7 @@
       "stamina": 63
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1698,6 +1756,7 @@
       "stamina": 62
     },
     "ovr": 63,
+    "cost": 5,
     "potential": 64,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1727,6 +1786,7 @@
       "stamina": 60
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 69,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1756,6 +1816,7 @@
       "stamina": 64
     },
     "ovr": 69,
+    "cost": 7,
     "potential": 74,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1785,6 +1846,7 @@
       "stamina": 61
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 67,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1814,6 +1876,7 @@
       "stamina": 59
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 59,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1843,6 +1906,7 @@
       "stamina": 62
     },
     "ovr": 56,
+    "cost": 3,
     "potential": 59,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1872,6 +1936,7 @@
       "stamina": 57
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 64,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1901,6 +1966,7 @@
       "stamina": 46
     },
     "ovr": 53,
+    "cost": 3,
     "potential": 53,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1930,6 +1996,7 @@
       "stamina": 54
     },
     "ovr": 54,
+    "cost": 3,
     "potential": 54,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1959,6 +2026,7 @@
       "stamina": 49
     },
     "ovr": 49,
+    "cost": 2,
     "potential": 49,
     "origin": "domestic",
     "teamId": "changwon-lg",
@@ -1988,6 +2056,7 @@
       "stamina": 52
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 64,
     "origin": "foreign",
     "teamId": "changwon-lg",
@@ -2017,6 +2086,7 @@
       "stamina": 55
     },
     "ovr": 60,
+    "cost": 4,
     "potential": 61,
     "origin": "foreign",
     "teamId": "changwon-lg",
@@ -2046,6 +2116,7 @@
       "stamina": 73
     },
     "ovr": 72,
+    "cost": 8,
     "potential": 72,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2075,6 +2146,7 @@
       "stamina": 71
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 72,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2104,6 +2176,7 @@
       "stamina": 71
     },
     "ovr": 70,
+    "cost": 7,
     "potential": 78,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2133,6 +2206,7 @@
       "stamina": 67
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 71,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2162,6 +2236,7 @@
       "stamina": 59
     },
     "ovr": 67,
+    "cost": 6,
     "potential": 75,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2191,6 +2266,7 @@
       "stamina": 63
     },
     "ovr": 66,
+    "cost": 6,
     "potential": 66,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2220,6 +2296,7 @@
       "stamina": 65
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2249,6 +2326,7 @@
       "stamina": 58
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 61,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2278,6 +2356,7 @@
       "stamina": 59
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 61,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2307,6 +2386,7 @@
       "stamina": 54
     },
     "ovr": 60,
+    "cost": 4,
     "potential": 60,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2336,6 +2416,7 @@
       "stamina": 61
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 59,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2365,6 +2446,7 @@
       "stamina": 56
     },
     "ovr": 53,
+    "cost": 3,
     "potential": 56,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
@@ -2394,6 +2476,7 @@
       "stamina": 62
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 64,
     "origin": "foreign",
     "teamId": "anyang-jungkwanjang",
@@ -2423,6 +2506,7 @@
       "stamina": 59
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 66,
     "origin": "foreign",
     "teamId": "anyang-jungkwanjang",
@@ -2452,6 +2536,7 @@
       "stamina": 74
     },
     "ovr": 69,
+    "cost": 7,
     "potential": 75,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2481,6 +2566,7 @@
       "stamina": 74
     },
     "ovr": 70,
+    "cost": 7,
     "potential": 79,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2510,6 +2596,7 @@
       "stamina": 71
     },
     "ovr": 68,
+    "cost": 7,
     "potential": 73,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2539,6 +2626,7 @@
       "stamina": 67
     },
     "ovr": 68,
+    "cost": 7,
     "potential": 71,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2568,6 +2656,7 @@
       "stamina": 63
     },
     "ovr": 66,
+    "cost": 6,
     "potential": 66,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2597,6 +2686,7 @@
       "stamina": 61
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 75,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2626,6 +2716,7 @@
       "stamina": 62
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2655,6 +2746,7 @@
       "stamina": 60
     },
     "ovr": 59,
+    "cost": 4,
     "potential": 62,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2684,6 +2776,7 @@
       "stamina": 53
     },
     "ovr": 57,
+    "cost": 4,
     "potential": 57,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2713,6 +2806,7 @@
       "stamina": 47
     },
     "ovr": 57,
+    "cost": 4,
     "potential": 57,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2742,6 +2836,7 @@
       "stamina": 59
     },
     "ovr": 56,
+    "cost": 3,
     "potential": 60,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2771,6 +2866,7 @@
       "stamina": 52
     },
     "ovr": 52,
+    "cost": 2,
     "potential": 64,
     "origin": "domestic",
     "teamId": "busan-kcc",
@@ -2800,6 +2896,7 @@
       "stamina": 61
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 71,
     "origin": "foreign",
     "teamId": "busan-kcc",
@@ -2829,6 +2926,7 @@
       "stamina": 59
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 66,
     "origin": "foreign",
     "teamId": "busan-kcc",
@@ -2858,6 +2956,7 @@
       "stamina": 66
     },
     "ovr": 68,
+    "cost": 7,
     "potential": 72,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -2887,6 +2986,7 @@
       "stamina": 70
     },
     "ovr": 69,
+    "cost": 7,
     "potential": 69,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -2916,6 +3016,7 @@
       "stamina": 62
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 75,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -2945,6 +3046,7 @@
       "stamina": 59
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 68,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -2974,6 +3076,7 @@
       "stamina": 60
     },
     "ovr": 67,
+    "cost": 6,
     "potential": 74,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3003,6 +3106,7 @@
       "stamina": 63
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 74,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3032,6 +3136,7 @@
       "stamina": 57
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 61,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3061,6 +3166,7 @@
       "stamina": 54
     },
     "ovr": 56,
+    "cost": 3,
     "potential": 68,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3090,6 +3196,7 @@
       "stamina": 56
     },
     "ovr": 56,
+    "cost": 3,
     "potential": 58,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3119,6 +3226,7 @@
       "stamina": 47
     },
     "ovr": 53,
+    "cost": 3,
     "potential": 55,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3148,6 +3256,7 @@
       "stamina": 58
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 72,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3177,6 +3286,7 @@
       "stamina": 50
     },
     "ovr": 51,
+    "cost": 2,
     "potential": 53,
     "origin": "domestic",
     "teamId": "suwon-kt",
@@ -3206,6 +3316,7 @@
       "stamina": 60
     },
     "ovr": 63,
+    "cost": 5,
     "potential": 63,
     "origin": "foreign",
     "teamId": "suwon-kt",
@@ -3235,6 +3346,7 @@
       "stamina": 61
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 69,
     "origin": "foreign",
     "teamId": "suwon-kt",
@@ -3264,6 +3376,7 @@
       "stamina": 74
     },
     "ovr": 72,
+    "cost": 8,
     "potential": 81,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3293,6 +3406,7 @@
       "stamina": 66
     },
     "ovr": 68,
+    "cost": 7,
     "potential": 68,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3322,6 +3436,7 @@
       "stamina": 66
     },
     "ovr": 66,
+    "cost": 6,
     "potential": 66,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3351,6 +3466,7 @@
       "stamina": 62
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3380,6 +3496,7 @@
       "stamina": 57
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3409,6 +3526,7 @@
       "stamina": 65
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3438,6 +3556,7 @@
       "stamina": 57
     },
     "ovr": 60,
+    "cost": 4,
     "potential": 67,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3467,6 +3586,7 @@
       "stamina": 56
     },
     "ovr": 56,
+    "cost": 3,
     "potential": 61,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3496,6 +3616,7 @@
       "stamina": 50
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 55,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3525,6 +3646,7 @@
       "stamina": 51
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 56,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3554,6 +3676,7 @@
       "stamina": 59
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 57,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3583,6 +3706,7 @@
       "stamina": 56
     },
     "ovr": 53,
+    "cost": 3,
     "potential": 56,
     "origin": "domestic",
     "teamId": "daegu-kogas",
@@ -3612,6 +3736,7 @@
       "stamina": 59
     },
     "ovr": 62,
+    "cost": 5,
     "potential": 62,
     "origin": "foreign",
     "teamId": "daegu-kogas",
@@ -3641,6 +3766,7 @@
       "stamina": 58
     },
     "ovr": 62,
+    "cost": 5,
     "potential": 65,
     "origin": "foreign",
     "teamId": "daegu-kogas",
@@ -3670,6 +3796,7 @@
       "stamina": 69
     },
     "ovr": 71,
+    "cost": 8,
     "potential": 79,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3699,6 +3826,7 @@
       "stamina": 65
     },
     "ovr": 70,
+    "cost": 7,
     "potential": 70,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3728,6 +3856,7 @@
       "stamina": 64
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3757,6 +3886,7 @@
       "stamina": 68
     },
     "ovr": 65,
+    "cost": 6,
     "potential": 65,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3786,6 +3916,7 @@
       "stamina": 55
     },
     "ovr": 66,
+    "cost": 6,
     "potential": 72,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3815,6 +3946,7 @@
       "stamina": 67
     },
     "ovr": 64,
+    "cost": 6,
     "potential": 66,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3844,6 +3976,7 @@
       "stamina": 60
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 74,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3873,6 +4006,7 @@
       "stamina": 55
     },
     "ovr": 58,
+    "cost": 4,
     "potential": 62,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3902,6 +4036,7 @@
       "stamina": 52
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 72,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3931,6 +4066,7 @@
       "stamina": 51
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 67,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3960,6 +4096,7 @@
       "stamina": 54
     },
     "ovr": 55,
+    "cost": 3,
     "potential": 57,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -3989,6 +4126,7 @@
       "stamina": 56
     },
     "ovr": 51,
+    "cost": 2,
     "potential": 54,
     "origin": "domestic",
     "teamId": "ulsan-hyundai-mobis",
@@ -4018,6 +4156,7 @@
       "stamina": 64
     },
     "ovr": 62,
+    "cost": 5,
     "potential": 62,
     "origin": "foreign",
     "teamId": "ulsan-hyundai-mobis",
@@ -4047,6 +4186,7 @@
       "stamina": 58
     },
     "ovr": 61,
+    "cost": 5,
     "potential": 61,
     "origin": "foreign",
     "teamId": "ulsan-hyundai-mobis",

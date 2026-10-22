@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { STAT_KEYS, calcOvr } from '../src/rating.mjs';
+import { STAT_KEYS, calcOvr, calcCost } from '../src/rating.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SEED = 20261022;
@@ -126,6 +126,7 @@ function buildPlayer(teamId, idx, spec, teamBase, slotOffset) {
     rarity: rarityOf(ovr, potential),
     stats,
     ovr,
+    cost: calcCost(ovr),
     potential,
     origin,
     teamId,

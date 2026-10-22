@@ -16,3 +16,14 @@ export function calcOvr(position, stats) {
   for (const k of STAT_KEYS) sum += stats[k] * w[k];
   return Math.round(sum);
 }
+
+export const COST_MIN = 1;
+export const COST_MAX = 20;
+const COST_OVR_FLOOR = 40;
+const COST_CURVE = 1.6;
+
+// 능력치(OVR) 기반 카드 코스트. 높은 OVR일수록 코스트가 가파르게 오른다.
+export function calcCost(ovr) {
+  const t = Math.max(0, Math.min(1, (ovr - COST_OVR_FLOOR) / (99 - COST_OVR_FLOOR)));
+  return COST_MIN + Math.round(Math.pow(t, COST_CURVE) * (COST_MAX - COST_MIN));
+}

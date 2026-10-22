@@ -15,8 +15,23 @@
   "foreignPlayers": {
     "registered": 2,
     "onCourt": 2,
-    "quartersBothAllowed": [2, 3],
-    "quartersSingleOnly": [1, 4]
+    "quartersBothAllowed": [
+      2,
+      3
+    ],
+    "quartersSingleOnly": [
+      1,
+      4
+    ]
   },
-  "stats": { "min": 0, "max": 99 }
+  "stats": {
+    "min": 0,
+    "max": 99
+  },
+  "lineup": {
+    "_note": "프야매식 코스트 제한. 수치는 초기값이며 시즌 카드 도입 후 재조정한다.",
+    "starters": 5,
+    "bench": 5,
+    "costCap": 65
+  }
 }
