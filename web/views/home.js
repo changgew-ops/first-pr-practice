@@ -29,7 +29,7 @@ export function render(ctx) {
     h('div', { class: 'card hero' },
       h('div', { class: 'row between' },
         h('div', h('h2', `${season} 시즌 시작 전`), h('p', { class: 'muted', style: { margin: 0 } }, `정규리그 ${data.rules.regularSeasonGames}경기 → 상위 6팀 플레이오프. 전 시즌: ${lastSeason.season} ${lastRow ? `${lastRow.rank}위 (${lastRow.wins}승 ${lastRow.losses}패)` : '-'}${lastSeason.championId === my ? ' · 우승' : ''}`)),
-        h('button', { class: 'btn primary big', onclick: ctx.play, disabled: ctx.busy }, `${season} 시즌 진행`))),
+        h('button', { class: 'btn primary big', onclick: () => ctx.go(ctx.session.stage === 'offseason' ? 'offseason' : 'season') }, ctx.session.stage === 'offseason' ? '오프시즌 진행' : ctx.session.day === 0 ? `${season} 시즌 시작` : '시즌 계속'))),
     h('div', { class: 'grid g4' },
       stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 전력 ${myPower.power.toFixed(1)}`),
       stat('국내 선수 연봉', eok(pay.domestic), `캡 ${eok(pay.cap, 0)}${pay.over ? ` · ${eok(pay.over)} 초과` : ` · 여유 ${eok(pay.cap - pay.domestic)}`}`),

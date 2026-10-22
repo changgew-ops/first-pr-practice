@@ -61,7 +61,7 @@ export function render(ctx, [tabParam]) {
   return {
     title: `${e.season} 결산`, body: h('div', { class: 'stack' },
       h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '시즌 결산'), h('div', { class: 'title' }, h('h1', `${e.season} 시즌 결산`), resultTag)),
-        h('button', { class: 'btn primary big', onclick: ctx.play, disabled: ctx.busy }, `${next} 시즌 진행`)),
+        h('button', { class: 'btn primary big', onclick: () => ctx.go('season') }, `${next} 시즌으로`)),
       tabs([['summary', '요약'], ['games', '우리 팀 경기'], ['offseason', '오프시즌']], tab, (t) => ctx.go(`report/${t}`)),
       content)
   };

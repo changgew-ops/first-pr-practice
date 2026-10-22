@@ -1,72 +1,101 @@
-// KBL 단장 게임 — 화면 진입점: 데이터 불러오기, 저장, 경로(#/…), 공통 틀.
+// KBL 단장 게임 — 화면 진입점: 데이터 불러오기, 세션·저장, 경로(#/…), 공통 틀.
+//
+// 화면(views/*.js)이 받는 ctx:
+//   ctx.data        { rules, teams, players, history, profiles, careers }
+//   ctx.session     진행 중인 세션(web/lib/session.js). 없으면 타이틀·새 게임 화면만 열린다
+//   ctx.game        session.view — 기존 선택자(web/lib/game.js)가 쓰는 모양
+//   ctx.go(path)    경로 이동('season', 'player/<id>' …)      ctx.refresh()  지금 화면 다시 그리기(상태가 바뀐 뒤)
+//   ctx.name(teamId) / ctx.team(teamId)    ctx.toast(문구)    ctx.save(slot) 직접 저장
+// 화면은 render(ctx, params) → { title, body } 를 내보낸다.
 import { h } from './lib/dom.js';
 import { loadData, profileIndex } from './lib/data.js';
-import { loadSave, writeSave, clearSave } from './lib/save.js';
-import { newGame, playYear, seasonLabel, VERSION } from './lib/game.js';
+import { listSlots, readSlot, writeSlot, latestSlot } from './lib/save.js';
+import { Session } from './lib/session.js';
+import { seasonLabel } from './lib/game.js';
 import { colorOf } from './lib/team-ui.js';
-import * as selectView from './views/select.js';
+import * as titleView from './views/title.js';
+import * as introView from './views/intro.js';
+import * as newView from './views/new.js';
 import * as homeView from './views/home.js';
+import * as seasonView from './views/season.js';
 import * as rosterView from './views/roster.js';
 import * as playerView from './views/player.js';
 import * as lineupView from './views/lineup.js';
+import * as trainingView from './views/training.js';
+import * as offseasonView from './views/offseason.js';
 import * as leagueView from './views/league.js';
 import * as historyView from './views/history.js';
 import * as reportView from './views/report.js';
+import * as saveView from './views/save.js';
 
 const root = document.getElementById('app');
+const FREE = { title: titleView, intro: introView, new: newView, save: saveView }; // 세션 없이도 여는 화면
 const ROUTES = {
-  home: [homeView, '홈'], roster: [rosterView, '로스터'], player: [playerView, '선수'], lineup: [lineupView, '라인업'],
-  league: [leagueView, '리그'], history: [historyView, '구단 역사'], report: [reportView, '시즌 결산']
+  home: homeView, season: seasonView, roster: rosterView, player: playerView, lineup: lineupView, training: trainingView,
+  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, save: saveView
 };
-const NAV = [['home', '홈'], ['roster', '로스터'], ['lineup', '라인업'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산']];
+const NAV = [['home', '홈'], ['season', '시즌'], ['roster', '로스터'], ['lineup', '라인업'], ['training', '훈련'], ['offseason', '오프시즌'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산'], ['save', '저장']];
 
-const ctx = { data: null, game: null, profiles: null, busy: false };
+const ctx = { data: null, profiles: null, session: null };
+Object.defineProperty(ctx, 'game', { get: () => ctx.session?.view });
 ctx.team = (id) => ctx.data.teams.find((t) => t.id === id);
 ctx.name = (id) => ctx.team(id)?.name ?? id;
 ctx.go = (path) => { if (location.hash === `#/${path}`) render(); else location.hash = `#/${path}`; };
-ctx.save = () => writeSave(ctx.game);
-ctx.start = (teamId, seed) => { ctx.game = newGame(ctx.data, teamId, seed); ctx.save(); ctx.go('home'); };
-ctx.reset = () => { if (confirm('저장된 게임을 지우고 구단 선택으로 돌아갑니다. 계속할까요?')) { clearSave(); ctx.game = null; ctx.go(''); render(); } };
-ctx.play = () => {
-  if (ctx.busy) return;
-  ctx.busy = true;
-  const label = seasonLabel(ctx.game.league.season);
-  const overlay = h('div', { class: 'overlay', role: 'status' }, h('div', { class: 'card' }, h('h3', `${label} 시즌 진행 중…`), h('p', { class: 'muted' }, '정규리그 54경기, 플레이오프, 오프시즌 처리')));
-  document.body.append(overlay);
-  setTimeout(() => { // 오버레이가 먼저 그려지도록 한 박자 늦춘다
-    try {
-      ctx.game = playYear(ctx.game, ctx.data);
-      ctx.save();
-      ctx.go('report');
-    } catch (e) {
-      console.error(e);
-      alert(`시즌 진행 중 오류: ${e.message}`);
-    } finally { overlay.remove(); ctx.busy = false; render(); }
-  }, 30);
+ctx.refresh = () => render();
+ctx.toast = (text) => { const el = h('div', { class: 'toast', role: 'status' }, text); document.body.append(el); setTimeout(() => el.remove(), 2600); };
+
+let autosaveTimer = null;
+function attach(session) {
+  ctx.session = session;
+  session.onChange(() => { // 상태가 바뀌면 잠깐 뒤 자동 저장 (연속 조작은 한 번으로)
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(() => { if (!writeSlot('auto', session.game)) ctx.toast('저장 공간이 부족해 자동 저장을 못 했습니다. 저장 화면에서 오래된 슬롯을 지워 주세요.'); }, 300);
+  });
+}
+/** 새 게임: { gmName, teamId, seed } */
+ctx.newGame = ({ gmName, teamId, seed }) => { attach(Session.create(ctx.data, { gmName, managerId: teamId, seed })); writeSlot('auto', ctx.session.game); ctx.go('home'); };
+ctx.loadSlot = (slot) => {
+  const game = readSlot(slot);
+  if (!game) { ctx.toast('불러올 수 없는 저장입니다'); return false; }
+  try { attach(new Session(ctx.data, game)); } catch (e) { ctx.toast(`불러오지 못했습니다: ${e.message}`); return false; }
+  ctx.go('home'); return true;
 };
+ctx.save = (slot) => {
+  if (!ctx.session) return false;
+  const ok = writeSlot(slot, ctx.session.game);
+  ctx.toast(ok ? `${slot === 'auto' ? '자동 저장' : `슬롯 ${slot}`}에 저장했습니다` : '저장하지 못했습니다(저장 공간 부족)');
+  return ok;
+};
+ctx.toTitle = () => { ctx.session = null; ctx.go('title'); };
 
 function shell(route, view) {
-  const my = ctx.game.managerId;
-  const el = h('div', { class: 'shell', style: { '--team': colorOf(my) } },
+  const s = ctx.session, my = s.managerId;
+  const stageLabel = { regular: s.day === 0 ? '시즌 시작 전' : `정규리그 ${s.day}/${s.totalDays}일차`, playoffs: '플레이오프', offseason: '오프시즌' }[s.stage];
+  return h('div', { class: 'shell', style: { '--team': colorOf(my) } },
     h('aside', { class: 'side' },
-      h('div', { class: 'brand' }, 'KBL 단장 게임', h('small', `${ctx.name(my)} · ${seasonLabel(ctx.game.league.season)}`)),
-      h('nav', { class: 'nav', 'aria-label': '주 메뉴' }, NAV.map(([key, label]) => h('a', { href: `#/${key}`, class: route === key || (route === 'player' && key === 'roster') ? 'on' : '', 'aria-current': route === key ? 'page' : null }, label))),
+      h('div', { class: 'brand' }, 'KBL 단장 게임', h('small', `${s.game.gm.name} 단장 · ${ctx.name(my)}`), h('small', `${seasonLabel(s.season)} · ${stageLabel}`)),
+      h('nav', { class: 'nav', 'aria-label': '주 메뉴' }, NAV.map(([key, label]) => h('a', { href: `#/${key}`, class: route === key || (route === 'player' && key === 'roster') ? 'on' : '', 'aria-current': route === key ? 'page' : null }, label, key === 'offseason' && s.stage === 'offseason' ? h('span', { class: 'dotmark', 'aria-label': '결정 필요' }) : null))),
       h('div', { class: 'spacer' }),
-      h('div', { class: 'small' }, '자동 저장 · 브라우저에만 저장됩니다'),
-      h('button', { class: 'btn ghost', onclick: ctx.reset }, '새 게임')),
+      h('div', { class: 'small' }, '자동 저장 중 · 저장 화면에서 직접 저장'),
+      h('button', { class: 'btn ghost', onclick: () => ctx.save('1') }, '빠른 저장'),
+      h('button', { class: 'btn ghost', onclick: ctx.toTitle }, '타이틀로')),
     h('main', { class: 'main' }, view));
-  return el;
 }
 
 async function render() {
   if (!ctx.data) return;
   const [route = '', ...params] = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
   window.scrollTo(0, 0);
-  if (!ctx.game) { root.replaceChildren(selectView.render(ctx)); document.title = 'KBL 단장 게임'; return; }
+  if (!ctx.session) {
+    const mod = FREE[route] ?? titleView;
+    const out = mod.render(ctx, params);
+    document.title = `${out.title ?? 'KBL 단장 게임'} · KBL 단장 게임`;
+    root.replaceChildren(out.body ?? out);
+    return;
+  }
   const key = ROUTES[route] ? route : 'home';
-  const [mod, label] = ROUTES[key];
-  const out = mod.render(ctx, params);
-  document.title = `${out.title ?? label} · KBL 단장 게임`;
+  const out = ROUTES[key].render(ctx, params);
+  document.title = `${out.title ?? key} · KBL 단장 게임`;
   root.replaceChildren(shell(key, out.body ?? out));
 }
 
@@ -75,9 +104,6 @@ window.addEventListener('hashchange', render);
   try {
     ctx.data = await loadData();
     ctx.profiles = profileIndex(ctx.data.profiles);
-    const saved = loadSave();
-    // 저장본의 선수·구단이 현재 데이터와 맞는지 가볍게 확인한다(데이터가 크게 바뀐 뒤에는 새 게임으로)
-    if (saved?.version === VERSION && ctx.data.teams.some((t) => t.id === saved.managerId) && saved.league?.players?.length) ctx.game = saved;
     render();
   } catch (e) {
     console.error(e);
