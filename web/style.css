@@ -142,7 +142,8 @@ tr.total td { font-weight: 700; background: var(--panel-2); }
 .series .t { display: flex; justify-content: space-between; gap: 8px; }
 .series .t.win { font-weight: 800; }
 .series .t.lose { color: var(--muted); }
-.toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--panel-2); border: 1px solid var(--line); padding: 10px 16px; border-radius: 8px; z-index: 10; }
+.toasts { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 8px; align-items: center; z-index: 10; max-width: calc(100vw - 32px); pointer-events: none; }
+.toast { background: var(--panel-2); border: 1px solid var(--line); padding: 10px 16px; border-radius: 8px; }
 .overlay { position: fixed; inset: 0; background: color-mix(in srgb, var(--bg) 80%, transparent); display: grid; place-items: center; z-index: 9; }
 .overlay .card { text-align: center; min-width: 260px; }
 .hero { border-top: 4px solid var(--team); }

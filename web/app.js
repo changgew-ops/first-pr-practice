@@ -43,7 +43,13 @@ ctx.team = (id) => ctx.data.teams.find((t) => t.id === id);
 ctx.name = (id) => ctx.team(id)?.name ?? id;
 ctx.go = (path) => { if (location.hash === `#/${path}`) render(); else location.hash = `#/${path}`; };
 ctx.refresh = () => render();
-ctx.toast = (text) => { const el = h('div', { class: 'toast', role: 'status' }, text); document.body.append(el); setTimeout(() => el.remove(), 2600); };
+ctx.toast = (text) => { // 여러 개가 동시에 떠도 겹치지 않게 한 컨테이너에 쌓는다
+  let box = document.getElementById('toasts');
+  if (!box) { box = h('div', { id: 'toasts', class: 'toasts', 'aria-live': 'polite' }); document.body.append(box); }
+  const el = h('div', { class: 'toast', role: 'status' }, text);
+  box.append(el);
+  setTimeout(() => el.remove(), 2600);
+};
 
 let autosaveTimer = null;
 function attach(session) {

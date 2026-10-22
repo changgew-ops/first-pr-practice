@@ -57,3 +57,16 @@
   .sv .sv-game { grid-template-columns: 1fr; gap: 2px; text-align: center; }
   .sv .sv-team.right { text-align: center; }
 }
+
+/* 폰 폭: 셸의 1열 그리드가 안쪽 내용 때문에 넓어지지 않게 하고, 순위표는 게임차를 숨겨 한 화면에 넣는다 */
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .main { min-width: 0; }
+}
+@media (max-width: 560px) {
+  .sv .sv-standings th:nth-child(6), .sv .sv-standings td:nth-child(6) { display: none; }
+  .sv .sv-standings th, .sv .sv-standings td { padding: 7px 8px; }
+}
+.sv .sv-cols { grid-template-columns: minmax(0, 1fr) minmax(380px, .9fr); }
+.sv .sv-cols > *, .sv .grid > * { min-width: 0; }
+@media (max-width: 1180px) { .sv .sv-cols { grid-template-columns: minmax(0, 1fr); } }

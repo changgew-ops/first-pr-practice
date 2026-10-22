@@ -50,13 +50,13 @@ export function render(ctx) {
       const role = roleOf(draft, p.id);
       const seg = (r, label) => h('button', { type: 'button', class: `lu-seg ${role === r ? 'on' : ''} ${r}`, 'aria-pressed': String(role === r), disabled: !live, onclick: () => setDraft(setRole(draft, p.id, r)) }, label);
       return h('tr', { class: `lu-row ${role}` },
-        h('td', link(`#/player/${p.id}`, p.name)), h('td', h('span', { class: 'pos' }, p.position)), h('td', { class: 'r' }, p.age),
+        h('td', link(`#/player/${p.id}`, p.name)), h('td', h('span', { class: 'pos' }, p.position)), h('td', { class: 'r lu-hide-sm' }, p.age),
         h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.cost),
-        h('td', p.origin === 'domestic' ? '' : h('span', { class: 'tag' }, ORIGIN_LABEL[p.origin])),
+        h('td', { class: 'lu-hide-sm' }, p.origin === 'domestic' ? '' : h('span', { class: 'tag' }, ORIGIN_LABEL[p.origin])),
         h('td', h('div', { class: 'lu-segs', role: 'group', 'aria-label': `${p.name} 역할` }, seg('starter', '스타팅'), seg('bench', '벤치'), seg('out', '제외'))));
     });
 
-    host.replaceChildren(
+    host.replaceChildren(...[
       !live ? h('div', { class: 'callout' }, s.stage === 'offseason' ? '지금은 오프시즌이라 라인업을 바꿀 수 없습니다. 시즌이 시작되면 자동 편성으로 시작하고, 여기서 직접 편성할 수 있습니다.' : '지금은 라인업을 바꿀 수 없습니다.') : null,
       h('div', { class: 'grid g4' },
         stat('스타팅', `${e.starters.length} / ${rules.lineup.starters}`, e.starters.length === rules.lineup.starters ? '완성' : '5명을 골라 주세요'),
@@ -85,8 +85,8 @@ export function render(ctx) {
       h('div', { class: 'card flush' },
         h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '선수 고르기'), h('p', { class: 'note', style: { margin: '4px 0 0' } }, '역할 버튼을 다시 누르면 제외로 돌아갑니다. 능력치는 시즌 중 갱신된 값입니다.')),
         h('div', { class: 'table-wrap' }, h('table', { class: 'lu-table' },
-          h('thead', h('tr', ['이름', '포지션', '나이', 'OVR', '코스트', '구분', '역할'].map((t, i) => h('th', { class: [3, 4, 2].includes(i) ? 'r' : '' }, t)))),
-          h('tbody', rows)))));
+          h('thead', h('tr', ['이름', '포지션', '나이', 'OVR', '코스트', '구분', '역할'].map((t, i) => h('th', { class: `${[3, 4, 2].includes(i) ? 'r' : ''} ${[2, 5].includes(i) ? 'lu-hide-sm' : ''}` }, t)))),
+          h('tbody', rows))))].filter(Boolean));
   };
   draw();
   return { title: '라인업', body: h('div', { class: 'stack lineup-view' },

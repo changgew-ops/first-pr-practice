@@ -9,3 +9,4 @@
 .training-view .tr-total b { font-variant-numeric: tabular-nums; }
 .training-view .tr-total .note { white-space: nowrap; }
 @media (max-width: 560px) { .training-view .tr-table select { min-width: 120px; } }
+@media (max-width: 560px) { .training-view .tr-hide-sm { display: none; } }
