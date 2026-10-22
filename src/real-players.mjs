@@ -77,14 +77,73 @@ export function candidateTeams(extra, teamTotals) {
   return Object.entries(teamTotals).filter(([, t]) => t.wins >= extra.teamWins && t.losses >= extra.teamLosses).map(([id]) => id);
 }
 
-/** 선수 풀 만들기. teamMap: Map<이름, { team, age, position, number, origin }> (사람이 채운 값) */
-export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(), minRatingMinutes = 300 } = {}) {
+/** 시트와 등록선수 화면의 표기가 다른 이름을 하나로 맞춘다. aliases: Map<시트 표기, 현재 표기> */
+export const applyAliases = (rows, aliases) => rows.map((r) => (aliases.has(r.name) ? { ...r, name: aliases.get(r.name) } : r));
+
+/** KBL 등록 포지션(G 가드 / F 포워드 / C 센터)을 5개 포지션으로 나눈다. 기록이 있으면 그 역할 추정으로 세분하고, 없으면 SG / SF로 둔다 */
+export function positionFromRegistry(kbl, totals) {
+  if (kbl === 'C') return 'C';
+  const guess = totals ? inferPosition(totals) : null;
+  if (kbl === 'G') return guess === 'PG' ? 'PG' : 'SG';
+  return guess === 'PF' || guess === 'C' ? 'PF' : 'SF';
+}
+
+/** 드래프트 연도로 나이를 어림한다 (대졸 기준 드래프트 때 22세). 드래프트 연도가 없으면 null */
+export const ageFromDraft = (draftYear, seasonYear = 2026) => (draftYear ? seasonYear - draftYear + 22 : null);
+
+/**
+ * 등록선수 화면의 항목을 선수 풀의 이름에 이어 준다. 같은 이름이 둘 이상이면(동명이인) 2025-26 소속(team2526)과
+ * 팀 후보로 짝을 찾고, 그래도 안 되면 짝짓지 않고 notes에 남긴다. 반환: { map: Map<풀 이름, 항목>, extra: [풀에 없는 항목], notes }
+ */
+export function resolveRegistry(entries, pool, team2526 = new Map()) {
+  const notes = [];
+  const map = new Map();
+  const extra = [];
+  const variants = new Map();
+  for (const p of pool) {
+    const b = baseName(p.name);
+    if (!variants.has(b)) variants.set(b, []);
+    variants.get(b).push(p);
+  }
+  const groups = new Map();
+  for (const e of entries) {
+    if (!groups.has(e.name)) groups.set(e.name, []);
+    groups.get(e.name).push(e);
+  }
+  for (const [name, list] of groups) {
+    const vs = variants.get(name) ?? [];
+    if (vs.length === 0) { extra.push(...list); continue; }
+    if (vs.length === 1 && list.length === 1) { map.set(vs[0].name, list[0]); continue; }
+    // 동명이인: 2025-26 소속이 같은 쪽 → 팀 후보에 들어 있는 쪽 순으로 짝짓는다
+    const free = [...vs];
+    const left = [];
+    for (const e of list) {
+      const hit = free.find((v) => team2526.get(v.name) === e.team)
+        ?? free.find((v) => v.candidateTeams?.includes(e.team) && !free.some((o) => o !== v && o.candidateTeams?.includes(e.team)));
+      if (hit) { map.set(hit.name, e); free.splice(free.indexOf(hit), 1); } else left.push(e);
+    }
+    for (const e of left) {
+      if (free.length === 1 && vs.length === list.length) { map.set(free[0].name, e); free.length = 0; } else { extra.push(e); notes.push(`동명이인 ${name}(${e.team}): 풀의 어느 쪽인지 정하지 못해 기록 없는 선수로 둠`); }
+    }
+  }
+  return { map, extra, notes };
+}
+
+/**
+ * 선수 풀 만들기.
+ *  teamMap: Map<이름, { team, age, position, number, origin }> — 사람이 team-map.csv에 적은 정정값(가장 우선)
+ *  registry: Map<이름, { team, number, position(G/F/C), kind(d/f/a), draftYear }> — 등록선수 화면(현재 소속)
+ */
+export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(), registry = new Map(), minRatingMinutes = 300 } = {}) {
   const rows = merged.map((p) => ({ name: p.name, totals: p.totals }));
-  const positions = new Map(merged.map((p) => [p.name, teamMap.get(p.name)?.position ?? inferPosition(p.totals)]));
+  const positionOf = (p) => teamMap.get(p.name)?.position
+    ?? (registry.has(p.name) ? positionFromRegistry(registry.get(p.name).position, p.totals) : inferPosition(p.totals));
+  const positions = new Map(merged.map((p) => [p.name, positionOf(p)]));
   const rated = ratingsFromRows(rows.filter((r) => r.totals.minutes >= minRatingMinutes), positions, rules.ratingModel);
   const rm = ratingsFromRows(rows, positions, rules.ratingModel); // 표본이 적은 선수도 신뢰도로 당긴 값
   return merged.map((p) => {
     const given = teamMap.get(p.name) ?? {};
+    const reg = registry.get(p.name);
     const r = rm.get(p.name);
     const position = positions.get(p.name);
     const cands = teamTotals && p.prev ? candidateTeams(p.prev.extra, teamTotals) : null;
@@ -92,10 +151,12 @@ export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(
       name: p.name,
       position,
       positionGiven: Boolean(given.position),
-      origin: given.origin ?? guessOrigin(p.name),
-      age: given.age ?? null,
-      number: given.number ?? null,
-      teamId: given.team ?? null,
+      origin: given.origin ?? (reg ? (reg.kind === 'f' ? 'foreign' : 'domestic') : guessOrigin(p.name)),
+      asiaQuota: reg?.kind === 'a',
+      age: given.age ?? ageFromDraft(reg?.draftYear) ?? null,
+      number: given.number ?? reg?.number ?? null,
+      teamId: given.team ?? reg?.team ?? null,
+      registered: Boolean(reg),
       candidateTeams: cands,
       games: p.totals.games,
       minutes: Math.round(p.totals.minutes),
@@ -106,4 +167,62 @@ export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(
       ratedFromSample: rated.has(p.name)
     };
   }).sort((a, b) => b.minutes - a.minutes);
+}
+
+/** 기록이 없는 등록 선수(올해 한 경기도 못 뛴 선수 등). 능력치는 생성기가 이름을 시드로 채운다 */
+export function statlessPlayers(entries, teamMap = new Map()) {
+  return entries.map((e) => {
+    const given = teamMap.get(e.name) ?? {};
+    return {
+      name: e.name,
+      position: given.position ?? positionFromRegistry(e.position, null),
+      positionGiven: Boolean(given.position),
+      origin: given.origin ?? (e.kind === 'f' ? 'foreign' : 'domestic'),
+      asiaQuota: e.kind === 'a',
+      age: given.age ?? ageFromDraft(e.draftYear),
+      number: given.number ?? e.number,
+      teamId: given.team ?? e.team,
+      registered: true,
+      candidateTeams: null,
+      games: 0, minutes: 0,
+      seasons: { '2025-26': false, '2026-27': false },
+      stats: null, ovr: null, cost: null, ratedFromSample: false
+    };
+  });
+}
+
+const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C'];
+
+/**
+ * 한 구단의 후보 선수들(출전 시간 순)에서 로스터를 고른다: 국내 domestic명 + 외국 foreign명, 다섯 포지션이 모두 있어야 한다.
+ * 1) 출전 시간이 많은 순으로 뽑고, 2) 비는 포지션은 후보 중 그 포지션 선수를 대신 넣고(포지션이 겹치는 선수 중 출전 시간이 가장 적은 사람과 교체),
+ * 3) 후보에도 없으면 포지션이 가까운 겹치는 선수의 포지션을 바꾼다. 반환: { roster, dropped, swaps: [문장], relabeled: [{ name, from, to }] }
+ */
+export function pickRoster(list, { domestic = 12, foreign = 2 } = {}) {
+  const roster = [
+    ...list.filter((p) => p.origin === 'domestic').slice(0, domestic),
+    ...list.filter((p) => p.origin === 'foreign').slice(0, foreign)
+  ].map((p) => ({ ...p }));
+  const swaps = [];
+  const relabeled = [];
+  const count = (pos) => roster.filter((p) => p.position === pos).length;
+  const weakest = (pool, origin) => pool.filter((p) => p.origin === origin && count(p.position) >= 2).sort((a, b) => a.minutes - b.minutes)[0];
+  for (const pos of POSITIONS) {
+    if (count(pos) > 0) continue;
+    const sub = list.filter((p) => p.position === pos && !roster.some((r) => r.name === p.name)).sort((a, b) => b.minutes - a.minutes)[0];
+    const out = sub && weakest(roster, sub.origin);
+    if (sub && out) {
+      roster.splice(roster.findIndex((r) => r.name === out.name), 1, { ...sub });
+      swaps.push(`${pos}: ${out.name} 대신 ${sub.name}`);
+    }
+  }
+  for (const pos of POSITIONS) {
+    if (count(pos) > 0) continue;
+    const idx = POSITIONS.indexOf(pos);
+    const from = roster.filter((p) => count(p.position) >= 2)
+      .sort((a, b) => Math.abs(POSITIONS.indexOf(a.position) - idx) - Math.abs(POSITIONS.indexOf(b.position) - idx) || b.minutes - a.minutes)[0];
+    if (from) { relabeled.push({ name: from.name, from: from.position, to: pos }); from.position = pos; }
+  }
+  const dropped = list.filter((p) => !roster.some((r) => r.name === p.name));
+  return { roster, dropped, swaps, relabeled };
 }

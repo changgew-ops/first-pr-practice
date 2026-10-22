@@ -26,7 +26,7 @@ export function retireProbability(age, ovr, aging) {
 }
 
 function withRatings(p, stats, extra = {}) {
-  const ovr = calcOvr(p.position, stats);
+  const ovr = calcOvr(extra.position ?? p.position, stats);
   const potential = p.age >= 27 ? ovr : Math.max(ovr, p.potential);
   return { ...p, ...extra, stats, ovr, cost: calcCost(ovr), potential, rarity: rarityOf(ovr, potential) };
 }
@@ -311,6 +311,22 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       };
       players.push(p);
       report.foreignReplaced.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr });
+    }
+  }
+
+  // 포지션 정리: 비는 포지션이 있으면 겹치는 포지션의 선수 한 명을 가장 가까운 포지션으로 돌린다 (실제 로스터의 포지션은 유연하다)
+  report.repositioned = [];
+  for (const team of teamData) {
+    for (const pos of POSITIONS) {
+      const mine = players.filter((p) => p.teamId === team.id);
+      if (mine.some((p) => p.position === pos)) continue;
+      const near = (q) => Math.abs(POSITIONS.indexOf(q.position) - POSITIONS.indexOf(pos));
+      const from = mine.filter((p) => mine.filter((o) => o.position === p.position).length >= 2)
+        .sort((a, b) => near(a) - near(b) || b.ovr - a.ovr)[0];
+      if (!from) continue;
+      const at = players.indexOf(from);
+      players[at] = withRatings(from, from.stats, { position: pos });
+      report.repositioned.push({ id: from.id, name: from.name, teamId: team.id, from: from.position, to: pos });
     }
   }
 

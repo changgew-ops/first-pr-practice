@@ -1,0 +1,189 @@
+# KBL 선수 > 등록선수 화면(2026-10-22 녹화)을 옮긴 것. 포지션 G=가드 F=포워드 C=센터, 구분 d=국내 f=외국 a=아시아쿼터. 드래프트 연도가 없으면 비움
+name,team,number,position,kind,draftYear
+강상재,wonju-db,26,F,d,2016
+강성욱,suwon-kt,77,G,d,2025
+강지훈,goyang-sono,12,C,d,2025
+강태현,busan-kcc,27,F,d,2025
+게이지 프림,ulsan-hyundai-mobis,44,C,f,
+권순우,daegu-kogas,7,G,d,2024
+김건하,ulsan-hyundai-mobis,15,G,d,2025
+김경원,ulsan-hyundai-mobis,17,C,d,2019
+김국찬,daegu-kogas,30,F,d,2017
+김낙현,seoul-sk,4,G,d,2017
+김동준,ulsan-hyundai-mobis,5,G,d,2021
+김동현,busan-kcc,5,G,d,2021
+김명진,seoul-sk,20,F,d,2025
+김민규,daegu-kogas,13,F,d,2025
+김보배,wonju-db,10,F,d,2024
+김선우,changwon-lg,2,G,d,2025
+김선형,suwon-kt,5,G,d,2011
+김세창,anyang-jungkwanjang,2,G,d,2019
+김수환,seoul-sk,7,G,d,2021
+김윤성,busan-kcc,14,C,d,2025
+김종규,anyang-jungkwanjang,15,C,d,2013
+김종호,changwon-lg,0,G,d,2021
+김준영,changwon-lg,4,G,d,2025
+김준일,daegu-kogas,31,C,d,2014
+김준형,anyang-jungkwanjang,35,F,d,2018
+김준환,suwon-kt,17,G,d,2021
+김진영,anyang-jungkwanjang,1,G,d,2019
+김진유,goyang-sono,55,G,d,2016
+김태완,ulsan-hyundai-mobis,24,G,d,2022
+김형빈,seoul-sk,23,F,d,2019
+김훈,busan-kcc,12,F,d,2019
+김휴범,wonju-db,0,G,d,2025
+다리우스 베즐리,ulsan-hyundai-mobis,0,F,f,
+데이본 리드,anyang-jungkwanjang,9,F,f,
+라건아,daegu-kogas,20,C,f,
+레이션 해먼즈,wonju-db,22,F,f,
+렌즈 아반도,anyang-jungkwanjang,12,G,a,
+루이스 킹,busan-kcc,23,F,f,
+문성곤,suwon-kt,10,F,d,2015
+문시윤,changwon-lg,20,F,d,2021
+문유현,anyang-jungkwanjang,24,G,d,2025
+문정현,suwon-kt,12,F,d,2023
+미구엘 옥존,suwon-kt,8,G,a,
+박무빈,ulsan-hyundai-mobis,3,G,d,2023
+박민재,suwon-kt,14,F,d,2025
+박봉진,wonju-db,24,F,d,2015
+박정웅,anyang-jungkwanjang,4,G,d,2024
+박정현,changwon-lg,31,C,d,2019
+박정환,ulsan-hyundai-mobis,13,G,d,2025
+박종하,goyang-sono,3,G,d,2023
+박준영,daegu-kogas,23,F,d,2018
+박준은,daegu-kogas,21,F,d,2019
+박지원,suwon-kt,9,G,d,2020
+박지훈,anyang-jungkwanjang,6,G,d,2016
+박진철,seoul-samsung,15,C,d,2020
+박찬호,anyang-jungkwanjang,13,C,d,2019
+배병준,ulsan-hyundai-mobis,23,G,d,2012
+백승엽,wonju-db,37,G,d,2024
+변준형,anyang-jungkwanjang,5,G,d,2018
+샘조세프 벨란겔,daegu-kogas,0,G,a,
+서동원,goyang-sono,11,F,d,2024
+서명진,ulsan-hyundai-mobis,7,G,d,2018
+서민수,suwon-kt,34,F,d,2015
+서정현,busan-kcc,32,C,d,2021
+선상혁,seoul-sk,11,C,d,2021
+소준혁,goyang-sono,20,G,d,2024
+손준,daegu-kogas,24,C,d,2024
+송재환,wonju-db,16,G,d,2025
+송한준,anyang-jungkwanjang,44,F,d,2025
+숀 롱,busan-kcc,36,C,f,
+스카티 제임스,goyang-sono,31,F,f,
+신동혁,seoul-samsung,9,F,d,2022
+신지원,goyang-sono,17,C,d,2025
+아셈 마레이,changwon-lg,50,C,f,
+아이재아 힉스,seoul-sk,31,F,f,
+아치 굿윈,changwon-lg,8,G,f,
+안성우,seoul-sk,12,G,d,2025
+안세준,seoul-samsung,1,F,d,2025
+안영준,seoul-sk,8,F,d,2017
+안정욱,goyang-sono,10,F,d,2022
+알빈 톨렌티노,seoul-sk,25,F,a,
+양우혁,daegu-kogas,27,G,d,2025
+양재혁,daegu-kogas,11,F,d,2019
+양준석,changwon-lg,5,G,d,2022
+양준우,daegu-kogas,1,G,d,2020
+양홍석,changwon-lg,11,F,d,2017
+에디 다니엘,seoul-sk,36,F,d,2025
+여준형,seoul-samsung,21,F,d,2022
+염유성,daegu-kogas,10,G,d,2022
+오세근,seoul-sk,41,F,d,2011
+오재현,seoul-sk,22,G,d,2020
+우동현,daegu-kogas,8,G,d,2018
+우상현,daegu-kogas,22,G,d,2025
+유기상,changwon-lg,1,G,d,2023
+윤기찬,busan-kcc,8,F,d,2025
+윤성원,seoul-samsung,27,F,d,2017
+윤원상,changwon-lg,10,G,d,2020
+이관희,seoul-samsung,2,G,d,2011
+이광진,changwon-lg,21,F,d,2020
+이규태,seoul-samsung,23,F,d,2025
+이근준,goyang-sono,14,F,d,2024
+이근휘,seoul-samsung,19,F,d,2020
+이대균,ulsan-hyundai-mobis,21,F,d,2024
+이대성,seoul-samsung,43,G,d,2013
+이대헌,anyang-jungkwanjang,21,F,d,2015
+이도헌,ulsan-hyundai-mobis,19,G,d,2020
+이동엽,goyang-sono,7,G,d,2015
+이두원,suwon-kt,21,C,d,2022
+이민서,seoul-sk,1,G,d,2024
+이선 알바노,wonju-db,17,G,a,
+이승현,ulsan-hyundai-mobis,33,F,d,2014
+이용우,wonju-db,7,G,d,2020
+이우석,ulsan-hyundai-mobis,11,G,d,2020
+이유진,wonju-db,6,F,d,2025
+이윤기,wonju-db,13,F,d,2020
+이윤수,wonju-db,99,C,d,2019
+이재도,goyang-sono,4,G,d,2013
+이정현,wonju-db,3,G,d,2010
+이정현,goyang-sono,6,G,d,2021
+이주영,busan-kcc,10,G,d,2023
+이준희,wonju-db,1,G,d,2020
+이찬영,busan-kcc,13,F,d,2024
+이현석,suwon-kt,11,G,d,2014
+이현호,busan-kcc,30,G,d,2024
+이호현,busan-kcc,1,G,d,2014
+인승찬,wonju-db,11,F,d,2022
+임동섭,goyang-sono,13,F,d,2012
+임동언,seoul-samsung,11,F,d,2024
+임정현,changwon-lg,9,F,d,2025
+임현택,seoul-sk,35,F,d,2020
+자니 오브라이언트,goyang-sono,0,C,f,
+자밀 워니,seoul-sk,34,C,f,
+장민국,changwon-lg,3,F,d,2012
+장재석,busan-kcc,31,C,d,2012
+저스틴 구탕,seoul-samsung,18,F,a,
+전성현,suwon-kt,23,F,d,2013
+전성환,seoul-sk,6,G,d,2019
+전준범,seoul-sk,17,F,d,2013
+전현우,daegu-kogas,9,F,d,2018
+정성우,daegu-kogas,3,G,d,2015
+정성조,seoul-samsung,77,G,d,2024
+정인덕,changwon-lg,16,F,d,2016
+정준원,ulsan-hyundai-mobis,1,F,d,2012
+정창영,suwon-kt,7,G,d,2011
+정호영,wonju-db,5,G,d,2021
+정효근,wonju-db,12,F,d,2014
+정희재,goyang-sono,9,F,d,2012
+제리 아바디아노,ulsan-hyundai-mobis,26,G,a,
+조석호,goyang-sono,1,G,d,2020
+조은후,wonju-db,2,G,d,2021
+조재우,goyang-sono,15,C,d,2022
+조준희,seoul-samsung,6,G,d,2023
+조한진,ulsan-hyundai-mobis,9,F,d,2018
+조혁재,busan-kcc,0,F,d,2024
+조환희,suwon-kt,2,G,d,2024
+존 무니,anyang-jungkwanjang,33,C,f,
+주현우,anyang-jungkwanjang,14,F,d,2021
+지용현,changwon-lg,25,C,d,2025
+최강민,ulsan-hyundai-mobis,8,G,d,2025
+최부경,seoul-sk,14,F,d,2012
+최성모,seoul-samsung,7,G,d,2016
+최성원,wonju-db,19,G,d,2017
+최승욱,daegu-kogas,5,F,d,2016
+최승욱,goyang-sono,77,F,d,2014
+최원혁,seoul-sk,3,G,d,2014
+최진광,busan-kcc,6,G,d,2019
+최현민,seoul-samsung,8,F,d,2012
+최형찬,changwon-lg,7,G,d,2024
+칼 타마요,changwon-lg,33,F,a,
+케렘 칸터,seoul-samsung,35,C,f,
+케베 알루마,daegu-kogas,19,F,f,
+케빈 켐바오,goyang-sono,28,F,a,
+크리스 맥컬러,seoul-samsung,13,F,f,
+트레이 포터,suwon-kt,22,C,f,
+패리스 배스,suwon-kt,35,F,f,
+표승빈,anyang-jungkwanjang,7,F,d,2023
+프레디,seoul-sk,21,C,d,2025
+하윤기,suwon-kt,0,C,d,2021
+한상혁,changwon-lg,6,G,d,2015
+한승희,anyang-jungkwanjang,51,F,d,2020
+한호빈,seoul-samsung,5,G,d,2013
+한희원,suwon-kt,1,F,d,2015
+허웅,busan-kcc,3,G,d,2014
+허일영,anyang-jungkwanjang,10,F,d,2009
+허훈,busan-kcc,7,G,d,2017
+헨리 엘런슨,wonju-db,8,F,f,
+황영찬,seoul-samsung,3,G,d,2024

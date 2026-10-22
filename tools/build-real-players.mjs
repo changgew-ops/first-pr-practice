@@ -1,22 +1,34 @@
 // 실제 선수 풀 만들기 / 게임 데이터에 적용하기
-//   node tools/build-real-players.mjs            선수 풀(data/players/real-pool.json)과 팀 배정 템플릿(team-map.csv)을 만든다
-//   node tools/build-real-players.mjs --apply    team-map.csv에 팀을 채운 선수만 data/rosters/<구단>.csv 와 data/stats/base.csv 로 내보낸다
-// 입력: data/stats/2025-26.csv, (선택) data/stats/2026-27.csv, (선택) data/players/team-map.csv
+//   node tools/build-real-players.mjs            선수 풀(data/players/real-pool.json)과 정정용 team-map.csv를 만든다
+//   node tools/build-real-players.mjs --apply    소속이 정해진 선수를 data/rosters/<구단>.csv 와 data/stats/base.csv 로 내보낸다
+// 입력: data/stats/2025-26.csv, data/stats/2026-27.csv(선택), data/players/registry.csv(현재 소속), name-aliases.csv, team-2025-26.csv, team-map.csv(사람이 정정한 값)
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { parseStatsCsv } from '../src/stats-import.mjs';
-import { mergeSeasons, buildPool } from '../src/real-players.mjs';
+import { mergeSeasons, buildPool, applyAliases, resolveRegistry, statlessPlayers, pickRoster } from '../src/real-players.mjs';
 import { loadHistory } from '../src/history.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const read = (p) => readFileSync(join(ROOT, p), 'utf8');
+const path = (p) => join(ROOT, p);
+const read = (p) => readFileSync(path(p), 'utf8');
 const rules = JSON.parse(read('data/league-rules.json'));
 const teams = JSON.parse(read('data/teams.json'));
 const teamIds = new Set(teams.map((t) => t.id));
+const baseName = (n) => n.replace(/\(\d+\)$/, '');
 
-const prev = parseStatsCsv(read('data/stats/2025-26.csv'));
-const cur = existsSync(join(ROOT, 'data/stats/2026-27.csv')) ? parseStatsCsv(read('data/stats/2026-27.csv')) : [];
+// '#' 주석과 빈 줄을 건너뛰는 단순 CSV (쉼표가 든 값은 쓰지 않는다)
+function readCsv(p) {
+  if (!existsSync(path(p))) return [];
+  const lines = read(p).split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
+  const head = lines.shift().split(',').map((h) => h.trim());
+  return lines.map((l) => { const c = l.split(',').map((x) => x.trim()); return Object.fromEntries(head.map((h, i) => [h, c[i] ?? ''])); });
+}
+const checkTeam = (id, where) => { if (id && !teamIds.has(id)) throw new Error(`${where}: 알 수 없는 구단 id "${id}"`); return id || null; };
+
+const aliases = new Map(readCsv('data/players/name-aliases.csv').map((r) => [r.from, r.to]));
+const prev = applyAliases(parseStatsCsv(read('data/stats/2025-26.csv')), aliases);
+const cur = existsSync(path('data/stats/2026-27.csv')) ? applyAliases(parseStatsCsv(read('data/stats/2026-27.csv')), aliases) : [];
 const { players: merged, notes } = mergeSeasons(prev, cur);
 
 // 25-26 시트는 플레이오프까지 합산된 값이라, 구단 합계도 정규리그 + 플레이오프로 맞춘다
@@ -30,68 +42,80 @@ for (const round of s2526.playoffs.rounds) {
   }
 }
 
-// 사람이 채운 팀 배정 (name,team,age,position,number,origin)
-const mapPath = join(ROOT, 'data/players/team-map.csv');
+// 사람이 정정한 값 (비어 있지 않은 칸만 쓴다)
 const teamMap = new Map();
-if (existsSync(mapPath)) {
-  const lines = readFileSync(mapPath, 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
-  const head = lines.shift().split(',').map((h) => h.trim());
-  for (const line of lines) {
-    const c = line.split(',').map((x) => x.trim());
-    const row = Object.fromEntries(head.map((h, i) => [h, c[i] ?? '']));
-    if (!row.name) continue;
-    if (row.team && !teamIds.has(row.team)) throw new Error(`team-map.csv: 알 수 없는 구단 id "${row.team}" (${row.name})`);
-    teamMap.set(row.name, {
-      team: row.team || null, age: row.age ? Number(row.age) : null, position: row.position || null,
-      number: row.number ? Number(row.number) : null, origin: row.origin || null
-    });
-  }
+for (const row of readCsv('data/players/team-map.csv')) {
+  if (!row.name) continue;
+  const m = {
+    team: checkTeam(row.team, `team-map.csv (${row.name})`), age: row.age ? Number(row.age) : null, position: row.position || null,
+    number: row.number ? Number(row.number) : null, origin: row.origin || null
+  };
+  if (Object.values(m).some((v) => v !== null)) teamMap.set(row.name, m);
 }
 
-const pool = buildPool(merged, rules, { teamTotals, teamMap });
-mkdirSync(join(ROOT, 'data/players'), { recursive: true });
+// 현재 소속(등록선수 화면)과 2025-26 소속
+const entries = readCsv('data/players/registry.csv').map((r) => ({
+  name: r.name, team: checkTeam(r.team, `registry.csv (${r.name})`), number: Number(r.number), position: r.position, kind: r.kind, draftYear: r.draftYear ? Number(r.draftYear) : null
+}));
+const team2526 = new Map(readCsv('data/players/team-2025-26.csv').map((r) => [aliases.get(r.name) ?? r.name, r.team]));
+
+const pool0 = buildPool(merged, rules, { teamTotals, teamMap });
+const { map: registry, extra, notes: regNotes } = resolveRegistry(entries, pool0, team2526);
+const all = [...buildPool(merged, rules, { teamTotals, teamMap, registry }), ...statlessPlayers(extra, teamMap)]
+  .sort((a, b) => b.minutes - a.minutes);
+mkdirSync(path('data/players'), { recursive: true });
 
 if (!process.argv.includes('--apply')) {
-  writeFileSync(join(ROOT, 'data/players/real-pool.json'), JSON.stringify(pool, null, 2) + '\n');
-  // 팀 배정 템플릿: 출전 시간이 많은 선수부터, 이미 채운 값은 유지
-  const header = 'name,team,age,position,number,origin,minutes,games,후보구단,포지션추정,국적추정';
+  writeFileSync(path('data/players/real-pool.json'), JSON.stringify(all, null, 2) + '\n');
+  // 정정용 표: 채운 칸만 효과가 있다. 나머지 열은 참고용
+  const header = 'name,team,age,position,number,origin,등록팀,25-26팀,minutes,games,포지션,국적';
   const lines = [header];
-  for (const p of pool) {
-    const given = teamMap.get(p.name) ?? {};
-    const certain = p.candidateTeams?.length === 1 ? p.candidateTeams[0] : '';
-    lines.push([
-      p.name, given.team ?? certain, given.age ?? '', given.position ?? '', given.number ?? '', given.origin ?? '',
-      p.minutes, p.games, (p.candidateTeams ?? []).length === teamIds.size ? '전체' : (p.candidateTeams ?? []).join('|'), p.position, p.origin
-    ].join(','));
+  for (const p of all) {
+    const g = teamMap.get(p.name) ?? {};
+    lines.push([p.name, g.team ?? '', g.age ?? '', g.position ?? '', g.number ?? '', g.origin ?? '', registry.get(p.name)?.team ?? (p.noStats ? p.teamId : ''), team2526.get(p.name) ?? '', p.minutes, p.games, p.position, p.origin].join(','));
   }
-  writeFileSync(mapPath, lines.join('\n') + '\n');
-  const certain = pool.filter((p) => p.candidateTeams?.length === 1).length;
-  console.log(`선수 ${pool.length}명 (25-26 ${pool.filter((p) => p.seasons['2025-26']).length}명, 26-27 신규 ${pool.filter((p) => !p.seasons['2025-26']).length}명)`);
-  console.log(`팀이 승패만으로 하나로 정해진 선수 ${certain}명 → team-map.csv에 미리 채움. 나머지는 직접 채워야 함`);
-  for (const n of notes) console.log('  ' + n);
+  writeFileSync(path('data/players/team-map.csv'), lines.join('\n') + '\n');
+
+  const reg = all.filter((p) => p.registered);
+  const moved = reg.filter((p) => team2526.get(p.name) && team2526.get(p.name) !== p.teamId);
+  console.log(`기록 선수 ${all.length - extra.length}명 (25-26 ${all.filter((p) => p.seasons['2025-26']).length}명, 26-27 신규 ${all.filter((p) => p.stats && !p.seasons['2025-26']).length}명), 등록선수 ${entries.length}명`);
+  console.log(`현재 소속이 정해진 선수 ${reg.length}명 (그중 기록 없는 선수 ${extra.length}명), 소속 없음 ${all.length - reg.length}명(등록선수 목록에 없음 → 게임에 넣지 않음)`);
+  console.log(`2025-26 → 현재 소속이 바뀐 선수 ${moved.length}명`);
+  const unplaced = all.filter((p) => !p.registered && p.minutes >= 600).map((p) => `${p.name}(${p.minutes}분)`);
+  if (unplaced.length) console.log(`등록선수에 없지만 출전 600분 이상: ${unplaced.join(', ')}`);
+  for (const n of [...notes, ...regNotes]) console.log('  ' + n);
   console.log('→ data/players/real-pool.json, data/players/team-map.csv');
 } else {
-  const assigned = pool.filter((p) => p.teamId && p.stats);
-  mkdirSync(join(ROOT, 'data/rosters'), { recursive: true });
+  const assigned = all.filter((p) => p.teamId && teamIds.has(p.teamId));
+  // 동명이인이 없으면 (1) 같은 꼬리표를 떼고 부른다
+  const baseCount = new Map();
+  for (const p of assigned) baseCount.set(baseName(p.name), (baseCount.get(baseName(p.name)) ?? 0) + 1);
+  const display = (p) => (baseCount.get(baseName(p.name)) === 1 ? baseName(p.name) : p.name);
+  mkdirSync(path('data/rosters'), { recursive: true });
   const byTeam = new Map();
   for (const p of assigned) (byTeam.get(p.teamId) ?? byTeam.set(p.teamId, []).get(p.teamId)).push(p);
   const dropped = [];
+  const adjusted = [];
   for (const [teamId, list] of byTeam) {
-    const dom = list.filter((p) => p.origin === 'domestic').slice(0, rules.roster.domestic);
-    const foreign = list.filter((p) => p.origin === 'foreign').slice(0, rules.roster.foreign);
-    for (const p of list) if (!dom.includes(p) && !foreign.includes(p)) dropped.push(`${p.name}(${teamId})`);
-    const rows = ['name,position,age,number,origin', ...[...dom, ...foreign].map((p) => [p.name, p.position, p.age ?? '', p.number ?? '', p.origin].join(','))];
-    writeFileSync(join(ROOT, `data/rosters/${teamId}.csv`), rows.join('\n') + '\n');
+    const { roster, dropped: out, swaps, relabeled } = pickRoster(list, rules.roster);
+    for (const p of out) dropped.push(`${display(p)}(${teamId})`);
+    for (const t of swaps) adjusted.push(`${teamId} 포지션 보충 ${t}`);
+    for (const r of relabeled) adjusted.push(`${teamId} ${r.name}: ${r.from} → ${r.to} (포지션이 비어서 바꿈)`);
+    const rows = ['name,position,age,number,origin', ...roster.map((p) => [display(p), p.position, p.age ?? '', p.number ?? '', p.origin].join(','))];
+    writeFileSync(path(`data/rosters/${teamId}.csv`), rows.join('\n') + '\n');
   }
-  // 합계 기록 CSV (generate가 이 이름으로 능력치를 만든다)
+  // 합계 기록 CSV (generate가 이 이름으로 능력치를 만든다). 기록 없는 선수는 줄이 없어 가상 능력치가 된다
   const cols = ['games', 'minutes', 'pts', 'reb', 'ast', 'stl', 'blk', 'fgm', 'fga', 'tpm', 'tpa', 'ftm', 'fta'];
   const key = { pts: 'points', reb: 'rebounds', ast: 'assists', stl: 'steals', blk: 'blocks' };
+  const withStats = new Set(assigned.filter((p) => p.stats).map((p) => p.name));
   const statLines = ['name,' + cols.join(',')];
-  for (const p of merged.filter((m) => assigned.some((a) => a.name === m.name))) {
-    statLines.push([p.name, ...cols.map((c) => (c === 'minutes' ? p.totals.minutes.toFixed(2) : p.totals[key[c] ?? c]))].join(','));
+  for (const m of merged.filter((m) => withStats.has(m.name))) {
+    const p = assigned.find((a) => a.name === m.name);
+    statLines.push([display(p), ...cols.map((c) => (c === 'minutes' ? m.totals.minutes.toFixed(2) : m.totals[key[c] ?? c]))].join(','));
   }
-  writeFileSync(join(ROOT, 'data/stats/base.csv'), statLines.join('\n') + '\n');
-  console.log(`팀이 채워진 선수 ${assigned.length}명 → data/rosters/*.csv (${byTeam.size}개 구단), data/stats/base.csv`);
+  writeFileSync(path('data/stats/base.csv'), statLines.join('\n') + '\n');
+  console.log(`소속이 정해진 선수 ${assigned.length}명(기록 있음 ${withStats.size}명) → data/rosters/*.csv (${byTeam.size}개 구단), data/stats/base.csv`);
+  for (const a of adjusted) console.log('  ' + a);
   if (dropped.length) console.log(`로스터 인원(국내 ${rules.roster.domestic}, 외국 ${rules.roster.foreign})을 넘어 제외: ${dropped.join(', ')}`);
   console.log('이어서 npm run generate 를 실행하면 실제 이름과 기록 기반 능력치로 data/players.json 이 만들어진다.');
 }

@@ -23,8 +23,8 @@ and opening a PR for review.
 ```bash
 npm run generate                              # 가상 선수 데이터 생성 (data/players.json)
 npm test                                      # 데이터·시뮬레이션 검증
-npm run build:real                            # 기록 xlsx→CSV로 만든 실제 선수 풀과 팀 배정 템플릿(data/players/) 생성
-npm run apply:real                            # team-map.csv에 팀을 채운 선수만 로스터·기록 CSV로 내보내기
+npm run build:real                            # 실제 선수 풀(data/players/real-pool.json)과 정정용 표 생성
+npm run apply:real                            # 소속이 정해진 선수를 로스터·기록 CSV로 내보내기 (이어서 npm run generate)
 npm run build:history                         # 팀 이력(data/history/raw → seasons.json, franchises.json) 검증·빌드
 node tools/run-season.mjs                     # 1시즌 + 플레이오프 결과 출력
 node tools/run-season.mjs --seasons 500       # 여러 시즌 밸런스 통계
