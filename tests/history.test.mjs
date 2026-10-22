@@ -320,7 +320,7 @@ test('2023-24: 날짜로 나뉜 라운드(팀마다 경기 수 다름), 상대�
 test('시즌별 소속 CSV: 선수기록 시트와 같은 선수 수, 모두 실제 구단', () => {
   const ids = new Set(teams.map((t) => t.id));
   const lines = (p) => readFileSync(join(ROOT, p), 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
-  for (const [season, count] of [['2025-26', 193], ['2024-25', 203], ['2023-24', 200]]) {
+  for (const [season, count] of [['2025-26', 193], ['2024-25', 203], ['2023-24', 200], ['2022-23', 194]]) {
     const stats = lines(`data/stats/${season}.csv`).slice(1).map((l) => l.split(',')[0]);
     const team = lines(`data/players/team-${season}.csv`).slice(1).map((l) => l.split(','));
     assert.equal(stats.length, count, `${season} 기록`);
@@ -337,7 +337,7 @@ test('시즌별 소속 CSV: 선수기록 시트와 같은 선수 수, 모두 실
 const csvLines = (p) => readFileSync(join(ROOT, p), 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
 function seasonTeamMaps() {
   const m = new Map();
-  for (const s of ['2023-24', '2024-25', '2025-26']) m.set(s, new Map(csvLines(`data/players/team-${s}.csv`).slice(1).map((l) => l.split(',').slice(0, 2))));
+  for (const s of ['2022-23', '2023-24', '2024-25', '2025-26']) m.set(s, new Map(csvLines(`data/players/team-${s}.csv`).slice(1).map((l) => l.split(',').slice(0, 2))));
   m.set('2026-27', new Map(csvLines('data/players/registry.csv').slice(1).map((l) => l.split(',').slice(0, 2))));
   return m;
 }

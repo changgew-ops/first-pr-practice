@@ -13,7 +13,7 @@ if (!season || !existsSync(src)) { console.error(`파일이 없습니다: data/h
 const teams = JSON.parse(readFileSync(join(ROOT, 'data/teams.json'), 'utf8'));
 const readCsv = (p) => new Map(readFileSync(p, 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#') && !l.startsWith('name,')).map((l) => l.split(',').slice(0, 2)));
 const seasonTeams = new Map();
-for (const s of ['2023-24', '2024-25', '2025-26']) { const f = join(ROOT, `data/players/team-${s}.csv`); if (existsSync(f)) seasonTeams.set(s, readCsv(f)); }
+for (const s of ['2022-23', '2023-24', '2024-25', '2025-26']) { const f = join(ROOT, `data/players/team-${s}.csv`); if (existsSync(f)) seasonTeams.set(s, readCsv(f)); }
 seasonTeams.set('2026-27', readCsv(join(ROOT, 'data/players/registry.csv')));
 const dir = mkdtempSync(join(tmpdir(), 'ev-'));
 try {

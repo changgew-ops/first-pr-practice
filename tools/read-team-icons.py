@@ -9,7 +9,9 @@
 가정
 - 화면은 PTS 순(누적, 1차 스탯)이고 한 페이지가 20명이다. 같은 득점은 이름 순으로 정렬된다(25-26·24-25에서 확인).
 - 녹화는 --first-page 부터 한 페이지씩 앞으로 넘긴다. 프레임을 화면 내용이 바뀌는 곳에서 나눠 페이지 순서로 센다.
-- 아이콘은 data/players/icon-templates.json(10개 구단)과 가장 가까운 것으로 판정한다.
+- 아이콘은 data/players/icon-templates.json(2023-24 이후 로고)과 가장 가까운 것으로 판정한다. 구단 로고가 시즌마다 바뀌므로(2022-23은 캐롯·옛 KGC·전주 KCC)
+  `--cluster`를 주면 이 시즌 아이콘을 10묶음으로 나눈 뒤 승·패 한도로 묶음 ↔ 구단을 짝지어(scipy 필요) 시즌별 템플릿 `data/players/icon-templates-<시즌>.json`을 저장한다.
+  이후에는 `--templates <그 파일>`로 같은 판독을 다시 할 수 있다.
 검증
 - 선수가 뛴 경기의 팀 승·패가 구단 시즌 합계(정규리그+플레이오프, --totals)를 넘으면 표시한다. 시즌 중 이적한 선수는 한 구단 한도를 넘어 걸리며(아이콘은 마지막 소속), 판독 오류도 여기서 걸린다.
 """
@@ -67,6 +69,39 @@ def crop(im, x, y):
     return np.asarray(box.resize((16, 16), Image.LANCZOS), dtype=float).ravel()
 
 
+def cluster_templates(X, names, rows_by_name, totals, k=10, restarts=200):
+    """아이콘을 k묶음으로 나누고(k-means++) 묶음 ↔ 구단을 승·패 한도로 짝짓는다. 반환: {구단: 묶음 평균 벡터}"""
+    from scipy.optimize import linear_sum_assignment
+    rng = np.random.default_rng(0)
+    teams = list(totals)
+    best = None
+    for _ in range(restarts):
+        C = [X[rng.integers(len(X))]]
+        for _ in range(k - 1):
+            d = np.min([((X - c) ** 2).sum(1) for c in C], axis=0)
+            C.append(X[rng.choice(len(X), p=d / d.sum())])
+        C = np.array(C)
+        for _ in range(60):
+            lab = ((X[:, None] - C[None]) ** 2).sum(2).argmin(1)
+            C = np.array([X[lab == j].mean(0) if (lab == j).any() else C[j] for j in range(k)])
+        inertia = ((X - C[lab]) ** 2).sum()
+        if best is None or inertia < best[2]:
+            best = (lab, C, inertia)
+    lab, C, _ = best
+    WL = np.array([[rows_by_name[n]['w'], rows_by_name[n]['l']] for n in names])
+    cost = np.zeros((k, len(teams)))
+    for j in range(k):
+        ws = WL[lab == j]
+        for t, tn in enumerate(teams):
+            viol = ((ws[:, 0] > totals[tn]['w']) | (ws[:, 1] > totals[tn]['l'])).sum()
+            top = lambda col: np.sort(ws[:, col])[-3:].mean()
+            slack = (totals[tn]['w'] - top(0)) + (totals[tn]['l'] - top(1)) if len(ws) >= 3 else 50
+            cost[j, t] = viol * 100 + max(slack, 0)  # 한도를 넘는 선수는 시즌 중 이적자일 수 있어 벌점만 준다
+    rr, cc = linear_sum_assignment(cost)
+    print('묶음 크기: ' + ', '.join(str(int((lab == j).sum())) for j in range(k)), file=sys.stderr)
+    return {teams[t]: C[j] for j, t in zip(rr, cc)}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--stats', required=True)
@@ -74,6 +109,8 @@ def main():
     ap.add_argument('--first-page', type=int, default=1)
     ap.add_argument('--totals', required=True)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--cluster', action='store_true', help='이 시즌 아이콘을 묶어 구단을 짝짓고 시즌별 템플릿을 저장한다')
+    ap.add_argument('--templates', help='시즌별 템플릿 JSON(--cluster가 만든 것)')
     ap.add_argument('--season', help='시즌 이름(예: 2024-25). 있으면 data/players/team-overrides.csv의 정정값을 적용한다')
     ap.add_argument('--append', action='store_true', help='기존 출력 CSV에 없는 선수만 덧붙인다')
     ap.add_argument('--diff', type=float, default=1.5, help='페이지가 바뀌었다고 볼 변한 픽셀 비율(%%)')
@@ -81,6 +118,8 @@ def main():
 
     totals = json.load(open(args.totals))
     T = load_templates()
+    if args.templates:
+        T = {t: np.array(v) for t, v in json.load(open(args.templates, encoding='utf-8'))['templates'].items()}
     rows = list(csv.DictReader(open(args.stats, encoding='utf-8')))
     for r in rows:
         for k in ('pts', 'w', 'l'):
@@ -114,6 +153,24 @@ def main():
     print(f'프레임 {len(files)}개 → 페이지 {len(groups)}개 (첫 페이지 {args.first_page}, 기대 {expected})', file=sys.stderr)
     if len(groups) != expected:
         print('경고: 페이지 수가 기대와 다릅니다. --first-page와 녹화 범위를 확인하세요.', file=sys.stderr)
+
+    pages = []
+    for gi, g in enumerate(groups):
+        im = Image.open(g[-1]).convert('RGB')
+        x, y0 = locate(np.asarray(im).astype(int))
+        pages.append((gi, g[-1], im, x, y0))
+    if args.cluster:
+        X, names = [], []
+        for gi, f, im, x, y0 in pages:
+            for i in range(20):
+                idx = (args.first_page - 1 + gi) * 20 + i
+                if idx >= len(srt):
+                    break
+                X.append(crop(im, x, y0 + 36 * i)); names.append(srt[idx]['name'])
+        T = cluster_templates(np.array(X), names, {r['name']: r for r in srt}, totals)
+        out_t = os.path.join(ROOT, f'data/players/icon-templates-{args.season}.json')
+        json.dump({'size': 16, 'note': f'{args.season} 시즌 아이콘 묶음 평균(승·패 한도로 구단 지정). tools/read-team-icons.py --cluster가 만든다', 'templates': {t: [round(float(v), 1) for v in vec] for t, vec in T.items()}}, open(out_t, 'w'))
+        print(f'→ {out_t}', file=sys.stderr)
 
     assign, flags = {}, []
     for gi, g in enumerate(groups):

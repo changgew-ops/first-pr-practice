@@ -1,3 +1,7 @@
 # 아이콘 판독을 사람이 확인해 바로잡은 값. tools/read-team-icons.py --season 으로 적용한다
 season,name,team,reason
 2024-25,조상열,daegu-kogas,판별 여유가 작았고 나무위키 2024-25 FA 기록에 대구 한국가스공사 잔류로 나온다
+2022-23,이정제,goyang-sono,판별 여유가 작았고 나무위키 2023-24 FA 대상자가 고양 데이원이라 전 시즌 캐롯 소속
+2022-23,정종현,ulsan-hyundai-mobis,판별 여유가 작았고 나무위키 2023-24 FA 대상자가 울산 현대모비스
+2022-23,김철욱,anyang-jungkwanjang,1경기 출전이라 아이콘 판독이 어긋남. 나무위키 2022-23 FA 계약(DB → 안양 KGC인삼공사)
+2022-23,박재한,ulsan-hyundai-mobis,1경기 출전이라 아이콘 판독이 어긋남. 나무위키 2022-23 FA 계약(KGC → 울산 현대모비스)
