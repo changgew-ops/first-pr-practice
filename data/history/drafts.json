@@ -1,0 +1,1590 @@
+[
+  {
+    "draftYear": 2024,
+    "season": "2024-25",
+    "date": "2024-11-15",
+    "venue": "고양 소노 아레나",
+    "note": "고졸 선수가 1·2순위로 뽑힌 첫 드래프트. 42명 참가, 26명 지명(61.9%)",
+    "lottery": [
+      {
+        "franchiseId": "seoul-samsung",
+        "balls": 40,
+        "slot": 3
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "balls": 40,
+        "slot": 1
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "balls": 40,
+        "slot": 2
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "balls": 40,
+        "slot": 4
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "balls": 14,
+        "slot": 5
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "balls": 14,
+        "slot": 6
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "balls": 6,
+        "slot": 7
+      },
+      {
+        "franchiseId": "wonju-db",
+        "balls": 6,
+        "slot": 8
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "balls": 0,
+        "slot": 9
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "balls": 0,
+        "slot": 10
+      }
+    ],
+    "tradedPicks": [
+      {
+        "round": 1,
+        "originalTeam": "seoul-samsung",
+        "owner": "wonju-db",
+        "note": "DB 박승재 ↔ 삼성 1라운드 우선 지명권. 추첨 결과 삼성 3순위·DB 8순위라 두 팀의 1라운드 순서가 맞교환됨"
+      },
+      {
+        "round": 1,
+        "originalTeam": "wonju-db",
+        "owner": "seoul-samsung",
+        "note": "위 트레이드의 반대편"
+      },
+      {
+        "round": 1,
+        "originalTeam": "changwon-lg",
+        "owner": "seoul-sk",
+        "note": "SK 이경도 ↔ LG 1라운드 지명권"
+      },
+      {
+        "round": 2,
+        "originalTeam": "goyang-sono",
+        "owner": "seoul-sk",
+        "note": "소노 제안으로 SK·소노가 2라운드 지명권을 맞교환(소노 5순위, SK 9순위). SK는 대가로 원하는 해의 2라운드 선순위 지명권을 가짐"
+      },
+      {
+        "round": 2,
+        "originalTeam": "seoul-sk",
+        "owner": "goyang-sono",
+        "note": "위 맞교환의 반대편"
+      }
+    ],
+    "territorialPicks": [],
+    "participants": [
+      {
+        "name": "성용호",
+        "birth": "2001-02-20",
+        "position": "F",
+        "height": 194,
+        "weight": 90,
+        "school": "동국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이대균",
+        "birth": "2001-02-17",
+        "position": "F,C",
+        "height": 200,
+        "weight": 95,
+        "school": "동국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "지승태",
+        "birth": "2000-08-30",
+        "position": "C",
+        "height": 200,
+        "weight": 100,
+        "school": "동국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김도연",
+        "birth": "2002-04-25",
+        "position": "F",
+        "height": 190,
+        "weight": 82,
+        "school": "건국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "조환희",
+        "birth": "2002-05-02",
+        "position": "G",
+        "height": 182,
+        "weight": 72,
+        "school": "건국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김주영",
+        "birth": "2001-08-08",
+        "position": "C",
+        "height": 200,
+        "weight": 98,
+        "school": "명지대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "소준혁",
+        "birth": "2002-08-10",
+        "position": "G",
+        "height": 186,
+        "weight": 80,
+        "school": "명지대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김태헌",
+        "birth": "2002-08-17",
+        "position": "G",
+        "height": 180,
+        "weight": 76,
+        "school": "명지대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "원성욱",
+        "birth": "2002-01-22",
+        "position": "F",
+        "height": 190,
+        "weight": 88,
+        "school": "명지대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "강재민",
+        "birth": "2002-03-11",
+        "position": "F",
+        "height": 195,
+        "weight": 82,
+        "school": "연세대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "최형찬",
+        "birth": "2002-03-05",
+        "position": "G",
+        "height": 188,
+        "weight": 84,
+        "school": "연세대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "임동언",
+        "birth": "2002-08-04",
+        "position": "F",
+        "height": 196,
+        "weight": 83,
+        "school": "중앙대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "강현수",
+        "birth": "2003-01-11",
+        "position": "G",
+        "height": 183,
+        "weight": 71,
+        "school": "중앙대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김준형",
+        "birth": "2001-03-23",
+        "position": "F",
+        "height": 193,
+        "weight": 93,
+        "school": "조선대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "권현우",
+        "birth": "2000-03-28",
+        "position": "F",
+        "height": 193,
+        "weight": 98,
+        "school": "조선대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김재현",
+        "birth": "2001-04-17",
+        "position": "G",
+        "height": 190,
+        "weight": 80,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "박준형",
+        "birth": "2002-02-06",
+        "position": "F",
+        "height": 191,
+        "weight": 93,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김도은",
+        "birth": "2002-01-09",
+        "position": "G",
+        "height": 183,
+        "weight": 80,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "양준",
+        "birth": "2001-12-22",
+        "position": "C",
+        "height": 200,
+        "weight": 96,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김태훈",
+        "birth": "2002-04-29",
+        "position": "G",
+        "height": 189,
+        "weight": 88,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "송인준",
+        "birth": "2001-05-31",
+        "position": "F,C",
+        "height": 193,
+        "weight": 98,
+        "school": "단국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이현호",
+        "birth": "2001-03-07",
+        "position": "G",
+        "height": 180,
+        "weight": 74,
+        "school": "성균관대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "조혁재",
+        "birth": "2002-02-27",
+        "position": "F",
+        "height": 186,
+        "weight": 81,
+        "school": "성균관대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "권순우",
+        "birth": "2002-12-07",
+        "position": "G",
+        "height": 188,
+        "weight": 85,
+        "school": "상명대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "고정현",
+        "birth": "2002-03-12",
+        "position": "F",
+        "height": 187,
+        "weight": 82,
+        "school": "상명대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "박성재",
+        "birth": "2002-03-13",
+        "position": "G",
+        "height": 183,
+        "weight": 84,
+        "school": "한양대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "조민근",
+        "birth": "2002-01-29",
+        "position": "G",
+        "height": 180,
+        "weight": 77,
+        "school": "한양대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "심재범",
+        "birth": "2001-10-08",
+        "position": "G,F",
+        "height": 185,
+        "weight": 80,
+        "school": "울산대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "손준",
+        "birth": "2000-10-22",
+        "position": "F",
+        "height": 200,
+        "weight": 100,
+        "school": "명지대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "이민서",
+        "birth": "2003-12-03",
+        "position": "G",
+        "height": 181,
+        "weight": 78,
+        "school": "연세대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "김보배",
+        "birth": "2003-06-23",
+        "position": "C",
+        "height": 202,
+        "weight": 97,
+        "school": "연세대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "서동원",
+        "birth": "2002-12-31",
+        "position": "F",
+        "height": 193,
+        "weight": 92,
+        "school": "단국대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "임정현",
+        "birth": "2002-08-11",
+        "position": "F",
+        "height": 192,
+        "weight": 88,
+        "school": "동국대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "백승엽",
+        "birth": "2003-09-26",
+        "position": "G",
+        "height": 181,
+        "weight": 81,
+        "school": "동국대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "이근준",
+        "birth": "2005-07-08",
+        "position": "F",
+        "height": 194,
+        "weight": 87,
+        "school": "경복고",
+        "status": "고교 졸업예정"
+      },
+      {
+        "name": "박정웅",
+        "birth": "2006-04-17",
+        "position": "G,F",
+        "height": 193,
+        "weight": 80,
+        "school": "홍대부고",
+        "status": "고교 졸업예정"
+      },
+      {
+        "name": "이찬영",
+        "birth": "2006-11-01",
+        "position": "F",
+        "height": 193,
+        "weight": 82,
+        "school": "송도고",
+        "status": "고교 졸업예정"
+      },
+      {
+        "name": "서문세찬",
+        "birth": "2000-06-28",
+        "position": "G",
+        "height": 180,
+        "weight": 81,
+        "school": "한양대",
+        "status": "대학 졸업"
+      },
+      {
+        "name": "이승구",
+        "birth": "2001-03-14",
+        "position": "F",
+        "height": 190,
+        "weight": 86,
+        "school": "경희대",
+        "status": "대학 졸업"
+      },
+      {
+        "name": "황영찬",
+        "birth": "2001-06-09",
+        "position": "G",
+        "height": 178,
+        "weight": 76,
+        "school": "경희대",
+        "status": "대학 졸업"
+      },
+      {
+        "name": "정연우",
+        "birth": "2001-03-05",
+        "position": "G",
+        "height": 183,
+        "weight": 87,
+        "school": "중앙대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "정성조",
+        "birth": "2000-07-10",
+        "position": "F",
+        "height": 191,
+        "weight": 85,
+        "school": "성균관대",
+        "status": "대학 졸업예정"
+      }
+    ],
+    "picks": [
+      {
+        "round": 1,
+        "pick": 1,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "박정웅",
+        "school": "홍대부고",
+        "position": "G",
+        "birth": "2006-04-17",
+        "height": 193,
+        "weight": 80
+      },
+      {
+        "round": 1,
+        "pick": 2,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "이근준",
+        "school": "경복고",
+        "position": "F",
+        "birth": "2005-07-08",
+        "height": 194,
+        "weight": 87
+      },
+      {
+        "round": 1,
+        "pick": 3,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "김보배",
+        "school": "연세대",
+        "position": "C",
+        "birth": "2003-06-23",
+        "height": 202,
+        "weight": 97
+      },
+      {
+        "round": 1,
+        "pick": 4,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "손준",
+        "school": "명지대",
+        "position": "F",
+        "birth": "2000-10-22",
+        "height": 200,
+        "weight": 100
+      },
+      {
+        "round": 1,
+        "pick": 5,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "이대균",
+        "school": "동국대",
+        "position": "C",
+        "birth": "2001-02-17",
+        "height": 200,
+        "weight": 95
+      },
+      {
+        "round": 1,
+        "pick": 6,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "김태훈",
+        "school": "고려대",
+        "position": "G",
+        "birth": "2002-04-29",
+        "height": 189,
+        "weight": 88
+      },
+      {
+        "round": 1,
+        "pick": 7,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "changwon-lg",
+        "name": "이민서",
+        "school": "연세대",
+        "position": "G",
+        "birth": "2003-12-03",
+        "height": 181,
+        "weight": 78
+      },
+      {
+        "round": 1,
+        "pick": 8,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "wonju-db",
+        "name": "임동언",
+        "school": "중앙대",
+        "position": "F",
+        "birth": "2002-08-04",
+        "height": 196,
+        "weight": 83
+      },
+      {
+        "round": 1,
+        "pick": 9,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "조환희",
+        "school": "건국대",
+        "position": "G",
+        "birth": "2002-05-02",
+        "height": 182,
+        "weight": 72
+      },
+      {
+        "round": 1,
+        "pick": 10,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "조혁재",
+        "school": "성균관대",
+        "position": "F",
+        "birth": "2002-02-27",
+        "height": 186,
+        "weight": 81
+      },
+      {
+        "round": 2,
+        "pick": 1,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "이찬영",
+        "school": "송도고",
+        "position": "F",
+        "birth": "2006-11-01",
+        "height": 193,
+        "weight": 82
+      },
+      {
+        "round": 2,
+        "pick": 2,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "박성재",
+        "school": "한양대",
+        "position": "G",
+        "birth": "2002-03-13",
+        "height": 183,
+        "weight": 84
+      },
+      {
+        "round": 2,
+        "pick": 3,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "백승엽",
+        "school": "동국대",
+        "position": "G",
+        "birth": "2003-09-26",
+        "height": 181,
+        "weight": 81
+      },
+      {
+        "round": 2,
+        "pick": 4,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "최형찬",
+        "school": "연세대",
+        "position": "G",
+        "birth": "2002-03-05",
+        "height": 188,
+        "weight": 84
+      },
+      {
+        "round": 2,
+        "pick": 5,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "seoul-sk",
+        "name": "서동원",
+        "school": "단국대",
+        "position": "F",
+        "birth": "2002-12-31",
+        "height": 193,
+        "weight": 92
+      },
+      {
+        "round": 2,
+        "pick": 6,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "박준형",
+        "school": "고려대",
+        "position": "F",
+        "birth": "2002-02-06",
+        "height": 191,
+        "weight": 93
+      },
+      {
+        "round": 2,
+        "pick": 7,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "권순우",
+        "school": "상명대",
+        "position": "G",
+        "birth": "2002-12-07",
+        "height": 188,
+        "weight": 85
+      },
+      {
+        "round": 2,
+        "pick": 8,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "황영찬",
+        "school": "경희대",
+        "position": "G",
+        "birth": "2001-06-09",
+        "height": 178,
+        "weight": 76
+      },
+      {
+        "round": 2,
+        "pick": 9,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "goyang-sono",
+        "name": "강재민",
+        "school": "연세대",
+        "position": "F",
+        "birth": "2002-03-11",
+        "height": 195,
+        "weight": 82
+      },
+      {
+        "round": 2,
+        "pick": 10,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "소준혁",
+        "school": "명지대",
+        "position": "G",
+        "birth": "2002-08-10",
+        "height": 186,
+        "weight": 80
+      },
+      {
+        "round": 3,
+        "pick": 2,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "정성조",
+        "school": "성균관대",
+        "position": "F",
+        "birth": "2000-07-10",
+        "height": 191,
+        "weight": 85
+      },
+      {
+        "round": 3,
+        "pick": 5,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "강현수",
+        "school": "중앙대",
+        "position": "G",
+        "birth": "2003-01-11",
+        "height": 183,
+        "weight": 71
+      },
+      {
+        "round": 3,
+        "pick": 6,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "양준",
+        "school": "고려대",
+        "position": "C",
+        "birth": "2001-12-22",
+        "height": 200,
+        "weight": 96
+      },
+      {
+        "round": 3,
+        "pick": 9,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "김재현",
+        "school": "고려대",
+        "position": "G",
+        "birth": "2001-04-17",
+        "height": 190,
+        "weight": 80
+      },
+      {
+        "round": 3,
+        "pick": 10,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "이현호",
+        "school": "성균관대",
+        "position": "G",
+        "birth": "2001-03-07",
+        "height": 180,
+        "weight": 74
+      },
+      {
+        "round": 4,
+        "pick": 9,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "김도은",
+        "school": "고려대",
+        "position": "G",
+        "birth": "2002-01-09",
+        "height": 183,
+        "weight": 80
+      }
+    ]
+  },
+  {
+    "draftYear": 2025,
+    "season": "2025-26",
+    "date": "2025-11-14",
+    "venue": "잠실학생체육관",
+    "note": "46명 지원(얼리 14명, 역대 최다), 26명 지명. 연고지명으로 에디 다니엘(SK)·김건하(현대모비스)가 드래프트 전에 프로에 합류했다(지명권은 소진되지 않음)",
+    "lottery": [
+      {
+        "franchiseId": "seoul-samsung",
+        "balls": 40,
+        "slot": 5
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "balls": 40,
+        "slot": 3
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "balls": 40,
+        "slot": 4
+      },
+      {
+        "franchiseId": "wonju-db",
+        "balls": 40,
+        "slot": 2
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "balls": 14,
+        "slot": 1
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "balls": 14,
+        "slot": 6
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "balls": 6,
+        "slot": 8
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "balls": 6,
+        "slot": 7
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "balls": 0,
+        "slot": 9
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "balls": 0,
+        "slot": 10
+      }
+    ],
+    "tradedPicks": [],
+    "territorialPicks": [
+      {
+        "franchiseId": "seoul-sk",
+        "name": "에디 다니엘",
+        "school": "용산고"
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "name": "김건하",
+        "school": "무룡고"
+      }
+    ],
+    "participants": [
+      {
+        "name": "김준영",
+        "birth": "2003-01-28",
+        "position": "G",
+        "height": 181,
+        "weight": 72,
+        "school": "건국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "프레디",
+        "birth": "2003-02-02",
+        "position": "C",
+        "height": 203,
+        "weight": 100,
+        "school": "건국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "하주형",
+        "birth": "2003-06-23",
+        "position": "G",
+        "height": 183,
+        "weight": 75,
+        "school": "건국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "신우철",
+        "birth": "2002-07-08",
+        "position": "G",
+        "height": 180,
+        "weight": 80,
+        "school": "울산대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이민철",
+        "birth": "2003-06-20",
+        "position": "G",
+        "height": 186,
+        "weight": 78,
+        "school": "명지대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "박지환",
+        "birth": "2003-11-17",
+        "position": "G",
+        "height": 192,
+        "weight": 84,
+        "school": "명지대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "최홍준",
+        "birth": "2002-05-31",
+        "position": "G",
+        "height": 177,
+        "weight": 78,
+        "school": "명지대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김휴범",
+        "birth": "2003-08-20",
+        "position": "G",
+        "height": 180,
+        "weight": 73,
+        "school": "중앙대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "송재환",
+        "birth": "2003-04-26",
+        "position": "G",
+        "height": 188,
+        "weight": 85,
+        "school": "단국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "최강민",
+        "birth": "2002-07-08",
+        "position": "G",
+        "height": 188,
+        "weight": 88,
+        "school": "단국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "홍동명",
+        "birth": "2003-05-09",
+        "position": "G",
+        "height": 186,
+        "weight": 79,
+        "school": "상명대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이주민",
+        "birth": "2002-10-21",
+        "position": "F",
+        "height": 194,
+        "weight": 96,
+        "school": "성균관대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이건영",
+        "birth": "2003-06-09",
+        "position": "G",
+        "height": 181,
+        "weight": 77,
+        "school": "성균관대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "노완주",
+        "birth": "2003-06-08",
+        "position": "F",
+        "height": 193,
+        "weight": 91,
+        "school": "성균관대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "신지원",
+        "birth": "2003-05-18",
+        "position": "F,C",
+        "height": 197,
+        "weight": 97,
+        "school": "한양대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "박민재",
+        "birth": "2003-08-04",
+        "position": "F",
+        "height": 195,
+        "weight": 84,
+        "school": "한양대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김선우",
+        "birth": "2003-07-28",
+        "position": "G",
+        "height": 175,
+        "weight": 71,
+        "school": "한양대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "임정현",
+        "birth": "2002-08-11",
+        "position": "F",
+        "height": 192,
+        "weight": 89,
+        "school": "동국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "지용현",
+        "birth": "2002-03-19",
+        "position": "C",
+        "height": 201,
+        "weight": 97,
+        "school": "동국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이상현",
+        "birth": "2003-12-13",
+        "position": "G",
+        "height": 189,
+        "weight": 77,
+        "school": "동국대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "김민규",
+        "birth": "2002-04-19",
+        "position": "F",
+        "height": 196,
+        "weight": 90,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "박정환",
+        "birth": "2003-03-16",
+        "position": "G",
+        "height": 180,
+        "weight": 76,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이건희",
+        "birth": "2003-12-14",
+        "position": "G",
+        "height": 186,
+        "weight": 80,
+        "school": "고려대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "지승현",
+        "birth": "2003-04-11",
+        "position": "F",
+        "height": 193,
+        "weight": 92,
+        "school": "경희대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "안세준",
+        "birth": "2002-04-10",
+        "position": "F",
+        "height": 196,
+        "weight": 90,
+        "school": "경희대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "우상현",
+        "birth": "2003-04-01",
+        "position": "G",
+        "height": 189,
+        "weight": 82,
+        "school": "경희대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이영웅",
+        "birth": "2003-08-21",
+        "position": "G",
+        "height": 181,
+        "weight": 77,
+        "school": "조선대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "안성우",
+        "birth": "2003-06-07",
+        "position": "G",
+        "height": 184,
+        "weight": 82,
+        "school": "연세대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "이규태",
+        "birth": "2002-04-04",
+        "position": "F,C",
+        "height": 199,
+        "weight": 99,
+        "school": "연세대",
+        "status": "대학 졸업예정"
+      },
+      {
+        "name": "여찬영",
+        "birth": "2004-01-08",
+        "position": "G",
+        "height": 182,
+        "weight": 74,
+        "school": "건국대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "김윤성",
+        "birth": "2004-01-19",
+        "position": "F,C",
+        "height": 198,
+        "weight": 90,
+        "school": "성균관대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "강성욱",
+        "birth": "2004-09-15",
+        "position": "G",
+        "height": 184,
+        "weight": 75,
+        "school": "성균관대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "배형직",
+        "birth": "2004-01-03",
+        "position": "G",
+        "height": 178,
+        "weight": 75,
+        "school": "울산대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "이한결",
+        "birth": "2003-10-17",
+        "position": "G",
+        "height": 181,
+        "weight": 74,
+        "school": "동국대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "김명진",
+        "birth": "2003-08-14",
+        "position": "F",
+        "height": 199,
+        "weight": 92,
+        "school": "동국대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "백승혁",
+        "birth": "2004-03-31",
+        "position": "G",
+        "height": 185,
+        "weight": 76,
+        "school": "동국대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "윤기찬",
+        "birth": "2004-07-29",
+        "position": "F",
+        "height": 194,
+        "weight": 93,
+        "school": "고려대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "문유현",
+        "birth": "2004-06-08",
+        "position": "G",
+        "height": 181,
+        "weight": 81,
+        "school": "고려대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "강지훈",
+        "birth": "2003-07-22",
+        "position": "C",
+        "height": 203,
+        "weight": 99,
+        "school": "연세대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "강태현",
+        "birth": "2005-04-08",
+        "position": "G,F",
+        "height": 198,
+        "weight": 85,
+        "school": "연세대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "이유진",
+        "birth": "2005-01-14",
+        "position": "G,F",
+        "height": 199,
+        "weight": 84,
+        "school": "연세대",
+        "status": "대학 재학"
+      },
+      {
+        "name": "양우혁",
+        "birth": "2007-05-03",
+        "position": "G",
+        "height": 181,
+        "weight": 73,
+        "school": "삼일고",
+        "status": "고교 졸업예정"
+      },
+      {
+        "name": "송한준",
+        "birth": "2007-06-02",
+        "position": "G,F",
+        "height": 198,
+        "weight": 85,
+        "school": "광신방송예술고",
+        "status": "고교 졸업예정"
+      },
+      {
+        "name": "임동일",
+        "birth": "2003-12-23",
+        "position": "C",
+        "height": 214,
+        "weight": 113,
+        "school": "중앙대",
+        "status": "일반인(대학 졸업예정)"
+      },
+      {
+        "name": "김민규",
+        "birth": "2006-05-21",
+        "position": "G",
+        "height": 178,
+        "weight": 75,
+        "school": "안양고",
+        "status": "일반인(고교 졸업)"
+      },
+      {
+        "name": "안다니엘",
+        "birth": "2004-02-02",
+        "position": "G",
+        "height": 184,
+        "weight": 80,
+        "school": "사이먼프레이저대",
+        "status": "일반인(대학 졸업예정)"
+      }
+    ],
+    "picks": [
+      {
+        "round": 1,
+        "pick": 1,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "문유현",
+        "school": "고려대",
+        "position": "G",
+        "birth": "2004-06-08",
+        "height": 181,
+        "weight": 81
+      },
+      {
+        "round": 1,
+        "pick": 2,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "이유진",
+        "school": "연세대",
+        "position": "F",
+        "birth": "2005-01-14",
+        "height": 199,
+        "weight": 84
+      },
+      {
+        "round": 1,
+        "pick": 3,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "윤기찬",
+        "school": "고려대",
+        "position": "F",
+        "birth": "2004-07-29",
+        "height": 194,
+        "weight": 93
+      },
+      {
+        "round": 1,
+        "pick": 4,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "강지훈",
+        "school": "연세대",
+        "position": "C",
+        "birth": "2003-07-22",
+        "height": 203,
+        "weight": 99
+      },
+      {
+        "round": 1,
+        "pick": 5,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "이규태",
+        "school": "연세대",
+        "position": "F",
+        "birth": "2002-04-04",
+        "height": 199,
+        "weight": 99
+      },
+      {
+        "round": 1,
+        "pick": 6,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "양우혁",
+        "school": "삼일고",
+        "position": "G",
+        "birth": "2007-05-03",
+        "height": 181,
+        "weight": 73
+      },
+      {
+        "round": 1,
+        "pick": 7,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "최강민",
+        "school": "단국대",
+        "position": "G",
+        "birth": "2002-07-08",
+        "height": 188,
+        "weight": 88
+      },
+      {
+        "round": 1,
+        "pick": 8,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "강성욱",
+        "school": "성균관대",
+        "position": "G",
+        "birth": "2004-09-15",
+        "height": 184,
+        "weight": 75
+      },
+      {
+        "round": 1,
+        "pick": 9,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "김명진",
+        "school": "동국대",
+        "position": "F",
+        "birth": "2003-08-14",
+        "height": 199,
+        "weight": 92
+      },
+      {
+        "round": 1,
+        "pick": 10,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "김선우",
+        "school": "한양대",
+        "position": "G",
+        "birth": "2003-07-28",
+        "height": 175,
+        "weight": 71
+      },
+      {
+        "round": 2,
+        "pick": 1,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "김준영",
+        "school": "건국대",
+        "position": "G",
+        "birth": "2003-01-28",
+        "height": 181,
+        "weight": 72
+      },
+      {
+        "round": 2,
+        "pick": 2,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "안성우",
+        "school": "연세대",
+        "position": "G",
+        "birth": "2003-06-07",
+        "height": 184,
+        "weight": 82
+      },
+      {
+        "round": 2,
+        "pick": 3,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "박민재",
+        "school": "한양대",
+        "position": "F",
+        "birth": "2003-08-04",
+        "height": 195,
+        "weight": 84
+      },
+      {
+        "round": 2,
+        "pick": 4,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "박정환",
+        "school": "고려대",
+        "position": "G",
+        "birth": "2003-03-16",
+        "height": 180,
+        "weight": 76
+      },
+      {
+        "round": 2,
+        "pick": 5,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "김민규",
+        "school": "고려대",
+        "position": "F",
+        "birth": "2002-04-19",
+        "height": 196,
+        "weight": 90
+      },
+      {
+        "round": 2,
+        "pick": 6,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "안세준",
+        "school": "경희대",
+        "position": "F",
+        "birth": "2002-04-10",
+        "height": 196,
+        "weight": 90
+      },
+      {
+        "round": 2,
+        "pick": 7,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "신지원",
+        "school": "한양대",
+        "position": "F",
+        "birth": "2003-05-18",
+        "height": 197,
+        "weight": 97
+      },
+      {
+        "round": 2,
+        "pick": 8,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "강태현",
+        "school": "연세대",
+        "position": "F",
+        "birth": "2005-04-08",
+        "height": 198,
+        "weight": 85
+      },
+      {
+        "round": 2,
+        "pick": 9,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "김휴범",
+        "school": "중앙대",
+        "position": "G",
+        "birth": "2003-08-20",
+        "height": 180,
+        "weight": 73
+      },
+      {
+        "round": 2,
+        "pick": 10,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "송한준",
+        "school": "광신방송예술고",
+        "position": "F",
+        "birth": "2007-06-02",
+        "height": 198,
+        "weight": 85
+      },
+      {
+        "round": 3,
+        "pick": 2,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "송재환",
+        "school": "단국대",
+        "position": "G",
+        "birth": "2003-04-26",
+        "height": 188,
+        "weight": 85
+      },
+      {
+        "round": 3,
+        "pick": 3,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "김윤성",
+        "school": "성균관대",
+        "position": "C",
+        "birth": "2004-01-19",
+        "height": 198,
+        "weight": 90
+      },
+      {
+        "round": 3,
+        "pick": 6,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "우상현",
+        "school": "경희대",
+        "position": "G",
+        "birth": "2003-04-01",
+        "height": 189,
+        "weight": 82
+      },
+      {
+        "round": 3,
+        "pick": 9,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "프레디",
+        "school": "건국대",
+        "position": "C",
+        "birth": "2003-02-02",
+        "height": 203,
+        "weight": 100
+      },
+      {
+        "round": 3,
+        "pick": 10,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "임정현",
+        "school": "동국대",
+        "position": "F",
+        "birth": "2002-08-11",
+        "height": 192,
+        "weight": 89
+      },
+      {
+        "round": 4,
+        "pick": 1,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "지용현",
+        "school": "동국대",
+        "position": "C",
+        "birth": "2002-03-19",
+        "height": 201,
+        "weight": 97
+      }
+    ]
+  }
+]

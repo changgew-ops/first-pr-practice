@@ -59,9 +59,19 @@ const entries = readCsv('data/players/registry.csv').map((r) => ({
 }));
 const team2526 = new Map(readCsv('data/players/team-2025-26.csv').map((r) => [aliases.get(r.name) ?? r.name, r.team]));
 
+// 드래프트 참가 기록의 생년월일: 이름과 드래프트 연도가 등록선수 화면과 같은 선수에게만 쓴다
+const births = new Map();
+if (existsSync(path('data/history/drafts.json'))) {
+  const drafts = JSON.parse(read('data/history/drafts.json'));
+  for (const e of entries) {
+    const hit = drafts.find((d) => d.draftYear === e.draftYear)?.picks.filter((p) => p.name === e.name && p.birth);
+    if (hit?.length === 1) births.set(e.name, hit[0].birth);
+  }
+}
+
 const pool0 = buildPool(merged, rules, { teamTotals, teamMap });
 const { map: registry, extra, notes: regNotes } = resolveRegistry(entries, pool0, team2526);
-const all = [...buildPool(merged, rules, { teamTotals, teamMap, registry }), ...statlessPlayers(extra, teamMap)]
+const all = [...buildPool(merged, rules, { teamTotals, teamMap, registry, births }), ...statlessPlayers(extra, teamMap, { births })]
   .sort((a, b) => b.minutes - a.minutes);
 mkdirSync(path('data/players'), { recursive: true });
 

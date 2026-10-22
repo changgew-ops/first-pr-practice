@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { inferPosition } from '../src/position.mjs';
-import { guessOrigin, mergeSeasons, candidateTeams, buildPool, applyAliases, positionFromRegistry, ageFromDraft, resolveRegistry, statlessPlayers, pickRoster } from '../src/real-players.mjs';
+import { guessOrigin, mergeSeasons, candidateTeams, buildPool, applyAliases, positionFromRegistry, ageFromDraft, resolveRegistry, statlessPlayers, pickRoster, ageOn } from '../src/real-players.mjs';
 import { parseStatsCsv } from '../src/stats-import.mjs';
 
 const rules = JSON.parse(readFileSync(new URL('../data/league-rules.json', import.meta.url), 'utf8'));
@@ -178,4 +178,21 @@ test('등록선수 화면(registry.csv): 10개 구단 모두 국내·외국 인�
     assert.equal(list.filter((p) => p.kind === 'f').length, 2, `${team} 외국`);
     assert.equal(new Set(list.map((p) => p.number)).size, list.length, `${team} 등번호`);
   }
+});
+
+test('ageOn: 생일 전후의 만 나이', () => {
+  assert.equal(ageOn('2004-06-08', '2026-10-01'), 22);
+  assert.equal(ageOn('2004-12-08', '2026-10-01'), 21);
+  assert.equal(ageOn('2004-10-01', '2026-10-01'), 22);
+});
+
+test('buildPool: 드래프트 생년월일이 있으면 드래프트 연도 어림보다 우선한다', () => {
+  const rows = [];
+  for (let i = 0; i < 12; i++) rows.push(row(`선수${i}`, { points: 200 + i * 20, minutes: 600 + i * 20 }));
+  const { players } = mergeSeasons([], rows);
+  const registry = new Map([['선수3', { team: 'seoul-sk', number: 7, position: 'G', kind: 'd', draftYear: 2025 }]]);
+  const a = buildPool(players, rules, { registry }).find((p) => p.name === '선수3');
+  assert.equal(a.age, 23); // 2026 - 2025 + 22
+  const b = buildPool(players, rules, { registry, births: new Map([['선수3', '2004-06-08']]) }).find((p) => p.name === '선수3');
+  assert.equal(b.age, 22);
 });

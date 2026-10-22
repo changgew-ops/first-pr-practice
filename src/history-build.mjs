@@ -3,28 +3,28 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
+// 사이트에 표시된 이름(공백 제거) → 현재 구단 id.
+// 이름이 바뀌어도 같은 구단으로 이어지는 계보다. 새 이름이 나오면 여기에 추가한다.
+const NAME_TO_FRANCHISE = {
+  'seoul-sk': ['청주SK', '서울SK'],
+  'seoul-samsung': ['수원삼성', '서울삼성'],
+  'busan-kcc': ['대전현대', '전주KCC', '부산KCC'],
+  'anyang-jungkwanjang': ['안양SBS', '안양KT&G', '안양한국인삼공사', '안양KGC', '안양정관장'],
+  'changwon-lg': ['경남LG', '창원LG'],
+  'wonju-db': ['원주나래', '원주삼보', '원주TG', '원주TG삼보', '원주동부', '원주DB'],
+  'ulsan-hyundai-mobis': ['부산기아', '울산모비스', '울산현대모비스'],
+  'suwon-kt': ['광주나산', '광주골드뱅크', '여수골드뱅크', '여수코리아텐더', '부산KTF', '부산KT', '수원KT'],
+  'daegu-kogas': ['인천대우증권', '인천대우', '인천신세기', '인천SK', '인천전자랜드', '대구한국가스공사'],
+  'goyang-sono': ['대구동양', '대구오리온스', '고양오리온스', '고양오리온', '고양캐롯', '고양소노']
+};
+const lookup = new Map();
+for (const [id, names] of Object.entries(NAME_TO_FRANCHISE)) for (const n of names) lookup.set(n, id);
+const norm = (s) => s.replace(/\s+/g, '');
+
 export function buildHistory(rawDir, teams) {
   const errors = [];
   const warnings = [];
   const franchiseIds = new Set(teams.map((t) => t.id));
-  // 사이트에 표시된 이름(공백 제거) → 현재 구단 id.
-  // 이름이 바뀌어도 같은 구단으로 이어지는 계보다. 새 이름이 나오면 여기에 추가한다.
-  const NAME_TO_FRANCHISE = {
-    'seoul-sk': ['청주SK', '서울SK'],
-    'seoul-samsung': ['수원삼성', '서울삼성'],
-    'busan-kcc': ['대전현대', '전주KCC', '부산KCC'],
-    'anyang-jungkwanjang': ['안양SBS', '안양KT&G', '안양한국인삼공사', '안양KGC', '안양정관장'],
-    'changwon-lg': ['경남LG', '창원LG'],
-    'wonju-db': ['원주나래', '원주삼보', '원주TG', '원주TG삼보', '원주동부', '원주DB'],
-    'ulsan-hyundai-mobis': ['부산기아', '울산모비스', '울산현대모비스'],
-    'suwon-kt': ['광주나산', '광주골드뱅크', '여수골드뱅크', '여수코리아텐더', '부산KTF', '부산KT', '수원KT'],
-    'daegu-kogas': ['인천대우증권', '인천대우', '인천신세기', '인천SK', '인천전자랜드', '대구한국가스공사'],
-    'goyang-sono': ['대구동양', '대구오리온스', '고양오리온스', '고양오리온', '고양캐롯', '고양소노']
-  };
-  const lookup = new Map();
-  for (const [id, names] of Object.entries(NAME_TO_FRANCHISE)) for (const n of names) lookup.set(n, id);
-  const norm = (s) => s.replace(/\s+/g, '');
-
   const fail = (season, msg) => errors.push(`[${season}] ${msg}`);
   const warn = (season, msg) => warnings.push(`[${season}] ${msg}`);
 
@@ -209,4 +209,88 @@ export function buildHistory(rawDir, teams) {
 
 
   return { seasons, franchises, errors, warnings };
+}
+
+/**
+ * 신인 드래프트 원본(data/history/drafts/<연도>.json)을 검증하고 구단 id 기준으로 정리한다.
+ * 지명 순서 규칙: 1라운드 = 추첨 순번, 2라운드 = 1라운드의 역순(원래 구단 기준), 3라운드 = 1라운드와 같음, 4라운드 = 3라운드의 역순.
+ * 지명권 트레이드(tradedPicks)는 그 라운드의 지명 구단만 바꾼다. 지명을 포기한 순번은 기록하지 않는다.
+ */
+export function buildDrafts(draftDir, teams) {
+  const errors = [];
+  const franchiseIds = new Set(teams.map((t) => t.id));
+  const files = readdirSync(draftDir).filter((f) => f.endsWith('.json')).sort();
+  const drafts = [];
+  for (const file of files) {
+    const raw = JSON.parse(readFileSync(join(draftDir, file), 'utf8'));
+    const y = raw.draftYear;
+    const fail = (msg) => errors.push(`[${y} 드래프트] ${msg}`);
+    if (`${y}.json` !== file) fail(`파일 이름(${file})과 draftYear가 다릅니다`);
+    const id = (name, where) => {
+      const f = lookup.get(norm(name));
+      if (!f || !franchiseIds.has(f)) fail(`${where}: 알 수 없는 구단 "${name}"`);
+      return f;
+    };
+    // 추첨: 10개 구단, 순번 1~10이 한 번씩, 추첨 공 합계 200
+    const lottery = raw.lottery.map(([team, balls, slot]) => ({ franchiseId: id(team, '추첨'), balls, slot }));
+    if (lottery.length !== 10 || new Set(lottery.map((l) => l.slot)).size !== 10 || lottery.some((l) => l.slot < 1 || l.slot > 10)) fail('추첨 순번이 1~10을 한 번씩 쓰지 않습니다');
+    if (new Set(lottery.map((l) => l.franchiseId)).size !== lottery.length) fail('추첨에 같은 구단이 두 번 나옵니다');
+    if (lottery.reduce((s, l) => s + l.balls, 0) !== 200) fail(`추첨 공 합계 ${lottery.reduce((s, l) => s + l.balls, 0)} (기대 200)`);
+    const slotTeam = Object.fromEntries(lottery.map((l) => [l.slot, l.franchiseId]));
+    const baseOrder = { 1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => slotTeam[n]) };
+    baseOrder[2] = [...baseOrder[1]].reverse();
+    baseOrder[3] = [...baseOrder[1]];
+    baseOrder[4] = [...baseOrder[1]].reverse();
+    const traded = (raw.tradedPicks ?? []).map((t) => ({ round: t.round, originalTeam: id(t.originalTeam, '지명권 트레이드'), owner: id(t.owner, '지명권 트레이드'), note: t.note }));
+    const owner = (round, pick) => {
+      const original = baseOrder[round]?.[pick - 1];
+      const t = traded.find((x) => x.round === round && x.originalTeam === original);
+      return { original, owner: t ? t.owner : original };
+    };
+    // 지명권 트레이드는 짝을 이뤄야 한다(양쪽이 서로 바꾸거나, 한 방향 양도)
+    for (const t of traded) if (!baseOrder[t.round]) fail(`지명권 트레이드의 라운드 ${t.round}가 이상합니다`);
+
+    const participants = raw.participants.map(([name, birth, position, height, weight, school, status]) => ({ name, birth: birth.replace(/\./g, '-'), position, height, weight, school, status }));
+    const seenPart = new Set();
+    for (const p of participants) {
+      const k = `${p.name}|${p.school}`;
+      if (seenPart.has(k)) fail(`참가자 중복: ${k}`);
+      seenPart.add(k);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(p.birth)) fail(`${p.name} 생년월일 형식 오류: ${p.birth}`);
+    }
+
+    const picks = [];
+    const seenSlot = new Set();
+    const seenPlayer = new Set();
+    for (const pk of raw.picks) {
+      const where = `${pk.round}라운드 ${pk.pick}순위 ${pk.name}`;
+      if (!baseOrder[pk.round] || pk.pick < 1 || pk.pick > 10) { fail(`${where}: 라운드·순번이 이상합니다`); continue; }
+      const slotKey = `${pk.round}-${pk.pick}`;
+      if (seenSlot.has(slotKey)) fail(`${where}: 같은 순번에 두 명`);
+      seenSlot.add(slotKey);
+      const exp = owner(pk.round, pk.pick);
+      const team = id(pk.team, where);
+      if (team !== exp.owner) fail(`${where}: 지명 구단 ${pk.team}이(가) 기대(${exp.owner})와 다릅니다`);
+      const orig = pk.originalTeam ? id(pk.originalTeam, where) : team;
+      if (orig !== exp.original) fail(`${where}: 원래 구단이 기대(${exp.original})와 다릅니다`);
+      if (!seenPart.has(`${pk.name}|${pk.school}`)) fail(`${where}: 참가자 명단에 없습니다 (${pk.name}, ${pk.school})`);
+      if (seenPlayer.has(`${pk.name}|${pk.school}`)) fail(`${where}: 두 번 지명됨`);
+      seenPlayer.add(`${pk.name}|${pk.school}`);
+      if (!['G', 'F', 'C'].includes(pk.position)) fail(`${where}: 포지션 ${pk.position}`);
+      const info = participants.find((p) => p.name === pk.name && p.school === pk.school);
+      picks.push({ round: pk.round, pick: pk.pick, franchiseId: team, originalFranchiseId: orig, name: pk.name, school: pk.school, position: pk.position, ...(info ? { birth: info.birth, height: info.height, weight: info.weight } : {}) });
+    }
+    // 순서대로 정렬돼 있어야 읽기 쉽다
+    const order = picks.map((p) => p.round * 100 + p.pick);
+    if (order.some((v, i) => i > 0 && v < order[i - 1])) fail('지명 목록이 라운드·순번 순이 아닙니다');
+    for (const t of raw.territorialPicks ?? []) id(t.team, `연고지명 ${t.name}`);
+
+    drafts.push({
+      draftYear: y, season: raw.season, date: raw.date, venue: raw.venue, ...(raw.note ? { note: raw.note } : {}),
+      lottery, tradedPicks: traded,
+      territorialPicks: (raw.territorialPicks ?? []).map((t) => ({ franchiseId: id(t.team, '연고지명'), name: t.name, school: t.school })),
+      participants, picks
+    });
+  }
+  return { drafts, errors };
 }

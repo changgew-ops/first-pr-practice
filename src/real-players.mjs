@@ -88,6 +88,13 @@ export function positionFromRegistry(kbl, totals) {
   return guess === 'PF' || guess === 'C' ? 'PF' : 'SF';
 }
 
+/** 생년월일(YYYY-MM-DD)로 기준일(YYYY-MM-DD)의 만 나이를 구한다 */
+export function ageOn(birth, date) {
+  const [by, bm, bd] = birth.split('-').map(Number);
+  const [y, m, d] = date.split('-').map(Number);
+  return y - by - (m < bm || (m === bm && d < bd) ? 1 : 0);
+}
+
 /** 드래프트 연도로 나이를 어림한다 (대졸 기준 드래프트 때 22세). 드래프트 연도가 없으면 null */
 export const ageFromDraft = (draftYear, seasonYear = 2026) => (draftYear ? seasonYear - draftYear + 22 : null);
 
@@ -134,7 +141,7 @@ export function resolveRegistry(entries, pool, team2526 = new Map()) {
  *  teamMap: Map<이름, { team, age, position, number, origin }> — 사람이 team-map.csv에 적은 정정값(가장 우선)
  *  registry: Map<이름, { team, number, position(G/F/C), kind(d/f/a), draftYear }> — 등록선수 화면(현재 소속)
  */
-export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(), registry = new Map(), minRatingMinutes = 300 } = {}) {
+export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(), registry = new Map(), births = new Map(), asOf = '2026-10-01', minRatingMinutes = 300 } = {}) {
   const rows = merged.map((p) => ({ name: p.name, totals: p.totals }));
   const positionOf = (p) => teamMap.get(p.name)?.position
     ?? (registry.has(p.name) ? positionFromRegistry(registry.get(p.name).position, p.totals) : inferPosition(p.totals));
@@ -153,7 +160,7 @@ export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(
       positionGiven: Boolean(given.position),
       origin: given.origin ?? (reg ? (reg.kind === 'f' ? 'foreign' : 'domestic') : guessOrigin(p.name)),
       asiaQuota: reg?.kind === 'a',
-      age: given.age ?? ageFromDraft(reg?.draftYear) ?? null,
+      age: given.age ?? (births.has(p.name) ? ageOn(births.get(p.name), asOf) : null) ?? ageFromDraft(reg?.draftYear) ?? null,
       number: given.number ?? reg?.number ?? null,
       teamId: given.team ?? reg?.team ?? null,
       registered: Boolean(reg),
@@ -170,7 +177,7 @@ export function buildPool(merged, rules, { teamTotals = null, teamMap = new Map(
 }
 
 /** 기록이 없는 등록 선수(올해 한 경기도 못 뛴 선수 등). 능력치는 생성기가 이름을 시드로 채운다 */
-export function statlessPlayers(entries, teamMap = new Map()) {
+export function statlessPlayers(entries, teamMap = new Map(), { births = new Map(), asOf = '2026-10-01' } = {}) {
   return entries.map((e) => {
     const given = teamMap.get(e.name) ?? {};
     return {
@@ -179,7 +186,7 @@ export function statlessPlayers(entries, teamMap = new Map()) {
       positionGiven: Boolean(given.position),
       origin: given.origin ?? (e.kind === 'f' ? 'foreign' : 'domestic'),
       asiaQuota: e.kind === 'a',
-      age: given.age ?? ageFromDraft(e.draftYear),
+      age: given.age ?? (births.has(e.name) ? ageOn(births.get(e.name), asOf) : null) ?? ageFromDraft(e.draftYear),
       number: given.number ?? e.number,
       teamId: given.team ?? e.team,
       registered: true,

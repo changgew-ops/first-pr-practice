@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { buildHistory } from '../src/history-build.mjs';
+import { buildHistory, buildDrafts } from '../src/history-build.mjs';
 import { loadHistory, champions, franchiseSummary, recentForm } from '../src/history.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -182,4 +182,44 @@ test('2024-25 라운드·수상: 6개 라운드가 검증을 통과하고 최종
   assert.equal(s.awards['정규시즌 MVP(국내)'], '안영준');
   assert.equal(s.awards['베스트5'].length, 5);
   assert.equal(s.awards['감독상'], '전희철');
+});
+
+test('신인 드래프트 2024·2025: 검증 오류 0건, 저장본과 일치, 지명 수·순서', () => {
+  const built = buildDrafts(join(ROOT, 'data/history/drafts'), teams);
+  assert.deepEqual(built.errors, []);
+  const saved = JSON.parse(readFileSync(join(ROOT, 'data/history/drafts.json'), 'utf8'));
+  assert.deepEqual(built.drafts, saved);
+  assert.deepEqual(saved.map((d) => d.draftYear), [2024, 2025]);
+  const [d24, d25] = saved;
+  assert.equal(d24.participants.length, 42);
+  assert.equal(d24.picks.length, 26);
+  assert.equal(d25.participants.length, 46);
+  assert.equal(d25.picks.length, 26);
+  assert.equal(d24.picks[0].name, '박정웅');
+  assert.equal(d24.picks[0].franchiseId, 'anyang-jungkwanjang');
+  // 2024 1라운드: 삼성·DB가 지명권을 맞바꿔 3순위는 DB, 8순위는 삼성
+  assert.equal(d24.picks.find((p) => p.round === 1 && p.pick === 3).franchiseId, 'wonju-db');
+  assert.equal(d24.picks.find((p) => p.round === 1 && p.pick === 8).franchiseId, 'seoul-samsung');
+  assert.equal(d25.picks[0].name, '문유현');
+  assert.deepEqual(d25.territorialPicks.map((t) => t.name), ['에디 다니엘', '김건하']);
+});
+
+test('드래프트 검증: 추첨 공 합계, 지명 구단, 참가자 명단에 없는 선수는 오류로 잡는다', async () => {
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const raw = JSON.parse(readFileSync(join(ROOT, 'data/history/drafts/2024.json'), 'utf8'));
+  const run = (mutate) => {
+    const dir = mkdtempSync(join(tmpdir(), 'draft-'));
+    try {
+      const copy = JSON.parse(JSON.stringify(raw));
+      mutate(copy);
+      writeFileSync(join(dir, '2024.json'), JSON.stringify(copy));
+      return buildDrafts(dir, teams).errors.join('\n');
+    } finally { rmSync(dir, { recursive: true, force: true }); }
+  };
+  assert.equal(run(() => {}), '');
+  assert.match(run((c) => { c.lottery[0][1] = 41; }), /공 합계/);
+  assert.match(run((c) => { c.picks[0].team = '서울 SK'; }), /지명 구단/);
+  assert.match(run((c) => { c.picks[0].name = '없는선수'; }), /참가자 명단에 없습니다/);
+  assert.match(run((c) => { c.tradedPicks = []; }), /지명 구단/);
 });

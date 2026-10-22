@@ -124,7 +124,7 @@
     "name": "김보배",
     "real": true,
     "position": "PF",
-    "age": 24,
+    "age": 23,
     "number": 10,
     "rarity": "rare",
     "stats": {
@@ -184,9 +184,9 @@
     "name": "이유진",
     "real": true,
     "position": "SF",
-    "age": 23,
+    "age": 21,
     "number": 6,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 59,
       "passing": 58,
@@ -197,7 +197,7 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 67,
+    "potential": 76,
     "origin": "domestic",
     "teamId": "wonju-db",
     "contract": {
@@ -544,7 +544,7 @@
     "name": "이규태",
     "real": true,
     "position": "SF",
-    "age": 23,
+    "age": 24,
     "number": 23,
     "rarity": "rare",
     "stats": {
@@ -724,7 +724,7 @@
     "name": "정성조",
     "real": true,
     "position": "SG",
-    "age": 24,
+    "age": 26,
     "number": 77,
     "rarity": "rare",
     "stats": {
@@ -1084,9 +1084,9 @@
     "name": "이근준",
     "real": true,
     "position": "SF",
-    "age": 24,
+    "age": 21,
     "number": 14,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 61,
       "passing": 58,
@@ -1097,7 +1097,7 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 70,
+    "potential": 79,
     "origin": "domestic",
     "teamId": "goyang-sono",
     "contract": {
@@ -1534,9 +1534,9 @@
     "name": "이민서",
     "real": true,
     "position": "PG",
-    "age": 24,
+    "age": 22,
     "number": 1,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 57,
       "passing": 71,
@@ -1547,7 +1547,7 @@
     },
     "ovr": 62,
     "cost": 5,
-    "potential": 69,
+    "potential": 77,
     "origin": "domestic",
     "teamId": "seoul-sk",
     "contract": {
@@ -1984,7 +1984,7 @@
     "name": "임정현",
     "real": true,
     "position": "SF",
-    "age": 23,
+    "age": 24,
     "number": 9,
     "rarity": "common",
     "stats": {
@@ -2224,9 +2224,9 @@
     "name": "박정웅",
     "real": true,
     "position": "SG",
-    "age": 24,
+    "age": 20,
     "number": 4,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 53,
       "passing": 62,
@@ -2237,7 +2237,7 @@
     },
     "ovr": 61,
     "cost": 5,
-    "potential": 68,
+    "potential": 76,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
@@ -2254,9 +2254,9 @@
     "name": "문유현",
     "real": true,
     "position": "SG",
-    "age": 23,
+    "age": 22,
     "number": 24,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 64,
       "passing": 71,
@@ -2267,7 +2267,7 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 72,
+    "potential": 79,
     "origin": "domestic",
     "teamId": "anyang-jungkwanjang",
     "contract": {
@@ -2614,9 +2614,9 @@
     "name": "윤기찬",
     "real": true,
     "position": "SF",
-    "age": 23,
+    "age": 22,
     "number": 8,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 69,
       "passing": 53,
@@ -2627,7 +2627,7 @@
     },
     "ovr": 57,
     "cost": 4,
-    "potential": 61,
+    "potential": 67,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
@@ -2794,7 +2794,7 @@
     "name": "이현호",
     "real": true,
     "position": "SG",
-    "age": 24,
+    "age": 25,
     "number": 30,
     "rarity": "rare",
     "stats": {
@@ -2854,9 +2854,9 @@
     "name": "강태현",
     "real": true,
     "position": "SF",
-    "age": 23,
+    "age": 21,
     "number": 27,
-    "rarity": "rare",
+    "rarity": "ace",
     "stats": {
       "shooting": 64,
       "passing": 60,
@@ -2867,7 +2867,7 @@
     },
     "ovr": 63,
     "cost": 5,
-    "potential": 70,
+    "potential": 78,
     "origin": "domestic",
     "teamId": "busan-kcc",
     "contract": {
@@ -2974,7 +2974,7 @@
     "name": "강성욱",
     "real": true,
     "position": "PG",
-    "age": 23,
+    "age": 22,
     "number": 77,
     "rarity": "rare",
     "stats": {
@@ -2987,7 +2987,7 @@
     },
     "ovr": 67,
     "cost": 6,
-    "potential": 68,
+    "potential": 71,
     "origin": "domestic",
     "teamId": "suwon-kt",
     "contract": {
@@ -3484,9 +3484,9 @@
     "name": "양우혁",
     "real": true,
     "position": "SG",
-    "age": 23,
+    "age": 19,
     "number": 27,
-    "rarity": "common",
+    "rarity": "rare",
     "stats": {
       "shooting": 63,
       "passing": 67,
@@ -3497,7 +3497,7 @@
     },
     "ovr": 59,
     "cost": 4,
-    "potential": 62,
+    "potential": 66,
     "origin": "domestic",
     "teamId": "daegu-kogas",
     "contract": {
@@ -3544,7 +3544,7 @@
     "name": "김민규",
     "real": true,
     "position": "SF",
-    "age": 23,
+    "age": 24,
     "number": 13,
     "rarity": "rare",
     "stats": {
@@ -3694,7 +3694,7 @@
     "name": "손준",
     "real": true,
     "position": "C",
-    "age": 24,
+    "age": 25,
     "number": 24,
     "rarity": "rare",
     "stats": {
@@ -3994,7 +3994,7 @@
     "name": "최강민",
     "real": true,
     "position": "SG",
-    "age": 23,
+    "age": 24,
     "number": 8,
     "rarity": "rare",
     "stats": {
@@ -4084,7 +4084,7 @@
     "name": "이대균",
     "real": true,
     "position": "SF",
-    "age": 24,
+    "age": 25,
     "number": 21,
     "rarity": "common",
     "stats": {
