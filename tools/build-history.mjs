@@ -15,7 +15,7 @@ errors.push(...draftBuild.errors);
 // 시즌별 소속 CSV(선수 이름 → 구단 id): FA 새 소속 교차 확인용. 2026-27은 등록선수 화면을 쓴다
 const seasonTeams = new Map();
 const readTeamCsv = (path) => new Map(rf(path, 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#') && l !== 'name,team').map((l) => l.split(',').slice(0, 2)));
-for (const season of ['2022-23', '2023-24', '2024-25', '2025-26']) {
+for (const season of ['2021-22', '2022-23', '2023-24', '2024-25', '2025-26']) {
   const f = join(ROOT, `data/players/team-${season}.csv`);
   if (existsSync(f)) seasonTeams.set(season, readTeamCsv(f));
 }

@@ -184,13 +184,18 @@ test('2024-25 라운드·수상: 6개 라운드가 검증을 통과하고 최종
   assert.equal(s.awards['감독상'], '전희철');
 });
 
-test('신인 드래프트 2022~2025: 검증 오류 0건, 저장본과 일치, 지명 수·순서', () => {
+test('신인 드래프트 2021~2025: 검증 오류 0건, 저장본과 일치, 지명 수·순서', () => {
   const built = buildDrafts(join(ROOT, 'data/history/drafts'), teams);
   assert.deepEqual(built.errors, []);
   const saved = JSON.parse(readFileSync(join(ROOT, 'data/history/drafts.json'), 'utf8'));
   assert.deepEqual(built.drafts, saved);
-  assert.deepEqual(saved.map((d) => d.draftYear), [2022, 2023, 2024, 2025]);
-  const [d22, d23, d24, d25] = saved;
+  assert.deepEqual(saved.map((d) => d.draftYear), [2021, 2022, 2023, 2024, 2025]);
+  const [d21, d22, d23, d24, d25] = saved;
+  assert.equal(d21.participants.length, 37);
+  assert.equal(d21.picks.length, 24);
+  assert.equal(d21.picks[0].name, '이원석');
+  assert.equal(d21.picks.find((p) => p.round === 4).franchiseId, 'ulsan-hyundai-mobis'); // 4라운드는 현대모비스만 지명
+  assert.equal(d21.participants[0].birth, null);
   assert.equal(d22.participants.length, 42);
   assert.equal(d22.picks.length, 25);
   assert.equal(d22.picks[0].name, '양준석');
@@ -320,7 +325,7 @@ test('2023-24: 날짜로 나뉜 라운드(팀마다 경기 수 다름), 상대�
 test('시즌별 소속 CSV: 선수기록 시트와 같은 선수 수, 모두 실제 구단', () => {
   const ids = new Set(teams.map((t) => t.id));
   const lines = (p) => readFileSync(join(ROOT, p), 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
-  for (const [season, count] of [['2025-26', 193], ['2024-25', 203], ['2023-24', 200], ['2022-23', 194]]) {
+  for (const [season, count] of [['2025-26', 193], ['2024-25', 203], ['2023-24', 200], ['2022-23', 194], ['2021-22', 194]]) {
     const stats = lines(`data/stats/${season}.csv`).slice(1).map((l) => l.split(',')[0]);
     const team = lines(`data/players/team-${season}.csv`).slice(1).map((l) => l.split(','));
     assert.equal(stats.length, count, `${season} 기록`);
@@ -337,7 +342,7 @@ test('시즌별 소속 CSV: 선수기록 시트와 같은 선수 수, 모두 실
 const csvLines = (p) => readFileSync(join(ROOT, p), 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
 function seasonTeamMaps() {
   const m = new Map();
-  for (const s of ['2022-23', '2023-24', '2024-25', '2025-26']) m.set(s, new Map(csvLines(`data/players/team-${s}.csv`).slice(1).map((l) => l.split(',').slice(0, 2))));
+  for (const s of ['2021-22', '2022-23', '2023-24', '2024-25', '2025-26']) m.set(s, new Map(csvLines(`data/players/team-${s}.csv`).slice(1).map((l) => l.split(',').slice(0, 2))));
   m.set('2026-27', new Map(csvLines('data/players/registry.csv').slice(1).map((l) => l.split(',').slice(0, 2))));
   return m;
 }
@@ -383,4 +388,28 @@ test('2022-23: 상대전적(LG·SK 동률), 라운드 MVP, 수상', () => {
   assert.equal(s.awards['수비 5걸'].length, 6); // 투표 동률
   assert.equal(s.awards['감독상'], '김상식');
   assert.equal(s.championId, 'anyang-jungkwanjang');
+});
+
+test('2021-22: 챔피언결정전 4-1(선수 승패 합계로 정정), 날짜 라운드와 재편성, 상대전적(오타 정정), 수상', () => {
+  const s = seasons.find((x) => x.season === '2021-22');
+  const fin = s.playoffs.rounds.at(-1).series[0];
+  assert.deepEqual([fin.winsA, fin.winsB], [4, 1]);
+  assert.equal(s.championId, 'seoul-sk');
+  assert.equal(s.rounds.length, 6);
+  const games4 = s.rounds[3].teams.map((t) => t.games);
+  assert.notEqual(new Set(games4).size, 1); // 코로나 재편성으로 4라운드 시점에 팀마다 경기 수가 다르다
+  const h = s.headToHead;
+  const w = (a, b) => h.wins[h.teams.indexOf(a)][h.teams.indexOf(b)];
+  assert.equal(w('goyang-sono', 'seoul-samsung'), 5); // 위키 4:1 → 합계로 5:1
+  assert.equal(w('seoul-samsung', 'goyang-sono'), 1);
+  assert.equal(s.awards['정규시즌 MVP(국내)'], '최준용');
+  assert.equal(s.awards['신인상'], '이우석');
+});
+
+test('외국인 선수 계약 연봉(달러)과 시즌 차수: 2021-22 이벤트', () => {
+  const ev = JSON.parse(readFileSync(join(ROOT, 'data/history/events.json'), 'utf8')).find((e) => e.season === '2021-22');
+  const spellman = ev.foreign.find((f) => f.name === '오마리 스펠맨');
+  assert.equal(spellman.salaryUsd, 600000);
+  assert.ok(ev.foreign.every((f) => f.salaryUsd > 0));
+  assert.equal(ev.foreign.find((f) => f.name === '리온 윌리엄스').nthSeason, 9);
 });

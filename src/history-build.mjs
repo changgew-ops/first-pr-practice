@@ -113,7 +113,7 @@ export function buildHistory(rawDir, teams) {
           const dw = t.wins - prev.wins;
           const dl = t.losses - prev.losses;
           if (t.roundWins == null) { t.roundWins = dw; t.roundLosses = dl; } // 1라운드처럼 라운드 전적 열이 없으면 누적 변화로 채운다
-          else if (dw !== t.roundWins || dl !== t.roundLosses) fail(season, `${who} 라운드 전적 ${t.roundWins}-${t.roundLosses} ≠ 누적 변화 ${dw}-${dl}`);
+          else if (raw.roundRecordCheck !== false && (dw !== t.roundWins || dl !== t.roundLosses)) fail(season, `${who} 라운드 전적 ${t.roundWins}-${t.roundLosses} ≠ 누적 변화 ${dw}-${dl}`);
         }
         for (const t of teams) prevByTeam.set(t.franchiseId, { wins: t.wins, losses: t.losses });
         let mvp = null;
@@ -316,13 +316,13 @@ export function buildDrafts(draftDir, teams) {
     for (const t of traded) if (!baseOrder[t.round]) fail(`지명권 트레이드의 라운드 ${t.round}가 이상합니다`);
 
     const participantsKnown = Array.isArray(raw.participants);
-    const participants = (raw.participants ?? []).map(([name, birth, position, height, weight, school, status]) => ({ name, birth: birth.replace(/\./g, '-'), position, height, weight, school, status }));
+    const participants = (raw.participants ?? []).map(([name, birth, position, height, weight, school, status]) => ({ name, birth: birth == null ? null : birth.replace(/\./g, '-'), position: position ?? null, height, weight, school, status }));
     const seenPart = new Set();
     for (const p of participants) {
       const k = `${p.name}|${p.school}`;
       if (seenPart.has(k)) fail(`참가자 중복: ${k}`);
       seenPart.add(k);
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(p.birth)) fail(`${p.name} 생년월일 형식 오류: ${p.birth}`);
+      if (p.birth !== null && !/^\d{4}-\d{2}-\d{2}$/.test(p.birth)) fail(`${p.name} 생년월일 형식 오류: ${p.birth}`);
     }
 
     const picks = [];
@@ -366,8 +366,8 @@ const SHORT_NAMES = {
   'seoul-sk': ['SK', '서울SK', '서울SK나이츠'], 'seoul-samsung': ['삼성', '서울삼성', '서울삼성썬더스'], 'busan-kcc': ['KCC', '전주KCC', '부산KCC', '부산KCC이지스'],
   'anyang-jungkwanjang': ['정관장', 'KGC', 'KGC인삼공사', '안양KGC인삼공사', '안양정관장', '안양정관장레드부스터스'], 'changwon-lg': ['LG', '창원LG', '창원LG세이커스'],
   'wonju-db': ['DB', '원주DB', '원주DB프로미'], 'ulsan-hyundai-mobis': ['현대모비스', '울산현대모비스', '울산현대모비스피버스'],
-  'suwon-kt': ['KT', 'kt', '수원KT', '수원KT소닉붐'], 'daegu-kogas': ['한국가스공사', '가스공사', '대구한국가스공사', '대구한국가스공사페가수스'],
-  'goyang-sono': ['소노', '캐롯', '고양캐롯', '고양캐롯점퍼스', '데이원', '고양데이원', '고양데이원점퍼스', '고양소노', '고양소노스카이거너스']
+  'suwon-kt': ['KT', 'kt', '수원KT', '수원KT소닉붐'], 'daegu-kogas': ['전자랜드', '인천전자랜드', '인천전자랜드엘리펀츠', '한국가스공사', '가스공사', '대구한국가스공사', '대구한국가스공사페가수스'],
+  'goyang-sono': ['소노', '오리온', '고양오리온', '고양오리온오리온스', '캐롯', '고양캐롯', '고양캐롯점퍼스', '데이원', '고양데이원', '고양데이원점퍼스', '고양소노', '고양소노스카이거너스']
 };
 const EVENT_LOOKUP = new Map([...lookup, ...Object.entries(SHORT_NAMES).flatMap(([id, names]) => names.map((n) => [norm(n), id]))]);
 
@@ -424,7 +424,8 @@ export function buildEvents(eventDir, teams, { seasonTeams = new Map() } = {}) {
       if (!['센터', '포워드', '가드'].includes(f.position)) fail(`${where}: 포지션 ${f.position}`);
       if (!f.kind) fail(`${where}: 구분(재계약/신규 계약 등)이 없습니다`);
       if (!Array.isArray(f.nationality) || f.nationality.length === 0) fail(`${where}: 국적이 없습니다`);
-      return { franchiseId: id(f.team, where), name: f.name, position: f.position, nationality: f.nationality, kind: f.kind, asiaQuota: Boolean(f.asiaQuota), ...(f.flags?.length ? { flags: f.flags } : {}), ...(f.note ? { note: f.note } : {}) };
+      if (f.salaryUsd != null && !(typeof f.salaryUsd === 'number' && f.salaryUsd > 0)) fail(`${where}: 계약 연봉(달러) ${f.salaryUsd}`);
+      return { franchiseId: id(f.team, where), name: f.name, position: f.position, nationality: f.nationality, kind: f.kind, asiaQuota: Boolean(f.asiaQuota), ...(f.salaryUsd != null ? { salaryUsd: f.salaryUsd } : {}), ...(f.nthSeason != null ? { nthSeason: f.nthSeason } : {}), ...(f.flags?.length ? { flags: f.flags } : {}), ...(f.note ? { note: f.note } : {}) };
     });
 
     const retirements = groupList(raw.retirements, '은퇴');

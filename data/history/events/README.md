@@ -12,7 +12,8 @@
   "trades":    [{"date": "2026-07-01", "phase": "offseason", "teamA": "안양 정관장", "giveA": ["김경원"],
                  "teamB": "울산 현대모비스", "giveB": ["이대헌"], "note": ""}],   // phase: offseason | inseason. 무상·지명권은 giveX에 "무상"이 아니라 빈 배열이나 "24년 1라운드 우선 지명권" 문자열
   "foreign":   [{"team": "부산 KCC", "name": "숀 롱", "position": "센터", "nationality": ["미국"], "kind": "재계약",
-                 "asiaQuota": false, "flags": ["일시대체선수"], "note": ""}],   // kind 예: 재계약 / 신규 계약 / 신규 영입 / 신규 계약, 시즌 도중 방출
+                 "asiaQuota": false, "salaryUsd": 600000, "nthSeason": 2, "flags": ["일시대체선수"], "note": ""}],   // salaryUsd(계약 연봉, 달러)·nthSeason(KBL n번째 시즌)은 문서에 있을 때만
+   // kind 예: 재계약 / 신규 계약 / 신규 영입 / 신규 계약, 시즌 도중 방출
   "retirements":    [{"team": "...", "names": ["..."]}],
   "voluntaryLeave": [{"team": "...", "names": ["..."]}],     // 임의 탈퇴
   "military": {"enlist": [{"team": "...", "names": ["..."]}], "discharge": [{"team": "...", "names": ["..."]}]},

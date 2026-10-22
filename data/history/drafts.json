@@ -1,5 +1,692 @@
 [
   {
+    "draftYear": 2021,
+    "season": "2021-22",
+    "date": "2021-09-28",
+    "venue": "미상",
+    "note": "37명 참가(대학 재학 얼리 6명·일반선수 2명 포함), 24명 지명(64.9%). 순위 추첨 2021-09-08. 4라운드까지 지명권을 모두 쓴 구단은 현대모비스뿐. 삼성이 2년 연속 1순위(KBL 역대 4번째), 오리온 프랜차이즈의 마지막 드래프트. 김준환(경희대)은 일반인 신분으로 2라운드 9순위. 참가자 명단은 컴바인 표(신장·체중 측정값을 반올림, 0.5는 올림)에서 옮겼고 생년월일·포지션은 문서에 없어 null이다. 자격구분은 컴바인 표의 구분(협회선수/일반선수)이고, 문서 5.1의 대학 재학 참가자 6명(김근형·이원석·김동현·선상혁·이승우·권지윤)은 얼리로 적었다. 경희대 이준협(컴바인 표 표기)은 해상도상 이름 끝 글자가 불확실하다. 다른 선수의 신장·체중은 모두 읽을 수 있었다",
+    "participantsKnown": true,
+    "lottery": [
+      {
+        "franchiseId": "seoul-samsung",
+        "balls": 32,
+        "slot": 1
+      },
+      {
+        "franchiseId": "suwon-kt",
+        "balls": 24,
+        "slot": 2
+      },
+      {
+        "franchiseId": "goyang-sono",
+        "balls": 24,
+        "slot": 3
+      },
+      {
+        "franchiseId": "ulsan-hyundai-mobis",
+        "balls": 10,
+        "slot": 4
+      },
+      {
+        "franchiseId": "changwon-lg",
+        "balls": 32,
+        "slot": 5
+      },
+      {
+        "franchiseId": "seoul-sk",
+        "balls": 32,
+        "slot": 6
+      },
+      {
+        "franchiseId": "wonju-db",
+        "balls": 32,
+        "slot": 7
+      },
+      {
+        "franchiseId": "daegu-kogas",
+        "balls": 10,
+        "slot": 8
+      },
+      {
+        "franchiseId": "busan-kcc",
+        "balls": 3,
+        "slot": 9
+      },
+      {
+        "franchiseId": "anyang-jungkwanjang",
+        "balls": 1,
+        "slot": 10
+      }
+    ],
+    "tradedPicks": [],
+    "territorialPicks": [],
+    "participants": [
+      {
+        "name": "정민수",
+        "birth": null,
+        "position": null,
+        "height": 176,
+        "weight": 71,
+        "school": "건국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "주현우",
+        "birth": null,
+        "position": null,
+        "height": 198,
+        "weight": 88,
+        "school": "건국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김동준",
+        "birth": null,
+        "position": null,
+        "height": 175,
+        "weight": 71,
+        "school": "경희대",
+        "status": "협회선수"
+      },
+      {
+        "name": "이준협",
+        "birth": null,
+        "position": null,
+        "height": 194,
+        "weight": 104,
+        "school": "경희대",
+        "status": "협회선수"
+      },
+      {
+        "name": "정민혁",
+        "birth": null,
+        "position": null,
+        "height": 187,
+        "weight": 85,
+        "school": "경희대",
+        "status": "협회선수"
+      },
+      {
+        "name": "서정현",
+        "birth": null,
+        "position": null,
+        "height": 200,
+        "weight": 101,
+        "school": "고려대",
+        "status": "협회선수"
+      },
+      {
+        "name": "신민석",
+        "birth": null,
+        "position": null,
+        "height": 197,
+        "weight": 88,
+        "school": "고려대",
+        "status": "협회선수"
+      },
+      {
+        "name": "정호영",
+        "birth": null,
+        "position": null,
+        "height": 186,
+        "weight": 68,
+        "school": "고려대",
+        "status": "협회선수"
+      },
+      {
+        "name": "하윤기",
+        "birth": null,
+        "position": null,
+        "height": 204,
+        "weight": 100,
+        "school": "고려대",
+        "status": "협회선수"
+      },
+      {
+        "name": "윤성준",
+        "birth": null,
+        "position": null,
+        "height": 182,
+        "weight": 77,
+        "school": "단국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "조종민",
+        "birth": null,
+        "position": null,
+        "height": 173,
+        "weight": 73,
+        "school": "단국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김종호",
+        "birth": null,
+        "position": null,
+        "height": 184,
+        "weight": 82,
+        "school": "동국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "이민석",
+        "birth": null,
+        "position": null,
+        "height": 189,
+        "weight": 84,
+        "school": "동국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "정종현",
+        "birth": null,
+        "position": null,
+        "height": 203,
+        "weight": 89,
+        "school": "동국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "조우성",
+        "birth": null,
+        "position": null,
+        "height": 206,
+        "weight": 112,
+        "school": "동국대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김종훈",
+        "birth": null,
+        "position": null,
+        "height": 176,
+        "weight": 77,
+        "school": "명지대",
+        "status": "협회선수"
+      },
+      {
+        "name": "문시윤",
+        "birth": null,
+        "position": null,
+        "height": 197,
+        "weight": 100,
+        "school": "명지대",
+        "status": "협회선수"
+      },
+      {
+        "name": "오인준",
+        "birth": null,
+        "position": null,
+        "height": 183,
+        "weight": 80,
+        "school": "명지대",
+        "status": "협회선수"
+      },
+      {
+        "name": "이석민",
+        "birth": null,
+        "position": null,
+        "height": 178,
+        "weight": 81,
+        "school": "명지대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김수환",
+        "birth": null,
+        "position": null,
+        "height": 188,
+        "weight": 82,
+        "school": "성균관대",
+        "status": "협회선수"
+      },
+      {
+        "name": "조은후",
+        "birth": null,
+        "position": null,
+        "height": 188,
+        "weight": 84,
+        "school": "성균관대",
+        "status": "협회선수"
+      },
+      {
+        "name": "최주영",
+        "birth": null,
+        "position": null,
+        "height": 204,
+        "weight": 104,
+        "school": "성균관대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김한영",
+        "birth": null,
+        "position": null,
+        "height": 195,
+        "weight": 86,
+        "school": "연세대",
+        "status": "협회선수"
+      },
+      {
+        "name": "신승민",
+        "birth": null,
+        "position": null,
+        "height": 195,
+        "weight": 102,
+        "school": "연세대",
+        "status": "협회선수"
+      },
+      {
+        "name": "이정현",
+        "birth": null,
+        "position": null,
+        "height": 187,
+        "weight": 86,
+        "school": "연세대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김진모",
+        "birth": null,
+        "position": null,
+        "height": 196,
+        "weight": 93,
+        "school": "중앙대",
+        "status": "협회선수"
+      },
+      {
+        "name": "홍현준",
+        "birth": null,
+        "position": null,
+        "height": 189,
+        "weight": 83,
+        "school": "중앙대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김민진",
+        "birth": null,
+        "position": null,
+        "height": 173,
+        "weight": 69,
+        "school": "한양대",
+        "status": "협회선수"
+      },
+      {
+        "name": "이상현",
+        "birth": null,
+        "position": null,
+        "height": 199,
+        "weight": 102,
+        "school": "한양대",
+        "status": "협회선수"
+      },
+      {
+        "name": "김근형",
+        "birth": null,
+        "position": null,
+        "height": 178,
+        "weight": 75,
+        "school": "상명대",
+        "status": "얼리"
+      },
+      {
+        "name": "이원석",
+        "birth": null,
+        "position": null,
+        "height": 207,
+        "weight": 97,
+        "school": "연세대",
+        "status": "얼리"
+      },
+      {
+        "name": "김동현",
+        "birth": null,
+        "position": null,
+        "height": 190,
+        "weight": 92,
+        "school": "연세대",
+        "status": "얼리"
+      },
+      {
+        "name": "선상혁",
+        "birth": null,
+        "position": null,
+        "height": 205,
+        "weight": 105,
+        "school": "중앙대",
+        "status": "얼리"
+      },
+      {
+        "name": "이승우",
+        "birth": null,
+        "position": null,
+        "height": 193,
+        "weight": 91,
+        "school": "한양대",
+        "status": "얼리"
+      },
+      {
+        "name": "권지윤",
+        "birth": null,
+        "position": null,
+        "height": 174,
+        "weight": 72,
+        "school": "울산대",
+        "status": "얼리"
+      },
+      {
+        "name": "김준환",
+        "birth": null,
+        "position": null,
+        "height": 187,
+        "weight": 85,
+        "school": "경희대",
+        "status": "일반선수"
+      },
+      {
+        "name": "하승윤",
+        "birth": null,
+        "position": null,
+        "height": 197,
+        "weight": 107,
+        "school": "경희대",
+        "status": "일반선수"
+      }
+    ],
+    "picks": [
+      {
+        "round": 1,
+        "pick": 1,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "이원석",
+        "school": "연세대",
+        "position": "C",
+        "birth": null,
+        "height": 207,
+        "weight": 97
+      },
+      {
+        "round": 1,
+        "pick": 2,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "하윤기",
+        "school": "고려대",
+        "position": "C",
+        "birth": null,
+        "height": 204,
+        "weight": 100
+      },
+      {
+        "round": 1,
+        "pick": 3,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "이정현",
+        "school": "연세대",
+        "position": "G",
+        "birth": null,
+        "height": 187,
+        "weight": 86
+      },
+      {
+        "round": 1,
+        "pick": 4,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "신민석",
+        "school": "고려대",
+        "position": "F",
+        "birth": null,
+        "height": 197,
+        "weight": 88
+      },
+      {
+        "round": 1,
+        "pick": 5,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "이승우",
+        "school": "한양대",
+        "position": "F",
+        "birth": null,
+        "height": 193,
+        "weight": 91
+      },
+      {
+        "round": 1,
+        "pick": 6,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "선상혁",
+        "school": "중앙대",
+        "position": "C",
+        "birth": null,
+        "height": 205,
+        "weight": 105
+      },
+      {
+        "round": 1,
+        "pick": 7,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "정호영",
+        "school": "고려대",
+        "position": "G",
+        "birth": null,
+        "height": 186,
+        "weight": 68
+      },
+      {
+        "round": 1,
+        "pick": 8,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "신승민",
+        "school": "연세대",
+        "position": "F",
+        "birth": null,
+        "height": 195,
+        "weight": 102
+      },
+      {
+        "round": 1,
+        "pick": 9,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "김동현",
+        "school": "연세대",
+        "position": "G",
+        "birth": null,
+        "height": 190,
+        "weight": 92
+      },
+      {
+        "round": 1,
+        "pick": 10,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "조은후",
+        "school": "성균관대",
+        "position": "G",
+        "birth": null,
+        "height": 188,
+        "weight": 84
+      },
+      {
+        "round": 2,
+        "pick": 1,
+        "franchiseId": "anyang-jungkwanjang",
+        "originalFranchiseId": "anyang-jungkwanjang",
+        "name": "주현우",
+        "school": "건국대",
+        "position": "F",
+        "birth": null,
+        "height": 198,
+        "weight": 88
+      },
+      {
+        "round": 2,
+        "pick": 2,
+        "franchiseId": "busan-kcc",
+        "originalFranchiseId": "busan-kcc",
+        "name": "서정현",
+        "school": "고려대",
+        "position": "C",
+        "birth": null,
+        "height": 200,
+        "weight": 101
+      },
+      {
+        "round": 2,
+        "pick": 3,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "김진모",
+        "school": "중앙대",
+        "position": "F",
+        "birth": null,
+        "height": 196,
+        "weight": 93
+      },
+      {
+        "round": 2,
+        "pick": 4,
+        "franchiseId": "wonju-db",
+        "originalFranchiseId": "wonju-db",
+        "name": "이민석",
+        "school": "동국대",
+        "position": "F",
+        "birth": null,
+        "height": 189,
+        "weight": 84
+      },
+      {
+        "round": 2,
+        "pick": 5,
+        "franchiseId": "seoul-sk",
+        "originalFranchiseId": "seoul-sk",
+        "name": "김수환",
+        "school": "성균관대",
+        "position": "G",
+        "birth": null,
+        "height": 188,
+        "weight": 82
+      },
+      {
+        "round": 2,
+        "pick": 6,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "김종호",
+        "school": "동국대",
+        "position": "G",
+        "birth": null,
+        "height": 184,
+        "weight": 82
+      },
+      {
+        "round": 2,
+        "pick": 7,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "김동준",
+        "school": "경희대",
+        "position": "G",
+        "birth": null,
+        "height": 175,
+        "weight": 71
+      },
+      {
+        "round": 2,
+        "pick": 8,
+        "franchiseId": "goyang-sono",
+        "originalFranchiseId": "goyang-sono",
+        "name": "문시윤",
+        "school": "명지대",
+        "position": "F",
+        "birth": null,
+        "height": 197,
+        "weight": 100
+      },
+      {
+        "round": 2,
+        "pick": 9,
+        "franchiseId": "suwon-kt",
+        "originalFranchiseId": "suwon-kt",
+        "name": "김준환",
+        "school": "경희대",
+        "position": "G",
+        "birth": null,
+        "height": 187,
+        "weight": 85
+      },
+      {
+        "round": 3,
+        "pick": 1,
+        "franchiseId": "seoul-samsung",
+        "originalFranchiseId": "seoul-samsung",
+        "name": "조우성",
+        "school": "동국대",
+        "position": "C",
+        "birth": null,
+        "height": 206,
+        "weight": 112
+      },
+      {
+        "round": 3,
+        "pick": 4,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "윤성준",
+        "school": "단국대",
+        "position": "G",
+        "birth": null,
+        "height": 182,
+        "weight": 77
+      },
+      {
+        "round": 3,
+        "pick": 5,
+        "franchiseId": "changwon-lg",
+        "originalFranchiseId": "changwon-lg",
+        "name": "김한영",
+        "school": "연세대",
+        "position": "F",
+        "birth": null,
+        "height": 195,
+        "weight": 86
+      },
+      {
+        "round": 3,
+        "pick": 8,
+        "franchiseId": "daegu-kogas",
+        "originalFranchiseId": "daegu-kogas",
+        "name": "최주영",
+        "school": "성균관대",
+        "position": "C",
+        "birth": null,
+        "height": 204,
+        "weight": 104
+      },
+      {
+        "round": 4,
+        "pick": 7,
+        "franchiseId": "ulsan-hyundai-mobis",
+        "originalFranchiseId": "ulsan-hyundai-mobis",
+        "name": "정종현",
+        "school": "동국대",
+        "position": "C",
+        "birth": null,
+        "height": 203,
+        "weight": 89
+      }
+    ]
+  },
+  {
     "draftYear": 2022,
     "season": "2022-23",
     "date": "2022-09-27",
