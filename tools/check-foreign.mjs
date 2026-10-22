@@ -75,6 +75,7 @@ export function validateSeason(doc, ctx, file = '') {
       for (const k of p.marks ?? []) if (!MARKS.includes(k)) e(`${who}: 알 수 없는 표시 ${k}`);
       if (p.asiaQuota != null && typeof p.asiaQuota !== 'boolean') e(`${who}: asiaQuota`);
       if (p.inherited != null && !(Array.isArray(p.inherited) && p.inherited.every((k) => ['position', 'nationality', 'type'].includes(k)))) e(`${who}: inherited`);
+      if (p.source != null && !['official', 'events'].includes(p.source)) e(`${who}: source ${p.source}`);
       if (p.officialName != null && typeof p.officialName !== 'string') e(`${who}: officialName`);
       if (!p.asiaQuota) m.set(norm(p.officialName ?? p.name), p); // 공식 기록의 표기가 다르면 officialName에 적는다
     }

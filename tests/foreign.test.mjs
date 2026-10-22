@@ -21,26 +21,29 @@ test('외국인 선수 문서: 형식·구단·공식 기록 대조 검증을 �
   assert.deepEqual(problems, []);
 });
 
-test('외국인 선수 문서: 같은 선수의 국적이 시즌마다, 이벤트 파일과 어긋나지 않는다 (이어받은 값은 제외)', () => {
-  const byName = new Map(); // 정규화 이름 → Map(국적 문자열 → [시즌…])
-  for (const [season, doc] of docs) {
-    for (const t of doc.teams) for (const p of t.players) {
-      if (!p.nationality || p.inherited?.includes('nationality')) continue;
-      const key = norm(p.officialName ?? p.name);
-      const nat = [...p.nationality].sort().join('·');
-      byName.set(key, byName.get(key) ?? new Map());
-      byName.get(key).set(nat, [...(byName.get(key).get(nat) ?? []), season]);
+test('외국인 선수 문서: 같은 선수의 국적이 시즌마다·이벤트 파일과 겹친다 (국적 추가는 허용, 이어받은 값·미상은 제외)', () => {
+  // 국적은 시즌 사이에 늘 수 있다(스펠맨 레바논, 알렉산더 바레인 등). 서로 하나도 안 겹치면 옮김 오류나 이어받기 오류다.
+  const byName = new Map(); // 정규화 이름 → [{ set, where }]
+  const add = (name, nat, where) => {
+    if (!nat?.length || nat.includes('미상')) return;
+    const key = norm(name);
+    byName.set(key, [...(byName.get(key) ?? []), { set: new Set(nat), where }]);
+  };
+  for (const [season, doc] of docs) for (const t of doc.teams) for (const p of t.players) {
+    if (p.inherited?.includes('nationality')) continue;
+    add(p.officialName ?? p.name, p.nationality, season);
+  }
+  for (const e of ctx.events) for (const f of e.foreign ?? []) if (!f.asiaQuota) add(f.name, f.nationality, `${e.season}(이벤트)`);
+  const conflicts = [];
+  for (const [name, list] of byName) {
+    for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+      if (![...list[i].set].some((x) => list[j].set.has(x))) conflicts.push(`${name}: ${[...list[i].set]}(${list[i].where}) ↔ ${[...list[j].set]}(${list[j].where})`);
     }
   }
-  for (const e of ctx.events) for (const f of e.foreign ?? []) {
-    if (!f.nationality || f.asiaQuota) continue;
-    const key = norm(f.name);
-    const nat = [...f.nationality].sort().join('·');
-    byName.set(key, byName.get(key) ?? new Map());
-    byName.get(key).set(nat, [...(byName.get(key).get(nat) ?? []), `${e.season}(이벤트)`]);
-  }
-  const conflicts = [...byName].filter(([, m]) => m.size > 1).map(([k, m]) => `${k}: ${[...m].map(([n, s]) => `${n}=${s.join(',')}`).join(' / ')}`);
-  // 알려진 표기 차이는 아래에 사유와 함께 적는다
-  const KNOWN = {};
+  // 위키의 서로 다른 문서(외국인 선수 역대표 ↔ 시즌 문서)가 어긋나는 경우. 어느 쪽이 맞는지 확인되기 전까지 둘 다 그대로 둔다
+  const KNOWN = {
+    '브라이언그리핀': '2024-25: 역대표는 미국, 시즌 이벤트 파일은 이집트(같은 구단 마레이 줄에서 이어받은 값일 수 있음)',
+    '스카티제임스': '2026-27: 역대표는 폴란드(국기·코드 POL), 시즌 이벤트 파일은 미국'
+  };
   assert.deepEqual(conflicts.filter((c) => !(c.split(':')[0] in KNOWN)), []);
 });

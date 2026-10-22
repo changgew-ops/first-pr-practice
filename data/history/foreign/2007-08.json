@@ -233,6 +233,11 @@
           "position": "C",
           "heightCm": 198.7,
           "school": "베일러"
+        },
+        {
+          "name": "마르커스 세션",
+          "source": "official",
+          "note": "문서 표에 없음. KBL 공식 기록(data/stats/official/2007-08.csv)에 부산 KTF 정규시즌 5경기(2승 3패)로 있어 보충"
         }
       ]
     },
@@ -268,6 +273,11 @@
           "heightCm": 202.1,
           "school": "시애틀퍼시픽 (Div.II)",
           "note": "대한민국으로 귀화하기 전이었다. / 키 202.1: KBL 외국인 드래프트 당시 측정신장. 그래서 KBL 홈페이지에 보면 국내선수 \"이승준\"의 키(205cm)와 차이가 난다.귀화하면 키커요!!"
+        },
+        {
+          "name": "얼 아이크",
+          "source": "official",
+          "note": "문서 표에 없음. KBL 공식 기록(data/stats/official/2007-08.csv)에 울산 모비스 정규시즌 6경기(3승 3패)로 있어 보충"
         }
       ]
     },

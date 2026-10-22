@@ -37,6 +37,11 @@
           "position": "C",
           "heightCm": 204.6,
           "school": "텍사스 A&M"
+        },
+        {
+          "name": "알렌 위긴스",
+          "source": "official",
+          "note": "문서 표에 없음. KBL 공식 기록(data/stats/official/2011-12.csv)에 안양 KGC 정규시즌 6경기(5승 1패)로 있어 보충"
         }
       ]
     },

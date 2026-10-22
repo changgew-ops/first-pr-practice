@@ -12,6 +12,7 @@
 | 4 | 선수 기록 | KBL 기록실 xlsx(시트별 시즌). 2020-21 이전은 **공식 기록에서 바로 만들 수 있다** | `python3 tools/xlsx-to-stats-csv.py <xlsx> <시트> data/stats/<시즌>.csv` | 득점·리바운드·야투 합, 승+패 = 경기 수 |
 | 5 | 선수 소속 | 공식 기록이 있으면 필요 없다(`official/<시즌>.csv`의 소속). 없는 시즌만 선수기록 화면(PTS 순, 1차 스탯) **녹화** | `tools/read-team-icons.py` (README의 명령) | 선수의 승·패가 구단 시즌 합계 이내, 시즌 중 이적은 위키 트레이드와 일치 |
 | 6 | 시즌 이벤트 | 나무위키 시즌 문서의 오프시즌(코칭·트레이드·외국인·은퇴·FA·군 입대) | `season-events` 에이전트가 `data/history/events/<시즌>.json` | `node tools/check-events.mjs <시즌>`: FA 대상자 = 계약+미체결+제외, 새 소속 = 그 시즌 소속 CSV |
+| 6.5 | 외국인 선수 명단 | 나무위키 "외국인 선수/역대 프로농구" 문서의 그 시즌 표(+아시아 쿼터 표) | `data/history/foreign/<시즌>.json` (형식은 그 폴더 README). 시즌별로 에이전트에게 나눠 맡길 수 있다 | `node tools/check-foreign.mjs <시즌>`: 구단이 그 시즌 구단과 같고, **공식 기록에 그 구단 외국인으로 출전한 선수가 표에 모두 있다**(없으면 `source: official`로 보충) |
 | 7 | 신인 드래프트 | 나무위키 드래프트 문서 + 컴바인 스크린샷 | `draft-transcriber`가 `data/history/drafts/<연도>.json` | 추첨 공 합 200, 지명 순서 규칙, 지명자 ∈ 참가자 |
 | 7.5 | 선수 프로필(선택) | KBL 선수 상세 화면·나무위키 인물 문서 스크린샷 | `data/players/profiles.json` | 시즌별 기록 ≤ 시트, KBL 경력 = 시즌 소속 CSV |
 | 8 | 점검 | — | `data-auditor`로 교차 확인, `npm run coverage -- --write docs/DATA_STATUS.md` | 전체 테스트 |
