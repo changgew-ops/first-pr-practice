@@ -291,3 +291,40 @@ test('타이틀 스폰서: 모든 시즌에 있고 연속 범위가 맞다', () 
   assert.equal(at('2013-14').sponsor, 'KB국민카드');
   assert.equal(at('2025-26').name, 'LG전자 프로농구');
 });
+
+test('2023-24: 날짜로 나뉜 라운드(팀마다 경기 수 다름), 상대전적, 수상', () => {
+  const s = seasons.find((x) => x.season === '2023-24');
+  assert.equal(s.rounds.length, 6);
+  const r1 = s.rounds[0].teams;
+  assert.equal(r1.reduce((a, t) => a + t.games, 0), 90); // 1라운드 = 45경기
+  assert.notEqual(new Set(r1.map((t) => t.games)).size, 1);
+  assert.equal(s.rounds[0].teams[0].roundWins, 9); // 1라운드는 라운드 전적 열이 없어 누적으로 채운다
+  for (const f of s.teams) {
+    const t = s.rounds[5].teams.find((x) => x.franchiseId === f.franchiseId);
+    assert.equal(`${t.wins}-${t.losses}`, `${f.wins}-${f.losses}`);
+  }
+  const h = s.headToHead;
+  const idx = (id) => h.teams.indexOf(id);
+  const w = (a, b) => h.wins[idx(a)][idx(b)];
+  assert.equal(w('changwon-lg', 'anyang-jungkwanjang'), 4); // 위키 표(6)를 두 팀 승패에 맞게 고친 값
+  assert.equal(w('anyang-jungkwanjang', 'changwon-lg'), 2);
+  for (const a of h.teams) for (const b of h.teams) if (a !== b) assert.equal(w(a, b) + w(b, a), 6);
+  assert.equal(s.awards['정규시즌 MVP(외국)'], '디드릭 로슨');
+  assert.equal(s.awards['감독상'], '김주성');
+});
+
+test('시즌별 소속 CSV: 선수기록 시트와 같은 선수 수, 모두 실제 구단', () => {
+  const ids = new Set(teams.map((t) => t.id));
+  const lines = (p) => readFileSync(join(ROOT, p), 'utf8').split(/\r?\n/).filter((l) => l.trim() && !l.startsWith('#'));
+  for (const [season, count] of [['2025-26', 193], ['2024-25', 203], ['2023-24', 200]]) {
+    const stats = lines(`data/stats/${season}.csv`).slice(1).map((l) => l.split(',')[0]);
+    const team = lines(`data/players/team-${season}.csv`).slice(1).map((l) => l.split(','));
+    assert.equal(stats.length, count, `${season} 기록`);
+    assert.equal(team.length, count, `${season} 소속`);
+    const statSet = new Set(stats);
+    for (const [name, id] of team) {
+      assert.ok(ids.has(id), `${season} ${name} 구단 ${id}`);
+      assert.ok(statSet.has(name) || statSet.has(name.replace(/\(\d+\)$/, '')) || [...statSet].some((n) => n.replace(/\(\d+\)$/, '') === name), `${season} 소속 목록의 ${name}이(가) 기록에 없음`);
+    }
+  }
+});

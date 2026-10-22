@@ -1,0 +1,3 @@
+# 아이콘 판독을 사람이 확인해 바로잡은 값. tools/read-team-icons.py --season 으로 적용한다
+season,name,team,reason
+2024-25,조상열,daegu-kogas,판별 여유가 작았고 나무위키 2024-25 FA 기록에 대구 한국가스공사 잔류로 나온다
