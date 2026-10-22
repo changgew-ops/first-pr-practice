@@ -1,0 +1,65 @@
+{
+  "season": "2025-26",
+  "system": "자유계약",
+  "note": "문서 7.8. 병합 칸이라 문서에 칸이 없던 포지션·국적은 위 줄에서 이어받고 inherited로 표시했다. 아시아 쿼터는 7.8.1 표. 문서 표기: 구단명 칸 '부산 KCC 이지스', 포지션 'C, PF'처럼 쉼표 뒤 띄어쓰기는 붙였다.",
+  "teams": [
+    { "franchiseId": "changwon-lg", "team": "창원 LG 세이커스", "players": [
+      { "name": "아셈 마레이", "position": "C", "nationality": ["이집트"], "marks": ["renewed"], "nth": 5, "status": "5번째 시즌" },
+      { "name": "마이클 에릭", "position": "C", "nationality": ["나이지리아"], "nth": 2, "status": "2번째 시즌, 시즌 중 방출", "inherited": ["position"] },
+      { "name": "카이린 갤러웨이", "position": "PF", "nationality": ["미국", "호주"], "status": "대체 영입" },
+      { "name": "칼 타마요", "position": "F", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["renewed"], "nth": 2, "status": "2번째 시즌" }
+    ] },
+    { "franchiseId": "anyang-jungkwanjang", "team": "안양 정관장 레드부스터스", "players": [
+      { "name": "조니 오브라이언트", "position": "F", "nationality": ["미국"], "marks": ["nba", "renewed"], "nth": 3, "status": "3번째 시즌" },
+      { "name": "브라이스 워싱턴", "position": "PF", "nationality": ["미국"], "status": "신규 영입", "inherited": ["nationality"] },
+      { "name": "하비 고메즈", "position": "F", "nationality": ["필리핀", "스페인"], "asiaQuota": true, "marks": ["renewed"], "nth": 2, "status": "2번째 시즌, 시즌 전 계약 불발" },
+      { "name": "렌즈 아반도", "position": "G", "nationality": ["필리핀"], "asiaQuota": true, "nth": 3, "status": "대체 영입, 3번째 시즌" }
+    ] },
+    { "franchiseId": "wonju-db", "team": "원주 DB 프로미", "players": [
+      { "name": "헨리 엘런슨", "position": "C", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입" },
+      { "name": "에삼 무스타파", "position": "C", "nationality": ["이집트"], "status": "신규 영입" },
+      { "name": "이선 알바노", "position": "G", "nationality": ["필리핀", "미국"], "asiaQuota": true, "marks": ["contracted"], "nth": 4, "status": "4번째 시즌" }
+    ] },
+    { "franchiseId": "seoul-sk", "team": "서울 SK 나이츠", "players": [
+      { "name": "자밀 워니", "position": "C", "nationality": ["미국"], "marks": ["nba", "renewed"], "nth": 7, "status": "7번째 시즌" },
+      { "name": "대릴 먼로", "position": "F", "nationality": ["미국"], "nth": 6, "status": "6번째 시즌", "inherited": ["nationality"] },
+      { "name": "알빈 톨렌티노", "position": "F", "nationality": ["필리핀"], "asiaQuota": true, "status": "신규 영입" }
+    ] },
+    { "franchiseId": "goyang-sono", "team": "고양 소노 스카이거너스", "players": [
+      { "name": "제일린 존슨", "position": "C", "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출" },
+      { "name": "이기디우스 모츠카비추스", "position": "C", "nationality": ["리투아니아"], "status": "대체 영입" },
+      { "name": "네이던 나이트", "position": "PF,C", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입" },
+      { "name": "케빈 켐바오", "position": "F", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["renewed"], "nth": 2, "status": "2번째 시즌" }
+    ] },
+    { "franchiseId": "busan-kcc", "team": "부산 KCC 이지스", "players": [
+      { "name": "드완 에르난데스", "position": "PF,C", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌" },
+      { "name": "숀 롱", "position": "F", "nationality": ["미국"], "marks": ["nba"], "nth": 3, "status": "3번째 시즌", "inherited": ["nationality"] },
+      { "name": "윌리엄 나바로", "position": "F", "nationality": ["필리핀"], "asiaQuota": true, "status": "신규 영입" }
+    ] },
+    { "franchiseId": "suwon-kt", "team": "수원 kt 소닉붐", "players": [
+      { "name": "아이제아 힉스", "position": "C,PF", "nationality": ["미국"], "marks": ["nba"], "nth": 5, "status": "5번째 시즌, 시즌 중 방출", "officialName": "아이재아 힉스" },
+      { "name": "조나단 윌리엄스", "position": "C", "nationality": ["미국"], "marks": ["nba"], "status": "대체 영입", "inherited": ["nationality"] },
+      { "name": "데릭 윌리엄스", "position": "F", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입", "inherited": ["nationality"] },
+      { "name": "조엘 카굴랑안", "position": "PG", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["renewed"], "nth": 2, "status": "2번째 시즌" }
+    ] },
+    { "franchiseId": "ulsan-hyundai-mobis", "team": "울산 현대모비스 피버스", "players": [
+      { "name": "레이션 해먼즈", "position": "PF", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌" },
+      { "name": "에릭 로메로", "position": "C", "nationality": ["파나마"], "status": "신규 영입, 시즌 중 방출", "note": "문서 국적 코드가 REP(파나마 국기와 어긋남). 국기 이름을 따랐다" },
+      { "name": "존 이그부누", "position": "C", "nationality": ["나이지리아"], "marks": ["nba"], "nth": 2, "status": "대체 영입, 2번째 시즌" },
+      { "name": "미구엘 안드레 옥존", "position": "G", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["contracted"], "nth": 3, "status": "3번째 시즌, 시즌 중 방출" },
+      { "name": "존킴웰 피게로아", "position": "G", "nationality": ["필리핀"], "asiaQuota": true, "status": "대체 영입", "inherited": ["nationality"] }
+    ] },
+    { "franchiseId": "daegu-kogas", "team": "대구 한국가스공사 페가수스", "players": [
+      { "name": "라건아", "position": "PF,C", "nationality": ["미국", "대한민국"], "nth": 12, "status": "12번째 시즌, 외국선수 취급" },
+      { "name": "망콕 마티앙", "position": "C", "nationality": ["남수단", "호주"], "marks": ["nba", "renewed"], "nth": 2, "status": "2번째 시즌, 시즌 중 방출", "note": "문서 국적 코드 SSD, AUS" },
+      { "name": "닉 퍼킨스", "position": "PF", "nationality": ["미국"], "status": "대체 영입, 시즌 중 방출" },
+      { "name": "베니 보트라이트", "position": "PF", "nationality": ["미국"], "status": "대체 영입", "inherited": ["position", "nationality"] },
+      { "name": "샘조세프 벨란겔", "position": "G", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["contracted"], "nth": 4, "status": "4번째 시즌" }
+    ] },
+    { "franchiseId": "seoul-samsung", "team": "서울 삼성 썬더스", "players": [
+      { "name": "앤드류 니콜슨", "position": "PF", "nationality": ["캐나다"], "marks": ["nba"], "nth": 3, "status": "3번째 시즌, 시즌 중 계약해지" },
+      { "name": "케렘 칸터", "position": "C", "nationality": ["튀르키예"], "status": "신규 영입" },
+      { "name": "저스틴 구탕", "position": "G,F", "nationality": ["필리핀", "미국"], "asiaQuota": true, "marks": ["renewed"], "nth": 4, "status": "4번째 시즌" }
+    ] }
+  ]
+}

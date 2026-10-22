@@ -1,0 +1,337 @@
+{
+  "season": "2012-13",
+  "system": "드래프트",
+  "note": "한 시즌 만에 다시 트라이아웃 & 드래프트 제도로 회귀했다. 외국인 선수 2명 보유 1명 출전(쿼터별 출전 제한 없음). round(1·2라운드)는 문서 표의 열 순서로 확실히 읽히는 구단(두 명만 나오고 교체 표시가 없는 구단)에만 채웠고, 교체 선수가 이어 나오는 구단은 어느 열인지 알 수 없어 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK 나이츠",
+      "players": [
+        {
+          "name": "애런 헤인즈",
+          "position": "PF",
+          "heightCm": 199.5,
+          "school": "보이시 주립"
+        },
+        {
+          "name": "크리스 알렉산더",
+          "position": "C",
+          "heightCm": 213,
+          "school": "아이오와 주립"
+        },
+        {
+          "name": "코트니 심스",
+          "position": "C",
+          "heightCm": 206.5,
+          "school": "미시간",
+          "marks": [
+            "nba"
+          ],
+          "note": "시즌 중 서울 SK-전주 KCC간 2:1 트레이드를 통해 서울 SK에 합류했다.(서울 SK get: 코트니 심스 ↔ 전주 KCC get: 김효범, 크리스 알렉산더)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스 피버스",
+      "players": [
+        {
+          "name": "리카르도 라틀리프",
+          "position": "C",
+          "heightCm": 200.5,
+          "school": "미주리"
+        },
+        {
+          "name": "크리스 버지스",
+          "status": "시즌 개막전 교체"
+        },
+        {
+          "name": "아말 맥카스킬",
+          "position": "C",
+          "heightCm": 208.7,
+          "school": "마켓"
+        },
+        {
+          "name": "커티스 위더스",
+          "position": "PF",
+          "heightCm": 198,
+          "school": "UNC 샬럿"
+        },
+        {
+          "name": "로드 벤슨",
+          "position": "C",
+          "heightCm": 206.7,
+          "school": "UC버클리",
+          "note": "시즌 도중 창원 LG-울산 모비스간 트레이드로 영입.(창원 LG get: 커티스 위더스 + 신인 드래프트 1R 지명권 또는 김시래 ↔ 울산 모비스 get: 로드 벤슨). 창원 LG는 12-13 시즌 챔피언결정전 종료 직후 김시래의 영입을 확정 지었다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드 엘리펀츠",
+      "players": [
+        {
+          "name": "리카르도 포웰",
+          "position": "PF",
+          "heightCm": 195.8,
+          "school": "사우스캐롤라이나",
+          "round": 1
+        },
+        {
+          "name": "디앤젤로 카스토",
+          "position": "C",
+          "heightCm": 200.1,
+          "school": "워싱턴 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KGC인삼공사",
+      "players": [
+        {
+          "name": "개럿 스터츠",
+          "status": "시즌 개막전 교체"
+        },
+        {
+          "name": "후안 파틸로",
+          "position": "PF",
+          "heightCm": 196.4,
+          "school": "웨스턴 켄터키"
+        },
+        {
+          "name": "키브웨 트림",
+          "position": "C",
+          "heightCm": 203,
+          "school": "세이크리드 허트",
+          "note": "외국인 선수들은 유니폼에 성(姓)을 표기하도록 되어 있으나 키브웨 트림은 어감 때문에 예외적으로 이름을 표기하도록 했다.관련 기사 참고로 프로 원년에는 이게 제대로 자리잡지 않아서 클리프 리드, 빈스 킹, 토니 매디슨 등이 처음에 이름을 유니폼에 넣었다가 나중에 성으로 바꾸는 촌극을 빚기도 했다. 비슷한 사례로 04-05 시즌 울산 모비스에서 뛰었던 아담 첩(;;;)이 있다.(이름 전체 표기)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "고양 오리온스",
+      "players": [
+        {
+          "name": "테렌스 레더",
+          "position": "C",
+          "heightCm": 200.3,
+          "school": "사우스 플로리다"
+        },
+        {
+          "name": "리온 윌리엄스",
+          "position": "C",
+          "heightCm": 197,
+          "school": "오하이오"
+        },
+        {
+          "name": "리 네일런",
+          "position": "PF",
+          "heightCm": 201,
+          "school": "텍사스 기독대",
+          "marks": [
+            "temp",
+            "nba"
+          ],
+          "note": "1999 NBA 드래프트 2R 43순위 to 샬럿 호네츠. NBA에서만 무려 5시즌을 뛴 베테랑이었으나, 나이가 너무 많았다.(37세)"
+        },
+        {
+          "name": "조셉 테일러",
+          "position": "PF",
+          "heightCm": 198,
+          "school": "와이오밍"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성 썬더스",
+      "players": [
+        {
+          "name": "브라이언 데이비스",
+          "status": "시즌 개막 전 트레이드"
+        },
+        {
+          "name": "케니 로슨",
+          "position": "C",
+          "heightCm": 201.8,
+          "school": "크레이튼"
+        },
+        {
+          "name": "대리언 타운스",
+          "position": "C",
+          "heightCm": 204.6,
+          "school": "알칸사스",
+          "note": "드래프트에서 부산 KT에 지명되었으나, 시즌 개막 전 브라이언 데이비스와 1:1 트레이드로 서울 삼성에 합류하였다."
+        },
+        {
+          "name": "줄리안 센슬리",
+          "status": "교체 영입 직후 트레이드",
+          "note": "케니 로슨을 기량미달로 퇴출하면서 영입하였으나, 한게임도 뛰지 않고 곧바로 브랜든 보우먼과 1:1 트레이드되었다."
+        },
+        {
+          "name": "브랜든 보우먼",
+          "position": "SF",
+          "heightCm": 200.5,
+          "school": "조지타운",
+          "note": "줄리안 센슬리와 1:1 트레이드로 영입",
+          "officialName": "브랜든 보우만"
+        },
+        {
+          "name": "오다티 블랭슨",
+          "position": "PF",
+          "heightCm": 194.5,
+          "school": "UNLV"
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부 프로미",
+      "players": [
+        {
+          "name": "브랜든 보우먼",
+          "position": "SF",
+          "heightCm": 200.5,
+          "school": "조지타운",
+          "officialName": "브랜든 보우만"
+        },
+        {
+          "name": "저마리오 데이비슨",
+          "status": "시즌전 부상으로 교체"
+        },
+        {
+          "name": "줄리안 센슬리",
+          "position": "PF",
+          "heightCm": 202,
+          "school": "하와이 대학교",
+          "note": "서울 삼성의 대체선수로 입국했다가, 브랜든 보우먼과 1:1 트레이드로 영입"
+        },
+        {
+          "name": "빅터 토마스",
+          "position": "PF",
+          "heightCm": 199.2,
+          "school": "라살레"
+        },
+        {
+          "name": "리차드 로비",
+          "position": "SG",
+          "heightCm": 195,
+          "school": "콜로라도"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG 세이커스",
+      "players": [
+        {
+          "name": "로드 벤슨",
+          "position": "C",
+          "heightCm": 206.7,
+          "school": "UC버클리"
+        },
+        {
+          "name": "아이라 클라크",
+          "position": "PF",
+          "heightCm": 200,
+          "school": "텍사스"
+        },
+        {
+          "name": "커티스 위더스",
+          "position": "PF",
+          "heightCm": 198,
+          "school": "UNC 샬럿",
+          "note": "시즌 중 창원 LG-울산 모비스간 트레이드로 영입.(창원 LG get: 커티스 위더스 + 신인 드래프트 1R 지명권 또는 김시래 ↔ 울산 모비스 get: 로드 벤슨)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KT 소닉붐",
+      "players": [
+        {
+          "name": "대리언 타운스",
+          "status": "시즌 개막전 트레이드"
+        },
+        {
+          "name": "브랜든 코스트너",
+          "status": "시즌 개막전 교체"
+        },
+        {
+          "name": "브라이언 데이비스",
+          "position": "C",
+          "heightCm": 202,
+          "school": "텍사스 A&M",
+          "note": "드래프트에서 서울 삼성에 지명되었으나, 시즌 개막 전 대리언 타운스와 1:1 트레이드로 부산 KT에 합류하였다."
+        },
+        {
+          "name": "제스퍼 존슨",
+          "position": "PF",
+          "heightCm": 196.6,
+          "school": "델타 주립 (Div.II)"
+        },
+        {
+          "name": "테런스 로버츠",
+          "position": "C",
+          "heightCm": 208,
+          "school": "시라큐스",
+          "officialName": "테렌스 로버츠"
+        },
+        {
+          "name": "라이언 라이트",
+          "position": "C",
+          "heightCm": 202,
+          "school": "오클라호마"
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC 이지스",
+      "players": [
+        {
+          "name": "코트니 심스",
+          "position": "C",
+          "heightCm": 206.5,
+          "school": "미시간",
+          "marks": [
+            "nba",
+            "draft1"
+          ]
+        },
+        {
+          "name": "레니 다니엘",
+          "status": "시즌 개막전 교체"
+        },
+        {
+          "name": "존 토마스",
+          "position": "C",
+          "heightCm": 202.8,
+          "school": "미네소타",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "크리스 알렉산더",
+          "position": "C",
+          "heightCm": 213,
+          "school": "아이오와 주립",
+          "note": "시즌 중 서울 SK-전주 KCC간 2:1 트레이드를 통해 전주 KCC에 합류했다.(서울 SK get: 코트니 심스 ↔ 전주 KCC get: 김효범, 크리스 알렉산더)"
+        },
+        {
+          "name": "안드레 브라운",
+          "position": "C",
+          "heightCm": 202,
+          "school": "드폴",
+          "marks": [
+            "nba"
+          ],
+          "note": "코트니 심스 부상 대체 선수로 영입했다가 이후 코트니 심스의 복귀 후에 존 토마스의 대체선수로 영입했다."
+        }
+      ]
+    }
+  ]
+}

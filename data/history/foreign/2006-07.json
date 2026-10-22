@@ -1,0 +1,299 @@
+{
+  "season": "2006-07",
+  "system": "자유계약",
+  "note": "문서 3.3. 2006-07 시즌을 앞두고 외국 선수 2, 3쿼터 한 명 출전으로 제도가 변경되었다(문서 설명). 자유계약 시절이라 round 없음.",
+  "teams": [
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "크리스 윌리엄스",
+          "position": "PF",
+          "heightCm": 193.9,
+          "school": "버지니아",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "크리스 버지스",
+          "position": "C",
+          "heightCm": 205.1,
+          "school": "유타"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "찰스 민렌드",
+          "position": "PF",
+          "heightCm": 193.8,
+          "school": "세인트존스"
+        },
+        {
+          "name": "퍼비스 파스코",
+          "position": "C",
+          "heightCm": 201.3,
+          "school": "캔자스 주립",
+          "note": "심판 폭행 사태로 영구 제명 기사"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KTF",
+      "players": [
+        {
+          "name": "필립 리치",
+          "position": "PF",
+          "heightCm": 196,
+          "school": "오리건 주립"
+        },
+        {
+          "name": "애런 맥기",
+          "position": "C",
+          "heightCm": 201,
+          "school": "오클라호마",
+          "marks": [
+            "renewed"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 오리온스",
+      "players": [
+        {
+          "name": "피트 마이클",
+          "position": "PF",
+          "heightCm": 193.8,
+          "school": "신시내티",
+          "marks": [
+            "mvp"
+          ]
+        },
+        {
+          "name": "리 벤슨",
+          "status": "시즌 개막 전 야반도주."
+        },
+        {
+          "name": "제러드 호먼",
+          "position": "C",
+          "heightCm": 200,
+          "school": "보이시 주립"
+        },
+        {
+          "name": "폴 밀러",
+          "position": "C",
+          "heightCm": 203,
+          "school": "위치타 주립"
+        },
+        {
+          "name": "마커스 다우잇",
+          "position": "C",
+          "heightCm": 204.4,
+          "school": "프로비던스 칼리지",
+          "note": "2004 NBA 드래프트 2R 전체 56순위로 LA 레이커스에 선발되었지만 NBA 데뷔에는 실패했고, 곧장 유럽무대로 진출했다. 뒤에 필리핀으로 귀화해 필리핀 국가대표로도 활약했다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "네이트 존슨",
+          "position": "PF",
+          "heightCm": 196.2,
+          "school": "루이빌",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "올루미데 오예데지",
+          "position": "C",
+          "heightCm": 201.4,
+          "school": "나이지리아 이바단",
+          "marks": [
+            "nba",
+            "renewed"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KT&G",
+      "players": [
+        {
+          "name": "단테 존스",
+          "position": "PF",
+          "heightCm": 194.7,
+          "school": "미시시피 주립",
+          "marks": [
+            "nba",
+            "renewed"
+          ]
+        },
+        {
+          "name": "웨슬리 윌슨",
+          "position": "C",
+          "heightCm": 203.9,
+          "school": "조지타운"
+        },
+        {
+          "name": "주니어 버로",
+          "position": "C",
+          "heightCm": 199,
+          "school": "버지니아",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "루 로",
+          "position": "PF",
+          "heightCm": 195,
+          "school": "매사추세츠",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "키부 스튜어트",
+          "position": "C",
+          "heightCm": 200,
+          "school": "CSU 베이커스필드",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부",
+      "players": [
+        {
+          "name": "로베트로 버거슨",
+          "position": "SF",
+          "heightCm": 193,
+          "school": "보이시 주립",
+          "note": "1999 NBA 드래프트 2R 전체 52순위로 애틀랜타 호크스에 드래프트 되지만, NBA 데뷔에 실패했다.",
+          "officialName": "로베르토 버거슨"
+        },
+        {
+          "name": "자밀 왓킨스",
+          "position": "C",
+          "heightCm": 204.3,
+          "school": "조지타운",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "앨버트 화이트",
+          "position": "PF",
+          "heightCm": 192.6,
+          "school": "미주리"
+        },
+        {
+          "name": "빈센트 그리어",
+          "position": "SF",
+          "heightCm": 189.9,
+          "school": "미네소타"
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드",
+      "players": [
+        {
+          "name": "브랜든 브라운",
+          "position": "PF",
+          "heightCm": 195.8,
+          "school": "툴레인"
+        },
+        {
+          "name": "아담 파라다",
+          "position": "C",
+          "heightCm": 208,
+          "school": "UC어바인"
+        },
+        {
+          "name": "키마니 프렌드",
+          "position": "C",
+          "heightCm": 203.3,
+          "school": "네브래스카"
+        },
+        {
+          "name": "샘 클랜시 주니어",
+          "position": "PF",
+          "heightCm": 195.2,
+          "school": "USC",
+          "note": "2002 NBA 드래프트 2라운드 44번 to 필라델피아 세븐티식서스. NBA 정규시즌 출장: 0 (루키 시즌 무릎부상을 당했다. / 미식축구선수 샘 클랜시의 아들.",
+          "officialName": "샘 클랜시"
+        },
+        {
+          "name": "앤서니 마일즈",
+          "position": "C",
+          "heightCm": 199.1,
+          "school": "새비어"
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "마이클 라이트",
+          "status": "시즌직전 부상으로 교체됨"
+        },
+        {
+          "name": "바비 레이저",
+          "position": "SF/PF",
+          "heightCm": 199.7,
+          "school": "애리조나 주립"
+        },
+        {
+          "name": "타이론 그랜트",
+          "position": "PF",
+          "heightCm": 196.2,
+          "school": "애리조나"
+        },
+        {
+          "name": "마이크 벤튼",
+          "position": "C",
+          "heightCm": 202.8,
+          "school": "찰스턴"
+        },
+        {
+          "name": "아이지아 빅터",
+          "position": "C",
+          "heightCm": 205.7,
+          "school": "테네시"
+        },
+        {
+          "name": "마르코 킬링스워스",
+          "position": "C",
+          "heightCm": 197.8,
+          "school": "인디애나"
+        }
+      ]
+    }
+  ]
+}

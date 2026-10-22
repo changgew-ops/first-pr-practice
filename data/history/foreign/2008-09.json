@@ -1,0 +1,374 @@
+{
+  "season": "2008-09",
+  "system": "드래프트",
+  "note": "문서 4.2. 2008-09 시즌부터는 외국인 선수 신장 제한이 모두 사라졌다(문서 설명). round: 문서 표는 왼쪽 칸이 1라운드, 오른쪽 칸이 2라운드이고 선수가 줄 순서대로 평면 텍스트로 나와, 구단의 첫 두 선수(표 첫 줄)만 1·2라운드를 채웠다. 교체·트레이드로 들어온 이후 선수는 어느 칸인지 알 수 없어 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "브라이언트 던스톤",
+          "position": "C",
+          "heightCm": 198.6,
+          "school": "포덤",
+          "officialName": "브라이언 던스톤",
+          "round": 1
+        },
+        {
+          "name": "오다티 블랭슨",
+          "position": "PF",
+          "heightCm": 194.5,
+          "school": "UNLV",
+          "round": 2
+        },
+        {
+          "name": "저스틴 보웬",
+          "position": "PF",
+          "heightCm": 195.7,
+          "school": "일리노이"
+        },
+        {
+          "name": "빅터 토마스",
+          "position": "PF",
+          "heightCm": 199.2,
+          "school": "라살레"
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부",
+      "players": [
+        {
+          "name": "레지 오코사",
+          "position": "C",
+          "heightCm": 204.1,
+          "school": "라살레",
+          "marks": [
+            "renewed"
+          ],
+          "round": 1
+        },
+        {
+          "name": "웬델 화이트",
+          "position": "SG",
+          "heightCm": 194.3,
+          "school": "UNLV",
+          "round": 2
+        },
+        {
+          "name": "크리스 다니엘스",
+          "position": "C",
+          "heightCm": 204.6,
+          "school": "텍사스 A&M",
+          "note": "대구 오리온스에서 뛰다 시즌 중 레지 오코사와 1:1 트레이드로 영입되었다."
+        },
+        {
+          "name": "저스틴 알렌",
+          "position": "SF",
+          "heightCm": 200.3,
+          "school": "애리조나 주립",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "앤서니 윌킨스",
+          "position": "SF",
+          "heightCm": 195.8,
+          "school": "켄트 주립",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "마이카 브랜드",
+          "position": "C",
+          "heightCm": 207.1,
+          "school": "매사추세츠",
+          "marks": [
+            "renewed"
+          ],
+          "round": 1
+        },
+        {
+          "name": "브라이언 하퍼",
+          "position": "SF",
+          "heightCm": 203.4,
+          "school": "페인 칼리지 (Div.II)",
+          "round": 2
+        },
+        {
+          "name": "칼 미첼",
+          "position": "SF",
+          "heightCm": 201.1,
+          "school": "노던 켄터키"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "테렌스 레더",
+          "position": "C",
+          "heightCm": 200.3,
+          "school": "사우스 플로리다",
+          "marks": [
+            "mvp",
+            "renewed"
+          ],
+          "round": 1
+        },
+        {
+          "name": "데이먼 써튼",
+          "status": "시즌전 교체",
+          "round": 2
+        },
+        {
+          "name": "에반 브락",
+          "position": "C",
+          "heightCm": 204,
+          "school": "앨라배마"
+        },
+        {
+          "name": "애런 헤인즈",
+          "position": "PF",
+          "heightCm": 199,
+          "school": "보이시 주립"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "아이반 존슨",
+          "position": "PF",
+          "heightCm": 200.3,
+          "school": "CSU-SB (Div.II)",
+          "round": 1
+        },
+        {
+          "name": "브랜든 크럼프",
+          "position": "C",
+          "heightCm": 205,
+          "school": "테네시",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드",
+      "players": [
+        {
+          "name": "리카르도 포웰",
+          "position": "PF",
+          "heightCm": 196.2,
+          "school": "사우스캐롤라이나",
+          "marks": [
+            "draft1"
+          ],
+          "note": "기존 선수들(마퀸 챈들러, 테렌스 레더, 레지 오코사)와 재계약한 안양 KT&G, 서울 삼성, 원주 동부가 자동으로 1,2,3 순위로 정해짐에 따라, 4순위로 인천 전자랜드에 뽑힌 포웰이 실질적 1순위였다.",
+          "round": 1
+        },
+        {
+          "name": "에릭 체노위드",
+          "status": "시즌 개막전 기량미달 교체",
+          "round": 2
+        },
+        {
+          "name": "도널드 리틀",
+          "position": "C",
+          "heightCm": 207,
+          "school": "신시내티"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KT&G",
+      "players": [
+        {
+          "name": "마퀸 챈들러",
+          "position": "PF",
+          "heightCm": 196.8,
+          "school": "산호세 주립",
+          "marks": [
+            "renewed"
+          ],
+          "round": 1
+        },
+        {
+          "name": "캘빈 워너",
+          "position": "C",
+          "heightCm": 196.5,
+          "school": "이스턴 미시간",
+          "note": "시즌 초 무릎부상으로 빠졌다 복귀해 맹활약했지만, 대마초 흡입 사실 적발로 제명되었다.",
+          "round": 2
+        },
+        {
+          "name": "로버트 써머스",
+          "position": "C",
+          "heightCm": 209.9,
+          "school": "웨스트버지니아",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "조나단 존스",
+          "position": "C",
+          "heightCm": 206.6,
+          "school": "배럿 칼리지 (NAIA)",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "토마스 패얼리",
+          "position": "C",
+          "heightCm": 199.3,
+          "school": "라마",
+          "note": "부상에서 복귀한 캘빈 워너가 대마초 흡입으로 갑작스레 퇴출되면서, 완전 교체선수로 합류하였다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "테런스 섀넌",
+          "position": "PF",
+          "heightCm": 196.9,
+          "school": "엘진 커뮤니티칼리지 (NJCAA)",
+          "note": "대마초 흡입 사실 적발로 제명되었다.",
+          "round": 1
+        },
+        {
+          "name": "토리 모리스",
+          "status": "시즌 개막전 교체",
+          "round": 2
+        },
+        {
+          "name": "디안젤로 콜린스",
+          "position": "C",
+          "heightCm": 203.5,
+          "school": "잉글우드 고교",
+          "note": "대마초 흡입 사실 적발로 제명되었다.",
+          "officialName": "디앤젤로 콜린스"
+        },
+        {
+          "name": "코리 미니필드",
+          "position": "PF",
+          "heightCm": 199.4,
+          "school": "로욜라"
+        },
+        {
+          "name": "그레고리 스팀스마",
+          "position": "C",
+          "heightCm": 201.8,
+          "school": "위스콘신",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "저스틴 보웬",
+          "position": "PF",
+          "heightCm": 195.7,
+          "school": "일리노이"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 오리온스",
+      "players": [
+        {
+          "name": "가넷 톰슨",
+          "position": "PF",
+          "heightCm": 205,
+          "school": "프로비던스 칼리지",
+          "round": 1
+        },
+        {
+          "name": "크리스 다니엘스",
+          "position": "C",
+          "heightCm": 204.6,
+          "school": "텍사스 A&M",
+          "round": 2
+        },
+        {
+          "name": "마이클 조이너",
+          "position": "PF",
+          "heightCm": 195.2,
+          "school": "플로리다 주립"
+        },
+        {
+          "name": "딜리온 스니드",
+          "position": "PF",
+          "heightCm": 196.9,
+          "school": "이스턴 테네시"
+        },
+        {
+          "name": "레지 오코사",
+          "position": "C",
+          "heightCm": 204.1,
+          "school": "라살레",
+          "note": "원주 동부에서 뛰다 시즌 중 크리스 다니엘스와 1:1 트레이드로 영입되었다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KTF",
+      "players": [
+        {
+          "name": "스티브 토마스",
+          "position": "C",
+          "heightCm": 202.8,
+          "school": "테네시",
+          "round": 1
+        },
+        {
+          "name": "제임스 피터스",
+          "position": "PF",
+          "heightCm": 200.1,
+          "school": "UNLV",
+          "round": 2
+        },
+        {
+          "name": "제이슨 세서",
+          "position": "PF",
+          "heightCm": 195.9,
+          "school": "텍사스 공대"
+        },
+        {
+          "name": "크리스토퍼 가넷",
+          "position": "C",
+          "heightCm": 202.8,
+          "school": "IU-SE (NAIA)"
+        },
+        {
+          "name": "조나단 존스",
+          "position": "C",
+          "heightCm": 206.6,
+          "school": "배럿 칼리지 (NAIA)",
+          "note": "최초엔 스티브 토마스의 부상에 따른 일시대체선수로 입국하였고, 토마스 복귀후엔 안양 SBS 캘빈 워너의 일시대체선수로 뛰었다. 이후 인천 전자랜드의 도널드 리틀과 교체된다는 소문이 있었으나, 부산 KTF에서 제이슨 세서를 퇴출시키면서 존스를 낚아채었고, 완전 대체선수로 시즌 종료까지 뛰게 되었다."
+        }
+      ]
+    }
+  ]
+}

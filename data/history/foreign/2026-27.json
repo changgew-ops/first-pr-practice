@@ -1,0 +1,54 @@
+{
+  "season": "2026-27",
+  "system": "자유계약, 2인 보유·2인 출전",
+  "note": "문서 7.9. 각 구단별 외국인 선수 운영방식이 2인 보유, 1인 출전에서 2인 보유, 2인 출전으로 변경되면서 2,3쿼터에는 어느 포지션에 상관없이 2인이 출전한다. 아시아 쿼터(7.9.1): 교체시기 기준이 4라운드 종료에서 정규시즌 종료로 확대. 문서의 외국인 표에는 원주 DB가 없다(아시아 쿼터 표에만 나온다). 병합 칸이라 문서에 칸이 없던 포지션·국적은 위 줄에서 이어받고 inherited로 표시했다. 문서 표기: 구단명 칸 '부산 KCC 이지스'.",
+  "teams": [
+    { "franchiseId": "busan-kcc", "team": "부산 KCC 이지스", "players": [
+      { "name": "숀 롱", "position": "F", "nationality": ["미국"], "marks": ["nba", "renewed"], "nth": 4, "status": "4번째 시즌" },
+      { "name": "루이스 킹", "position": "F", "nationality": ["미국"], "marks": ["nba"], "nth": 1, "status": "1번째 시즌", "inherited": ["nationality"] }
+    ] },
+    { "franchiseId": "goyang-sono", "team": "고양 소노 스카이거너스", "players": [
+      { "name": "스카티 제임스", "position": "C", "nationality": ["폴란드"], "nth": 1, "status": "1번째 시즌" },
+      { "name": "자니 오브라이언트", "position": "F", "nationality": ["미국"], "marks": ["nba"], "nth": 4, "status": "4번째 시즌" },
+      { "name": "케빈 켐바오", "position": "F", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["renewed"], "nth": 3, "status": "3번째 시즌" }
+    ] },
+    { "franchiseId": "changwon-lg", "team": "창원 LG 세이커스", "players": [
+      { "name": "아셈 마레이", "position": "F", "nationality": ["이집트"], "marks": ["renewed"], "nth": 6, "status": "6번째 시즌" },
+      { "name": "아치 굿윈", "position": "G", "nationality": ["미국"], "marks": ["nba"], "nth": 1, "status": "1번째 시즌" },
+      { "name": "칼 타마요", "position": "F", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["renewed"], "nth": 3, "status": "3번째 시즌" }
+    ] },
+    { "franchiseId": "anyang-jungkwanjang", "team": "안양 정관장 레드부스터스", "players": [
+      { "name": "존 무니", "position": "F", "nationality": ["미국"], "nth": 1, "status": "1번째 시즌" },
+      { "name": "라숀 토마스", "position": "F", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌", "inherited": ["nationality"] },
+      { "name": "렌즈 아반도", "position": "G", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["contracted"], "nth": 4, "status": "4번째 시즌" }
+    ] },
+    { "franchiseId": "seoul-sk", "team": "서울 SK 나이츠", "players": [
+      { "name": "자밀 워니", "position": "C", "nationality": ["미국"], "marks": ["nba", "renewed"], "nth": 8, "status": "8번째 시즌" },
+      { "name": "아이제아 힉스", "position": "F", "nationality": ["미국"], "marks": ["nba"], "nth": 6, "status": "6번째 시즌", "officialName": "아이재아 힉스", "inherited": ["nationality"] },
+      { "name": "알빈 톨렌티노", "position": "F", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["renewed"], "nth": 2, "status": "2번째 시즌" }
+    ] },
+    { "franchiseId": "suwon-kt", "team": "수원 kt 소닉붐", "players": [
+      { "name": "패리스 배스", "position": "F", "nationality": ["미국", "리비아"], "nth": 2, "status": "2번째 시즌", "note": "문서 국적 코드 USA, LIB(리비아 국기)" },
+      { "name": "트레이 포터", "position": "C", "nationality": ["미국"], "status": "신규 영입" },
+      { "name": "미구엘 안드레 옥존", "position": "G", "nationality": ["필리핀"], "asiaQuota": true, "nth": 4, "status": "4번째 시즌" }
+    ] },
+    { "franchiseId": "ulsan-hyundai-mobis", "team": "울산 현대모비스 피버스", "players": [
+      { "name": "게이지 프림", "position": "PF/C", "nationality": ["미국"], "nth": 4, "status": "4번째 시즌" },
+      { "name": "다리우스 베이즐리", "position": "PF", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입", "officialName": "다리우스 베즐리", "inherited": ["nationality"] },
+      { "name": "제리 아바디아노", "position": "PG", "nationality": ["필리핀"], "asiaQuota": true, "status": "신규 영입" }
+    ] },
+    { "franchiseId": "daegu-kogas", "team": "대구 한국가스공사 페가수스", "players": [
+      { "name": "라건아", "position": "PF,C", "nationality": ["미국", "대한민국"], "nth": 13, "status": "13번째 시즌, 외국선수 취급" },
+      { "name": "케베 알루마", "position": "F", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌" },
+      { "name": "샘조세프 벨란겔", "position": "G", "nationality": ["필리핀"], "asiaQuota": true, "marks": ["contracted"], "nth": 5, "status": "5번째 시즌" }
+    ] },
+    { "franchiseId": "seoul-samsung", "team": "서울 삼성 썬더스", "players": [
+      { "name": "크리스 맥컬러", "position": "PF", "nationality": ["미국"], "marks": ["nba"], "nth": 3, "status": "3번째 시즌", "note": "문서 국적 코드가 CAN(국기는 미국). 국기 이름을 따랐다" },
+      { "name": "케렘 칸터", "position": "C", "nationality": ["튀르키예"], "marks": ["renewed"], "nth": 2, "status": "2번째 시즌" },
+      { "name": "저스틴 구탕", "position": "G,F", "nationality": ["필리핀", "미국"], "asiaQuota": true, "marks": ["renewed"], "nth": 5, "status": "5번째 시즌", "note": "문서 7.9.1에 삼성 저스틴 구탕이 한 번 더 나온다(G,F, 필리핀 국기, 4번째 시즌, 마지막 표). 같은 선수의 중복 표기로 보고 한 번만 적었다" }
+    ] },
+    { "franchiseId": "wonju-db", "team": "원주 DB 프로미", "players": [
+      { "name": "이선 알바노", "position": "G", "nationality": ["필리핀", "미국"], "asiaQuota": true, "marks": ["contracted"], "nth": 5, "status": "5번째 시즌" }
+    ] }
+  ]
+}

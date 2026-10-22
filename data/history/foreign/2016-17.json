@@ -1,0 +1,63 @@
+{
+  "season": "2016-17",
+  "system": "드래프트(장·단신)",
+  "note": "문서 6.5. 1~3라운드 1쿼터·4쿼터 1명, 2·3쿼터 2명 출전(1-2-2-1), 4~6라운드는 4쿼터 1명을 지키며 1~3쿼터 중 2개 쿼터에서 2명 출전 가능. 성명 끝의 *는 1라운드(장신 선발), #는 2라운드(단신 선발) 표시이며 round로 옮겼다. type·position·nationality 칸이 병합되어 없는 줄은 위 줄에서 이어받고 inherited로 표시했다.",
+  "teams": [
+    { "franchiseId": "goyang-sono", "team": "고양 오리온 오리온스", "players": [
+      {"name": "애런 헤인즈", "position": "PF", "type": "장신", "round": 1, "nationality": ["미국"], "marks": ["renewed"], "nth": 9, "status": "9번째 시즌"},
+      {"name": "제스퍼 존슨", "position": "PF", "type": "장신", "nationality": ["미국"], "marks": ["temp"], "nth": 7, "status": "일시 대체 선수, 7번째 시즌", "inherited": ["type", "position", "nationality"]},
+      {"name": "오데리언 바셋", "position": "PG", "type": "단신", "round": 2, "nationality": ["미국"], "status": "신규 영입", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "busan-kcc", "team": "전주 KCC 이지스", "players": [
+      {"name": "안드레 에밋", "position": "SG", "type": "단신", "round": 1, "nationality": ["미국"], "marks": ["nba", "renewed"], "nth": 2, "status": "2번째 시즌"},
+      {"name": "에릭 와이즈", "position": "PF", "type": "단신", "nationality": ["미국"], "marks": ["temp"], "nth": 2, "status": "일시 대체 선수, 2번째 시즌", "inherited": ["type", "nationality"]},
+      {"name": "리오 라이온스", "position": "PF", "type": "장신", "round": 2, "nationality": ["미국"], "nth": 3, "status": "3번째 시즌, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "아이라 클라크", "position": "PF,C", "type": "장신", "nationality": ["미국"], "nth": 7, "status": "대체 영입, 7번째 시즌", "inherited": ["type", "nationality"]}
+    ] },
+    { "franchiseId": "ulsan-hyundai-mobis", "team": "울산 모비스 피버스", "players": [
+      {"name": "찰스 로드", "position": "C", "type": "장신", "round": 1, "nationality": ["미국"], "nth": 6, "status": "6번째 시즌, 시즌 중 방출"},
+      {"name": "에릭 와이즈", "position": "PF", "type": "장신", "nationality": ["미국"], "status": "대체 영입, 시즌 중 방출", "inherited": ["type", "nationality"]},
+      {"name": "허버트 힐", "position": "C", "type": "장신", "nationality": ["독일", "미국"], "nth": 7, "status": "대체 영입, 7번째 시즌", "inherited": ["type"]},
+      {"name": "네이트 밀러", "position": "F", "type": "단신", "round": 2, "nationality": ["미국"], "status": "신규 영입, 시즌 전 방출"},
+      {"name": "마커스 블레이클리", "position": "PF", "type": "단신", "nationality": ["미국"], "marks": ["temp"], "status": "일시 대체 선수", "inherited": ["type", "nationality"]}
+    ] },
+    { "franchiseId": "anyang-jungkwanjang", "team": "안양 KGC인삼공사", "players": [
+      {"name": "데이비드 사이먼", "position": "C", "type": "장신", "round": 1, "nationality": ["미국"], "marks": ["renewed"], "nth": 4, "status": "4번째 시즌"},
+      {"name": "키퍼 사익스", "position": "PG", "type": "단신", "round": 2, "nationality": ["미국"], "status": "신규 영입", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "seoul-samsung", "team": "서울 삼성 썬더스", "players": [
+      {"name": "리카르도 라틀리프", "position": "C", "type": "장신", "round": 1, "nationality": ["미국"], "marks": ["renewed", "mvp"], "nth": 5, "status": "5번째 시즌"},
+      {"name": "마이클 크레익", "position": "F", "type": "단신", "round": 2, "nationality": ["미국"], "status": "신규 영입", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "wonju-db", "team": "원주 동부 프로미", "players": [
+      {"name": "로드 벤슨", "position": "C", "type": "장신", "round": 1, "nationality": ["미국"], "marks": ["renewed"], "status": "신규 영입", "note": "문서에 ☆(전 시즌 재계약)와 '신규 영입'이 함께 적혀 있다."},
+      {"name": "웬델 맥키네스", "position": "PF", "type": "단신", "round": 2, "nationality": ["미국"], "marks": ["renewed"], "nth": 3, "status": "3번째 시즌", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "suwon-kt", "team": "부산 kt 소닉붐", "players": [
+      {"name": "크리스 다니엘스", "position": "C", "type": "장신", "round": 1, "nationality": ["미국"], "marks": ["draft1", "fullReplaceInjury"], "nth": 3, "status": "3번째 시즌, 시즌 중 방출", "note": "외국인 드래프트 전체 1순위로 뽑았으나, 시즌전 훈련에서 부상을 입어 정작 정규리그는 단 한경기도 뛰지 못했다."},
+      {"name": "제스퍼 존슨", "position": "PF", "type": "장신", "nationality": ["미국"], "nth": 7, "status": "일시 대체 선수, 7번째 시즌", "inherited": ["type", "nationality"]},
+      {"name": "허버트 힐", "position": "C", "type": "장신", "nationality": ["독일", "미국"], "nth": 7, "status": "일시 대체 선수, 7번째 시즌", "inherited": ["type"]},
+      {"name": "리온 윌리엄스", "position": "PF,C", "type": "장신", "nationality": ["미국"], "nth": 4, "status": "대체 영입, 4번째 시즌", "inherited": ["type"]},
+      {"name": "래리 고든", "position": "SF", "type": "단신", "round": 2, "nationality": ["미국"], "status": "신규영입, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "맷 볼딘", "position": "PG", "type": "단신", "nationality": ["미국"], "status": "대체 영입", "inherited": ["type", "nationality"]},
+      {"name": "라킴 잭슨", "position": "PF", "type": "단신", "nationality": ["미국"], "marks": ["temp"], "status": "일시 대체 선수", "note": "볼딘의 일시 대체 선수로 영입되었으나 볼딘이 시즌 마지막 경기까지 돌아오지 못하며 마지막 경기까지 뛰었다.", "inherited": ["type", "nationality"]}
+    ] },
+    { "franchiseId": "changwon-lg", "team": "창원 LG 세이커스", "players": [
+      {"name": "마이클 이페브라", "position": "SG", "type": "단신", "round": 1, "nationality": ["나이지리아", "미국"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "마리오 리틀", "position": "SG", "type": "단신", "nationality": ["미국"], "nth": 2, "status": "대체 영입, 2번째 시즌", "inherited": ["type", "position"]},
+      {"name": "레이션 테리", "position": "PF", "type": "장신", "round": 2, "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출", "note": "2007 NBA 드래프트 2R 44순위 to 올랜도 매직. 화려한 경력의 소유자이지만, KBL에선 개막전만 뛰고 퇴출. 그러나 바로 다음 시즌 모비스에서 대체선수로 합류했다.", "inherited": ["nationality"]},
+      {"name": "제임스 메이스", "position": "C", "type": "장신", "nationality": ["미국", "중앙아프리카공화국"], "status": "대체 영입", "inherited": ["type"]}
+    ] },
+    { "franchiseId": "seoul-sk", "team": "서울 SK 나이츠", "players": [
+      {"name": "테리코 화이트", "position": "SG", "type": "단신", "round": 1, "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입"},
+      {"name": "마리오 리틀", "position": "SG", "type": "단신", "nationality": ["미국"], "marks": ["temp"], "nth": 2, "status": "일시 대체 선수, 2번째 시즌", "inherited": ["type", "position", "nationality"]},
+      {"name": "코트니 심스", "position": "C", "type": "장신", "round": 2, "nationality": ["미국"], "marks": ["nba"], "nth": 3, "status": "3번째 시즌, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "제임스 싱글턴", "position": "PF", "type": "장신", "nationality": ["미국"], "marks": ["nba"], "nth": 10, "status": "대체 영입, 10번째 시즌", "inherited": ["type", "nationality"], "officialName": "제임스 싱글톤"}
+    ] },
+    { "franchiseId": "daegu-kogas", "team": "인천 전자랜드 엘리펀츠", "players": [
+      {"name": "제임스 켈리", "position": "PF", "type": "장신", "round": 1, "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출 후 재영입"},
+      {"name": "아이반 아스카", "position": "PF", "type": "장신", "nationality": ["미국"], "marks": ["temp"], "status": "대체 영입, 시즌 중 방출", "note": "처음에는 제임스 켈리의 대체선수로 왔지만 이후 완전교체로 영입을 했으나 막판 팀 사정으로 인해 다시 제임스 켈리를 재영입했다. KBL 역사상 최초로 이미 퇴출된 기존 외국인 선수를 재영입한 사례이다.", "inherited": ["type", "position", "nationality"]},
+      {"name": "커스버트 빅터", "position": "PF", "type": "단신", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌", "inherited": ["position", "nationality"]}
+    ] }
+  ]
+}

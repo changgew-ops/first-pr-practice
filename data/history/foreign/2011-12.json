@@ -1,0 +1,222 @@
+{
+  "season": "2011-12",
+  "system": "자유계약",
+  "note": "2011-12 시즌 자유계약제도를 재도입했다. 또한 각 구단 외국인 선수 1명 보유, 1명 출전으로 제도를 변경하였다. 외국인 선수 MVP 제도가 사라졌다.",
+  "teams": [
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부 프로미",
+      "players": [
+        {
+          "name": "로드 벤슨",
+          "position": "C",
+          "heightCm": 206.7,
+          "school": "UC버클리",
+          "marks": [
+            "renewed"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KGC인삼공사",
+      "players": [
+        {
+          "name": "로드니 화이트",
+          "position": "PF",
+          "heightCm": 206,
+          "school": "UNC 샬럿",
+          "marks": [
+            "nba"
+          ],
+          "note": "2001 NBA 드래프트 1R 9순위 to 디트로이트 피스톤즈. NBA 통산 4시즌."
+        },
+        {
+          "name": "크리스 다니엘스",
+          "position": "C",
+          "heightCm": 204.6,
+          "school": "텍사스 A&M"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 kt 소닉붐",
+      "players": [
+        {
+          "name": "찰스 로드",
+          "position": "C",
+          "heightCm": 200.1,
+          "school": "미시시피 주립",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "레지 오코사",
+          "position": "C",
+          "heightCm": 204.1,
+          "school": "라살레",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC 이지스",
+      "players": [
+        {
+          "name": "디숀 심스",
+          "position": "PF",
+          "heightCm": 203,
+          "school": "미시간"
+        },
+        {
+          "name": "자밀 왓킨스",
+          "position": "C",
+          "heightCm": 204.3,
+          "school": "조지타운"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 현대모비스 피버스",
+      "players": [
+        {
+          "name": "말콤 토마스",
+          "position": "C",
+          "heightCm": 206,
+          "school": "샌디에이고 주립"
+        },
+        {
+          "name": "테렌스 레더",
+          "position": "C",
+          "heightCm": 200.3,
+          "school": "사우스 플로리다"
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드 엘리펀츠",
+      "players": [
+        {
+          "name": "잭슨 브로만",
+          "position": "C",
+          "heightCm": 208,
+          "school": "아이오와 주립",
+          "marks": [
+            "nba"
+          ],
+          "note": "2004 NBA 드래프트 2R 31번 to 시카고 불스. NBA 통산 2시즌."
+        },
+        {
+          "name": "허버트 힐",
+          "position": "C",
+          "heightCm": 203,
+          "school": "프로비던스 칼리지"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG 세이커스",
+      "players": [
+        {
+          "name": "매그넘 롤",
+          "status": "시즌전 부상으로 퇴출"
+        },
+        {
+          "name": "올루미데 오예데지",
+          "position": "C",
+          "heightCm": 208,
+          "school": "나이지리아 이바단",
+          "marks": [
+            "nba"
+          ],
+          "note": "2005년 KBL 측정 기준은 201.4cm"
+        },
+        {
+          "name": "애런 헤인즈",
+          "position": "PF",
+          "heightCm": 199,
+          "school": "보이시 주립"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "고양 오리온스",
+      "players": [
+        {
+          "name": "크리스 윌리엄스",
+          "position": "PF",
+          "heightCm": 198,
+          "school": "버지니아",
+          "note": "2005년 KBL 측정 기준은 193.9cm"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK 나이츠",
+      "players": [
+        {
+          "name": "알렉산더 존슨",
+          "position": "C",
+          "heightCm": 208,
+          "school": "플로리다 주립",
+          "marks": [
+            "nba"
+          ],
+          "note": "2006년 NBA 드래프트 2R 45번 인디애나 페이서스. NBA 통산 2시즌."
+        },
+        {
+          "name": "제스퍼 존슨",
+          "position": "PF",
+          "heightCm": 196.6,
+          "school": "델타 주립 (Div.II)",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "아말 맥카스킬",
+          "position": "C",
+          "heightCm": 208.7,
+          "school": "마켓",
+          "marks": [
+            "nba",
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성 썬더스",
+      "players": [
+        {
+          "name": "피터 존 라모스",
+          "position": "C",
+          "heightCm": 222,
+          "school": "푸에르토리코",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "아이라 클라크",
+          "position": "PF",
+          "heightCm": 200,
+          "school": "텍사스",
+          "note": "2005년 KBL 측정 기준은 195.4cm"
+        }
+      ]
+    }
+  ]
+}

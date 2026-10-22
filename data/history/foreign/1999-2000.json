@@ -1,0 +1,304 @@
+{
+  "season": "1999-2000",
+  "system": "드래프트(장·단신)",
+  "note": "문서 2.4. ※ 표시는 문서 각주대로 부상으로 인한 임시 대체선수. 문서 표를 글자로 옮긴 텍스트라 칸(1·2라운드)은 각 구단 표의 첫 줄 두 칸만 확정되어 round를 채웠고, 그 아래 줄(교체·대체 선수)은 칸을 알 수 없어 round를 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "busan-kcc",
+      "team": "대전 현대",
+      "players": [
+        {
+          "name": "조니 맥도웰",
+          "position": "PF",
+          "heightCm": 194,
+          "school": "텍사스알링턴",
+          "round": 1,
+          "marks": [
+            "mvp",
+            "renewed"
+          ]
+        },
+        {
+          "name": "재키 존스",
+          "round": 2,
+          "marks": [
+            "renewed"
+          ],
+          "status": "드래프트 직후 트레이드"
+        },
+        {
+          "name": "로렌조 홀",
+          "position": "C",
+          "heightCm": 203,
+          "school": "조지아",
+          "note": "전체 2순위로 청주 SK에 드래프트 된 직후, 재키 존스와의 1:1 트레이드로 영입되었다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "청주 SK",
+      "players": [
+        {
+          "name": "로렌조 홀",
+          "round": 1,
+          "marks": [
+            "traded"
+          ],
+          "status": "드래프트 직후 트레이드"
+        },
+        {
+          "name": "로데릭 하니발",
+          "position": "SG",
+          "heightCm": 193,
+          "school": "롱비치 주립",
+          "round": 2
+        },
+        {
+          "name": "재키 존스",
+          "position": "C",
+          "heightCm": 202,
+          "school": "오클라호마",
+          "note": "1998-99 시즌 우승 후 대전 현대와 재계약하였으나 로렌조 홀과 1:1 트레이드되어 청주 SK에 합류하였다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "수원 삼성",
+      "players": [
+        {
+          "name": "버넬 싱글턴",
+          "position": "C",
+          "heightCm": 200,
+          "school": "LSU",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ],
+          "officialName": "버넬 싱글튼"
+        },
+        {
+          "name": "G. J. 헌터",
+          "position": "SG",
+          "heightCm": 188,
+          "school": "툴레인",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 삼보",
+      "players": [
+        {
+          "name": "워렌 로즈그린",
+          "round": 1,
+          "status": "시즌전 트레이드"
+        },
+        {
+          "name": "브라이언 리스",
+          "round": 2,
+          "status": "시즌 전 계약 해지"
+        },
+        {
+          "name": "제런 콥",
+          "position": "PF",
+          "heightCm": 193,
+          "school": "미주리웨스턴 (Div.II)",
+          "note": "인천 신세기에 드래프트 지명된 후 시즌 개막 직전 워렌 로즈그린과 트레이드"
+        },
+        {
+          "name": "레지 타운젠드",
+          "position": "C",
+          "heightCm": 198,
+          "school": "세인트조셉"
+        },
+        {
+          "name": "아미누 팀버레이크",
+          "position": "C",
+          "heightCm": 202,
+          "school": "사우던일리노이",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "클리프 리드",
+          "position": "PF",
+          "heightCm": 190.4,
+          "school": "뉴멕시코 주립",
+          "round": 1
+        },
+        {
+          "name": "데이먼드 포니",
+          "position": "C",
+          "heightCm": 202.9,
+          "school": "프레즈노 주립",
+          "round": 2
+        },
+        {
+          "name": "퀸시 브루어",
+          "position": "SG",
+          "heightCm": 192,
+          "school": "애리조나 주립"
+        },
+        {
+          "name": "대릴 프루",
+          "position": "C",
+          "heightCm": 200,
+          "school": "웨스트버지니아"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "부산 기아",
+      "players": [
+        {
+          "name": "토시로 저머니",
+          "position": "C",
+          "heightCm": 203,
+          "school": "CSU 베이커필드",
+          "round": 1
+        },
+        {
+          "name": "안드레 브라운",
+          "round": 2,
+          "status": "시즌 전 교체"
+        },
+        {
+          "name": "마리오 루카스",
+          "position": "C",
+          "heightCm": 205,
+          "school": "메릴랜드",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "존 와센버그",
+          "position": "PF",
+          "heightCm": 191,
+          "school": "세인트조셉 컬리지 (Div.III)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "버나드 블런트",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ],
+          "status": "시즌전 야반도주"
+        },
+        {
+          "name": "마일로 브룩스",
+          "position": "C",
+          "heightCm": 202,
+          "school": "버지니아",
+          "round": 2
+        },
+        {
+          "name": "쉔드릭 다운스",
+          "position": "SG",
+          "heightCm": 193,
+          "school": "세인트조셉"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 동양",
+      "players": [
+        {
+          "name": "무스타파 호프",
+          "position": "C",
+          "heightCm": 200.7,
+          "school": "오리건 주립",
+          "round": 1
+        },
+        {
+          "name": "루이스 로프튼",
+          "position": "SG",
+          "heightCm": 192,
+          "school": "웨버 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "광주 골드뱅크",
+      "players": [
+        {
+          "name": "에릭 이버츠",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "빌라노바",
+          "round": 1,
+          "marks": [
+            "draft1"
+          ]
+        },
+        {
+          "name": "키이스 그레이",
+          "position": "PG",
+          "heightCm": 182.9,
+          "school": "웨스턴캐롤라이나",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 신세기",
+      "players": [
+        {
+          "name": "카를로스 윌리엄스",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "앨라배마 버밍엄",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "제런 콥",
+          "round": 2,
+          "marks": [
+            "traded"
+          ],
+          "status": "시즌 전 트레이드"
+        },
+        {
+          "name": "모리스 로빈슨",
+          "position": "C",
+          "heightCm": 199,
+          "school": "오클라호마",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "워렌 로즈그린",
+          "position": "PF",
+          "heightCm": 190,
+          "school": "UNLV",
+          "note": "원주 삼보에 드래프트 지명된 후 시즌 개막 직전 제런 콥과 트레이드"
+        }
+      ]
+    }
+  ]
+}

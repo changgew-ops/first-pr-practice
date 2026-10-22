@@ -1,0 +1,65 @@
+{
+  "season": "2020-21",
+  "system": "자유계약",
+  "note": "문서 7.3. 아시아 쿼터제가 도입되어 각 팀 한 명의 B-리그 출신 일본인 선수를 영입할 수 있다(국내 선수로 분류, 샐러리캡·정원도 국내 선수에 포함). 문서는 편의상 같이 표시한다(7.3.1 표: 원주 DB 나카무라 타이치). position·nationality 칸이 병합되어 없는 줄은 위 줄에서 이어받고 inherited로 표시했다. 문서 각주 [C]는 서울 삼성-창원 LG 2:2 트레이드.",
+  "teams": [
+    { "franchiseId": "wonju-db", "team": "원주 DB 프로미", "players": [
+      {"name": "치나누 오누아쿠", "position": "C", "nationality": ["미국", "나이지리아"], "marks": ["nba"], "nth": 2, "status": "2번째 시즌, 시즌 전 계약 파기"},
+      {"name": "타이릭 존스", "position": "C", "nationality": ["미국"], "status": "대체 영입, 시즌 중 방출", "inherited": ["position"]},
+      {"name": "얀테 메이튼", "position": "PF,C", "nationality": ["미국"], "marks": ["nba"], "status": "대체 영입", "inherited": ["nationality"]},
+      {"name": "저스틴 녹스", "position": "PF", "nationality": ["미국"], "status": "신규 영입", "inherited": ["nationality"]},
+      {"name": "나카무라 타이치", "position": "G", "nationality": ["일본"], "asiaQuota": true, "status": "신규 영입"}
+    ] },
+    { "franchiseId": "seoul-sk", "team": "서울 SK 나이츠", "players": [
+      {"name": "자밀 워니", "position": "C", "nationality": ["미국"], "marks": ["nba", "renewed"], "nth": 2, "status": "2번째 시즌"},
+      {"name": "닉 미네라스", "position": "F", "nationality": ["미국"], "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "anyang-jungkwanjang", "team": "안양 KGC인삼공사", "players": [
+      {"name": "얼 클락", "position": "F", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "크리스 맥컬러", "position": "F", "nationality": ["미국", "필리핀"], "marks": ["nba"], "nth": 2, "status": "대체 영입, 2번째 시즌, 시즌 중 방출", "inherited": ["position"]},
+      {"name": "제러드 설린저", "position": "PF", "nationality": ["미국"], "marks": ["nba"], "status": "대체 영입"},
+      {"name": "라타비우스 윌리엄스", "position": "C", "nationality": ["미국"], "status": "신규 영입"}
+    ] },
+    { "franchiseId": "busan-kcc", "team": "전주 KCC 이지스", "players": [
+      {"name": "라건아", "position": "C,PF", "nationality": ["미국", "대한민국"], "nth": 9, "status": "9번째 시즌, 외국선수 취급"},
+      {"name": "타일러 데이비스", "position": "PF,C", "nationality": ["미국", "푸에르토리코"], "marks": ["nba"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "조 알렉산더", "position": "PF", "nationality": ["미국"], "marks": ["nba"], "status": "대체 영입"},
+      {"name": "D.J.존슨", "position": "PF", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌, 시즌 중 영입 후 방출", "inherited": ["position", "nationality"], "officialName": "디제이 존슨"},
+      {"name": "애런 헤인즈", "position": "F", "nationality": ["미국"], "nth": 13, "status": "대체 영입, 13번째 시즌", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "daegu-kogas", "team": "인천 전자랜드 엘리펀츠", "players": [
+      {"name": "헨리 심스", "position": "C", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "조나단 모트리", "position": "PF", "nationality": ["미국"], "marks": ["nba"], "status": "대체 영입", "inherited": ["nationality"]},
+      {"name": "에릭 탐슨", "position": "PF,C", "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "데본 스캇", "position": "PF,C", "nationality": ["미국"], "status": "대체 영입", "inherited": ["position", "nationality"]}
+    ] },
+    { "franchiseId": "suwon-kt", "team": "부산 kt 소닉붐", "players": [
+      {"name": "마커스 데릭슨", "position": "F", "nationality": ["미국"], "marks": ["nba", "fullReplaceInjury"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "브랜든 브라운", "position": "PF,C", "nationality": ["미국"], "nth": 4, "status": "대체 영입, 4번째 시즌", "inherited": ["nationality"]},
+      {"name": "존 이그부누", "position": "C", "nationality": ["나이지리아"], "marks": ["nba", "fullReplaceInjury"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "클리프 알렉산더", "position": "C", "nationality": ["미국"], "marks": ["nba"], "status": "대체 영입", "inherited": ["position"]}
+    ] },
+    { "franchiseId": "seoul-samsung", "team": "서울 삼성 썬더스", "players": [
+      {"name": "아이제아 힉스", "position": "PF,C", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입"},
+      {"name": "제시 고반", "position": "C", "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "케네디 믹스", "position": "C", "nationality": ["미국"], "status": "대체 영입, 시즌 중 트레이드 이적", "note": "서울 삼성-창원 LG 간 2:2 트레이드.(서울 삼성 get: 김시래, 테리코 화이트 ↔ 창원 LG get: 이관희, 케네디 믹스)", "inherited": ["position", "nationality"]},
+      {"name": "테리코 화이트", "position": "SG,SF", "nationality": ["미국"], "nth": 3, "status": "시즌 중 트레이드 영입, 3번째 시즌", "note": "서울 삼성-창원 LG 간 2:2 트레이드.(서울 삼성 get: 김시래, 테리코 화이트 ↔ 창원 LG get: 이관희, 케네디 믹스)", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "ulsan-hyundai-mobis", "team": "울산 현대모비스 피버스", "players": [
+      {"name": "숀 롱", "position": "PF,C", "nationality": ["미국"], "marks": ["nba", "mvp"], "status": "신규 영입"},
+      {"name": "자키넌 간트", "position": "F", "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "버논 맥클린", "position": "C", "nationality": ["미국"], "nth": 3, "status": "대체 영입, 3번째 시즌", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "changwon-lg", "team": "창원 LG 세이커스", "players": [
+      {"name": "캐디 라렌", "position": "C", "nationality": ["아이티"], "marks": ["renewed"], "nth": 2, "status": "2번째 시즌, 시즌 중 방출 후 재영입", "note": "부상으로 임시 교체 선수로 둘 수 있었지만, 향후 화이트를 트레이드해도 부상에서 복귀하면 라렌의 소유권이 유지되기 때문에 교체권을 사용했다. 그리고 화이트는 실제로 삼성으로 트레이드됐다."},
+      {"name": "테리코 화이트", "position": "PF,SG", "nationality": ["미국"], "status": "대체 영입, 시즌 중 트레이드 이적", "note": "서울 삼성-창원 LG 간 2:2 트레이드.(서울 삼성 get: 김시래, 테리코 화이트 ↔ 창원 LG get: 이관희, 케네디 믹스)"},
+      {"name": "케네디 믹스", "position": "C", "nationality": ["미국"], "status": "시즌 중 트레이드 영입, 시즌 중 방출", "note": "서울 삼성-창원 LG 간 2:2 트레이드.(서울 삼성 get: 김시래, 테리코 화이트 ↔ 창원 LG get: 이관희, 케네디 믹스)", "inherited": ["nationality"]},
+      {"name": "리온 윌리엄스", "position": "PF,C", "nationality": ["미국"], "nth": 8, "status": "8번째 시즌", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "goyang-sono", "team": "고양 오리온 오리온스", "players": [
+      {"name": "제프 위디", "position": "C", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "데빈 윌리엄스", "position": "C", "nationality": ["미국"], "status": "대체 영입", "inherited": ["position", "nationality"]},
+      {"name": "디드릭 로슨", "position": "PF", "nationality": ["미국"], "status": "신규 영입", "inherited": ["nationality"]}
+    ] }
+  ]
+}

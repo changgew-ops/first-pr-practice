@@ -1,0 +1,302 @@
+{
+  "season": "2002-03",
+  "system": "드래프트",
+  "note": "문서 2.7. 2002-03 시즌을 앞두고 2쿼터에 외국인 선수를 1명만 출전하도록 하는 제한이 생겨났다. round는 표의 첫 줄 두 칸(왼쪽 1라운드, 오른쪽 2라운드)만 채웠다. 그 아래 줄(교체·대체 선수)은 칸 위치를 알 수 없어 round를 생략했다. 이름만 있고 포지션·키·출신교가 없는 선수는 같은 칸의 뒤에 나오는 선수로 교체되었다는 뜻이라 같은 round로 적었다.",
+  "teams": [
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 동양",
+      "players": [
+        {
+          "name": "마르커스 힉스",
+          "position": "PF",
+          "heightCm": 196.5,
+          "school": "미시시피",
+          "round": 1,
+          "marks": [
+            "mvp",
+            "renewed"
+          ]
+        },
+        {
+          "name": "A.J. 롤린스",
+          "position": "C",
+          "heightCm": 200.2,
+          "school": "세인트메리스",
+          "round": 2,
+          "officialName": "에이제이 롤린스"
+        },
+        {
+          "name": "토시로 저머니",
+          "position": "C",
+          "heightCm": 203,
+          "school": "CSU 베이커필드"
+        },
+        {
+          "name": "얼 아이크",
+          "position": "C",
+          "heightCm": 200.4,
+          "school": "몬테발로 (Div.II)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "라이언 페리맨",
+          "position": "C",
+          "heightCm": 198.7,
+          "school": "데이턴",
+          "round": 1
+        },
+        {
+          "name": "테런스 블랙",
+          "position": "PF",
+          "heightCm": 192.5,
+          "school": "베일러",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 TG",
+      "players": [
+        {
+          "name": "데릭 존슨",
+          "position": "C",
+          "heightCm": 204.4,
+          "school": "버지니아유니언 (Div.II)",
+          "round": 1
+        },
+        {
+          "name": "데이비드 잭슨",
+          "position": "SG",
+          "heightCm": 191.8,
+          "school": "오리건",
+          "round": 2
+        },
+        {
+          "name": "리온 데릭스",
+          "position": "C",
+          "heightCm": 205,
+          "school": "디트로이트"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "여수 코리아텐더",
+      "players": [
+        {
+          "name": "에릭 이버츠",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "빌라노바",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "안드레 페리",
+          "position": "C",
+          "heightCm": 196,
+          "school": "앨라배마",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "카를로스 윌리엄스",
+          "round": 1,
+          "status": "총기사고로 사망"
+        },
+        {
+          "name": "스테판 브래포드",
+          "position": "C",
+          "heightCm": 196.4,
+          "school": "네브래스카",
+          "round": 1
+        },
+        {
+          "name": "안드레 맥컬럼",
+          "position": "SF",
+          "heightCm": 195.9,
+          "school": "올드 도미니언",
+          "round": 2
+        },
+        {
+          "name": "아비 스토리",
+          "position": "SF",
+          "heightCm": 192.4,
+          "school": "애리조나"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "채드 핸드릭",
+          "position": "SG",
+          "heightCm": 191.2,
+          "school": "휴스턴",
+          "round": 1,
+          "marks": [
+            "draft1"
+          ],
+          "officialName": "채드 헨드릭"
+        },
+        {
+          "name": "아이지아 빅터",
+          "position": "C",
+          "heightCm": 205.7,
+          "school": "테네시",
+          "round": 2
+        },
+        {
+          "name": "데니스 에드워즈",
+          "position": "PF",
+          "heightCm": 192,
+          "school": "포트헤이스 주립 (Div.II)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 SK",
+      "players": [
+        {
+          "name": "조니 맥도웰",
+          "position": "PF",
+          "heightCm": 194,
+          "school": "텍사스알링턴",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "얼 아이크",
+          "round": 2,
+          "marks": [
+            "renewed"
+          ],
+          "status": "시즌전 부상으로 교체"
+        },
+        {
+          "name": "자하 윌슨",
+          "position": "C",
+          "heightCm": 201.1,
+          "school": "USC",
+          "round": 2
+        },
+        {
+          "name": "크리스 화이트",
+          "position": "C",
+          "heightCm": 203.6,
+          "school": "이스턴 워싱턴"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "퍼넬 페리",
+          "position": "PF",
+          "heightCm": 193,
+          "school": "부어히 칼리지 (NAIA)",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "안토니오 왓슨",
+          "position": "C",
+          "heightCm": 205.3,
+          "school": "오하이오 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "드미트리스 몽고메리",
+          "position": "C",
+          "heightCm": 201,
+          "school": "린 (Div.II)",
+          "round": 1,
+          "officialName": "디미트리스 몽고메리"
+        },
+        {
+          "name": "벤 퍼킨스",
+          "position": "PF",
+          "heightCm": 197.7,
+          "school": "맥니스 주립",
+          "round": 2
+        },
+        {
+          "name": "요나 에노사",
+          "position": "C",
+          "heightCm": 204,
+          "school": "브리검영 하와이 (Div.II)"
+        },
+        {
+          "name": "칼 보이드",
+          "position": "PF",
+          "heightCm": 192,
+          "school": "UC버클리"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "리온 트리밍햄",
+          "position": "PF",
+          "heightCm": 195,
+          "school": "브라이어클리프 (NAIA)",
+          "round": 1
+        },
+        {
+          "name": "퀸튼 브룩스",
+          "position": "C",
+          "heightCm": 200,
+          "school": "미시간 주립",
+          "round": 2
+        },
+        {
+          "name": "자밀 헤이우드",
+          "position": "C",
+          "heightCm": 199,
+          "school": "오클라호마",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "존 와센버그",
+          "position": "PF",
+          "heightCm": 191,
+          "school": "세인트조셉 컬리지 (Div.III)"
+        }
+      ]
+    }
+  ]
+}

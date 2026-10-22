@@ -1,0 +1,375 @@
+{
+  "season": "2005-06",
+  "system": "자유계약",
+  "note": "문서 3.2. 이름만 있고 포지션·키·출신교가 없는 선수는 개막 전 부상 등으로 빠진 선수다.",
+  "teams": [
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "크리스 윌리엄스",
+          "position": "PF",
+          "heightCm": 193.9,
+          "school": "버지니아",
+          "marks": [
+            "mvp"
+          ],
+          "note": "키 193.9에 붙은 각주: 2005-06 시즌전 측정치로 이때까지는 외국인선수 2명의 신장합계제한(400cm)이 있어 최대한 키를 줄였던 걸로 보인다. 이후 자유계약제 부활과 함께 신장제한도 철폐된 2011-12 시즌에 복귀했을 땐 키를 198cm로 등록했다;;(신장측정을 따로 하지 않았다.)"
+        },
+        {
+          "name": "토레이 브렉스",
+          "position": "C",
+          "heightCm": 198.1,
+          "school": "새비어",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "벤자민 핸드로그텐",
+          "position": "C",
+          "heightCm": 202.5,
+          "school": "미시간",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "로데릭 라일리",
+          "position": "C",
+          "heightCm": 204.8,
+          "school": "프레리뷰A&M"
+        },
+        {
+          "name": "제이슨 클락",
+          "position": "C",
+          "heightCm": 196.9,
+          "school": "버지니아"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "네이트 존슨",
+          "position": "PF",
+          "heightCm": 196.2,
+          "school": "루이빌"
+        },
+        {
+          "name": "올루미데 오예데지",
+          "position": "C",
+          "heightCm": 201.4,
+          "school": "나이지리아 이바단",
+          "marks": [
+            "nba"
+          ],
+          "note": "출신교에 붙은 각주: 나이지리아 출신으로 미국 소재 대학을 나오지 않았다."
+        },
+        {
+          "name": "쉘리 클락",
+          "position": "C",
+          "heightCm": 199.1,
+          "school": "일리노이",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부",
+      "players": [
+        {
+          "name": "마크 데이비스",
+          "position": "SG/SF",
+          "heightCm": 194.2,
+          "school": "텍사스공대",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "자밀 왓킨스",
+          "position": "C",
+          "heightCm": 204.3,
+          "school": "조지타운",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "조셉 쉽",
+          "position": "SG",
+          "heightCm": 191.4,
+          "school": "UC 버클리"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KTF",
+      "players": [
+        {
+          "name": "자니 테일러",
+          "status": "시즌개막직전 부상 아웃"
+        },
+        {
+          "name": "애런 맥기",
+          "position": "C",
+          "heightCm": 201,
+          "school": "오클라호마"
+        },
+        {
+          "name": "마크 샐리어스",
+          "position": "PF",
+          "heightCm": 198,
+          "school": "샘포드"
+        },
+        {
+          "name": "나이젤 딕슨",
+          "position": "C",
+          "heightCm": 201.7,
+          "school": "웨스트 켄터키"
+        },
+        {
+          "name": "켄 존슨",
+          "position": "C",
+          "heightCm": 202.8,
+          "school": "오하이오 주립",
+          "marks": [
+            "nba"
+          ],
+          "note": "2001 NBA 드래프트 2라운드 48순위로 마이애미 히트에 뽑혀 1시즌 뛰었다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "찰스 민렌드",
+          "position": "PF",
+          "heightCm": 193.8,
+          "school": "세인트존스",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "쉐런 라이트",
+          "position": "C",
+          "heightCm": 203,
+          "school": "클렘슨",
+          "marks": [
+            "nba"
+          ],
+          "note": "키 203에 붙은 각주: NBA.com 프로필엔 6-11 (211cm) 이다."
+        },
+        {
+          "name": "아써 롱",
+          "position": "C",
+          "heightCm": 201,
+          "school": "신시내티",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 오리온스",
+      "players": [
+        {
+          "name": "아이라 클라크",
+          "position": "PF",
+          "heightCm": 195.4,
+          "school": "텍사스",
+          "note": "키 195.4에 붙은 각주: 2005년 KBL 측정 기준. 2011-12 시즌 등록 시 신장은 200cm"
+        },
+        {
+          "name": "안드레 브라운",
+          "position": "C",
+          "heightCm": 202,
+          "school": "드폴"
+        },
+        {
+          "name": "리 벤슨",
+          "position": "C",
+          "heightCm": 203,
+          "school": "브라운맥키칼리지 (NJCAA)",
+          "note": "시즌 중 안드레 브라운과 1:1 트레이드로 입단"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KT&G",
+      "players": [
+        {
+          "name": "단테 존스",
+          "position": "PF",
+          "heightCm": 194.7,
+          "school": "미시시피 주립",
+          "marks": [
+            "nba",
+            "renewed"
+          ]
+        },
+        {
+          "name": "가이 루커",
+          "position": "C",
+          "heightCm": 204.2,
+          "school": "아이오와",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "허브 래미쟈나",
+          "position": "C",
+          "heightCm": 202.1,
+          "school": "럿거스"
+        },
+        {
+          "name": "안토니오 키칭스",
+          "position": "C",
+          "heightCm": 203.9,
+          "school": "사우스캐롤라이나"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "헥터 로메로",
+          "position": "PF",
+          "heightCm": 193.8,
+          "school": "뉴올리언스"
+        },
+        {
+          "name": "드미트리우스 알렉산더",
+          "position": "C",
+          "heightCm": 201.4,
+          "school": "앨라배마"
+        },
+        {
+          "name": "노먼 놀런",
+          "position": "PF",
+          "heightCm": 196.5,
+          "school": "버지니아"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "게이브 미나케",
+          "position": "PF",
+          "heightCm": 195.5,
+          "school": "텍사스"
+        },
+        {
+          "name": "웨슬리 윌슨",
+          "position": "C",
+          "heightCm": 203.9,
+          "school": "조지타운"
+        },
+        {
+          "name": "루크 화이트헤드",
+          "position": "PF",
+          "heightCm": 193.2,
+          "school": "루이빌",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "데이먼 브라운",
+          "position": "PF",
+          "heightCm": 198.4,
+          "school": "시라큐스",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "주니어 버로",
+          "position": "C",
+          "heightCm": 199,
+          "school": "버지니아",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드",
+      "players": [
+        {
+          "name": "앨버트 화이트",
+          "position": "PF",
+          "heightCm": 192.6,
+          "school": "미주리",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "리 벤슨",
+          "position": "C",
+          "heightCm": 203,
+          "school": "브라운맥키칼리지 (NJCAA)"
+        },
+        {
+          "name": "헤놀드 아세노",
+          "position": "PF",
+          "heightCm": 191.7,
+          "school": "웨버",
+          "marks": [
+            "temp"
+          ],
+          "officialName": "헤롤드 아세노"
+        },
+        {
+          "name": "온타리오 렛",
+          "position": "PF",
+          "heightCm": 193.6,
+          "school": "피츠버그",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "테픈 해밀턴",
+          "position": "PF",
+          "heightCm": 197.6,
+          "school": "미시시피 주립",
+          "marks": [
+            "nba"
+          ],
+          "note": "지난 두시즌간 팀 에이스였던 앨버트 화이트는 05-06 시즌 들어 잦은 부상에다 한껏 인플레된 외인 선수들 틈에서 위력이 뚝 떨어지고 말았다. 이에 전자랜드는 2003년 NBA G 리그 퍼스트 팀 출신인 테픈 해밀턴을 과감히 영입하게 되지만... 기존에 있던 리 벤슨과의 신장합계가 400.6cm이 되어 6mm 차이로 영입이 불가능하다는 통보를 받게 된다.명불허전 개그랜드 이에 전자랜드는 팀의 득점-리바운드 리더였던 리 벤슨을 대구동양의 안드레 브라운(202cm으로 벤슨보다 1cm 작다;;)과 트레이드하는 결단을 한다. 그리고 팀은 2시즌 연속 꼴찌.. 이때 감독은 KBL 최초의 외국인 감독 제이 험프리스였으나 20경기만에 퇴진하고 이호근 감독 체제로 잔여 시즌을 치렀다. 개그랜드를 만든 주역 박수교는 전시즌 감독으로써 꼴찌를 찍고도 다음 시즌 단장으로 승격(!)되어 한 시즌 최다 46패 기록을 세우는 데 일조(?)했다."
+        },
+        {
+          "name": "안드레 브라운",
+          "position": "C",
+          "heightCm": 202,
+          "school": "드폴",
+          "note": "대구 오리온스와 트레이드를 통해 영입"
+        }
+      ]
+    }
+  ]
+}

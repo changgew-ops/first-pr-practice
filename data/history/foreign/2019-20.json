@@ -1,0 +1,65 @@
+{
+  "season": "2019-20",
+  "system": "자유계약",
+  "note": "문서 7.2. 외국인 선수 신장 제한이 폐지되어 장단신 구분 칸이 없다(2018-19까지의 장·단신 표와 달리). 문서는 '모든 쿼터 1명 출전'과 교체 제한 폐지가 KBL의 행정 착오 이유로 다시 번복되어 없던 일이 되었다고 적었다. position·nationality 칸이 병합되어 없는 줄은 위 줄에서 이어받고 inherited로 표시했다. 문서에 각주 [A]는 울산 현대모비스-전주 KCC 2:4 트레이드, [B]는 코로나19로 인한 자진 퇴출.",
+  "teams": [
+    { "franchiseId": "ulsan-hyundai-mobis", "team": "울산 현대모비스 피버스", "players": [
+      {"name": "라건아", "position": "C,PF", "nationality": ["미국", "대한민국"], "nth": 8, "status": "시즌 중 트레이드 이적, 외국선수 취급, 8번째 시즌", "note": "울산 현대모비스-전주 KCC 간 2:4 트레이드.(전주 KCC get: 라건아, 이대성 ↔ 울산 현대모비스 get: 리온 윌리엄스, 김국찬, 박지훈, 김세창)"},
+      {"name": "리온 윌리엄스", "position": "PF,C", "nationality": ["미국"], "nth": 7, "status": "시즌 중 트레이드 영입, 7번째 시즌", "note": "울산 현대모비스-전주 KCC 간 2:4 트레이드.(전주 KCC get: 라건아, 이대성 ↔ 울산 현대모비스 get: 리온 윌리엄스, 김국찬, 박지훈, 김세창)"},
+      {"name": "자코리 윌리엄스", "position": "PF", "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "에메카 오카포", "position": "PF,C", "nationality": ["미국"], "marks": ["nba", "fullReplaceInjury"], "status": "대체 영입, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "레지 윌리엄스", "position": "SG,SF", "nationality": ["미국"], "status": "대체 영입", "inherited": ["nationality"]},
+      {"name": "아이라 클라크", "position": "PF,C", "nationality": ["미국"], "nth": 8, "status": "8번째 시즌, 시즌 중 은퇴", "note": "4:2 트레이드로 인해 라건아 외 외국인 선수 2명 보유 권한을 상실하면서 현대모비스 외국인 코치로 임명되었다. 다만 외국인 선수 변동으로 인한 시즌 도중 재등록은 가능하다.", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "daegu-kogas", "team": "인천 전자랜드 엘리펀츠", "players": [
+      {"name": "머피 할로웨이", "position": "PF,C", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌"},
+      {"name": "섀넌 쇼터", "position": "SG", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "트로이 길렌워터", "position": "PF", "nationality": ["미국"], "nth": 3, "status": "대체 영입, 3번째 시즌", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "changwon-lg", "team": "창원 LG 세이커스", "players": [
+      {"name": "캐디 라렌", "position": "C", "nationality": ["아이티"], "status": "신규 영입"},
+      {"name": "버논 맥클린", "position": "C", "nationality": ["미국"], "nth": 2, "status": "2번째 시즌, 시즌 중 방출", "inherited": ["position"]},
+      {"name": "마이크 해리스", "position": "F", "nationality": ["미국"], "status": "대체 영입, 시즌 중 방출", "inherited": ["nationality"]},
+      {"name": "라킴 샌더스", "position": "F", "nationality": ["미국"], "status": "대체 영입", "inherited": ["position", "nationality"]}
+    ] },
+    { "franchiseId": "busan-kcc", "team": "전주 KCC 이지스", "players": [
+      {"name": "리온 윌리엄스", "position": "PF,C", "nationality": ["미국"], "nth": 8, "status": "8번째 시즌, 시즌 중 트레이드", "note": "울산 현대모비스-전주 KCC 간 2:4 트레이드.(전주 KCC get: 라건아, 이대성 ↔ 울산 현대모비스 get: 리온 윌리엄스, 김국찬, 박지훈, 김세창)"},
+      {"name": "라건아", "position": "C,PF", "nationality": ["미국", "대한민국"], "nth": 8, "status": "시즌 중 트레이드 영입, 외국선수 취급, 8번째 시즌", "note": "울산 현대모비스-전주 KCC 간 2:4 트레이드.(전주 KCC get: 라건아, 이대성 ↔ 울산 현대모비스 get: 리온 윌리엄스, 김국찬, 박지훈, 김세창) / 문서에 라건아 줄 바로 뒤에 '시즌 중 대체 선수 영입[125]' 줄이 따로 있고 각주 125는 '방출이 아니다. 다만 이번 시즌에만 보지 못한다.'(어느 선수에 붙은 줄인지 문서 표만으로는 분명하지 않아 여기에 적는다)"},
+      {"name": "오데라 아노시케", "position": "PF,C", "nationality": ["미국"], "status": "대체 영입"},
+      {"name": "조이 도시", "position": "PF,C", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입, 시즌 중 방출", "inherited": ["position", "nationality"]},
+      {"name": "찰스 로드", "position": "PF,C", "nationality": ["미국"], "nth": 9, "status": "대체 영입, 9번째 시즌", "inherited": ["position", "nationality"]},
+      {"name": "카프리 알스턴", "position": "PF,C", "nationality": ["미국"], "marks": ["temp"], "status": "일시 대체 선수", "note": "2주 부상 대체 선수였으나, 로드가 휴식기 동안 회복하면서 한 경기로 뛰지 못하고 떠났다.", "inherited": ["position", "nationality"]}
+    ] },
+    { "franchiseId": "goyang-sono", "team": "고양 오리온 오리온스", "players": [
+      {"name": "마커스 랜드리", "position": "F", "nationality": ["미국"], "marks": ["nba", "fullReplaceInjury"], "nth": 2, "status": "2번째 시즌, 시즌 중 방출"},
+      {"name": "올루 아샤올루", "position": "PF,C", "nationality": ["캐나다", "나이지리아"], "status": "대체 영입, 시즌 중 방출", "officialName": "올루 아숄루"},
+      {"name": "보리스 사보비치", "position": "C", "nationality": ["세르비아", "몬테네그로"], "status": "대체 영입, 시즌 중 방출", "note": "코로나 19로 인한 자진 퇴출."},
+      {"name": "조던 하워드", "position": "SG", "nationality": ["미국"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "아드리안 유터", "position": "PF,C", "nationality": ["자메이카", "미국"], "status": "대체 영입"}
+    ] },
+    { "franchiseId": "suwon-kt", "team": "부산 kt 소닉붐", "players": [
+      {"name": "바이런 멀린스", "position": "C", "nationality": ["영국", "미국"], "marks": ["nba"], "status": "신규 영입, 시즌 중 방출", "note": "코로나 19로 인한 자진 퇴출."},
+      {"name": "윌리 쏜튼", "position": "F", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입, 시즌 중 방출", "note": "공식 기록의 KT 2019-20 선수는 '알 쏜튼'이다. 문서 표기는 '윌리 쏜튼'. 같은 구단·시즌 자리라 officialName으로 이었으나 동일인 여부는 문서만으로 확정할 수 없다.", "officialName": "알 쏜튼"},
+      {"name": "앨런 더햄", "position": "PF", "nationality": ["미국"], "status": "대체 영입, 시즌 중 방출", "note": "코로나 19로 인한 자진 퇴출.", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "anyang-jungkwanjang", "team": "안양 KGC인삼공사", "players": [
+      {"name": "브랜든 브라운", "position": "PF,C", "nationality": ["미국"], "nth": 3, "status": "3번째 시즌"},
+      {"name": "크리스 맥컬러", "position": "F", "nationality": ["미국", "필리핀"], "marks": ["nba", "fullReplaceInjury"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "덴젤 보울스", "position": "PF,C", "nationality": ["미국"], "status": "대체 영입"}
+    ] },
+    { "franchiseId": "wonju-db", "team": "원주 DB 프로미", "players": [
+      {"name": "칼렙 그린", "position": "PF", "nationality": ["미국"], "status": "신규 영입"},
+      {"name": "일라이저 토마스", "position": "C", "nationality": ["미국"], "marks": ["fullReplaceInjury"], "status": "신규 영입, 시즌 전 부상으로 교체", "inherited": ["nationality"]},
+      {"name": "치나누 오누아쿠", "position": "C", "nationality": ["미국", "나이지리아"], "marks": ["nba"], "status": "대체 영입", "inherited": ["position"]}
+    ] },
+    { "franchiseId": "seoul-sk", "team": "서울 SK 나이츠", "players": [
+      {"name": "자밀 워니", "position": "C", "nationality": ["미국"], "marks": ["nba", "mvp"], "status": "신규 영입"},
+      {"name": "애런 헤인즈", "position": "F", "nationality": ["미국"], "nth": 12, "status": "12번째 시즌", "inherited": ["nationality"]}
+    ] },
+    { "franchiseId": "seoul-samsung", "team": "서울 삼성 썬더스", "players": [
+      {"name": "닉 미네라스", "position": "F", "nationality": ["미국"], "marks": ["nba"], "status": "신규 영입"},
+      {"name": "델로이 제임스", "position": "PF", "nationality": ["미국", "가이아나"], "status": "신규 영입, 시즌 중 방출"},
+      {"name": "제임스 톰슨", "position": "PF,C", "nationality": ["미국"], "status": "대체 영입"}
+    ] }
+  ]
+}

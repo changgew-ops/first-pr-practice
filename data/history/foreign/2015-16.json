@@ -1,0 +1,538 @@
+{
+  "season": "2015-16",
+  "system": "드래프트(장·단신)",
+  "note": "2015-16 시즌부터는 장신 선수 1명 및 193cm 이하 단신 선수 1명을 뽑는 제도로 변경되었다. 1라운드에는 2명 보유 1명 출전, 2~3라운드에는 3쿼터에 한해 2인 동시 출전, 4~6라운드에는 2, 3쿼터 2인 동시 출전. round는 문서의 이름 끝 `*`(1라운드)·`#`(2라운드) 표시. 포지션·국적·장단신 칸이 병합되어 비어 있는 줄은 위 줄에서 이어받고 inherited에 적었다(단, 장단신이 바뀌는 줄의 포지션은 이어받지 않았다).",
+  "teams": [
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스 피버스",
+      "players": [
+        {
+          "name": "리오 라이온스",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "round": 1,
+          "nth": 2,
+          "status": "시즌 중 방출"
+        },
+        {
+          "name": "아이라 클라크",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "nth": 6,
+          "status": "대체 영입, 6번째 시즌",
+          "inherited": [
+            "type",
+            "position",
+            "nationality"
+          ]
+        },
+        {
+          "name": "커스버트 빅터",
+          "type": "단신",
+          "nationality": [
+            "미국"
+          ],
+          "status": "신규 영입",
+          "inherited": [
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부 프로미",
+      "players": [
+        {
+          "name": "로드 벤슨",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "미국"
+          ],
+          "round": 1,
+          "nth": 6,
+          "status": "6번째 시즌"
+        },
+        {
+          "name": "다쿼비스 터커",
+          "type": "단신",
+          "nationality": [
+            "미국"
+          ],
+          "round": 1,
+          "status": "계약 거부",
+          "inherited": [
+            "nationality"
+          ]
+        },
+        {
+          "name": "라샤드 제임스",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "status": "대체 영입, 시즌 중 방출",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        },
+        {
+          "name": "웬델 맥키네스",
+          "type": "단신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "nth": 2,
+          "status": "대체 영입, 2번째 시즌",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK 나이츠",
+      "players": [
+        {
+          "name": "데이비드 사이먼",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "미국"
+          ],
+          "round": 1,
+          "nth": 3,
+          "status": "3번째 시즌"
+        },
+        {
+          "name": "드워릭 스펜서",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "status": "신규 영입, 시즌 중 방출",
+          "inherited": [
+            "nationality"
+          ]
+        },
+        {
+          "name": "드웨인 미첼",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "status": "대체 영입",
+          "inherited": [
+            "type",
+            "position",
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG 세이커스",
+      "players": [
+        {
+          "name": "트로이 길렌워터",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "round": 1,
+          "nth": 2,
+          "status": "2번째 시즌"
+        },
+        {
+          "name": "맷 볼딘",
+          "type": "단신",
+          "position": "PG",
+          "nationality": [
+            "미국"
+          ],
+          "round": 2,
+          "status": "신규 영입, 시즌 중 방출",
+          "inherited": [
+            "nationality"
+          ]
+        },
+        {
+          "name": "브랜든 필즈",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "status": "대체 영입, 시즌 중 방출",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        },
+        {
+          "name": "다이온 베리",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "officialName": "대이비온 베리",
+          "status": "대체 영입, 시즌 중 방출",
+          "inherited": [
+            "type",
+            "position",
+            "nationality"
+          ]
+        },
+        {
+          "name": "조쉬 달라드",
+          "type": "단신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "status": "대체 영입, 시즌 중 방출",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        },
+        {
+          "name": "샤크 맥키식",
+          "type": "단신",
+          "position": "SF",
+          "nationality": [
+            "미국"
+          ],
+          "status": "대체 영입",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "고양 오리온 오리온스",
+      "players": [
+        {
+          "name": "애런 헤인즈",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "round": 1,
+          "nth": 9,
+          "status": "9번째 시즌"
+        },
+        {
+          "name": "제스퍼 존슨",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "marks": [
+            "temp"
+          ],
+          "nth": 6,
+          "status": "일시 대체 선수, 6번째 시즌",
+          "inherited": [
+            "type",
+            "position",
+            "nationality"
+          ]
+        },
+        {
+          "name": "슈리스 조 잭슨",
+          "type": "단신",
+          "position": "PG",
+          "nationality": [
+            "미국"
+          ],
+          "round": 2,
+          "officialName": "조 잭슨",
+          "status": "신규 영입",
+          "inherited": [
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드 엘리펀츠",
+      "players": [
+        {
+          "name": "안드레 스미스",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "미국"
+          ],
+          "round": 1,
+          "status": "신규 영입, 시즌 중 방출"
+        },
+        {
+          "name": "허버트 힐",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "독일",
+            "미국"
+          ],
+          "nth": 7,
+          "status": "대체 영입, 7번째 시즌, 시즌 중 트레이드",
+          "inherited": [
+            "type"
+          ]
+        },
+        {
+          "name": "리카르도 포웰",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "nth": 5,
+          "status": "트레이드 영입, 5번째 시즌",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        },
+        {
+          "name": "알파 뱅그라",
+          "type": "단신",
+          "position": "SF",
+          "nationality": [
+            "미국"
+          ],
+          "round": 2,
+          "status": "신규 영입, 시즌 중 방출",
+          "inherited": [
+            "nationality"
+          ]
+        },
+        {
+          "name": "자멜 콘리",
+          "type": "단신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "round": 2,
+          "status": "대체 영입, 신규 영입",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 kt 소닉붐",
+      "players": [
+        {
+          "name": "코트니 심스",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "미국"
+          ],
+          "marks": [
+            "nba"
+          ],
+          "round": 1,
+          "nth": 4,
+          "status": "4번째 시즌, 시즌 중 방출"
+        },
+        {
+          "name": "제스퍼 존슨",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "nth": 6,
+          "status": "대체 영입, 6번째 시즌",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        },
+        {
+          "name": "마커스 블레이클리",
+          "type": "단신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "round": 2,
+          "status": "신규 영입",
+          "inherited": [
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KGC인삼공사",
+      "players": [
+        {
+          "name": "찰스 로드",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "미국"
+          ],
+          "nth": 6,
+          "status": "6번째 시즌"
+        },
+        {
+          "name": "프랭크 로빈슨",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "status": "신규 영입, 시즌 전 방출",
+          "inherited": [
+            "nationality"
+          ]
+        },
+        {
+          "name": "마리오 리틀",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "status": "대체 영입",
+          "inherited": [
+            "type",
+            "position",
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC 이지스",
+      "players": [
+        {
+          "name": "안드레 에밋",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "marks": [
+            "nba",
+            "renewed"
+          ],
+          "round": 1,
+          "nth": 2,
+          "status": "2번째 시즌"
+        },
+        {
+          "name": "리카르도 포웰",
+          "type": "장신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "round": 2,
+          "nth": 5,
+          "status": "5번째 시즌, 시즌 중 트레이드",
+          "inherited": [
+            "nationality"
+          ]
+        },
+        {
+          "name": "허버트 힐",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "미국"
+          ],
+          "nth": 7,
+          "status": "트레이드 영입, 7번째 시즌",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성 썬더스",
+      "players": [
+        {
+          "name": "리카르도 라틀리프",
+          "type": "장신",
+          "position": "C",
+          "nationality": [
+            "미국"
+          ],
+          "marks": [
+            "renewed",
+            "mvp"
+          ],
+          "round": 1,
+          "nth": 5,
+          "status": "5번째 시즌"
+        },
+        {
+          "name": "론 하워드",
+          "type": "단신",
+          "position": "SG",
+          "nationality": [
+            "미국"
+          ],
+          "round": 2,
+          "status": "신규 영입, 시즌 중 방출",
+          "inherited": [
+            "nationality"
+          ]
+        },
+        {
+          "name": "에릭 와이즈",
+          "type": "단신",
+          "position": "PF",
+          "nationality": [
+            "미국"
+          ],
+          "status": "대체 영입",
+          "inherited": [
+            "type",
+            "nationality"
+          ]
+        }
+      ]
+    }
+  ]
+}

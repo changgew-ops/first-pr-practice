@@ -1,0 +1,326 @@
+{
+  "season": "2000-01",
+  "system": "드래프트(두 선수 신장 합계 제한)",
+  "note": "문서 2.5. 2000-01 시즌을 앞두고 장단신 제도를 폐지하고, 두 선수의 신장 합계를 398.78cm로 제한하는 제도로 변경(한 선수 신장 제한 208.28cm). ※는 부상으로 인한 임시 대체선수. 문서 표를 글자로 옮긴 텍스트라 칸(1·2라운드)은 각 구단 표의 첫 줄 두 칸만 확정되어 round를 채웠고, 그 아래 줄(교체·대체 선수)은 칸을 알 수 없어 round를 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "수원 삼성",
+      "players": [
+        {
+          "name": "아티머스 맥클래리",
+          "position": "PF",
+          "heightCm": 191,
+          "school": "잭슨빌",
+          "round": 1,
+          "marks": [
+            "mvp"
+          ]
+        },
+        {
+          "name": "무스타파 호프",
+          "position": "C",
+          "heightCm": 200.7,
+          "school": "오레곤 주립",
+          "round": 2
+        },
+        {
+          "name": "대릴 프루",
+          "position": "C",
+          "heightCm": 200,
+          "school": "웨스트버지니아",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "에릭 이버츠",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "빌라노바",
+          "round": 1
+        },
+        {
+          "name": "알렉스 모블리",
+          "position": "PF",
+          "heightCm": 191.1,
+          "school": "빌라노바",
+          "round": 2
+        },
+        {
+          "name": "대릴 프루",
+          "position": "C",
+          "heightCm": 200,
+          "school": "웨스트버지니아"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "청주 SK",
+      "players": [
+        {
+          "name": "재키 존스",
+          "position": "C",
+          "heightCm": 202,
+          "school": "오클라호마",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "로데릭 하니발",
+          "position": "SG",
+          "heightCm": 193,
+          "school": "롱비치 주립",
+          "round": 2,
+          "marks": [
+            "renewed"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "리온 데릭스",
+          "position": "C",
+          "heightCm": 205,
+          "school": "디트로이트",
+          "round": 1
+        },
+        {
+          "name": "데니스 에드워즈",
+          "position": "PF",
+          "heightCm": 192,
+          "school": "포트헤이스 주립 (Div.II)",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 신세기",
+      "players": [
+        {
+          "name": "요나 에노사",
+          "position": "C",
+          "heightCm": 204,
+          "school": "브리검영 하와이 (Div.II)",
+          "round": 1
+        },
+        {
+          "name": "캔드릭 브룩스",
+          "position": "SF",
+          "heightCm": 194,
+          "school": "프레즈노 주립",
+          "round": 2
+        },
+        {
+          "name": "숀 더든",
+          "position": "SG",
+          "heightCm": 192,
+          "school": "아이다호",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "대전 현대",
+      "players": [
+        {
+          "name": "조니 맥도웰",
+          "position": "PF",
+          "heightCm": 194,
+          "school": "텍사스알링턴",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "에릭 던",
+          "round": 2,
+          "status": "시즌전 계약해지"
+        },
+        {
+          "name": "마이크 채프먼",
+          "position": "PF",
+          "heightCm": 195.8,
+          "school": "노던애리조나",
+          "note": "2게임만 뛰고 퇴출되었다."
+        },
+        {
+          "name": "마이클 루이스",
+          "marks": [
+            "traded"
+          ],
+          "status": "교체 후 바로 트레이드",
+          "note": "마이크 채프먼의 대체선수로 대전현대에 오자마자 대구동양의 데이먼 플린트와 1:1 트레이드되었다."
+        },
+        {
+          "name": "데이먼 플린트",
+          "position": "PF",
+          "heightCm": 195,
+          "school": "신시내티"
+        },
+        {
+          "name": "토시로 저머니",
+          "position": "C",
+          "heightCm": 203,
+          "school": "CSU 베이커필드",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "레지 타운젠드",
+          "position": "C",
+          "heightCm": 198,
+          "school": "세인트조셉"
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 삼보",
+      "players": [
+        {
+          "name": "모리스 조던",
+          "position": "C",
+          "heightCm": 204,
+          "school": "툴레인",
+          "round": 1
+        },
+        {
+          "name": "디온 브라운",
+          "round": 2,
+          "status": "시즌 전 계약 해지",
+          "note": "바로 전 시즌 기아와 계약했다가 시즌 전 해지된 그 선수이다. 공교롭게도 두 시즌 모두 존 와센버그가 대체 선수로 왔다."
+        },
+        {
+          "name": "존 와센버그",
+          "position": "PF",
+          "heightCm": 191,
+          "school": "세인트조셉 컬리지 (Div.III)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "부산 기아",
+      "players": [
+        {
+          "name": "듀안 스펜서",
+          "position": "C",
+          "heightCm": 207.3,
+          "school": "LSU",
+          "round": 1
+        },
+        {
+          "name": "루이스 로프튼",
+          "position": "SG",
+          "heightCm": 192,
+          "school": "웨버 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "여수 골드뱅크",
+      "players": [
+        {
+          "name": "마이클 매덕스",
+          "position": "C",
+          "heightCm": 199,
+          "school": "조지아텍",
+          "round": 1,
+          "marks": [
+            "draft1"
+          ]
+        },
+        {
+          "name": "말린 킴브루",
+          "position": "SG",
+          "heightCm": 192.4,
+          "school": "UMES",
+          "round": 2
+        },
+        {
+          "name": "제임스 하지스",
+          "position": "C",
+          "heightCm": 202,
+          "school": "위스콘신 화이트워터 (Div.III)",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "숀 뱅크헤드",
+          "position": "PF",
+          "heightCm": 194.2,
+          "school": "아이오와 주립"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 동양",
+      "players": [
+        {
+          "name": "데이먼 플린트",
+          "position": "SF",
+          "heightCm": 195,
+          "school": "신시내티",
+          "round": 1
+        },
+        {
+          "name": "와이킹 존스",
+          "round": 2,
+          "status": "시즌 전 계약 해지"
+        },
+        {
+          "name": "마이클 루이스",
+          "position": "PF",
+          "heightCm": 195,
+          "school": "이스트워싱턴",
+          "note": "대전현대 마이크 채프먼의 대체선수로 들어왔다가 데이먼 플린트와 1:1 트레이드되었다."
+        },
+        {
+          "name": "앨버트 리차드슨",
+          "position": "C",
+          "heightCm": 203,
+          "school": "켄터키 웨슬리안 (Div.II)"
+        },
+        {
+          "name": "토드 버나드",
+          "position": "PF",
+          "heightCm": 193,
+          "school": "프레즈노 주립"
+        },
+        {
+          "name": "토시로 저머니",
+          "position": "C",
+          "heightCm": 203,
+          "school": "CSU 베이커필드",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    }
+  ]
+}

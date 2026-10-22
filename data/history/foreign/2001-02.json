@@ -1,0 +1,367 @@
+{
+  "season": "2001-02",
+  "system": "드래프트",
+  "note": "문서 2.6. round는 표의 첫 줄 두 칸(왼쪽 1라운드, 오른쪽 2라운드)만 채웠다. 그 아래 줄(교체·대체 선수)은 칸 위치를 알 수 없어 round를 생략했다. 이름만 있고 포지션·키·출신교가 없는 선수는 같은 칸의 뒤에 나오는 선수로 교체되었다는 뜻이라 같은 round로 적었다.",
+  "teams": [
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 동양",
+      "players": [
+        {
+          "name": "마르커스 힉스",
+          "position": "PF",
+          "heightCm": 196.5,
+          "school": "미시시피",
+          "round": 1,
+          "marks": [
+            "draft1",
+            "mvp"
+          ]
+        },
+        {
+          "name": "라이언 페리맨",
+          "position": "C",
+          "heightCm": 198.7,
+          "school": "데이턴",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "로데릭 하니발",
+          "position": "SG",
+          "heightCm": 193,
+          "school": "롱비치 주립",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "그렉 스프링필드",
+          "round": 2,
+          "status": "시즌전 계약해지"
+        },
+        {
+          "name": "제이미 부커",
+          "position": "SG",
+          "heightCm": 192.6,
+          "school": "워싱턴",
+          "round": 2,
+          "note": "시즌내내 맹활약하던 로데릭 하니발이 손등골절로 10주 진단이 나오면서 완전교체했다."
+        },
+        {
+          "name": "테런스 무어",
+          "position": "PF",
+          "heightCm": 195,
+          "school": "CSU 베이커스필드"
+        },
+        {
+          "name": "찰스 존스",
+          "position": "SF",
+          "heightCm": 195.7,
+          "school": "퍼시픽"
+        },
+        {
+          "name": "에릭 마틴",
+          "position": "PF",
+          "heightCm": 199.1,
+          "school": "신시내티"
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "재키 존스",
+          "position": "C",
+          "heightCm": 202,
+          "school": "오클라호마",
+          "round": 1
+        },
+        {
+          "name": "르나드 존스",
+          "position": "PF",
+          "heightCm": 197,
+          "school": "오클라호마시티",
+          "round": 2
+        },
+        {
+          "name": "캔드릭 브룩스",
+          "position": "SF",
+          "heightCm": 194,
+          "school": "프레즈노 주립"
+        },
+        {
+          "name": "클라이드 앨리스",
+          "position": "PF",
+          "heightCm": 196.7,
+          "school": "뉴올리언즈",
+          "officialName": "클라이드 엘리스"
+        },
+        {
+          "name": "크리스 화이트",
+          "position": "C",
+          "heightCm": 203.6,
+          "school": "이스턴 워싱턴",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "제런 콥",
+          "position": "PF",
+          "heightCm": 193,
+          "school": "미주리웨스턴 (Div.II)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 SK",
+      "players": [
+        {
+          "name": "조니 맥도웰",
+          "position": "PF",
+          "heightCm": 194,
+          "school": "텍사스알링턴",
+          "round": 1
+        },
+        {
+          "name": "얼 아이크",
+          "position": "C",
+          "heightCm": 200.4,
+          "school": "몬테발로 (Div.II)",
+          "round": 2
+        },
+        {
+          "name": "크리스 화이트",
+          "position": "C",
+          "heightCm": 203.6,
+          "school": "이스턴 워싱턴",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "에릭 이버츠",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "빌라노바",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ],
+          "note": "문서 표기 포지션은 'SF/ PF'"
+        },
+        {
+          "name": "말릭 에반스",
+          "position": "C",
+          "heightCm": 201,
+          "school": "밴더빌트",
+          "round": 2
+        },
+        {
+          "name": "마이클 매덕스",
+          "position": "C",
+          "heightCm": 199,
+          "school": "조지아텍",
+          "note": "2001년 12월 12일, KBL 역사에 길이남을 4:4 트레이드로 칼 보이드와 함께 창원 LG에 합류했다.(창원 LG get: 마이클 매덕스, 칼 보이드, 김병천, 김동환 ↔ 여수 코리아텐더 get: 에릭 이버츠, 말릭 에반스, 황진원, 이홍수)"
+        },
+        {
+          "name": "칼 보이드",
+          "position": "PF",
+          "heightCm": 192,
+          "school": "UC버클리"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "리온 데릭스",
+          "position": "C",
+          "heightCm": 205,
+          "school": "디트로이트",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "퍼넬 페리",
+          "position": "PF",
+          "heightCm": 193,
+          "school": "부어히 칼리지 (NAIA)",
+          "round": 2
+        },
+        {
+          "name": "크리스 화이트",
+          "position": "C",
+          "heightCm": 203.6,
+          "school": "이스턴 워싱턴",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "여수 코리아텐더",
+      "players": [
+        {
+          "name": "마이클 매덕스",
+          "position": "C",
+          "heightCm": 199,
+          "school": "조지아텍",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "칼 보이드",
+          "position": "PF",
+          "heightCm": 192,
+          "school": "UC버클리",
+          "round": 2
+        },
+        {
+          "name": "에릭 이버츠",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "빌라노바",
+          "note": "상술한 4:4 트레이드로 말릭 에반스와 함께 여수 코리아텐더로 합류했다.(창원 LG get: 마이클 매덕스, 칼 보이드, 김병천, 김동환 ↔ 여수 코리아텐더 get: 에릭 이버츠, 말릭 에반스, 황진원, 이홍수)"
+        },
+        {
+          "name": "말릭 에반스",
+          "position": "C",
+          "heightCm": 201,
+          "school": "밴더빌트"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "아티머스 맥클래리",
+          "position": "PF",
+          "heightCm": 191,
+          "school": "잭슨빌",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "무스타파 호프",
+          "position": "C",
+          "heightCm": 200.7,
+          "school": "오리건 주립",
+          "round": 2,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "이산 스캇",
+          "position": "C",
+          "heightCm": 201.5,
+          "school": "클렘슨",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "제런 콥",
+          "position": "PF",
+          "heightCm": 193,
+          "school": "미주리웨스턴 (Div.II)",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "크리스 화이트",
+          "position": "C",
+          "heightCm": 203.6,
+          "school": "이스턴 워싱턴"
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 삼보",
+      "players": [
+        {
+          "name": "안드레 페리",
+          "position": "PF",
+          "heightCm": 196,
+          "school": "앨라배마",
+          "round": 1
+        },
+        {
+          "name": "조나단 비어봄",
+          "round": 2,
+          "status": "시즌전 계약해지"
+        },
+        {
+          "name": "해리 리브즈",
+          "position": "C",
+          "heightCm": 199.8,
+          "school": "프랜시스매리언 (Div.II)",
+          "round": 2
+        },
+        {
+          "name": "찰스 맨트",
+          "position": "PF",
+          "heightCm": 193.7,
+          "school": "그랜드밸리 주립(Div.II)"
+        },
+        {
+          "name": "패트릭 은공바",
+          "position": "C",
+          "heightCm": 200.2,
+          "school": "조지워싱턴"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "딜론 터너",
+          "position": "PF",
+          "heightCm": 193,
+          "school": "플로리다A&M",
+          "round": 1
+        },
+        {
+          "name": "래리 애브니",
+          "position": "C",
+          "heightCm": 200,
+          "school": "프레즈노 주립",
+          "round": 2
+        }
+      ]
+    }
+  ]
+}

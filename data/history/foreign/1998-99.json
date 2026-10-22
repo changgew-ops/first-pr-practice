@@ -1,0 +1,260 @@
+{
+  "season": "1998-99",
+  "system": "드래프트(장·단신)",
+  "note": "문서 2.3. 1998-99 시즌을 앞두고 장신 205.7cm 이하, 단신 193.5cm 이하로 신장 제한 사항이 변경되었다. 문서 표를 글자로 옮긴 텍스트라 칸(1·2라운드)은 각 구단 표의 첫 줄 두 칸만 확정되어 round를 채웠고, 그 아래 줄(교체·대체 선수)은 칸을 알 수 없어 round를 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "busan-kcc",
+      "team": "대전 현대",
+      "players": [
+        {
+          "name": "조니 맥도웰",
+          "position": "PF",
+          "heightCm": 194,
+          "school": "텍사스알링턴",
+          "round": 1,
+          "marks": [
+            "mvp",
+            "renewed"
+          ]
+        },
+        {
+          "name": "재키 존스",
+          "position": "C",
+          "heightCm": 202,
+          "school": "오클라호마",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "부산 기아",
+      "players": [
+        {
+          "name": "클리프 리드",
+          "position": "PF",
+          "heightCm": 190.4,
+          "school": "뉴멕시코 주립",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "데릭 존슨",
+          "round": 2,
+          "marks": [
+            "traded"
+          ],
+          "status": "시즌 전 트레이드"
+        },
+        {
+          "name": "제이슨 윌리포드",
+          "position": "C/PF",
+          "heightCm": 194.4,
+          "school": "버지니아",
+          "note": "원주나래와 재계약 후 트레이드"
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 대우",
+      "players": [
+        {
+          "name": "카를로스 윌리엄스",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "앨라배마 버밍엄",
+          "round": 1
+        },
+        {
+          "name": "스테이스 보스먼",
+          "position": "PG",
+          "heightCm": 190,
+          "school": "USC",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 나래",
+      "players": [
+        {
+          "name": "제이슨 윌리포드",
+          "round": 1,
+          "marks": [
+            "renewed",
+            "traded"
+          ],
+          "status": "시즌 전 트레이드"
+        },
+        {
+          "name": "토니 해리스",
+          "position": "SG",
+          "heightCm": 188,
+          "school": "뉴올리언스",
+          "round": 2
+        },
+        {
+          "name": "데릭 존슨",
+          "position": "C",
+          "heightCm": 204.4,
+          "school": "버지니아유니언 (Div.II)",
+          "note": "부산기아에 드래프트 지명 후 제이슨 윌리포드와 1:1 트레이드"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "버나드 블런트",
+          "position": "SF/SG",
+          "heightCm": 188,
+          "school": "세인트조셉",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "아미누 팀버레이크",
+          "position": "C",
+          "heightCm": 202,
+          "school": "사우던일리노이",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "수원 삼성",
+      "players": [
+        {
+          "name": "버넬 싱글턴",
+          "position": "C",
+          "heightCm": 200,
+          "school": "LSU",
+          "round": 1,
+          "officialName": "버넬 싱글튼"
+        },
+        {
+          "name": "이슈아 벤자민",
+          "position": "SF",
+          "heightCm": 190,
+          "school": "노스캐롤라이나 주립",
+          "round": 2
+        },
+        {
+          "name": "브라이언 힐",
+          "position": "C",
+          "heightCm": 198,
+          "school": "페퍼다인",
+          "marks": [
+            "temp"
+          ],
+          "note": "KBL 최초의 일시대체용병."
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "제럴드 워커",
+          "position": "PG",
+          "heightCm": 184,
+          "school": "샌프란시스코",
+          "round": 1,
+          "marks": [
+            "draft1"
+          ]
+        },
+        {
+          "name": "대릴 프루",
+          "position": "C",
+          "heightCm": 200,
+          "school": "웨스트버지니아",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "청주 SK",
+      "players": [
+        {
+          "name": "토니 러틀랜드",
+          "position": "PG",
+          "heightCm": 187,
+          "school": "웨이크 포레스트",
+          "round": 1
+        },
+        {
+          "name": "마이크 무어",
+          "round": 2,
+          "status": "시즌전 부상으로 교체"
+        },
+        {
+          "name": "숀 재미슨",
+          "position": "C",
+          "heightCm": 202,
+          "school": "텍사스 샌안토니오"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "광주 나산",
+      "players": [
+        {
+          "name": "워렌 로즈그린",
+          "position": "PF",
+          "heightCm": 190,
+          "school": "UNLV",
+          "round": 1
+        },
+        {
+          "name": "아킬리 잭슨",
+          "position": "C",
+          "heightCm": 201,
+          "school": "롱비치 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 동양",
+      "players": [
+        {
+          "name": "그레그 콜버트",
+          "position": "C",
+          "heightCm": 199.5,
+          "school": "웨인랜드 침례대 (NAIA)",
+          "round": 1,
+          "note": "시즌초반 8경기에서 26.3득점-11.6리바-4.0어시-1.9스틸이란 준수한 성적을 내며, 전희철-김병철 등 주전이 모두 군입대한 오리온스를 혼자 이끌었지만, 갑자기 바람난 와이프를 만나러 미국으로 간다는 핑계로 야반도주하면서 대구 동양 오리온스의 세계신기록(32연패!) 달성에 이바지한다."
+        },
+        {
+          "name": "존 다지",
+          "position": "SG",
+          "heightCm": 187.9,
+          "school": "웨일랜드 침례대 (NAIA)",
+          "round": 2
+        },
+        {
+          "name": "자바리 마일스",
+          "position": "C",
+          "heightCm": 198,
+          "school": "알칸사스",
+          "officialName": "자마리 마일즈"
+        }
+      ]
+    }
+  ]
+}

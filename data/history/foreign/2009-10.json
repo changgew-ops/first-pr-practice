@@ -1,0 +1,346 @@
+{
+  "season": "2009-10",
+  "system": "드래프트",
+  "note": "문서 4.3. 2009-10 시즌부터는 외국인 선수 2명 보유, 1명 출전으로 변경되었다. 쿼터별 출전 제한은 사라졌다(문서 설명). round: 문서 표는 왼쪽 칸이 1라운드, 오른쪽 칸이 2라운드이고 선수가 줄 순서대로 평면 텍스트로 나와, 구단의 첫 두 선수(표 첫 줄)만 1·2라운드를 채웠다. 교체·트레이드로 들어온 이후 선수는 어느 칸인지 알 수 없어 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "브라이언트 던스톤",
+          "position": "C",
+          "heightCm": 198.6,
+          "school": "포덤",
+          "marks": [
+            "renewed"
+          ],
+          "officialName": "브라이언 던스톤",
+          "round": 1
+        },
+        {
+          "name": "압둘라히 쿠소",
+          "position": "C",
+          "heightCm": 200.9,
+          "school": "곤자가",
+          "note": "라마단이 끝나고 체력이 떨어지면서 퇴출되었다.",
+          "round": 2
+        },
+        {
+          "name": "애런 헤인즈",
+          "position": "PF",
+          "heightCm": 199,
+          "school": "보이시 주립"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KT",
+      "players": [
+        {
+          "name": "그레고리 스팀스마",
+          "status": "시즌 개막전 교체",
+          "note": "시즌전 훈련에서 전창진 감독과 충돌하고 퇴출되었다.",
+          "round": 1
+        },
+        {
+          "name": "제스퍼 존슨",
+          "position": "PF",
+          "heightCm": 196.6,
+          "school": "델타 주립 (Div.II)",
+          "marks": [
+            "mvp"
+          ],
+          "round": 2
+        },
+        {
+          "name": "도널드 리틀",
+          "position": "C",
+          "heightCm": 207,
+          "school": "신시내티"
+        },
+        {
+          "name": "나이젤 딕슨",
+          "position": "C",
+          "heightCm": 201.7,
+          "school": "웨스트 켄터키",
+          "note": "안양 KT&G에서 뛰다 트레이드로 합류했다. (부산 KT get: 나이젤 딕슨 ↔ 안양 KT&G get: 도널드 리틀 + 2010 드래프트 1R 지명권.)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "마이카 브랜드",
+          "position": "C",
+          "heightCm": 207.1,
+          "school": "매사추세츠",
+          "marks": [
+            "renewed"
+          ],
+          "round": 1
+        },
+        {
+          "name": "맥 턱",
+          "status": "시즌 개막 전 교체",
+          "round": 2
+        },
+        {
+          "name": "테렌스 레더",
+          "position": "C",
+          "heightCm": 200.3,
+          "school": "사우스 플로리다",
+          "note": "시즌 도중 마이카 브랜드와 1:1 트레이드로 영입."
+        },
+        {
+          "name": "아이반 존슨",
+          "position": "PF",
+          "heightCm": 200.3,
+          "school": "CSU-SB (Div.II)",
+          "note": "기량면에서는 두말할 나위없이 훌륭하여, 하승진이 빠진 전주 KCC가 챔피언 결정전까지 오르는 1등 공신이었다. 그러나 챔피언 결정전에서 심판에게 손가락 욕을 하는 등의 행위로 영구 제명되었다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "크리스 알렉산더",
+          "position": "C",
+          "heightCm": 213,
+          "school": "아이오와 주립",
+          "round": 1
+        },
+        {
+          "name": "크레이그 브래드쇼",
+          "position": "C",
+          "heightCm": 204.8,
+          "school": "윈스럽",
+          "officialName": "크레이크 브래드쇼",
+          "round": 2
+        },
+        {
+          "name": "제임스 피터스",
+          "position": "PF",
+          "heightCm": 200.1,
+          "school": "UNLV"
+        },
+        {
+          "name": "레지 워렌",
+          "position": "PF",
+          "heightCm": 199.7,
+          "school": "웨스트 플로리다 (Div.II)",
+          "officialName": "레지날드 워렌"
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부",
+      "players": [
+        {
+          "name": "마퀸 챈들러",
+          "position": "PF",
+          "heightCm": 196.8,
+          "school": "산호세 주립",
+          "round": 1
+        },
+        {
+          "name": "개리 윌킨슨",
+          "position": "C",
+          "heightCm": 201.8,
+          "school": "유타 주립",
+          "officialName": "게리 윌킨슨",
+          "round": 2
+        },
+        {
+          "name": "조나단 존스",
+          "position": "C",
+          "heightCm": 206.6,
+          "school": "배럿 칼리지 (NAIA)"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "테렌스 레더",
+          "position": "C",
+          "heightCm": 200.3,
+          "school": "사우스 플로리다",
+          "marks": [
+            "renewed"
+          ],
+          "round": 1
+        },
+        {
+          "name": "브라이언 매튜스",
+          "status": "시즌 개막전 퇴출",
+          "note": "호주에서 뛰던 당시의 성폭행 전과를 숨긴 사실이 발각되어 시즌 전 제명되었다.",
+          "round": 2
+        },
+        {
+          "name": "마이카 브랜드",
+          "position": "C",
+          "heightCm": 207.1,
+          "school": "매사추세츠",
+          "note": "시즌 도중 테렌스 레더와 1:1 트레이드로 영입."
+        },
+        {
+          "name": "빅터 토마스",
+          "position": "PF",
+          "heightCm": 199.2,
+          "school": "라살레"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "사마키 워커",
+          "position": "C",
+          "heightCm": 203.3,
+          "school": "루이빌",
+          "marks": [
+            "nba"
+          ],
+          "round": 1
+        },
+        {
+          "name": "조셉 대버트",
+          "position": "C",
+          "heightCm": 206.4,
+          "school": "크레이튼",
+          "round": 2
+        },
+        {
+          "name": "크리스토퍼 가넷",
+          "position": "C",
+          "heightCm": 202.8,
+          "school": "IU-SE (NAIA)"
+        },
+        {
+          "name": "죠 크래븐호프트",
+          "position": "PF",
+          "heightCm": 198,
+          "school": "위스콘신"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KT&G",
+      "players": [
+        {
+          "name": "나이젤 딕슨",
+          "position": "C",
+          "heightCm": 201.7,
+          "school": "웨스트 켄터키",
+          "round": 1
+        },
+        {
+          "name": "라샤드 벨",
+          "position": "PF",
+          "heightCm": 198.5,
+          "school": "보스턴",
+          "round": 2
+        },
+        {
+          "name": "도널드 리틀",
+          "position": "C",
+          "heightCm": 207,
+          "school": "신시내티",
+          "note": "부산 KT에서 뛰다 트레이드로 합류했다. (부산 KT get: 나이젤 딕슨 ↔ 안양 KT&G get: 도널드 리틀 + 2010 드래프트 1R 지명권.) 이때 부산 KT로부터 얻은 1R 신인지명권 덕분에, 안양 KT&G는 2009 드래프트에서 1,2순위를 모두 석권하며 박찬희, 이정현을 각각 뽑아 로또성공적인 리빌딩의 기틀을 잡는다."
+        },
+        {
+          "name": "크리스 다니엘스",
+          "position": "C",
+          "heightCm": 204.6,
+          "school": "텍사스 A&M",
+          "note": "인천 전자랜드에서 뛰다 안양 KT&G와의 3:2 대형 트레이드로 합류했다. (인천 전자랜드 get: 라샤드 벨, 이현호, 이상준 ↔ 안양 KT&G get: 크리스 다니엘스, 김성철)"
+        },
+        {
+          "name": "조셉 테일러",
+          "position": "PF",
+          "heightCm": 198,
+          "school": "와이오밍"
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드",
+      "players": [
+        {
+          "name": "크리스 다니엘스",
+          "position": "C",
+          "heightCm": 204.6,
+          "school": "텍사스 A&M",
+          "round": 1
+        },
+        {
+          "name": "아말 맥카스킬",
+          "position": "C",
+          "heightCm": 208.7,
+          "school": "마켓",
+          "note": "원래 2006-07 시즌 개막 전 야반도주한 리 벤슨의 대체선수로 오리온스가 영입하려 했으나 신장 초과로 불발된 바 있다.",
+          "round": 2
+        },
+        {
+          "name": "라샤드 벨",
+          "position": "PF",
+          "heightCm": 198.5,
+          "school": "보스턴",
+          "note": "인천 전자랜드에서 뛰다 안양 KT&G와의 3:2 대형 트레이드로 합류했다. (인천 전자랜드 get: 라샤드 벨, 이현호, 이상준 ↔ 안양 KT&G get: 크리스 다니엘스, 김성철)"
+        },
+        {
+          "name": "자시 클라인허드",
+          "position": "C",
+          "heightCm": 198.3,
+          "school": "펜실베이니아",
+          "marks": [
+            "temp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 오리온스",
+      "players": [
+        {
+          "name": "허버트 힐",
+          "position": "C",
+          "heightCm": 203,
+          "school": "프로비던스 칼리지",
+          "marks": [
+            "draft1"
+          ],
+          "note": "재계약 선수를 제외한 실질적 전체 1순위",
+          "round": 1
+        },
+        {
+          "name": "케빈 마틴",
+          "position": "C",
+          "heightCm": 204,
+          "school": "FGCU (Div.II)",
+          "round": 2
+        },
+        {
+          "name": "앤서니 존슨",
+          "position": "PF",
+          "heightCm": 194.5,
+          "school": "LSU"
+        }
+      ]
+    }
+  ]
+}

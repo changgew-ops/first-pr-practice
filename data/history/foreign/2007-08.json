@@ -1,0 +1,331 @@
+{
+  "season": "2007-08",
+  "system": "드래프트",
+  "note": "문서 4.1. 2007-08 시즌 다시 트라이아웃 & 드래프트 제도로 변경하였으며, 교체 선수는 트라이아웃에 참가한 선수 중에서만 선발할 수 있도록 제한(문서 설명). round: 문서 표는 왼쪽 칸이 1라운드, 오른쪽 칸이 2라운드이고 선수가 줄 순서대로 평면 텍스트로 나와, 구단의 첫 두 선수(표 첫 줄)만 1·2라운드를 채웠다. 교체·트레이드로 들어온 이후 선수는 어느 칸인지 알 수 없어 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부",
+      "players": [
+        {
+          "name": "레지 오코사",
+          "position": "C",
+          "heightCm": 204.1,
+          "school": "라살레",
+          "round": 1
+        },
+        {
+          "name": "윌리 팔리",
+          "status": "시즌 개막전 교체",
+          "round": 2
+        },
+        {
+          "name": "로저 워싱톤",
+          "position": "SF",
+          "heightCm": 195.9,
+          "school": "LSU"
+        },
+        {
+          "name": "더글라스 렌",
+          "position": "SF",
+          "heightCm": 195.4,
+          "school": "워싱턴"
+        },
+        {
+          "name": "카를로스 딕슨",
+          "position": "SG/SF",
+          "heightCm": 193.9,
+          "school": "버지니아텍"
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "브랜든 크럼프",
+          "position": "C",
+          "heightCm": 205,
+          "school": "테네시",
+          "round": 1
+        },
+        {
+          "name": "제이슨 로빈슨",
+          "position": "SF",
+          "heightCm": 193.5,
+          "school": "파이크빌 (NAIA)",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "테렌스 레더",
+          "position": "C",
+          "heightCm": 200.3,
+          "school": "사우스 플로리다",
+          "round": 1
+        },
+        {
+          "name": "라샤드 존스-제닝스",
+          "status": "시즌 개막전 교체",
+          "round": 2
+        },
+        {
+          "name": "타이론 샐리",
+          "position": "PF",
+          "heightCm": 196.8,
+          "school": "웨스트버지니아"
+        },
+        {
+          "name": "빅터 토마스",
+          "position": "PF",
+          "heightCm": 199.2,
+          "school": "라살레"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 KT&G",
+      "players": [
+        {
+          "name": "마퀸 챈들러",
+          "position": "PF",
+          "heightCm": 196.8,
+          "school": "산호세 주립",
+          "round": 1
+        },
+        {
+          "name": "TJ 커밍스",
+          "position": "C",
+          "heightCm": 202.1,
+          "school": "UCLA",
+          "note": "1983년 NBA 신인왕 테리 커밍스의 아들.",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "래리 스미스",
+          "position": "C",
+          "heightCm": 199.4,
+          "school": "보위 주립(Div.II)",
+          "round": 1
+        },
+        {
+          "name": "트래비스 개리슨",
+          "position": "PF",
+          "heightCm": 199.8,
+          "school": "메릴랜드",
+          "round": 2
+        },
+        {
+          "name": "브랜든 로빈슨",
+          "position": "PF",
+          "heightCm": 197.2,
+          "school": "오번"
+        },
+        {
+          "name": "자시 클라인허드",
+          "position": "C",
+          "heightCm": 198.3,
+          "school": "펜실베이니아"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "오다티 블랭슨",
+          "position": "PF",
+          "heightCm": 194.5,
+          "school": "UNLV",
+          "round": 1
+        },
+        {
+          "name": "캘빈 워너",
+          "position": "C",
+          "heightCm": 196.5,
+          "school": "이스턴 미시간",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드",
+      "players": [
+        {
+          "name": "테런스 섀넌",
+          "position": "PF",
+          "heightCm": 196.9,
+          "school": "엘진 커뮤니티칼리지 (NJCAA)",
+          "marks": [
+            "draft1",
+            "mvp"
+          ],
+          "round": 1
+        },
+        {
+          "name": "모하메드 워니",
+          "status": "시즌 개막전 교체",
+          "round": 2
+        },
+        {
+          "name": "크리스토퍼 무어",
+          "position": "C",
+          "heightCm": 196.9,
+          "school": "버지니아유니언 (Div.II)"
+        },
+        {
+          "name": "카멜로 리",
+          "position": "PF",
+          "heightCm": 198.1,
+          "school": "롱비치 주립"
+        },
+        {
+          "name": "리온 트리밍햄",
+          "position": "PF",
+          "heightCm": 195,
+          "school": "브라이어클리프 (NAIA)",
+          "note": "대구 오리온스에서 뛰다 카멜로 리와 1:1 트레이드로 영입"
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KTF",
+      "players": [
+        {
+          "name": "세드릭 웨버",
+          "position": "PF",
+          "heightCm": 194.6,
+          "school": "찰스턴",
+          "note": "개막 7경기 만에 외국인 두 선수가 기량미달로 나란히 퇴출, 칼 미첼-제이미 켄드릭으로 교체되었다.",
+          "round": 1
+        },
+        {
+          "name": "타이론 워싱톤",
+          "position": "C",
+          "heightCm": 202.1,
+          "school": "미시시피 주립",
+          "round": 2
+        },
+        {
+          "name": "칼 미첼",
+          "position": "PF",
+          "heightCm": 201.1,
+          "school": "노던 켄터키"
+        },
+        {
+          "name": "제이미 켄드릭",
+          "position": "C",
+          "heightCm": 198.7,
+          "school": "베일러"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "제임스 페니",
+          "status": "시즌 개막전 교체",
+          "round": 1
+        },
+        {
+          "name": "실베스터 모건",
+          "status": "시즌 개막전 교체",
+          "round": 2
+        },
+        {
+          "name": "키나 영",
+          "position": "PF",
+          "heightCm": 193.2,
+          "school": "브리검 영"
+        },
+        {
+          "name": "케빈 오웬스",
+          "position": "C",
+          "heightCm": 205.2,
+          "school": "먼머스"
+        },
+        {
+          "name": "에릭 산드린",
+          "position": "PF",
+          "heightCm": 202.1,
+          "school": "시애틀퍼시픽 (Div.II)",
+          "note": "대한민국으로 귀화하기 전이었다. / 키 202.1: KBL 외국인 드래프트 당시 측정신장. 그래서 KBL 홈페이지에 보면 국내선수 \"이승준\"의 키(205cm)와 차이가 난다.귀화하면 키커요!!"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 오리온스",
+      "players": [
+        {
+          "name": "마크 샌포드",
+          "status": "시즌 개막전 교체",
+          "round": 1
+        },
+        {
+          "name": "코리 벤자민",
+          "status": "시즌 개막전 교체",
+          "round": 2
+        },
+        {
+          "name": "리온 트리밍햄",
+          "position": "PF",
+          "heightCm": 195,
+          "school": "브라이어클리프 (NAIA)"
+        },
+        {
+          "name": "로버트 브래넌",
+          "position": "C",
+          "heightCm": 198.9,
+          "school": "신시내티"
+        },
+        {
+          "name": "제러드 지",
+          "position": "PF",
+          "heightCm": 197.3,
+          "school": "일리노이",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "칼튼 아론",
+          "position": "C",
+          "heightCm": 200.8,
+          "school": "미주리 주립"
+        },
+        {
+          "name": "카멜로 리",
+          "position": "PF",
+          "heightCm": 198.1,
+          "school": "롱비치 주립",
+          "note": "인천 전자랜드에서 뛰다 리온 트리밍햄과 1:1 트레이드로 영입"
+        },
+        {
+          "name": "숀 호킨스",
+          "position": "PF",
+          "heightCm": 193.2,
+          "school": "롱비치 주립"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,361 @@
+{
+  "season": "2004-05",
+  "system": "자유계약",
+  "note": "문서 3.1. 2004-05 시즌부터 각 구단이 자유롭게 외국인 선수를 선발할 수 있게 되었다. 단, 두 선수 신장 합계 400cm 이하, 한 선수 신장은 208cm로 제한(2쿼터 1명만 출전 제도 유지). 이름만 있고 포지션·키·출신교가 없는 선수는 표 칸 안에서 뒤에 나오는 선수로 교체된 선수다.",
+  "teams": [
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 TG삼보",
+      "players": [
+        {
+          "name": "처드니 그레이",
+          "position": "SG",
+          "heightCm": 186.5,
+          "school": "세인트존스",
+          "note": "후에 퇴출사건의 비운의 주인공"
+        },
+        {
+          "name": "자밀 왓킨스",
+          "position": "C",
+          "heightCm": 204.3,
+          "school": "조지타운"
+        },
+        {
+          "name": "아비 스토리",
+          "position": "SF",
+          "heightCm": 192.4,
+          "school": "애리조나",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "찰스 민렌드",
+          "position": "PF",
+          "heightCm": 193.8,
+          "school": "세인트존스",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "R. F. 바셋",
+          "position": "C",
+          "heightCm": 202.4,
+          "school": "올드 도미니언",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "그레고리 스템핀",
+          "position": "C",
+          "heightCm": 196.9,
+          "school": "톨레도"
+        },
+        {
+          "name": "제로드 워드",
+          "position": "PF",
+          "heightCm": 198.7,
+          "school": "미시간"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "조 번",
+          "position": "PF",
+          "heightCm": 191.4,
+          "school": "필립스 (Div.II)"
+        },
+        {
+          "name": "켄달 다르테즈",
+          "status": "시즌전 계약 해지"
+        },
+        {
+          "name": "단테 존스",
+          "position": "PF",
+          "heightCm": 194.7,
+          "school": "미시시피 주립",
+          "marks": [
+            "nba"
+          ],
+          "note": "1996 NBA 드래프트 1라운드 21순위로 뉴욕 닉스에 뽑혔다."
+        },
+        {
+          "name": "주니어 버로",
+          "position": "C",
+          "heightCm": 199,
+          "school": "버지니아",
+          "marks": [
+            "nba"
+          ],
+          "note": "1995 NBA 드래프트 2라운드 33순위로 보스턴 셀틱스에 뽑혔다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KTF",
+      "players": [
+        {
+          "name": "게이브 미나케",
+          "position": "PF",
+          "heightCm": 195.5,
+          "school": "텍사스"
+        },
+        {
+          "name": "애런 맥기",
+          "position": "C",
+          "heightCm": 201,
+          "school": "오클라호마"
+        },
+        {
+          "name": "크니엘 딕킨스",
+          "position": "PF",
+          "heightCm": 198.3,
+          "school": "아이다호 주립",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "드숀 해들리",
+          "position": "SG",
+          "heightCm": 185.7,
+          "school": "이스턴미시간"
+        },
+        {
+          "name": "바카리 헨드릭스",
+          "position": "PF",
+          "heightCm": 198.6,
+          "school": "곤자가"
+        },
+        {
+          "name": "알렉스 스케일",
+          "position": "SG",
+          "heightCm": 186.5,
+          "school": "오리건"
+        },
+        {
+          "name": "자말 모슬리",
+          "position": "PF",
+          "heightCm": 198.1,
+          "school": "콜로라도"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 오리온스",
+      "players": [
+        {
+          "name": "네이트 존슨",
+          "position": "PF",
+          "heightCm": 196.2,
+          "school": "루이빌"
+        },
+        {
+          "name": "로버트 잭슨",
+          "position": "C",
+          "heightCm": 200,
+          "school": "마켓"
+        },
+        {
+          "name": "에드먼드 사운더스",
+          "position": "C",
+          "heightCm": 198.6,
+          "school": "코네티컷",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "MC 매지크",
+          "position": "C",
+          "heightCm": 199,
+          "school": "앨라배마",
+          "officialName": "엠씨 매지크"
+        },
+        {
+          "name": "루크 화이트헤드",
+          "position": "PF",
+          "heightCm": 193.2,
+          "school": "루이빌",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "크리스 포터",
+          "position": "C",
+          "heightCm": 195,
+          "school": "오번",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "제이슨 웰스",
+          "position": "PF",
+          "heightCm": 196.7,
+          "school": "인디애나 주립"
+        },
+        {
+          "name": "바비 레이저",
+          "position": "SF/PF",
+          "heightCm": 199.7,
+          "school": "애리조나 주립"
+        },
+        {
+          "name": "다이안 셀비",
+          "position": "PF",
+          "heightCm": 194.1,
+          "school": "오클라호마"
+        },
+        {
+          "name": "아담 첩",
+          "position": "C",
+          "heightCm": 202,
+          "school": "펜실베이니아",
+          "officialName": "아담 에드워드 첩"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "리 벤슨",
+          "status": "시즌전 계약해지",
+          "note": "주변 환경이 과거 복역하던 교도소 같다며(불법 무기 소지 등으로 8년간 복역) 숙소에 도착하자마자 계약을 철회했다."
+        },
+        {
+          "name": "크리스 랭",
+          "position": "C",
+          "heightCm": 202.1,
+          "school": "노스캐롤라이나",
+          "marks": [
+            "mvp"
+          ]
+        },
+        {
+          "name": "레너드 화이트",
+          "position": "PF",
+          "heightCm": 192.8,
+          "school": "사우던",
+          "note": "1993 NBA 드래프트 2라운드 53순위(끝에서 두 번째)로 LA 클리퍼스에 지명되었지만, 한게임도 뛰지 못했다."
+        },
+        {
+          "name": "세드릭 핸더슨",
+          "position": "SF",
+          "heightCm": 193.5,
+          "school": "멤피스",
+          "marks": [
+            "nba"
+          ],
+          "note": "1997 NBA 드래프트 2라운드 44순위로 클리블랜드 캐벌리어스에 지명되어 총 5시즌을 뛰었다. 드래프트 동기로 팀 던컨(1순위), 천시 빌럽스(3순위), 트레이시 맥그레이디(9순위)와 KBL 데뷔 동기인 전 창원LG 제럴드 허니컷이 있다.",
+          "officialName": "세드릭 헨더슨"
+        },
+        {
+          "name": "케빈 프리맨",
+          "position": "PF",
+          "heightCm": 194.1,
+          "school": "코네티컷"
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "온타리오 렛",
+          "position": "PF",
+          "heightCm": 193.6,
+          "school": "피츠버그"
+        },
+        {
+          "name": "제럴드 허니컷",
+          "position": "C",
+          "heightCm": 199.2,
+          "school": "툴레인",
+          "marks": [
+            "nba"
+          ],
+          "note": "1997 NBA 드래프트 2라운드 38순위로 밀워키 벅스에 지명되어 NBA에서 총 3시즌을 뛴 선수로, 드래프트 동기로 팀 던컨(1순위), 천시 빌럽스(3순위), 트레이시 맥그레이디(9순위)와 KBL 데뷔 동기인 전 서울SK 세드릭 헨더슨이 있다."
+        },
+        {
+          "name": "데스몬드 페니가",
+          "position": "PF",
+          "heightCm": 196.9,
+          "school": "유타 주립",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드",
+      "players": [
+        {
+          "name": "앨버트 화이트",
+          "position": "PF",
+          "heightCm": 192.6,
+          "school": "미주리",
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "하이램 풀러",
+          "position": "C",
+          "heightCm": 203.3,
+          "school": "프레즈노 주립",
+          "marks": [
+            "nba"
+          ]
+        },
+        {
+          "name": "마이클 매덕스",
+          "position": "C",
+          "heightCm": 199,
+          "school": "조지아텍"
+        },
+        {
+          "name": "가이 루커",
+          "position": "C",
+          "heightCm": 204.2,
+          "school": "아이오와",
+          "marks": [
+            "nba"
+          ]
+        }
+      ]
+    }
+  ]
+}

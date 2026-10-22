@@ -1,0 +1,174 @@
+{
+  "season": "1997",
+  "system": "드래프트(장·단신)",
+  "note": "문서 2.1. 1997년 원년부터 99-00 시즌까지는 드래프트를 통해 장신, 단신 구분하여 선수를 선발했다. 최초 적용한 신장 제한은 장신 203.2cm 이하, 단신 190.5cm 이하. 1996년 11월 개최된 트라이아웃 당시 광주 나산 플라망스의 KBL 참가를 승인받지 못하면서 광주 나산을 제외한 총 7팀만 참가했다(각주: KBL은 내심 상무 농구단의 KBL 참가를 기대했었다). 이후 뒤늦게 합류한 광주 나산은 드래프트에서 낙방한 선수들 중에서 전체 15,16순위로 뽑을 수밖에 없었는데, 16순위로 건진 게 무려 바로 에릭 이버츠였다. 문서 표를 글자로 옮긴 텍스트라 칸(1·2라운드)은 각 구단 표의 첫 줄 두 칸만 확정되어 round를 채웠고, 그 아래 줄(교체·대체 선수)은 칸을 알 수 없어 round를 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "부산 기아",
+      "players": [
+        {
+          "name": "클리프 리드",
+          "position": "PF",
+          "heightCm": 190.4,
+          "school": "뉴멕시코 주립",
+          "round": 1,
+          "marks": [
+            "draft1"
+          ]
+        },
+        {
+          "name": "로버트 윌커슨",
+          "position": "C/PF",
+          "heightCm": 193,
+          "school": "미주리 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "제럴드 워커",
+          "position": "PG",
+          "heightCm": 184,
+          "school": "샌프란시스코",
+          "round": 1
+        },
+        {
+          "name": "데이먼 존슨",
+          "position": "C",
+          "heightCm": 196,
+          "school": "텍사스알링턴",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 나래",
+      "players": [
+        {
+          "name": "칼 레이 해리스",
+          "position": "PG",
+          "heightCm": 183,
+          "school": "프레즈노 주립",
+          "round": 1
+        },
+        {
+          "name": "제이슨 윌리포드",
+          "position": "C/PF",
+          "heightCm": 194.4,
+          "school": "버지니아",
+          "round": 2,
+          "marks": [
+            "mvp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 동양",
+      "players": [
+        {
+          "name": "로이 해먼즈",
+          "position": "C",
+          "heightCm": 201,
+          "school": "산호세 주립",
+          "round": 1
+        },
+        {
+          "name": "토니 매디슨",
+          "position": "PG",
+          "heightCm": 188,
+          "school": "뉴올리언스",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "광주 나산",
+      "players": [
+        {
+          "name": "에릭 이버츠",
+          "position": "SF/PF",
+          "heightCm": 198,
+          "school": "빌라노바",
+          "round": 1
+        },
+        {
+          "name": "에릭 탤리",
+          "position": "PG",
+          "heightCm": 183,
+          "school": "몬태나 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 대우",
+      "players": [
+        {
+          "name": "네이트 터브스",
+          "position": "C",
+          "heightCm": 196,
+          "school": "미네소타",
+          "round": 1
+        },
+        {
+          "name": "마이클 엘리어트",
+          "position": "PG",
+          "heightCm": 183,
+          "school": "몬태나주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "대전 현대",
+      "players": [
+        {
+          "name": "라펠 맥길버리",
+          "position": "PF",
+          "heightCm": 190,
+          "school": "시애틀퍼시픽 (Div.II)",
+          "round": 1,
+          "note": "이승준, 이동준 형제가 졸업했다."
+        },
+        {
+          "name": "토드 버나드",
+          "position": "C",
+          "heightCm": 193,
+          "school": "프레즈노 주립",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "수원 삼성",
+      "players": [
+        {
+          "name": "빈스 킹",
+          "position": "C",
+          "heightCm": 196,
+          "school": "인디애나대 펜실페니아 (Div.II)",
+          "round": 1
+        },
+        {
+          "name": "케빈 비어드",
+          "position": "SG",
+          "heightCm": 184,
+          "school": "그린스보로 컬리지 (Div.III)",
+          "round": 2
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "season": "1997-98",
+  "system": "드래프트(장·단신)",
+  "note": "문서 2.2. 장신 203.2cm 이하, 단신 190.5cm 이하(1997년과 같음). 문서 표를 글자로 옮긴 텍스트라 칸(1·2라운드)은 각 구단 표의 첫 줄 두 칸만 확정되어 round를 채웠고, 그 아래 줄(교체·대체 선수)은 칸을 알 수 없어 round를 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "busan-kcc",
+      "team": "대전 현대",
+      "players": [
+        {
+          "name": "제이 웹",
+          "position": "C",
+          "heightCm": 200.7,
+          "school": "아이오와",
+          "round": 1
+        },
+        {
+          "name": "조니 맥도웰",
+          "position": "PF",
+          "heightCm": 194,
+          "school": "텍사스알링턴",
+          "round": 2,
+          "marks": [
+            "mvp"
+          ]
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "경남 LG",
+      "players": [
+        {
+          "name": "로버트 보이킨스",
+          "position": "PF",
+          "heightCm": 193.7,
+          "school": "존슨스미스 (Div.II)",
+          "round": 1
+        },
+        {
+          "name": "버나드 블런트",
+          "position": "SG/SF",
+          "heightCm": 188,
+          "school": "세인트조셉",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "부산 기아",
+      "players": [
+        {
+          "name": "클리프 리드",
+          "position": "PF",
+          "heightCm": 190.4,
+          "school": "뉴멕시코 주립",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "저스틴 피닉스",
+          "position": "C/PF",
+          "heightCm": 194.9,
+          "school": "맨하탄 칼리지",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 나래",
+      "players": [
+        {
+          "name": "제이슨 윌리포드",
+          "position": "C/PF",
+          "heightCm": 194.4,
+          "school": "버지니아",
+          "round": 1,
+          "marks": [
+            "renewed"
+          ]
+        },
+        {
+          "name": "윌리엄 헤이즈",
+          "position": "SF",
+          "heightCm": 188,
+          "school": "UC버클리",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 동양",
+      "players": [
+        {
+          "name": "키넌 조던",
+          "position": "C",
+          "heightCm": 198,
+          "school": "보스턴 칼리지",
+          "round": 1
+        },
+        {
+          "name": "키이스 그레이",
+          "position": "PG",
+          "heightCm": 182.9,
+          "school": "웨스턴캐롤라이나",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 대우",
+      "players": [
+        {
+          "name": "빌리 맥카프리",
+          "round": 1,
+          "status": "계약 거부"
+        },
+        {
+          "name": "알렉스 스텀",
+          "position": "C",
+          "heightCm": 201.9,
+          "school": "먼머스",
+          "round": 2
+        },
+        {
+          "name": "케이투 데이비스",
+          "position": "PG",
+          "heightCm": 188,
+          "school": "조지아",
+          "note": "빌리 맥카프리의 계약 거부로 교체 계약한 선수. KBL의 사상 첫 외국인 선수 교체다. 당시 농구팬들에게는 K2 데이비스란 별명을 얻었다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "suwon-kt",
+      "team": "광주 나산",
+      "players": [
+        {
+          "name": "브라이언 브루소",
+          "position": "C",
+          "heightCm": 198.1,
+          "school": "샌디에고",
+          "round": 1
+        },
+        {
+          "name": "아도니스 조던",
+          "position": "PG",
+          "heightCm": 177.8,
+          "school": "캔자스",
+          "round": 2,
+          "note": "KBL을 떠난 뒤 밀워키 벅스와 계약해 직장폐쇄 후 뒤늦게 개막한 1998-99 시즌 개막 로스터에도 포함됐지만 3경기 만에 팀을 떠났다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 SBS",
+      "players": [
+        {
+          "name": "래리 데이비스",
+          "position": "SG",
+          "heightCm": 183.5,
+          "school": "사우스캐롤라이나",
+          "round": 1
+        },
+        {
+          "name": "찰스 메이컨",
+          "position": "C",
+          "heightCm": 195,
+          "school": "센트럴미시간",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "수원 삼성",
+      "players": [
+        {
+          "name": "존 스트릭랜드",
+          "position": "C",
+          "heightCm": 200,
+          "school": "하와이퍼시픽 (Div.II)",
+          "round": 1,
+          "marks": [
+            "draft1"
+          ]
+        },
+        {
+          "name": "숀 이스트윅",
+          "position": "SF",
+          "heightCm": 188.6,
+          "school": "페이스 (Div.II)",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "청주 SK",
+      "players": [
+        {
+          "name": "레지 타운젠드",
+          "position": "C",
+          "heightCm": 198,
+          "school": "세인트조셉",
+          "round": 1
+        },
+        {
+          "name": "드와이트 마이베트",
+          "position": "PG",
+          "heightCm": 180.3,
+          "school": "뉴올리언스",
+          "round": 2
+        }
+      ]
+    }
+  ]
+}

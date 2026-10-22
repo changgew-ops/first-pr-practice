@@ -1,0 +1,332 @@
+{
+  "season": "2010-11",
+  "system": "드래프트",
+  "note": "문서 4.4. round: 문서 표는 왼쪽 칸이 1라운드, 오른쪽 칸이 2라운드이고 선수가 줄 순서대로 평면 텍스트로 나와, 구단의 첫 두 선수(표 첫 줄)만 1·2라운드를 채웠다. 교체·트레이드로 들어온 이후 선수는 어느 칸인지 알 수 없어 생략했다.",
+  "teams": [
+    {
+      "franchiseId": "suwon-kt",
+      "team": "부산 KT",
+      "players": [
+        {
+          "name": "제스퍼 존슨",
+          "position": "PF",
+          "heightCm": 196.6,
+          "school": "델타 주립 (Div.II)",
+          "marks": [
+            "renewed"
+          ],
+          "note": "시즌내내 맹활약하며 부산 KT를 사상 최초로 정규리그 1위까지 올려놓았으나, 시즌 막판 종아리 부상으로 시즌아웃되면서, 부산 KT는 정작 플레이오프 4강에서 1승 3패로 물러나고 만다.",
+          "round": 1
+        },
+        {
+          "name": "찰스 로드",
+          "position": "C",
+          "heightCm": 200.1,
+          "school": "미시시피 주립",
+          "round": 2
+        },
+        {
+          "name": "앤서니 존슨",
+          "position": "PF",
+          "heightCm": 194.5,
+          "school": "LSU"
+        },
+        {
+          "name": "앤서니 존슨",
+          "position": "C",
+          "heightCm": 201,
+          "school": "페어필드",
+          "note": "동명이인 앤서니 존슨을 앤서니 존슨의 교체 용병으로 영입했다. http://www.hani.co.kr/arti/sports/sports_general/467467.html"
+        },
+        {
+          "name": "제임스 피터스",
+          "position": "PF",
+          "heightCm": 200.1,
+          "school": "UNLV",
+          "note": "두 번째 앤서니 존슨세 번째 존슨마저 부상당하면서, 플레이오프 4강전을 앞두고 긴급 영입되었다."
+        }
+      ]
+    },
+    {
+      "franchiseId": "daegu-kogas",
+      "team": "인천 전자랜드",
+      "players": [
+        {
+          "name": "허버트 힐",
+          "position": "C",
+          "heightCm": 203,
+          "school": "프로비던스 칼리지",
+          "marks": [
+            "mvp"
+          ],
+          "round": 1
+        },
+        {
+          "name": "아말 맥카스킬",
+          "position": "C",
+          "heightCm": 208.7,
+          "school": "마켓",
+          "marks": [
+            "nba"
+          ],
+          "round": 2
+        },
+        {
+          "name": "오티스 조지",
+          "position": "C",
+          "heightCm": 203.6,
+          "school": "루이빌",
+          "note": "대구 오리온스에서 뛰다 아말 맥카스킬과 1:1 트레이드로 영입."
+        }
+      ]
+    },
+    {
+      "franchiseId": "busan-kcc",
+      "team": "전주 KCC",
+      "players": [
+        {
+          "name": "크리스 다니엘스",
+          "position": "C",
+          "heightCm": 204.6,
+          "school": "텍사스 A&M",
+          "round": 1
+        },
+        {
+          "name": "에릭 도슨",
+          "position": "PF",
+          "heightCm": 200.7,
+          "school": "미드웨스턴 주립 (Div.II)",
+          "round": 2
+        },
+        {
+          "name": "실베스터 세이",
+          "position": "PF",
+          "heightCm": 205.7,
+          "school": "프레즈노 주립",
+          "marks": [
+            "temp"
+          ]
+        },
+        {
+          "name": "제러드 메릴",
+          "position": "PF",
+          "heightCm": 202.8,
+          "school": "오클라호마 크리스티안 (Div.II)",
+          "marks": [
+            "temp"
+          ],
+          "officialName": "제럴드 메릴"
+        }
+      ]
+    },
+    {
+      "franchiseId": "wonju-db",
+      "team": "원주 동부",
+      "players": [
+        {
+          "name": "로드 벤슨",
+          "position": "C",
+          "heightCm": 206.7,
+          "school": "UC버클리",
+          "round": 1
+        },
+        {
+          "name": "빅터 토마스",
+          "position": "PF",
+          "heightCm": 199.2,
+          "school": "라살레",
+          "round": 2
+        }
+      ]
+    },
+    {
+      "franchiseId": "changwon-lg",
+      "team": "창원 LG",
+      "players": [
+        {
+          "name": "크리스 알렉산더",
+          "position": "C",
+          "heightCm": 213,
+          "school": "아이오와 주립",
+          "marks": [
+            "renewed"
+          ],
+          "round": 1
+        },
+        {
+          "name": "로버트 커밍스",
+          "position": "C",
+          "heightCm": 202.1,
+          "school": "UCLA",
+          "note": "07-08 시즌 안양 KT&G에서 뛰었던 T.J.커밍스가 등록명만 바꾸었다.사람 헷갈리게;;",
+          "round": 2
+        },
+        {
+          "name": "자이 루이스",
+          "position": "PF",
+          "heightCm": 196.8,
+          "school": "조지 메이슨",
+          "marks": [
+            "temp"
+          ],
+          "note": "6강 플레이오프를 앞두고 부상당한 로버트 커밍스의 대체선수로 합류."
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-samsung",
+      "team": "서울 삼성",
+      "players": [
+        {
+          "name": "노엘 펠릭스",
+          "position": "C",
+          "heightCm": 201.7,
+          "school": "프레즈노 주립",
+          "note": "개막 후 2경기만 뛰고 퇴출.",
+          "round": 1
+        },
+        {
+          "name": "애런 헤인즈",
+          "position": "PF",
+          "heightCm": 199,
+          "school": "보이시 주립",
+          "round": 2
+        },
+        {
+          "name": "나이젤 딕슨",
+          "position": "C",
+          "heightCm": 201.7,
+          "school": "웨스트 켄터키"
+        }
+      ]
+    },
+    {
+      "franchiseId": "seoul-sk",
+      "team": "서울 SK",
+      "players": [
+        {
+          "name": "테렌스 레더",
+          "position": "C",
+          "heightCm": 200.3,
+          "school": "사우스 플로리다",
+          "round": 1
+        },
+        {
+          "name": "마이클 헤인즈",
+          "status": "시즌 개막 전 교체",
+          "round": 2
+        },
+        {
+          "name": "마퀸 챈들러",
+          "position": "PF",
+          "heightCm": 196.8,
+          "school": "산호세 주립"
+        },
+        {
+          "name": "자시 클라인허드",
+          "position": "C",
+          "heightCm": 198.3,
+          "school": "펜실베이니아"
+        }
+      ]
+    },
+    {
+      "franchiseId": "ulsan-hyundai-mobis",
+      "team": "울산 모비스",
+      "players": [
+        {
+          "name": "마이카 브랜드",
+          "position": "C",
+          "heightCm": 207.1,
+          "school": "매사추세츠",
+          "round": 1
+        },
+        {
+          "name": "로렌스 엑페리건",
+          "position": "PF",
+          "heightCm": 198.8,
+          "school": "르모인 칼리지 (Div.II)",
+          "round": 2
+        },
+        {
+          "name": "켄트렐 그렌스베리",
+          "position": "C",
+          "heightCm": 201,
+          "school": "사우스 플로리다"
+        }
+      ]
+    },
+    {
+      "franchiseId": "anyang-jungkwanjang",
+      "team": "안양 한국인삼공사",
+      "players": [
+        {
+          "name": "데이비드 사이먼",
+          "position": "C",
+          "heightCm": 203,
+          "school": "IU-PU 포트웨인",
+          "round": 1
+        },
+        {
+          "name": "게빈 에드워즈",
+          "position": "PF",
+          "heightCm": 204.5,
+          "school": "코네티컷",
+          "round": 2
+        },
+        {
+          "name": "앤서니 심슨",
+          "position": "PF",
+          "heightCm": 198.5,
+          "school": "켄트 주립"
+        },
+        {
+          "name": "제프 베럼",
+          "position": "PF",
+          "heightCm": 194.3,
+          "school": "워싱턴 주립"
+        }
+      ]
+    },
+    {
+      "franchiseId": "goyang-sono",
+      "team": "대구 오리온스",
+      "players": [
+        {
+          "name": "글렌 맥거원",
+          "position": "PF",
+          "heightCm": 201.2,
+          "school": "페퍼다인",
+          "marks": [
+            "draft1"
+          ],
+          "note": "재계약 선수를 제외한 실질적 전체 1순위",
+          "round": 1
+        },
+        {
+          "name": "오티스 조지",
+          "position": "C",
+          "heightCm": 203.6,
+          "school": "루이빌",
+          "round": 2
+        },
+        {
+          "name": "로렌스 힐",
+          "position": "C",
+          "heightCm": 199.7,
+          "school": "스탠퍼드"
+        },
+        {
+          "name": "아말 맥카스킬",
+          "position": "C",
+          "heightCm": 208.7,
+          "school": "마켓",
+          "marks": [
+            "nba"
+          ],
+          "note": "인천 전자랜드에서 뛰다 오티스 조지와 1:1 트레이드로 영입."
+        }
+      ]
+    }
+  ]
+}
