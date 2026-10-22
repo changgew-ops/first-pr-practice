@@ -69,6 +69,11 @@ if (existsSync(path('data/history/drafts.json'))) {
   }
 }
 
+// 선수 프로필(생년월일 등): 드래프트 기록보다 우선한다
+if (existsSync(path('data/players/profiles.json'))) {
+  for (const pr of JSON.parse(read('data/players/profiles.json'))) if (pr.birth) births.set(pr.name, pr.birth);
+}
+
 const pool0 = buildPool(merged, rules, { teamTotals, teamMap });
 const { map: registry, extra, notes: regNotes } = resolveRegistry(entries, pool0, team2526);
 const all = [...buildPool(merged, rules, { teamTotals, teamMap, registry, births }), ...statlessPlayers(extra, teamMap, { births })]

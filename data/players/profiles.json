@@ -1,0 +1,49 @@
+[
+  {
+    "name": "정인덕", "birth": "1994-07-12", "heightCm": 195, "school": "중앙대", "nationality": ["대한민국"], "position": ["포워드"],
+    "source": "KBL 선수 상세 화면(2026-10-22)",
+    "seasons": [
+      {"team": "changwon-lg", "season": "2016-17", "games": 3, "wins": 1, "losses": 2},
+      {"team": "changwon-lg", "season": "2017-18", "games": 9, "wins": 2, "losses": 7},
+      {"team": "changwon-lg", "season": "2021-22", "games": 6, "wins": 3, "losses": 3},
+      {"team": "changwon-lg", "season": "2022-23", "games": 38, "wins": 27, "losses": 11},
+      {"team": "changwon-lg", "season": "2023-24", "games": 47, "wins": 31, "losses": 16},
+      {"team": "changwon-lg", "season": "2024-25", "games": 54, "wins": 34, "losses": 20},
+      {"team": "changwon-lg", "season": "2025-26", "games": 54, "wins": 36, "losses": 18}
+    ]
+  },
+  {
+    "name": "대릴 먼로", "nameEn": "Darryl Monroe Jr.", "birth": "1986-01-30", "heightCm": 197, "weightKg": 104, "nationality": ["미국"], "position": ["센터", "파워 포워드"],
+    "school": "조지 메이슨 대학교", "kblEntry": "2018 외국인 자유계약(고양 오리온)", "source": "나무위키 인물 문서(2026-10-22)",
+    "career": [
+      {"team": "goyang-sono", "years": "2018~2019"},
+      {"team": "anyang-jungkwanjang", "years": "2021~2024"},
+      {"team": "changwon-lg", "years": "2024~2025"},
+      {"team": "seoul-sk", "years": "2025~2026"}
+    ]
+  },
+  {
+    "name": "라타비우스 윌리엄스", "nameEn": "Latavious Bernard Williams", "birth": "1989-03-29", "heightCm": 200, "weightKg": 109, "wingspanCm": 216, "nationality": ["미국"], "position": ["센터"],
+    "school": "크리스천 라이프 센터 아카데미", "draft": "2010 NBA 드래프트 2라운드 48순위(MIA)", "kblEntry": "2020 외국인 자유계약(안양 KGC인삼공사)", "source": "나무위키 인물 문서(2026-10-22)",
+    "career": [
+      {"team": "anyang-jungkwanjang", "years": "2020~2021"},
+      {"team": "busan-kcc", "years": "2021~2022"}
+    ]
+  },
+  {
+    "name": "오마리 스펠맨", "nameEn": "Omari Rasulala Spellman", "birth": "1997-07-21", "heightCm": 203, "weightKg": 111, "wingspanCm": 218, "nationality": ["미국", "레바논"], "position": ["파워 포워드", "센터"],
+    "school": "빌라노바 대학교", "draft": "2018 NBA 드래프트 1라운드 30순위(애틀랜타 호크스)", "kblEntry": "2021 외국인 자유 계약(안양 KGC)", "source": "나무위키 인물 문서(2026-10-22)",
+    "career": [
+      {"team": "anyang-jungkwanjang", "years": "2021~2023"},
+      {"team": "wonju-db", "years": "2025"}
+    ]
+  },
+  {
+    "name": "라숀 토마스", "nameEn": "Rashawn Shaquille Thomas", "birth": "1994-08-15", "heightCm": 198, "weightKg": 108, "nationality": ["미국"], "position": ["포워드"],
+    "school": "텍사스 A&M 대학교", "kblEntry": "2021 외국인 선수 자유계약(울산 현대모비스)", "source": "나무위키 인물 문서(2026-10-22)",
+    "career": [
+      {"team": "ulsan-hyundai-mobis", "years": "2021~2022"},
+      {"team": "anyang-jungkwanjang", "years": "2026"}
+    ]
+  }
+]
