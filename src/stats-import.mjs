@@ -19,7 +19,8 @@ const REQUIRED = ['games', 'minutes', 'points', 'rebounds', 'assists', 'steals',
 const EXTRA_ALIASES = {
   oreb: 'oreb', dreb: 'dreb', to: 'turnovers', pf: 'fouls', fbas: 'fastBreakAssists', gd: 'goodDefense',
   dk: 'dunks', dka: 'dunkAttempts', pp: 'paintMade', ppa: 'paintAttempts', '+/-': 'plusMinus', plusminus: 'plusMinus',
-  sast: 'screenAssists', dfl: 'deflections'
+  sast: 'screenAssists', dfl: 'deflections', dd2: 'doubleDoubles', td3: 'tripleDoubles',
+  w: 'teamWins', l: 'teamLosses' // 그 선수가 뛴 경기에서의 팀 승·패(팀 추정에 쓴다)
 };
 
 /** CSV 텍스트 → [{ name, totals }]. 필수 컬럼이 없으면 오류 */

@@ -5,6 +5,7 @@
 
 - 파일명: `busan-kcc.csv` 처럼 `data/teams.json`의 `id`
 - 컬럼: `name,position,age,number,origin` (`_template.csv` 참고)
+- `age`, `number`는 비워 둘 수 있다(생성기가 채운다).
 - `position`: PG / SG / SF / PF / C
 - `origin`: `domestic`(국내) 또는 `foreign`(외국)
 - 국내 12명, 외국 2명보다 적게 적으면 나머지는 가상 선수로 채워진다.

@@ -5,6 +5,8 @@
   "scripts": {
     "generate": "node tools/generate-players.mjs",
     "test": "node --test",
-    "build:history": "node tools/build-history.mjs"
+    "build:history": "node tools/build-history.mjs",
+    "build:real": "node tools/build-real-players.mjs",
+    "apply:real": "node tools/build-real-players.mjs --apply"
   }
 }

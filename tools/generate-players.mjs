@@ -21,6 +21,7 @@ const { rand, randInt, pick, uniqueName: makeName, makeStats, makePotential } = 
 const uniqueName = makeName;
 
 // ---------- CSV (실명 로스터) ----------
+const optionalNumber = (v) => (v === undefined || v === '' ? undefined : Number(v));
 function readRosterCsv(teamId) {
   const file = join(ROOT, 'data/rosters', `${teamId}.csv`);
   if (!existsSync(file)) return [];
@@ -32,8 +33,8 @@ function readRosterCsv(teamId) {
     return {
       name: row.name,
       position: row.position,
-      age: Number(row.age),
-      number: Number(row.number),
+      age: optionalNumber(row.age), // 빈 칸은 "모름"이라 생성기가 채운다 (Number('')은 0이라 쓰면 안 된다)
+      number: optionalNumber(row.number),
       origin: row.origin === 'foreign' ? 'foreign' : 'domestic'
     };
   });

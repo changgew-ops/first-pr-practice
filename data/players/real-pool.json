@@ -1,0 +1,7407 @@
+[
+  {
+    "name": "케빈 켐바오",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": "goyang-sono",
+    "candidateTeams": [
+      "goyang-sono"
+    ],
+    "games": 72,
+    "minutes": 2527,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 68,
+      "defense": 65,
+      "rebound": 67,
+      "athletic": 69,
+      "stamina": 87
+    },
+    "ovr": 71,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이정현(1)",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 67,
+    "minutes": 2287,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 73,
+      "passing": 74,
+      "defense": 66,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 82
+    },
+    "ovr": 71,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "숀 롱",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": "busan-kcc",
+    "candidateTeams": [
+      "busan-kcc"
+    ],
+    "games": 73,
+    "minutes": 2282,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 77,
+      "passing": 63,
+      "defense": 66,
+      "rebound": 84,
+      "athletic": 79,
+      "stamina": 77
+    },
+    "ovr": 76,
+    "cost": 10,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이선 알바노",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 63,
+    "minutes": 2176,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 84,
+      "defense": 73,
+      "rebound": 59,
+      "athletic": 69,
+      "stamina": 84
+    },
+    "ovr": 76,
+    "cost": 10,
+    "ratedFromSample": true
+  },
+  {
+    "name": "네이던 나이트",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": "goyang-sono",
+    "candidateTeams": [
+      "goyang-sono"
+    ],
+    "games": 65,
+    "minutes": 2015,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 64,
+      "defense": 73,
+      "rebound": 79,
+      "athletic": 79,
+      "stamina": 75
+    },
+    "ovr": 75,
+    "cost": 9,
+    "ratedFromSample": true
+  },
+  {
+    "name": "허웅",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": "busan-kcc",
+    "candidateTeams": [
+      "busan-kcc"
+    ],
+    "games": 62,
+    "minutes": 1961,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 76,
+      "passing": 67,
+      "defense": 49,
+      "rebound": 53,
+      "athletic": 56,
+      "stamina": 77
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "서명진",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": "ulsan-hyundai-mobis",
+    "candidateTeams": [
+      "ulsan-hyundai-mobis"
+    ],
+    "games": 61,
+    "minutes": 1953,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 74,
+      "passing": 72,
+      "defense": 52,
+      "rebound": 50,
+      "athletic": 54,
+      "stamina": 79
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "샘조세프 벨란겔",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 60,
+    "minutes": 1900,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 67,
+      "passing": 76,
+      "defense": 58,
+      "rebound": 51,
+      "athletic": 58,
+      "stamina": 78
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "자밀 워니",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 55,
+    "minutes": 1861,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 58,
+      "passing": 73,
+      "defense": 75,
+      "rebound": 77,
+      "athletic": 81,
+      "stamina": 81
+    },
+    "ovr": 76,
+    "cost": 10,
+    "ratedFromSample": true
+  },
+  {
+    "name": "헨리 엘런슨",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 62,
+    "minutes": 1850,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 72,
+      "passing": 65,
+      "defense": 64,
+      "rebound": 75,
+      "athletic": 78,
+      "stamina": 73
+    },
+    "ovr": 71,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "허훈",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 59,
+    "minutes": 1838,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 87,
+      "defense": 60,
+      "rebound": 55,
+      "athletic": 61,
+      "stamina": 76
+    },
+    "ovr": 71,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "아셈 마레이",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 61,
+    "minutes": 1821,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 79,
+      "defense": 81,
+      "rebound": 87,
+      "athletic": 84,
+      "stamina": 73
+    },
+    "ovr": 81,
+    "cost": 12,
+    "ratedFromSample": true
+  },
+  {
+    "name": "레이션 해먼즈",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 57,
+    "minutes": 1703,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 68,
+      "passing": 66,
+      "defense": 77,
+      "rebound": 74,
+      "athletic": 80,
+      "stamina": 74
+    },
+    "ovr": 75,
+    "cost": 9,
+    "ratedFromSample": true
+  },
+  {
+    "name": "양준석",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 58,
+    "minutes": 1677,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 82,
+      "defense": 50,
+      "rebound": 51,
+      "athletic": 52,
+      "stamina": 72
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "유기상",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 54,
+    "minutes": 1641,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 77,
+      "passing": 50,
+      "defense": 58,
+      "rebound": 45,
+      "athletic": 57,
+      "stamina": 74
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "정인덕",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "busan-kcc"
+    ],
+    "games": 64,
+    "minutes": 1623,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 72,
+      "passing": 50,
+      "defense": 52,
+      "rebound": 54,
+      "athletic": 51,
+      "stamina": 67
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "박무빈",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 55,
+    "minutes": 1619,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 81,
+      "defense": 54,
+      "rebound": 59,
+      "athletic": 56,
+      "stamina": 72
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "라건아",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 60,
+    "minutes": 1589,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 87,
+      "passing": 65,
+      "defense": 59,
+      "rebound": 80,
+      "athletic": 75,
+      "stamina": 69
+    },
+    "ovr": 72,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이승현",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 58,
+    "minutes": 1574,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 46,
+      "passing": 64,
+      "defense": 64,
+      "rebound": 68,
+      "athletic": 63,
+      "stamina": 70
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "저스틴 구탕",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 59,
+    "minutes": 1558,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 68,
+      "passing": 75,
+      "defense": 77,
+      "rebound": 63,
+      "athletic": 68,
+      "stamina": 68
+    },
+    "ovr": 70,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "칼 타마요",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 54,
+    "minutes": 1554,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 65,
+      "defense": 60,
+      "rebound": 67,
+      "athletic": 68,
+      "stamina": 71
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "신승민",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": "daegu-kogas",
+    "candidateTeams": [
+      "daegu-kogas"
+    ],
+    "games": 54,
+    "minutes": 1512,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 57,
+      "defense": 58,
+      "rebound": 63,
+      "athletic": 58,
+      "stamina": 71
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "케렘 칸터",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": "seoul-samsung",
+    "candidateTeams": [
+      "seoul-samsung"
+    ],
+    "games": 60,
+    "minutes": 1495,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 77,
+      "passing": 68,
+      "defense": 69,
+      "rebound": 82,
+      "athletic": 80,
+      "stamina": 66
+    },
+    "ovr": 75,
+    "cost": 9,
+    "ratedFromSample": true
+  },
+  {
+    "name": "정성우",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 59,
+    "minutes": 1488,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 72,
+      "defense": 61,
+      "rebound": 46,
+      "athletic": 51,
+      "stamina": 66
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "문정현",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 53,
+    "minutes": 1483,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 59,
+      "passing": 59,
+      "defense": 56,
+      "rebound": 69,
+      "athletic": 59,
+      "stamina": 71
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이관희",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": "seoul-samsung",
+    "candidateTeams": [
+      "seoul-samsung"
+    ],
+    "games": 60,
+    "minutes": 1451,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 68,
+      "defense": 64,
+      "rebound": 56,
+      "athletic": 62,
+      "stamina": 66
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "조니 오브라이언트",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 57,
+    "minutes": 1443,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 59,
+      "passing": 66,
+      "defense": 76,
+      "rebound": 73,
+      "athletic": 79,
+      "stamina": 67
+    },
+    "ovr": 72,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "송교창",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 46,
+    "minutes": 1425,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 67,
+      "defense": 50,
+      "rebound": 65,
+      "athletic": 60,
+      "stamina": 75
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "한승희",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 64,
+    "minutes": 1419,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 57,
+      "defense": 55,
+      "rebound": 64,
+      "athletic": 60,
+      "stamina": 63
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "변준형",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 50,
+    "minutes": 1396,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 77,
+      "defense": 58,
+      "rebound": 56,
+      "athletic": 60,
+      "stamina": 70
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "박지훈(1)",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 51,
+    "minutes": 1364,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 78,
+      "defense": 69,
+      "rebound": 62,
+      "athletic": 67,
+      "stamina": 69
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "한호빈",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 53,
+    "minutes": 1364,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 73,
+      "defense": 56,
+      "rebound": 54,
+      "athletic": 53,
+      "stamina": 68
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최승욱",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 57,
+    "minutes": 1358,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 57,
+      "defense": 62,
+      "rebound": 52,
+      "athletic": 54,
+      "stamina": 66
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "렌즈 아반도",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 60,
+    "minutes": 1339,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 58,
+      "defense": 82,
+      "rebound": 67,
+      "athletic": 75,
+      "stamina": 64
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김낙현",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 45,
+    "minutes": 1335,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 80,
+      "passing": 71,
+      "defense": 59,
+      "rebound": 49,
+      "athletic": 56,
+      "stamina": 72
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "안영준",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 40,
+    "minutes": 1311,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 62,
+      "defense": 74,
+      "rebound": 66,
+      "athletic": 72,
+      "stamina": 80
+    },
+    "ovr": 71,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "데릭 윌리엄스",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 54,
+    "minutes": 1262,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 71,
+      "passing": 62,
+      "defense": 79,
+      "rebound": 71,
+      "athletic": 82,
+      "stamina": 65
+    },
+    "ovr": 73,
+    "cost": 8,
+    "ratedFromSample": true
+  },
+  {
+    "name": "박인웅",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 54,
+    "minutes": 1217,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 61,
+      "passing": 47,
+      "defense": 53,
+      "rebound": 62,
+      "athletic": 55,
+      "stamina": 64
+    },
+    "ovr": 57,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "박준영",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 54,
+    "minutes": 1203,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 63,
+      "defense": 53,
+      "rebound": 64,
+      "athletic": 59,
+      "stamina": 64
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김준일",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 60,
+    "minutes": 1199,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 53,
+      "passing": 61,
+      "defense": 56,
+      "rebound": 69,
+      "athletic": 64,
+      "stamina": 62
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "강상재",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 39,
+    "minutes": 1185,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 60,
+      "defense": 63,
+      "rebound": 66,
+      "athletic": 62,
+      "stamina": 74
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "조한진",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 46,
+    "minutes": 1175,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 53,
+      "passing": 43,
+      "defense": 68,
+      "rebound": 60,
+      "athletic": 58,
+      "stamina": 67
+    },
+    "ovr": 58,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "강성욱",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 45,
+    "minutes": 1167,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 57,
+      "passing": 74,
+      "defense": 71,
+      "rebound": 57,
+      "athletic": 65,
+      "stamina": 68
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "박정웅",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 57,
+    "minutes": 1141,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 53,
+      "passing": 63,
+      "defense": 75,
+      "rebound": 56,
+      "athletic": 60,
+      "stamina": 62
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "장재석",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 68,
+    "minutes": 1137,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 61,
+      "defense": 71,
+      "rebound": 72,
+      "athletic": 71,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "윤기찬",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 57,
+    "minutes": 1130,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 54,
+      "defense": 53,
+      "rebound": 50,
+      "athletic": 52,
+      "stamina": 62
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "알빈 톨렌티노",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 55,
+    "minutes": 1117,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 77,
+      "passing": 55,
+      "defense": 61,
+      "rebound": 61,
+      "athletic": 66,
+      "stamina": 63
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김동현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 67,
+    "minutes": 1084,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 51,
+      "defense": 60,
+      "rebound": 52,
+      "athletic": 52,
+      "stamina": 60
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "정효근",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 42,
+    "minutes": 1083,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 58,
+      "passing": 64,
+      "defense": 69,
+      "rebound": 69,
+      "athletic": 71,
+      "stamina": 67
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "오재현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 46,
+    "minutes": 1059,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 57,
+      "passing": 66,
+      "defense": 58,
+      "rebound": 57,
+      "athletic": 59,
+      "stamina": 65
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이용우",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 58,
+    "minutes": 1039,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 56,
+      "defense": 56,
+      "rebound": 53,
+      "athletic": 53,
+      "stamina": 61
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김형빈",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 56,
+    "minutes": 1000,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 49,
+      "defense": 56,
+      "rebound": 63,
+      "athletic": 59,
+      "stamina": 61
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "임동섭",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 66,
+    "minutes": 992,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 58,
+      "defense": 64,
+      "rebound": 61,
+      "athletic": 65,
+      "stamina": 60
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이재도",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 54,
+    "minutes": 980,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 74,
+      "defense": 64,
+      "rebound": 57,
+      "athletic": 62,
+      "stamina": 63
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최준용",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 34,
+    "minutes": 951,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 65,
+      "defense": 64,
+      "rebound": 70,
+      "athletic": 71,
+      "stamina": 68
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이근휘",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": "seoul-samsung",
+    "candidateTeams": [
+      "seoul-samsung"
+    ],
+    "games": 60,
+    "minutes": 942,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 72,
+      "passing": 62,
+      "defense": 57,
+      "rebound": 48,
+      "athletic": 55,
+      "stamina": 60
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최진광",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 64,
+    "minutes": 920,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 69,
+      "defense": 60,
+      "rebound": 48,
+      "athletic": 51,
+      "stamina": 58
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "양홍석",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis"
+    ],
+    "games": 40,
+    "minutes": 910,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 54,
+      "passing": 62,
+      "defense": 53,
+      "rebound": 68,
+      "athletic": 63,
+      "stamina": 64
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "하윤기",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 34,
+    "minutes": 905,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 58,
+      "defense": 55,
+      "rebound": 63,
+      "athletic": 61,
+      "stamina": 68
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "정희재",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 62,
+    "minutes": 905,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 59,
+      "defense": 65,
+      "rebound": 60,
+      "athletic": 56,
+      "stamina": 59
+    },
+    "ovr": 58,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "앤드류 니콜슨",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 42,
+    "minutes": 889,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 74,
+      "passing": 53,
+      "defense": 64,
+      "rebound": 75,
+      "athletic": 75,
+      "stamina": 62
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "강지훈",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 51,
+    "minutes": 884,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 47,
+      "defense": 57,
+      "rebound": 62,
+      "athletic": 64,
+      "stamina": 62
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "브라이스 워싱턴",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "busan-kcc"
+    ],
+    "games": 58,
+    "minutes": 851,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 65,
+      "defense": 72,
+      "rebound": 74,
+      "athletic": 71,
+      "stamina": 58
+    },
+    "ovr": 69,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김영현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 57,
+    "minutes": 839,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 57,
+      "defense": 63,
+      "rebound": 55,
+      "athletic": 57,
+      "stamina": 60
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "문유현",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 36,
+    "minutes": 834,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 70,
+      "defense": 75,
+      "rebound": 59,
+      "athletic": 68,
+      "stamina": 65
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최부경",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 56,
+    "minutes": 831,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 59,
+      "passing": 56,
+      "defense": 57,
+      "rebound": 69,
+      "athletic": 58,
+      "stamina": 59
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "아이재아 힉스",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 47,
+    "minutes": 825,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 67,
+      "passing": 60,
+      "defense": 68,
+      "rebound": 71,
+      "athletic": 73,
+      "stamina": 61
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "에디 다니엘",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 35,
+    "minutes": 807,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 57,
+      "passing": 53,
+      "defense": 66,
+      "rebound": 61,
+      "athletic": 65,
+      "stamina": 65
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "정창영",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 52,
+    "minutes": 771,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 49,
+      "athletic": 56,
+      "stamina": 60
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김선형",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 30,
+    "minutes": 767,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 68,
+      "defense": 65,
+      "rebound": 53,
+      "athletic": 63,
+      "stamina": 66
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최형찬",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "busan-kcc"
+    ],
+    "games": 62,
+    "minutes": 761,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 59,
+      "defense": 63,
+      "rebound": 55,
+      "athletic": 60,
+      "stamina": 56
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이규태",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 44,
+    "minutes": 753,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 76,
+      "passing": 51,
+      "defense": 54,
+      "rebound": 55,
+      "athletic": 60,
+      "stamina": 61
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김보배",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 51,
+    "minutes": 749,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 60,
+      "defense": 65,
+      "rebound": 70,
+      "athletic": 67,
+      "stamina": 59
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "한희원",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 52,
+    "minutes": 746,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 71,
+      "passing": 56,
+      "defense": 67,
+      "rebound": 53,
+      "athletic": 62,
+      "stamina": 59
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이두원",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 47,
+    "minutes": 721,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 61,
+      "passing": 58,
+      "defense": 60,
+      "rebound": 71,
+      "athletic": 66,
+      "stamina": 60
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이정현(2)",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 57,
+    "minutes": 718,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 67,
+      "defense": 67,
+      "rebound": 54,
+      "athletic": 61,
+      "stamina": 57
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이원석",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 40,
+    "minutes": 717,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 49,
+      "defense": 69,
+      "rebound": 71,
+      "athletic": 70,
+      "stamina": 61
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최현민",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 50,
+    "minutes": 711,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 61,
+      "defense": 57,
+      "rebound": 59,
+      "athletic": 59,
+      "stamina": 59
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "함지훈",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 53,
+    "minutes": 684,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 67,
+      "defense": 65,
+      "rebound": 63,
+      "athletic": 65,
+      "stamina": 58
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "조엘 카굴랑안",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 30,
+    "minutes": 665,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 71,
+      "defense": 62,
+      "rebound": 52,
+      "athletic": 61,
+      "stamina": 64
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "양우혁",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 42,
+    "minutes": 663,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 67,
+      "defense": 49,
+      "rebound": 48,
+      "athletic": 55,
+      "stamina": 62
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "윤원상",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 48,
+    "minutes": 648,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 66,
+      "defense": 59,
+      "rebound": 52,
+      "athletic": 60,
+      "stamina": 59
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김진유",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 60,
+    "minutes": 616,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 58,
+      "defense": 73,
+      "rebound": 62,
+      "athletic": 64,
+      "stamina": 55
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "오세근",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 45,
+    "minutes": 606,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 54,
+      "defense": 61,
+      "rebound": 61,
+      "athletic": 63,
+      "stamina": 59
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "에삼 무스타파",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 54,
+    "minutes": 602,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 52,
+      "passing": 58,
+      "defense": 64,
+      "rebound": 77,
+      "athletic": 69,
+      "stamina": 55
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김국찬",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 43,
+    "minutes": 583,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 56,
+      "defense": 64,
+      "rebound": 59,
+      "athletic": 62,
+      "stamina": 60
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "허일영",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 51,
+    "minutes": 581,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 50,
+      "defense": 65,
+      "rebound": 59,
+      "athletic": 64,
+      "stamina": 58
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김경원",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 53,
+    "minutes": 575,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 56,
+      "defense": 66,
+      "rebound": 70,
+      "athletic": 67,
+      "stamina": 56
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김민규",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 37,
+    "minutes": 574,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 67,
+      "passing": 55,
+      "defense": 64,
+      "rebound": 59,
+      "athletic": 64,
+      "stamina": 62
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "드완 에르난데스",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": "busan-kcc",
+    "candidateTeams": [
+      "busan-kcc"
+    ],
+    "games": 61,
+    "minutes": 570,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 57,
+      "passing": 54,
+      "defense": 77,
+      "rebound": 75,
+      "athletic": 73,
+      "stamina": 52
+    },
+    "ovr": 69,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최원혁",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 42,
+    "minutes": 559,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 62,
+      "defense": 68,
+      "rebound": 61,
+      "athletic": 61,
+      "stamina": 59
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최성모",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 41,
+    "minutes": 556,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 66,
+      "defense": 57,
+      "rebound": 46,
+      "athletic": 55,
+      "stamina": 60
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "윌리엄 나바로",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 44,
+    "minutes": 550,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 59,
+      "defense": 68,
+      "rebound": 69,
+      "athletic": 69,
+      "stamina": 58
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "마이클 에릭",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 48,
+    "minutes": 546,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 58,
+      "passing": 55,
+      "defense": 65,
+      "rebound": 78,
+      "athletic": 69,
+      "stamina": 56
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "신동혁",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 38,
+    "minutes": 540,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 59,
+      "passing": 62,
+      "defense": 60,
+      "rebound": 54,
+      "athletic": 58,
+      "stamina": 60
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김종규",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 48,
+    "minutes": 538,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 52,
+      "defense": 59,
+      "rebound": 70,
+      "athletic": 64,
+      "stamina": 57
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "전현우",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 58,
+    "minutes": 534,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 50,
+      "defense": 54,
+      "rebound": 60,
+      "athletic": 58,
+      "stamina": 54
+    },
+    "ovr": 55,
+    "cost": 3,
+    "ratedFromSample": true
+  },
+  {
+    "name": "서민수",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 45,
+    "minutes": 525,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 57,
+      "defense": 61,
+      "rebound": 60,
+      "athletic": 61,
+      "stamina": 59
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이유진",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 33,
+    "minutes": 493,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 59,
+      "passing": 58,
+      "defense": 63,
+      "rebound": 61,
+      "athletic": 64,
+      "stamina": 62
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "대릴 먼로",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 52,
+    "minutes": 486,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 52,
+      "passing": 63,
+      "defense": 67,
+      "rebound": 76,
+      "athletic": 66,
+      "stamina": 54
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "정준원",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 43,
+    "minutes": 481,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 67,
+      "passing": 61,
+      "defense": 56,
+      "rebound": 52,
+      "athletic": 59,
+      "stamina": 58
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최성원",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 33,
+    "minutes": 481,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 75,
+      "passing": 63,
+      "defense": 57,
+      "rebound": 48,
+      "athletic": 57,
+      "stamina": 61
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "문성곤",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 44,
+    "minutes": 461,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 53,
+      "passing": 58,
+      "defense": 65,
+      "rebound": 61,
+      "athletic": 62,
+      "stamina": 57
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "닉 퍼킨스",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 20,
+    "minutes": 401,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 54,
+      "passing": 56,
+      "defense": 64,
+      "rebound": 76,
+      "athletic": 68,
+      "stamina": 61
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": true
+  },
+  {
+    "name": "존 이그부누",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 33,
+    "minutes": 390,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 56,
+      "defense": 70,
+      "rebound": 76,
+      "athletic": 69,
+      "stamina": 57
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": true
+  },
+  {
+    "name": "김건하",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 28,
+    "minutes": 387,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 75,
+      "defense": 56,
+      "rebound": 45,
+      "athletic": 57,
+      "stamina": 62
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "신주영",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 41,
+    "minutes": 384,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 60,
+      "defense": 56,
+      "rebound": 59,
+      "athletic": 59,
+      "stamina": 58
+    },
+    "ovr": 58,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "전성현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 41,
+    "minutes": 380,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 68,
+      "passing": 60,
+      "defense": 52,
+      "rebound": 46,
+      "athletic": 56,
+      "stamina": 57
+    },
+    "ovr": 59,
+    "cost": 4,
+    "ratedFromSample": true
+  },
+  {
+    "name": "정호영",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 46,
+    "minutes": 342,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 65,
+      "defense": 62,
+      "rebound": 51,
+      "athletic": 62,
+      "stamina": 57
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "한상혁",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc"
+    ],
+    "games": 48,
+    "minutes": 337,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 72,
+      "passing": 66,
+      "defense": 58,
+      "rebound": 53,
+      "athletic": 60,
+      "stamina": 56
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "최강민",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 30,
+    "minutes": 329,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 61,
+      "defense": 65,
+      "rebound": 52,
+      "athletic": 63,
+      "stamina": 60
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "이민서",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 29,
+    "minutes": 306,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 57,
+      "passing": 72,
+      "defense": 59,
+      "rebound": 47,
+      "athletic": 59,
+      "stamina": 61
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": true
+  },
+  {
+    "name": "제일린 존슨",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 35,
+    "minutes": 297,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 51,
+      "passing": 56,
+      "defense": 67,
+      "rebound": 76,
+      "athletic": 67,
+      "stamina": 55
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박승재",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 27,
+    "minutes": 294,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 65,
+      "defense": 58,
+      "rebound": 50,
+      "athletic": 59,
+      "stamina": 60
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이기디우스 모츠카비추스",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 30,
+    "minutes": 293,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 54,
+      "passing": 56,
+      "defense": 66,
+      "rebound": 79,
+      "athletic": 67,
+      "stamina": 57
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이호현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 38,
+    "minutes": 288,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 65,
+      "defense": 56,
+      "rebound": 48,
+      "athletic": 58,
+      "stamina": 58
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이대성",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 12,
+    "minutes": 285,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 62,
+      "defense": 63,
+      "rebound": 59,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "베니 보트라이트",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 21,
+    "minutes": 284,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 57,
+      "defense": 64,
+      "rebound": 75,
+      "athletic": 67,
+      "stamina": 59
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이도헌",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "goyang-sono",
+      "busan-kcc",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 45,
+    "minutes": 263,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 62,
+      "defense": 62,
+      "rebound": 52,
+      "athletic": 62,
+      "stamina": 58
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이윤기",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 26,
+    "minutes": 256,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 59,
+      "defense": 61,
+      "rebound": 50,
+      "athletic": 61,
+      "stamina": 60
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이우석",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 255,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 62,
+      "defense": 62,
+      "rebound": 59,
+      "athletic": 65,
+      "stamina": 69
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "조은후",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 45,
+    "minutes": 254,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 65,
+      "defense": 62,
+      "rebound": 51,
+      "athletic": 60,
+      "stamina": 58
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "장민국",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 34,
+    "minutes": 252,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 52,
+      "passing": 53,
+      "defense": 62,
+      "rebound": 70,
+      "athletic": 64,
+      "stamina": 57
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "패리스 배스",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 249,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 54,
+      "passing": 57,
+      "defense": 67,
+      "rebound": 75,
+      "athletic": 67,
+      "stamina": 66
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": false
+  },
+  {
+    "name": "양재혁",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 32,
+    "minutes": 244,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 61,
+      "passing": 59,
+      "defense": 63,
+      "rebound": 59,
+      "athletic": 63,
+      "stamina": 59
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김훈",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 42,
+    "minutes": 241,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 57,
+      "defense": 61,
+      "rebound": 58,
+      "athletic": 63,
+      "stamina": 58
+    },
+    "ovr": 60,
+    "cost": 4,
+    "ratedFromSample": false
+  },
+  {
+    "name": "존 무니",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 230,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 57,
+      "defense": 67,
+      "rebound": 77,
+      "athletic": 67,
+      "stamina": 64
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이근준",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 39,
+    "minutes": 229,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 61,
+      "passing": 57,
+      "defense": 66,
+      "rebound": 58,
+      "athletic": 65,
+      "stamina": 58
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "표승빈",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt"
+    ],
+    "games": 35,
+    "minutes": 224,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 62,
+      "defense": 62,
+      "rebound": 51,
+      "athletic": 63,
+      "stamina": 59
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "자니 오브라이언트",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 224,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 54,
+      "passing": 57,
+      "defense": 68,
+      "rebound": 75,
+      "athletic": 67,
+      "stamina": 63
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": false
+  },
+  {
+    "name": "안성우",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 27,
+    "minutes": 219,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 63,
+      "defense": 58,
+      "rebound": 50,
+      "athletic": 60,
+      "stamina": 60
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "최진수",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 23,
+    "minutes": 209,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 64,
+      "defense": 60,
+      "rebound": 50,
+      "athletic": 61,
+      "stamina": 60
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김태훈",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 23,
+    "minutes": 205,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 60,
+      "passing": 57,
+      "defense": 64,
+      "rebound": 59,
+      "athletic": 63,
+      "stamina": 60
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "게이지 프림",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 205,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 61,
+      "passing": 58,
+      "defense": 64,
+      "rebound": 71,
+      "athletic": 68,
+      "stamina": 64
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이대헌",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 18,
+    "minutes": 196,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 58,
+      "defense": 62,
+      "rebound": 59,
+      "athletic": 65,
+      "stamina": 62
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "케베 알루마",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 196,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 52,
+      "passing": 56,
+      "defense": 67,
+      "rebound": 76,
+      "athletic": 67,
+      "stamina": 62
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "루이스 킹",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 195,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 61,
+      "passing": 58,
+      "defense": 67,
+      "rebound": 70,
+      "athletic": 69,
+      "stamina": 63
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "스카티 제임스",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 193,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 56,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 66,
+      "stamina": 62
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박지원",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 30,
+    "minutes": 186,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 53,
+      "passing": 58,
+      "defense": 66,
+      "rebound": 70,
+      "athletic": 66,
+      "stamina": 58
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "미구엘 옥존",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 184,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 60,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 65
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "미구엘 안드레 옥존",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 9,
+    "minutes": 183,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 65,
+      "defense": 62,
+      "rebound": 49,
+      "athletic": 63,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "윤성원",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 16,
+    "minutes": 183,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 61,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 59,
+      "athletic": 64,
+      "stamina": 62
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "아치 굿윈",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 183,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 59,
+      "athletic": 67,
+      "stamina": 65
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "다리우스 베즐리",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 182,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 54,
+      "passing": 56,
+      "defense": 70,
+      "rebound": 77,
+      "athletic": 68,
+      "stamina": 61
+    },
+    "ovr": 68,
+    "cost": 7,
+    "ratedFromSample": false
+  },
+  {
+    "name": "우동현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 28,
+    "minutes": 180,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 65,
+      "defense": 63,
+      "rebound": 49,
+      "athletic": 61,
+      "stamina": 60
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "소준혁",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 25,
+    "minutes": 179,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 60
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "전준범",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 20,
+    "minutes": 179,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 67,
+      "passing": 62,
+      "defense": 61,
+      "rebound": 50,
+      "athletic": 61,
+      "stamina": 61
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박지훈(2)",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 22,
+    "minutes": 165,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 65,
+      "passing": 62,
+      "defense": 59,
+      "rebound": 51,
+      "athletic": 61,
+      "stamina": 61
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "트레이 포터",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 164,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 52,
+      "passing": 53,
+      "defense": 67,
+      "rebound": 77,
+      "athletic": 66,
+      "stamina": 61
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박지훈",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 8,
+    "minutes": 160,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 60,
+      "defense": 65,
+      "rebound": 59,
+      "athletic": 66,
+      "stamina": 64
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "에릭 로메로",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 14,
+    "minutes": 158,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 53,
+      "passing": 53,
+      "defense": 65,
+      "rebound": 76,
+      "athletic": 65,
+      "stamina": 59
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "홍경기",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 18,
+    "minutes": 154,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 67,
+      "passing": 64,
+      "defense": 59,
+      "rebound": 49,
+      "athletic": 61,
+      "stamina": 61
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이대균",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 25,
+    "minutes": 149,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 60,
+      "defense": 61,
+      "rebound": 59,
+      "athletic": 65,
+      "stamina": 60
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박정현",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas"
+    ],
+    "games": 31,
+    "minutes": 143,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 54,
+      "passing": 55,
+      "defense": 64,
+      "rebound": 70,
+      "athletic": 66,
+      "stamina": 59
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "크리스 맥컬러",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 6,
+    "minutes": 135,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 52,
+      "passing": 56,
+      "defense": 67,
+      "rebound": 76,
+      "athletic": 66,
+      "stamina": 60
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "존킴웰 피게로아",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 14,
+    "minutes": 130,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 55,
+      "passing": 57,
+      "defense": 63,
+      "rebound": 70,
+      "athletic": 65,
+      "stamina": 60
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "조나단 윌리엄스",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 7,
+    "minutes": 127,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 55,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 65,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "제리 아바디아노",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 122,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 61,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 64
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박민재",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 17,
+    "minutes": 120,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 66,
+      "passing": 61,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 61
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "배병준",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 13,
+    "minutes": 110,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 59,
+      "defense": 61,
+      "rebound": 58,
+      "athletic": 64,
+      "stamina": 62
+    },
+    "ovr": 61,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "데이본 리드",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 4,
+    "minutes": 109,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 61,
+      "defense": 65,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 65
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "최승욱(1)",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 107,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 68,
+      "passing": 64,
+      "defense": 59,
+      "rebound": 50,
+      "athletic": 61,
+      "stamina": 64
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "카이린 갤러웨이",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 9,
+    "minutes": 93,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 51,
+      "passing": 53,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 65,
+      "stamina": 59
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이주영",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 14,
+    "minutes": 87,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 71,
+      "passing": 64,
+      "defense": 61,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 62
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "망콕 마티앙",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 7,
+    "minutes": 84,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 51,
+      "passing": 54,
+      "defense": 68,
+      "rebound": 76,
+      "athletic": 65,
+      "stamina": 59
+    },
+    "ovr": 67,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "정성조",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 15,
+    "minutes": 75,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 61,
+      "defense": 65,
+      "rebound": 59,
+      "athletic": 66,
+      "stamina": 62
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "최승욱(2)",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 7,
+    "minutes": 63,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 62,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 63
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이승우",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 13,
+    "minutes": 63,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 60,
+      "defense": 63,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 62
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김명진",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 6,
+    "minutes": 60,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 59,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 63
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "임동언",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 10,
+    "minutes": 58,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 59,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 63
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이동엽",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 16,
+    "minutes": 53,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 63
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "문가온",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 5,
+    "minutes": 49,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 63,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 63
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박정환",
+    "position": "PG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 6,
+    "minutes": 47,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 62,
+      "passing": 73,
+      "defense": 60,
+      "rebound": 48,
+      "athletic": 64,
+      "stamina": 65
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "황영찬",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 7,
+    "minutes": 45,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 63
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "라숀 토마스",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "foreign",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 2,
+    "minutes": 45,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 51,
+      "passing": 55,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김세창",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 41,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박준은",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 6,
+    "minutes": 39,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 63,
+      "defense": 61,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 63
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김휴범",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 13,
+    "minutes": 39,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 69,
+      "passing": 64,
+      "defense": 61,
+      "rebound": 50,
+      "athletic": 63,
+      "stamina": 63
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "차바위",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 6,
+    "minutes": 36,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 63,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 65,
+      "stamina": 63
+    },
+    "ovr": 62,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박찬호",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 4,
+    "minutes": 31,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 63
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "송한준",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 30,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 64
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김태완",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 6,
+    "minutes": 27,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 63
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김준형",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 24,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 54,
+      "defense": 65,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박종하",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 12,
+    "minutes": 23,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 63
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이정현(신)",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 6,
+    "minutes": 22,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 60,
+      "defense": 63,
+      "rebound": 58,
+      "athletic": 65,
+      "stamina": 63
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박진철",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 6,
+    "minutes": 21,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 54,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김동준",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 10,
+    "minutes": 16,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "주현우",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 16,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 54,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "프레디",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 15,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 54,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "인승찬",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 3,
+    "minutes": 15,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "임정현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 5,
+    "minutes": 15,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박성재",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 6,
+    "minutes": 14,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이현석",
+    "position": "PF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 8,
+    "minutes": 14,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 56,
+      "passing": 56,
+      "defense": 64,
+      "rebound": 70,
+      "athletic": 66,
+      "stamina": 62
+    },
+    "ovr": 64,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "나성호",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 4,
+    "minutes": 13,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "강재민",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 12,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "최창진",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 5,
+    "minutes": 12,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김선우",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 3,
+    "minutes": 10,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김건우",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 4,
+    "minutes": 10,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 54,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "손준",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 9,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김준영",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 9,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "여준형",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 6,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 64
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김준환",
+    "position": "SF",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 6,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 64,
+      "passing": 60,
+      "defense": 64,
+      "rebound": 58,
+      "athletic": 66,
+      "stamina": 64
+    },
+    "ovr": 63,
+    "cost": 5,
+    "ratedFromSample": false
+  },
+  {
+    "name": "박봉진",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 2,
+    "minutes": 6,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 54,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김한솔",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 5,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "백승엽",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 4,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "신지원",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 3,
+    "minutes": 3,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이현호",
+    "position": "C",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 3,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 50,
+      "passing": 54,
+      "defense": 66,
+      "rebound": 76,
+      "athletic": 64,
+      "stamina": 60
+    },
+    "ovr": 66,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "서정현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 2,
+    "minutes": 3,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "강태현",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 2,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "고찬혁",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 3,
+    "minutes": 2,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "김윤성",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 2,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이윤수",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 2,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "조석호",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 2,
+    "minutes": 2,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "이찬영",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 1,
+    "minutes": 2,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "서동원",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 1,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "최승빈",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": [
+      "changwon-lg",
+      "anyang-jungkwanjang",
+      "wonju-db",
+      "seoul-sk",
+      "goyang-sono",
+      "busan-kcc",
+      "suwon-kt",
+      "ulsan-hyundai-mobis",
+      "daegu-kogas",
+      "seoul-samsung"
+    ],
+    "games": 1,
+    "minutes": 1,
+    "seasons": {
+      "2025-26": true,
+      "2026-27": false
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  },
+  {
+    "name": "송재환",
+    "position": "SG",
+    "positionGiven": false,
+    "origin": "domestic",
+    "age": null,
+    "number": null,
+    "teamId": null,
+    "candidateTeams": null,
+    "games": 1,
+    "minutes": 0,
+    "seasons": {
+      "2025-26": false,
+      "2026-27": true
+    },
+    "stats": {
+      "shooting": 70,
+      "passing": 64,
+      "defense": 62,
+      "rebound": 50,
+      "athletic": 64,
+      "stamina": 64
+    },
+    "ovr": 65,
+    "cost": 6,
+    "ratedFromSample": false
+  }
+]
