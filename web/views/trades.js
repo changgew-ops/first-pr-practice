@@ -72,7 +72,7 @@ export function render(ctx) {
     if (chk.idle) nodes.push(h('p', { class: 'note' }, '양쪽에서 같은 수의 선수를 골라 주세요.'));
     else {
       const pa = payrollAfter(s.players, t, rules);
-      nodes.push(h('p', { class: 'note' }, `거래 뒤 우리 국내 연봉 ${eok(pa.mine)} (캡 ${eok(pa.cap, 0)}${pa.overCap ? ', 초과' : ''}) · ${ctx.name(teamB)} ${eok(pa.theirs)}`));
+      if (t.giveA.length === t.giveB.length) nodes.push(h('p', { class: 'note' }, `거래 뒤 우리 국내 연봉 ${eok(pa.mine)} (캡 ${eok(pa.cap, 0)}${pa.overCap ? ', 초과' : ''}) · ${ctx.name(teamB)} ${eok(pa.theirs)}`));
       for (const e of chk.errors) nodes.push(h('p', { class: 'tr-error' }, e));
       if (!chk.errors.length) nodes.push(h('p', { class: 'note good' }, '규칙상 제안할 수 있습니다. 받아들일지는 상대 구단이 가치를 따져 정합니다.'));
     }
