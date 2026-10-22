@@ -80,6 +80,9 @@ export function summarizeSeason(game, data, season, finished, ledger) {
   for (const [id, t] of totals) if (names.has(id)) lines[id] = line(t);
   const leaders = [...totals.entries()].filter(([id, t]) => names.has(id) && t.games >= 20)
     .map(([id, t]) => ({ id, name: names.get(id).name, teamId: names.get(id).teamId, games: t.games, ppg: t.points / t.games, rpg: t.rebounds / t.games, apg: t.assists / t.games, spg: t.steals / t.games, bpg: t.blocks / t.games }));
+  // 저장 크기를 줄이려고 부문별 상위 10명(합집합)만 남긴다. 화면은 부문별 상위 7명만 보여 준다
+  const topLeaders = new Set(['ppg', 'rpg', 'apg', 'spg', 'bpg'].flatMap((k) => [...leaders].sort((a, b) => b[k] - a[k]).slice(0, 10).map((l) => l.id)));
+  const keptLeaders = leaders.filter((l) => topLeaders.has(l.id));
   // 경기 목록: 구단 일정은 하루 5경기라 순서로 경기일을 계산한다
   const myGames = [];
   result.games.forEach((g, i) => {
@@ -94,7 +97,7 @@ export function summarizeSeason(game, data, season, finished, ledger) {
     series: result.playoffs.series.map((x) => ({ round: x.round, higherId: x.higherId, lowerId: x.lowerId, winnerId: x.winnerId, wins: x.wins, games: x.games.map((g) => [g.homeId === x.higherId ? g.homePts : g.awayPts, g.homeId === x.higherId ? g.awayPts : g.homePts]) })),
     championId: result.championId,
     stage: Object.fromEntries(data.teams.map((t) => [t.id, stage(t.id)])),
-    leaders, lines, myGames,
+    leaders: keptLeaders, lines, myGames,
     ledger,
     playerNames: Object.fromEntries([...names].map(([id, p]) => [id, p.name]))
   };
@@ -161,4 +164,30 @@ export function careerLines(game, playerId) {
     const [g, min, pts, reb, ast, stl, blk] = e.lines[playerId];
     return { season: e.season, games: g, mpg: min / g, ppg: pts / g, rpg: reb / g, apg: ast / g, spg: stl / g, bpg: blk / g };
   });
+}
+
+/**
+ * 진행 중인 시즌을 이력(seasons.json)과 같은 모양으로 — 정규리그를 하루라도 치렀을 때만. 없으면 null.
+ * 리그 화면이 "2026-27 (진행 중)"을 보여 줄 때 쓴다.
+ */
+export function liveSeason(session) {
+  if (!session || session.stage === 'offseason') return null;
+  if (session.stage === 'regular' && session.day === 0) return null;
+  const st = session.standings();
+  const po = session.playoffs;
+  const names = new Map(session.players.map((p) => [p.id, p]));
+  const leaders = [...(session.run?.totals ?? new Map()).entries()].filter(([id, t]) => names.has(id) && t.games >= Math.min(20, session.day / 2))
+    .map(([id, t]) => ({ id, name: names.get(id).name, teamId: names.get(id).teamId, games: t.games, ppg: t.points / t.games, rpg: t.rebounds / t.games, apg: t.assists / t.games, spg: t.steals / t.games, bpg: t.blocks / t.games }));
+  const roundDefs = session.data.rules.playoffs.rounds;
+  const rounds = po ? roundDefs.map((def) => ({
+    name: def.name, bestOf: def.bestOf,
+    series: po.series.filter((x) => x.round === def.name).map((x) => ({ a: x.higherId, winsA: x.wins[x.higherId], b: x.lowerId, winsB: x.wins[x.lowerId], winner: x.winnerId }))
+  })).filter((r) => r.series.length) : null;
+  return {
+    season: seasonLabel(session.season), live: true, simulated: true,
+    teams: st.map((s) => ({ rank: s.rank, franchiseId: s.id, wins: s.wins, losses: s.losses, pointsFor: s.pointsFor, pointsAgainst: s.pointsAgainst })),
+    championId: po?.done ? po.result().championId : null,
+    playoffs: po && rounds?.length ? { seeds: Object.fromEntries([...po.seeds]), rounds, championId: po.done ? po.result().championId : null } : null,
+    leaders
+  };
 }

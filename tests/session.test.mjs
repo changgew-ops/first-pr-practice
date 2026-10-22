@@ -89,3 +89,36 @@ test('세션: 오프시즌 남은 결정을 자동 단장에게 맡길 수 있�
   s.autoOffseason();
   assert.equal(s.stage, 'regular'); assert.equal(s.game.log.length, 1);
 });
+
+test('세션: 시즌 중 트레이드 — AI 제안을 받아들이거나 직접 제안하면 로스터가 바뀌고, 저장·복원해도 같다', () => {
+  const s = Session.create(data, { managerId: MY, gmName: 'A', seed: 31 });
+  s.advance(6);
+  assert.equal(s.tradeOpen, true);
+  const offers = s.tradeOffers();
+  assert.deepEqual(s.tradeOffers().map((o) => o.id), offers.map((o) => o.id)); // 같은 날·같은 로스터면 같은 제안
+  let done = null;
+  for (const o of offers) {
+    const r = s.acceptOffer(o.trade);
+    if (r.ok) { done = o; break; }
+  }
+  if (!done) { // 제안이 없으면 직접 제안으로 확인
+    const mine = s.players.filter((p) => p.teamId === MY && p.origin === 'domestic');
+    const other = s.players.filter((p) => p.teamId === 'wonju-db' && p.origin === 'domestic');
+    for (const a of mine) for (const b of other) {
+      const r = s.proposeTrade({ teamA: MY, teamB: 'wonju-db', giveA: [a.id], giveB: [b.id] });
+      if (r.executed) { done = { trade: { giveA: [a.id], giveB: [b.id] } }; break; }
+    }
+  }
+  assert.ok(done, '성사된 트레이드가 있어야 한다');
+  const moved = [...done.trade.giveA, ...done.trade.giveB];
+  const before = new Map(Session.create(data, { managerId: MY, gmName: 'A', seed: 31 }).players.map((p) => [p.id, p.teamId]));
+  assert.ok(moved.some((id) => s.players.find((p) => p.id === id).teamId !== before.get(id)));
+  s.advance(10);
+  const back = restore(data, serialize(s));
+  assert.deepEqual(back.standings(), s.standings());
+  assert.deepEqual(back.players.map((p) => [p.id, p.teamId]), s.players.map((p) => [p.id, p.teamId]));
+  // 마감(36일차) 이후에는 닫힌다
+  while (s.day < 40) s.advance(1);
+  assert.equal(s.tradeOpen, false);
+  assert.equal(s.proposeTrade({ teamA: MY, teamB: 'wonju-db', giveA: [], giveB: [] }).executed, false);
+});

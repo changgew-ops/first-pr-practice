@@ -1,1 +1,28 @@
-/* lineup 화면 전용 스타일 (이 화면 담당이 채운다) */
+/* 라인업 편성 화면 */
+.lineup-view .lu-msg { font-size: .9rem; padding: 8px 12px; border-radius: 8px; background: var(--panel-2); border-left: 3px solid var(--good); }
+.lineup-view .lu-errors { border-left: 3px solid var(--bad); background: var(--panel-2); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: .9rem; }
+.lineup-view .lu-errors ul { margin: 6px 0 0; padding-left: 18px; }
+.lineup-view .lu-cmp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.lineup-view .lu-big { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.lineup-view .lu-pos { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
+.lineup-view .lu-poschip { font-size: .8rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.lineup-view .lu-poschip.has { background: color-mix(in srgb, var(--good) 18%, transparent); border-color: var(--good); }
+.lineup-view .lu-poschip.none { color: var(--muted); }
+.lineup-view .lu-actions { display: flex; flex-direction: column; gap: 10px; }
+.lineup-view .lu-state { display: flex; flex-wrap: wrap; gap: 6px; }
+.lineup-view .tag.warn { color: var(--warn); border-color: var(--warn); }
+.lineup-view .lu-table td, .lineup-view .lu-table th { padding: 7px 10px; }
+.lineup-view .lu-row.starter td { background: color-mix(in srgb, var(--team) 14%, transparent); }
+.lineup-view .lu-row.bench td { background: color-mix(in srgb, var(--muted) 10%, transparent); }
+.lineup-view .lu-segs { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.lineup-view .lu-seg { background: var(--panel-2); border: 0; border-right: 1px solid var(--line); padding: 5px 11px; font-size: .84rem; font-weight: 600; color: var(--muted); cursor: pointer; }
+.lineup-view .lu-seg:last-child { border-right: 0; }
+.lineup-view .lu-seg:hover:not([disabled]) { color: var(--text); }
+.lineup-view .lu-seg.on.starter { background: var(--team); color: var(--accent-ink); }
+.lineup-view .lu-seg.on.bench { background: var(--text); color: var(--bg); }
+.lineup-view .lu-seg.on.out { background: var(--line); color: var(--text); }
+.lineup-view .lu-seg[disabled] { cursor: not-allowed; opacity: .6; }
+@media (max-width: 560px) {
+  .lineup-view .lu-cmp-grid { grid-template-columns: 1fr; }
+  .lineup-view .lu-seg { padding: 7px 9px; }
+}

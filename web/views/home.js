@@ -9,6 +9,37 @@ export function recentRanks(hist, teamId, n = 16) {
   });
 }
 
+const PENDING = { trade: '트레이드 제안', resign: '재계약 협상', freeAgency: 'FA 영입', compensation: 'FA 보상 선택', draft: '신인 드래프트' };
+
+/** 지금 단계에서 할 일을 알려 주는 카드: 시즌 시작 전 / 정규리그 중 / 플레이오프 / 오프시즌 */
+function heroCard(ctx, season, lastSeason, lastRow) {
+  const s = ctx.session, my = s.managerId;
+  const mine = s.standings().find((r) => r.id === my);
+  const go = (path, label, primary = true) => h('button', { class: `btn ${primary ? 'primary big' : ''}`, onclick: () => ctx.go(path) }, label);
+  let title, text, actions;
+  if (s.stage === 'offseason') {
+    const p = s.pending;
+    title = `${season} 시즌 종료 · 오프시즌`;
+    text = p ? `지금 결정할 일: ${PENDING[p.kind] ?? p.kind}. 트레이드 → 재계약 → FA 5라운드 → 드래프트 순서로 진행됩니다.` : '오프시즌 정리 중입니다.';
+    actions = [go('offseason', '오프시즌 진행')];
+  } else if (s.stage === 'playoffs') {
+    const st = { alive: '우리 팀이 진출 중입니다', out: '우리 팀은 탈락했습니다', champion: '우리 팀이 우승했습니다', notQualified: '우리 팀은 플레이오프에 오르지 못했습니다' }[s.playoffStatus()];
+    title = `${season} 플레이오프`;
+    text = `${st}. 정규리그 ${mine.rank}위 (${mine.wins}승 ${mine.losses}패)`;
+    actions = [go('season', '플레이오프 진행')];
+  } else if (s.day === 0) {
+    title = `${season} 시즌 시작 전`;
+    text = `정규리그 ${ctx.data.rules.regularSeasonGames}경기 → 상위 6팀 플레이오프. 전 시즌: ${lastSeason.season} ${lastRow ? `${lastRow.rank}위 (${lastRow.wins}승 ${lastRow.losses}패)` : '-'}${lastSeason.championId === my ? ' · 우승' : ''}. 라인업과 훈련을 정하고 시작하세요.`;
+    actions = [go('season', `${season} 시즌 시작`), go('lineup', '라인업', false), go('training', '훈련', false)];
+  } else {
+    const next = s.nextGame();
+    title = `${season} 정규리그 ${s.day}/${s.totalDays}일차`;
+    text = `${mine.wins}승 ${mine.losses}패 · ${mine.rank}위${next ? ` · 다음 경기: ${next.home ? '홈' : '원정'} vs ${ctx.name(next.oppId)}` : ' · 정규리그가 끝났습니다'}`;
+    actions = [go('season', next ? '시즌 계속' : '플레이오프로'), go('lineup', '라인업', false), go('training', '훈련', false)];
+  }
+  return h('div', { class: 'card hero' }, h('div', { class: 'row between' }, h('div', h('h2', title), h('p', { class: 'muted', style: { margin: 0, maxWidth: '62ch' } }, text)), h('div', { class: 'row' }, actions)));
+}
+
 export function render(ctx) {
   const { game, data } = ctx;
   const my = game.managerId, team = ctx.team(my);
@@ -20,16 +51,14 @@ export function render(ctx) {
   const hist = fullHistory(game, data);
   const top = [...rosterOf(game, my)].sort((a, b) => b.ovr - a.ovr).slice(0, 5);
   const last = game.log.at(-1);
+  const gm = ctx.session.game.gm.name;
   const lastSeason = hist.seasons.at(-1);
   const lastRow = lastSeason.teams.find((t) => t.franchiseId === my);
 
   const capRatio = pay.domestic / pay.cap;
   const body = h('div', { class: 'stack' },
-    h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, '홈'), h('h1', team.name)))),
-    h('div', { class: 'card hero' },
-      h('div', { class: 'row between' },
-        h('div', h('h2', `${season} 시즌 시작 전`), h('p', { class: 'muted', style: { margin: 0 } }, `정규리그 ${data.rules.regularSeasonGames}경기 → 상위 6팀 플레이오프. 전 시즌: ${lastSeason.season} ${lastRow ? `${lastRow.rank}위 (${lastRow.wins}승 ${lastRow.losses}패)` : '-'}${lastSeason.championId === my ? ' · 우승' : ''}`)),
-        h('button', { class: 'btn primary big', onclick: () => ctx.go(ctx.session.stage === 'offseason' ? 'offseason' : 'season') }, ctx.session.stage === 'offseason' ? '오프시즌 진행' : ctx.session.day === 0 ? `${season} 시즌 시작` : '시즌 계속'))),
+    h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, `${gm} 단장`), h('h1', team.name)))),
+    heroCard(ctx, season, lastSeason, lastRow),
     h('div', { class: 'grid g4' },
       stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 전력 ${myPower.power.toFixed(1)}`),
       stat('국내 선수 연봉', eok(pay.domestic), `캡 ${eok(pay.cap, 0)}${pay.over ? ` · ${eok(pay.over)} 초과` : ` · 여유 ${eok(pay.cap - pay.domestic)}`}`),

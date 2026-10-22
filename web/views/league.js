@@ -1,5 +1,5 @@
 import { h, table, tabs, link, pct, stat } from '../lib/dom.js';
-import { fullHistory } from '../lib/game.js';
+import { fullHistory, liveSeason } from '../lib/game.js';
 
 export function seriesCard(ctx, s, my) {
   const win = (id) => s.winner === id;
@@ -17,10 +17,11 @@ export function render(ctx, [seasonParam, tabParam]) {
   const { game, data } = ctx;
   const my = game.managerId;
   const hist = fullHistory(game, data);
-  const seasons = [...hist.seasons].reverse();
+  const live = liveSeason(ctx.session);
+  const seasons = [...(live ? [live] : []), ...[...hist.seasons].reverse()];
   const season = seasons.find((s) => s.season === seasonParam) ?? seasons[0];
   const tab = ['standings', 'playoffs', 'leaders'].includes(tabParam) ? tabParam : 'standings';
-  const entry = game.log.find((e) => e.season === season.season);
+  const entry = game.log.find((e) => e.season === season.season) ?? (season.live ? { leaders: season.leaders } : null);
   const top = season.teams[0];
   const nav = (t) => ctx.go(`league/${season.season}/${t}`);
 
@@ -48,8 +49,8 @@ export function render(ctx, [seasonParam, tabParam]) {
   } else content = h('p', { class: 'muted' }, '이 시즌은 개인 기록이 없습니다.');
 
   const body = h('div', { class: 'stack' },
-    h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '리그'), h('h1', `${season.season} 시즌`), season.simulated && h('span', { class: 'tag hot' }, '게임에서 진행')),
-      h('select', { 'aria-label': '시즌 선택', onchange: (e) => ctx.go(`league/${e.target.value}/${tab}`) }, seasons.map((s) => h('option', { value: s.season, selected: s.season === season.season }, `${s.season}${s.simulated ? ' (게임)' : ''}`)))),
+    h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '리그'), h('h1', `${season.season} 시즌`), season.simulated && h('span', { class: 'tag hot' }, season.live ? '진행 중' : '게임에서 진행')),
+      h('select', { 'aria-label': '시즌 선택', onchange: (e) => ctx.go(`league/${e.target.value}/${tab}`) }, seasons.map((s) => h('option', { value: s.season, selected: s.season === season.season }, `${s.season}${s.live ? ' (진행 중)' : s.simulated ? ' (게임)' : ''}`)))),
     tabs([['standings', '순위'], ['playoffs', '플레이오프'], ['leaders', entry ? '개인 기록' : '수상']], tab, nav),
     content);
   return { title: `리그 ${season.season}`, body };

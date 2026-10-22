@@ -167,6 +167,31 @@ export class Session {
     this.emit();
   }
 
+  // ---------- 시즌 중 트레이드 ----------
+  /** 시즌 중 트레이드 창이 열려 있는지(정규리그 마감일 전) */
+  get tradeOpen() { return Boolean(this.run?.tradeOpen) && this.state.stage === 'regular'; }
+  get tradeDeadline() { return this.data.rules.transactions.trade.deadlineDay; }
+  /** AI 구단이 지금 보내는 제안들(같은 날·같은 로스터면 항상 같다) */
+  tradeOffers() {
+    if (!this.tradeOpen) return [];
+    const rng = mulberry32(hashString(`${this.state.seed}:${this.state.league.season}:offers:${this.state.day}:${this.state.actions.length}`));
+    return this.run.tradeOffers(rng);
+  }
+  /** 우리가 먼저 거는 트레이드({ teamA, teamB, giveA, giveB }): AI가 받아들이면 바로 실행된다. 반환 { executed, reason, verdict } */
+  proposeTrade(trade) {
+    this.#need('regular');
+    const r = this.run.proposeTrade(trade);
+    if (r.executed) { this.state.actions.push({ day: this.state.day, type: 'trade', trade }); this.emit(); }
+    return r;
+  }
+  /** AI의 제안(tradeOffers의 한 항목의 trade)을 받아들인다. 반환 { ok, errors } */
+  acceptOffer(trade) {
+    this.#need('regular');
+    const r = this.run.executeTrade(trade);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'trade', trade }); this.emit(); }
+    return r;
+  }
+
   // ---------- 오프시즌 ----------
   /** 결정을 하나 내린다(key는 pending.key). 다 끝나면 다음 시즌이 시작된다 */
   decide(key, value) {
@@ -234,6 +259,7 @@ export class Session {
         const a = g.actions[ai++];
         if (a.type === 'lineup') run.setLineup(a.starters ? { starters: a.starters, bench: a.bench } : null);
         else if (a.type === 'focus') run.setFocus(a.playerId, a.stat);
+        else if (a.type === 'trade') run.executeTrade(a.trade);
       }
     };
     due();

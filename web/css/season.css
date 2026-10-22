@@ -1,1 +1,59 @@
-/* season 화면 전용 스타일 (이 화면 담당이 채운다) */
+/* 시즌 화면(web/views/season.js). 색은 style.css의 토큰만 쓴다. */
+.sv .sv-next-stats { margin-top: 12px; }
+.sv .sv-actions .row { gap: 10px; }
+.sv .sv-cols { align-items: start; }
+.sv .sv-form .timeline .d { width: 24px; height: 24px; font-size: .72rem; }
+
+.sv .sv-seeds { display: flex; flex-wrap: wrap; gap: 6px; }
+.sv .chip { font-size: .85rem; padding: 3px 10px; border: 1px solid var(--line); background: var(--panel-2); border-radius: 99px; }
+.sv .chip.mine { border-color: var(--team); color: var(--text); font-weight: 700; }
+
+/* 경기 결과 */
+.sv .sv-games { display: flex; flex-direction: column; gap: 6px; }
+.sv .sv-game { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font: inherit; color: var(--text); cursor: pointer; }
+.sv .sv-game:hover { border-color: var(--muted); }
+.sv .sv-game.mine { border-color: var(--team); box-shadow: inset 3px 0 0 var(--team); }
+.sv .sv-game[aria-pressed="true"] { background: var(--panel); border-color: var(--text); }
+.sv .sv-team { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sv .sv-team.right { text-align: right; }
+.sv .sv-team.won, .sv .won { color: var(--text); font-weight: 700; }
+.sv .sv-score { font-variant-numeric: tabular-nums; text-align: center; white-space: nowrap; color: var(--muted); }
+.sv .sv-score b { color: var(--muted); font-weight: 400; }
+.sv .sv-score b.won { color: var(--text); font-weight: 800; }
+.sv small { color: var(--muted); font-weight: 400; }
+
+/* 박스스코어 */
+.sv .sv-box-wrap { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 14px; }
+.sv .sv-box-team h3 { margin: 0 0 6px; }
+.sv table.sv-box th, .sv table.sv-box td { padding: 5px 8px; font-size: .84rem; }
+.sv table.sv-box tr.total td { font-weight: 700; background: var(--panel-2); }
+
+/* 플레이오프 */
+.sv .sv-bracket { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: center; }
+.sv .sv-round h3 { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.sv .sv-round { display: flex; flex-direction: column; gap: 10px; }
+.sv .sv-series { border: 1px dashed var(--line); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.sv .sv-series.played { border-style: solid; background: var(--panel-2); }
+.sv .sv-series.mine { border-color: var(--team); box-shadow: 0 0 0 1px var(--team); }
+.sv .sv-side { display: grid; grid-template-columns: 1.4em minmax(0, 1fr) 1.6em; gap: 8px; align-items: center; padding: 8px 10px; }
+.sv .sv-side + .sv-side { border-top: 1px solid var(--line); }
+.sv .sv-side.lost { color: var(--muted); }
+.sv .sv-side.won { font-weight: 800; }
+.sv .sv-side.me .sv-name { color: var(--team); }
+.sv .sv-side i { color: var(--muted); font-style: normal; font-size: .85rem; }
+.sv .sv-seed { color: var(--muted); font-size: .78rem; text-align: center; }
+.sv .sv-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sv .sv-wins { text-align: right; font-variant-numeric: tabular-nums; }
+.sv .sv-champ { text-align: center; border-top: 4px solid var(--legend); }
+.sv .sv-champ.mine { border-top-color: var(--team); }
+.sv .sv-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sv .sv-detail { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.sv .sv-detail.mine { border-color: var(--team); }
+.sv table.sv-sg td { padding: 4px 8px; font-size: .84rem; border-bottom: 0; }
+.sv table.sv-sg tr.win td { background: color-mix(in srgb, var(--team) 14%, transparent); }
+
+@media (max-width: 860px) {
+  .sv .sv-bracket { grid-template-columns: 1fr; }
+  .sv .sv-game { grid-template-columns: 1fr; gap: 2px; text-align: center; }
+  .sv .sv-team.right { text-align: center; }
+}
