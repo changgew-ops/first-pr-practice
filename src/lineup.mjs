@@ -48,6 +48,16 @@ export function buildLineup(roster, rules, benchWeight = 0.45) {
     }
   }
   visit(0, [], 0);
-  if (!best) throw new Error('코스트 제한 안에서 만들 수 있는 라인업이 없습니다');
+  if (!best) {
+    // 코스트 제한을 지키는 편성이 없으면(고액 카드를 많이 모은 구단) 코스트가 가장 낮은 선수들로 편성한다. 제한 초과는 감수하고 경기는 계속한다.
+    if (roster.length < size) throw new Error('라인업을 만들 선수가 모자랍니다');
+    const cheap = [...roster].sort((a, b) => a.cost - b.cost || b.ovr - a.ovr || a.id.localeCompare(b.id)).slice(0, size).sort((a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id));
+    const starters = [], bench = [];
+    for (const p of cheap) {
+      const foreign = starters.filter((x) => x.origin === 'foreign').length;
+      if (starters.length < nStart && !(p.origin === 'foreign' && foreign >= rules.foreignPlayers.onCourt)) starters.push(p); else bench.push(p);
+    }
+    return { starters, bench, overCost: true };
+  }
   return { starters: best.chosen.slice(0, nStart), bench: best.chosen.slice(nStart) };
 }

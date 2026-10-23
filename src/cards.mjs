@@ -113,7 +113,7 @@ export function weightedSample(items, weightOf, n, rng, keyOf = null) {
   return out;
 }
 
-/** 능력치가 높은 카드일수록 드물게 나오도록 하는 가중치: OVR이 mid 이하면 1, 넘으면 scale마다 e배씩 줄어든다 */
+/** OVR 가중치: OVR이 mid 이하면 1, 넘으면 scale마다 e배씩 줄어든다(scale > 0: 높은 카드가 드물게). scale이 음수면 거꾸로 e배씩 늘어난다(높은 카드 우대) */
 export const ovrWeight = (ovr, { weightMid, weightScale }) => Math.exp(-Math.max(0, ovr - weightMid) / weightScale);
 
 /** 카드의 OVR(포지션 가중 평균) */

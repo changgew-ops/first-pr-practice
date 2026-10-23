@@ -119,7 +119,8 @@ export function attachOffseason(entry, report, fundsAfter) {
       renewed: report.renewed, expired: report.expired, refused: report.refused,
       signings: report.signings, compensations: report.compensations,
       trades: report.trades.filter((t) => t.executed !== false), tradeOffers: report.tradeOffers,
-      released: report.released, signed: report.signed, foreignReplaced: report.foreignReplaced, asiaReplaced: report.asiaReplaced
+      released: report.released, signed: report.signed, foreignReplaced: report.foreignReplaced, asiaReplaced: report.asiaReplaced,
+      waived: report.waived ?? [], extended: report.extended ?? [], extendRefused: report.extendRefused ?? [] // 방출(계약 해지)·연장 계약 결과
     }
   };
 }

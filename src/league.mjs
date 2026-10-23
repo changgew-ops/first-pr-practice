@@ -12,7 +12,8 @@ export function createLeague(players, rules, { history = null, teamData = null, 
   return {
     ...(history && teamData ? { legacy: seedLegacy(history.seasons ?? history, teamData) } : {}),
     season: Number(String(rules.season).slice(0, 4)),
-    players: startPlayers.map((p) => ({ ...p, stats: { ...p.stats }, contract: { ...p.contract } })),
+    // ovrWas·statsWas: OVR 변화 표시의 기준(시작 값). 오프시즌 성장·노화 때 노화 직전 값으로 다시 기록된다
+    players: startPlayers.map((p) => ({ ...p, stats: { ...p.stats }, contract: { ...p.contract }, ovrWas: p.ovr, statsWas: { ...p.stats } })),
     freeAgents: [],
     nextId: 1,
     usedNames: startPlayers.map((p) => p.name)

@@ -29,7 +29,7 @@ export function render(ctx, [tabParam]) {
           ...(led.attendance ? [
             h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '경기당 관중'), h('b', `${led.attendance.avg.toLocaleString('ko-KR')}명`), h('span', { class: 'note' }, `홈 ${led.attendance.homeGames}경기 합계 ${led.attendance.total.toLocaleString('ko-KR')}명${led.attendance.occupancy != null ? ` · 점유율 ${Math.round(led.attendance.occupancy * 100)}%` : ''}${led.attendance.sellouts ? ` · 매진 ${led.attendance.sellouts}경기` : ''}`)),
             h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '1인당 입장료'), h('b', `${led.attendance.yieldMan.toFixed(2)}만원`), h('span', { class: 'note' }, `물가 ×${(led.attendance.priceIndex ?? 1).toFixed(2)} 반영 · 게임용 추정`))] : []),
-          h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '총수입'), h('b', eok(led.revenue)), h('span', { class: 'note' }, `연봉 ${eok(led.payroll)}${led.penalty ? ` · 기금 ${eok(led.penalty)}` : ''}${led.program ? ` · 육성 ${eok(led.program)}` : ''}`)),
+          h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '총수입'), h('b', eok(led.revenue)), h('span', { class: 'note' }, `연봉 ${eok(led.payroll)}${led.penalty ? ` · 기금 ${eok(led.penalty)}` : ''}${led.program ? ` · 육성 ${eok(led.program)}` : ''}${led.severance ? ` · 방출 비용 ${eok(led.severance)}` : ''}`)),
           h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '순이익'), h('b', `${led.net >= 0 ? '+' : ''}${led.net.toFixed(1)}억`), h('span', { class: 'note' }, `시즌 뒤 자금 ${eok(e.fundsAfter[my])}`))),
         partsBar(led.parts),
         h('p', { class: 'note fin-foot' }, '2023-24 KBL 집계(관중·입장 수입)에 맞춘 추정 모델입니다. 중계권·스폰서·굿즈는 자료가 없어 지은 값이고, 객단가·중계권·스폰서·굿즈는 해마다 물가만큼 오릅니다.')) : null,
@@ -65,6 +65,11 @@ export function render(ctx, [tabParam]) {
         h('div', { class: 'card' }, h('h3', '신인 드래프트'), list(myDraft, '지명 없음', (x) => h('li', ovrChip({ ovr: x.ovr, rarity: x.ovr >= 66 ? 'rare' : 'common' }), h('span', { class: 'grow' }, `${x.name}`), h('span', { class: 'pos' }, x.position), h('span', { class: 'note' }, `${x.pick}순위 · POT ${x.potential}`)))),
         h('div', { class: 'card' }, h('h3', '은퇴'), list(myRet, '우리 팀 은퇴 없음', (x) => h('li', h('span', { class: 'grow' }, x.name), h('span', { class: 'note' }, `${x.age}세 · OVR ${x.ovr}`))), h('p', { class: 'note' }, `리그 전체 ${r.retired.length}명 은퇴`))),
       h('div', { class: 'card' }, h('h3', '트레이드'), list(r.trades, '성사된 트레이드 없음', (t) => h('li', h('span', { class: 'grow' }, h('b', ctx.name(t.with)), h('span', { class: 'note' }, ' 와 트레이드 · '), '받은 선수 ', (t.received ?? []).map(name).join(', '), h('span', { class: 'note' }, ' · '), '보낸 선수 ', (t.sent ?? []).map(name).join(', ')))), h('p', { class: 'note' }, `이번 오프시즌에 받은 제안 ${r.tradeOffers.length}건 (자동 단장이 판단)`)),
+      (r.waived?.length || r.extended?.length || r.extendRefused?.length) ? h('div', { class: 'card' }, h('h3', '방출·연장 계약'),
+        h('ul', { class: 'plain' },
+          ...(r.waived ?? []).map((x) => h('li', h('span', { class: 'grow' }, `${x.name} 방출`), h('span', { class: 'note' }, `남은 ${x.yearsLeft}년 × ${eok(x.salaryEok)} = 해지 비용 ${eok(x.severance)}`))),
+          ...(r.extended ?? []).map((x) => h('li', h('span', { class: 'grow' }, `${x.name} 연장 계약`), h('span', { class: 'note' }, `${eok(x.from.salaryEok)}·${x.from.yearsLeft}년 → ${eok(x.to.salaryEok)}·${x.to.yearsLeft}년`))),
+          ...(r.extendRefused ?? []).map((x) => h('li', h('span', { class: 'grow' }, `${x.name} 연장 제안 거절`), h('span', { class: 'note' }, x.reason))))) : null,
       (r.foreignReplaced.length || r.asiaReplaced.length) ? h('div', { class: 'card' }, h('h3', '외국인·아시아쿼터 교체'), h('p', { class: 'note' }, [...r.foreignReplaced, ...r.asiaReplaced].filter((x) => x.teamId === my).map((x) => x.name).join(', ') || '우리 팀 교체 없음')) : null);
   };
   const content = { summary: sum, games, offseason }[tab]();

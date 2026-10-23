@@ -1,9 +1,10 @@
 // 트레이드 단계: 성장·은퇴 결과 → 받은 제안(수락) → 내가 먼저 제안 → 제출.
-import { h, signed, link } from '../../lib/dom.js';
+import { h, signed, link, eok } from '../../lib/dom.js';
 import { validateTrade, proposeTrade } from '../../../src/trade.mjs';
 import { domesticOf } from '../../../src/valuation.mjs';
 import { offerHint, usedPlayerIds } from '../../lib/offseason-view.js';
 import { playerLine, salaryText, contractText, decide, fill } from './common.js';
+import { releaseCost } from '../../../src/contracts.mjs';
 
 const TONE = { good: ['우리에게 이득', 'good'], even: ['비슷한 거래', ''], bad: ['우리에게 손해', 'bad'] };
 
@@ -36,6 +37,7 @@ export function render(ctx, pending) {
   const my = ctx.session.managerId;
   const accepted = new Set();
   const proposals = [];
+  const release = new Set(); // 방출할 우리 국내 선수(계약 중도 해지: 남은 보수를 구단이 낸다)
   const builder = { teamId: null, mine: new Set(), theirs: new Set(), result: null };
   const root = h('div', { class: 'stack' });
 
@@ -84,6 +86,29 @@ export function render(ctx, pending) {
       }))) : null);
   }
 
+  /** 방출 구역: 체크한 선수는 이 단계 제출 때 FA 시장으로 나가고, 남은 계약 보수(연봉 × 남은 연수)가 구단 자금에서 빠진다 */
+  function releaseCard(used) {
+    const roster = domesticOf(league.players, my).sort((a, b) => b.ovr - a.ovr);
+    const funds = ctx.session.funds[my];
+    const cost = (p) => releaseCost(p, { phase: 'offseason' }).severance;
+    const total = roster.filter((p) => release.has(p.id)).reduce((s, p) => s + cost(p), 0);
+    const left = roster.length - release.size;
+    return h('div', { class: 'card ct-sec' },
+      h('h2', '방출 (계약 중도 해지)'),
+      h('p', { class: 'note' }, '계약이 남은 선수를 내보낼 수 있습니다. 규정(자유계약선수 관리 규정 제5조)에 따라 남은 계약 기간의 보수를 구단이 모두 지급하고, 선수는 FA 시장으로 나갑니다(원소속 보상 없음, 다른 구단이 영입할 수 있고 우리도 FA 단계에서 다시 영입할 수 있습니다). 외국인·아시아쿼터 선수는 교체 규정이 따로 있어 아직 방출할 수 없습니다. 계약이 이미 끝난 선수는 재계약 단계에서 정하면 됩니다.'),
+      h('div', roster.map((p) => {
+        const expiring = p.contract.yearsLeft <= 0, taken = used.has(p.id);
+        const c = cost(p);
+        return h('div', { class: `ct-row ${release.has(p.id) ? '' : 'off'}` },
+          h('label', { class: 'os-check', for: `rel-${p.id}` }, h('input', { type: 'checkbox', id: `rel-${p.id}`, checked: release.has(p.id), disabled: expiring || taken, 'aria-label': `${p.name} 방출`, onchange: (e) => { if (e.target.checked) release.add(p.id); else release.delete(p.id); draw(); } }), playerLine(p)),
+          h('span', { class: 'note' }, `${salaryText(p)} · ${contractText(p)}`),
+          h('span', { class: 'ct-cost' }, expiring ? '계약 만료 예정' : taken ? '트레이드에 포함됨' : `해지 비용 ${eok(c)}`));
+      })),
+      h('p', { class: release.size ? 'warn' : 'note' }, release.size
+        ? `방출 ${release.size}명 · 해지 비용 합계 ${eok(total)} → 구단 자금 ${eok(funds)} → ${eok(funds - total)}${funds - total < 0 ? ' (마이너스)' : ''}${left < rules.roster.domestic ? ` · 국내 선수 ${left}명(마지막 로스터 확정 단계에서 ${rules.roster.domestic}명까지 채웁니다)` : ''}`
+        : '방출할 선수를 체크하세요.'));
+  }
+
   function draw() {
     const used = usedPlayerIds(offers, accepted, proposals);
     fill(root, 
@@ -93,9 +118,10 @@ export function render(ctx, pending) {
         h('div', { class: 'stack' }, offers.map((o) => offerCard(o, used))),
       ),
       builderCard(used),
+      releaseCard(used),
       h('div', { class: 'os-submit' },
-        h('span', { class: 'note' }, `제안 ${accepted.size}건 수락 · 내가 건 제안 ${proposals.length}건`),
-        h('button', { class: 'btn primary big', type: 'button', onclick: () => decide(ctx, 'trade', { accept: [...accepted], proposals: proposals.map((t) => ({ teamA: t.teamA, teamB: t.teamB, giveA: t.giveA, giveB: t.giveB })) }) }, accepted.size || proposals.length ? '트레이드 확정하고 재계약으로' : '트레이드 없이 재계약으로')));
+        h('span', { class: 'note' }, `제안 ${accepted.size}건 수락 · 내가 건 제안 ${proposals.length}건${release.size ? ` · 방출 ${release.size}명` : ''}`),
+        h('button', { class: 'btn primary big', type: 'button', onclick: () => decide(ctx, 'trade', { accept: [...accepted], proposals: proposals.map((t) => ({ teamA: t.teamA, teamB: t.teamB, giveA: t.giveA, giveB: t.giveB })), ...(release.size ? { release: [...release] } : {}) }) }, accepted.size || proposals.length || release.size ? '확정하고 재계약으로' : '트레이드 없이 재계약으로')));
   }
   draw();
   return root;

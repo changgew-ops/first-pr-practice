@@ -59,7 +59,11 @@ export class Session {
     if (this.state.stage === 'offseason') return this.pending?.payload?.league?.players ?? this.state.seasonEnd.league.players;
     return this.run ? this.run.players : this.state.league.players;
   }
-  get funds() { return (this.state.stage === 'offseason' ? this.state.seasonEnd.league.funds : this.state.league.funds) ?? initialFunds(this.data.teams, this.data.rules); }
+  get funds() {
+    const base = (this.state.stage === 'offseason' ? this.state.seasonEnd.league.funds : this.state.league.funds) ?? initialFunds(this.data.teams, this.data.rules);
+    const pending = this.state.stage === 'regular' ? this.run?.pendingSeverance ?? 0 : 0; // 방출 해지 비용은 바로 자금에서 뺀 값으로 보여 준다
+    return pending ? { ...base, [this.state.managerId]: Math.round((base[this.state.managerId] - pending) * 100) / 100 } : base;
+  }
 
   /** 기존 선택자(web/lib/game.js)가 쓰는 모양: { …game, league: { …league, players, funds } } */
   get view() {
@@ -153,6 +157,7 @@ export class Session {
     const settled = settleYear(this.state.league, fin, this.data.teams, this.data.rules);
     const entry = summarizeSeason(this.state, this.data, this.state.league.season, fin, settled.ledger);
     if (fin.dev?.report.length) entry.devProgram = fin.dev.report; // 육성 프로그램 결과(뉴스·결산이 읽는다)
+    if (fin.contracts) entry.contracts = { released: fin.contracts.releaseLog, extended: fin.contracts.extendLog, severance: fin.contracts.severance }; // 방출·연장 기록
     this.state.seasonEnd = { league: settled.league, standings: fin.result.standings, entry };
     this.state.stage = 'offseason'; this.state.decisions = {};
     this.runOffseason();
@@ -181,6 +186,34 @@ export class Session {
     if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'program', playerId, program: program ?? null, stat }); this.emit(); }
     return r;
   }
+
+  // ---------- 계약 관리: 방출과 연장 계약 (정규리그 중. 플레이오프가 시작되면 닫힌다) ----------
+  /** 이 선수를 지금 방출할 수 있는지와 비용: { ok, reason, cost: { severance, earned, years, fraction, salaryEok } } */
+  releaseCheck(playerId) {
+    if (this.state.stage !== 'regular' || !this.run) return { ok: false, reason: this.state.stage === 'offseason' ? '오프시즌에는 첫 단계(트레이드 화면)의 방출 구역에서 방출합니다' : '지금은 방출할 수 없습니다', cost: null };
+    return this.run.releaseCheck(playerId);
+  }
+  /** 방출(계약 중도 해지). 규칙에 어긋나면 { ok: false, errors } */
+  releasePlayer(playerId) {
+    this.#need('regular');
+    const r = this.run.releasePlayer(playerId);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'release', playerId }); this.emit(); }
+    return r;
+  }
+  /** 연장 계약 미리 보기: offer = { salaryEok, years(총 기간) } → { ok, status, range, verdict, reason } */
+  extendCheck(playerId, offer) {
+    if (this.state.stage !== 'regular' || !this.run) return { ok: false, status: 'invalid', reason: this.state.stage === 'offseason' ? '오프시즌에는 재계약 단계의 "연장 계약" 구역에서 합니다' : '지금은 연장할 수 없습니다' };
+    return this.run.extendCheck(playerId, offer);
+  }
+  /** 연장 계약 제안. 수락되어야만 적용된다. 반환 { ok, errors, check } */
+  extendContract(playerId, offer) {
+    this.#need('regular');
+    const r = this.run.extendContract(playerId, offer);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'extend', playerId, salaryEok: offer.salaryEok, years: offer.years }); this.emit(); }
+    return r;
+  }
+  /** 이번 시즌 방출·연장 기록 */
+  get contractLog() { return this.run?.contractLog ?? { released: [], extended: [] }; }
 
   // ---------- 시즌 중 트레이드 ----------
   /** 시즌 중 트레이드 창이 열려 있는지(정규리그 마감일 전) */
@@ -276,6 +309,8 @@ export class Session {
         else if (a.type === 'focus') run.setFocus(a.playerId, a.stat);
         else if (a.type === 'trade') run.executeTrade(a.trade);
         else if (a.type === 'program') run.setProgram(a.playerId, a.program, a.stat);
+        else if (a.type === 'release') run.releasePlayer(a.playerId);
+        else if (a.type === 'extend') run.extendContract(a.playerId, { salaryEok: a.salaryEok, years: a.years });
       }
     };
     due();

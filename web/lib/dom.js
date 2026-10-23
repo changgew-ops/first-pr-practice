@@ -1,4 +1,6 @@
 // 아주 작은 DOM 도우미와 화면에서 같이 쓰는 표시 함수.
+import { ovrDelta, deltaText, deltaClass, DELTA_TITLE } from '../../src/ovr-delta.mjs';
+
 export function h(tag, attrs, ...children) {
   const el = document.createElement(tag);
   if (attrs && (typeof attrs !== 'object' || attrs instanceof Node || Array.isArray(attrs))) { children.unshift(attrs); attrs = null; }
@@ -39,7 +41,15 @@ export const signed = (v) => (v > 0 ? `+${v}` : `${v}`);
 
 /** OVR 칩: 희귀도 색 */
 export function ovrChip(p) {
-  return h('span', { class: `ovr r-${p.rarity}`, title: RARITY_LABEL[p.rarity] }, p.ovr);
+  const chip = h('span', { class: `ovr r-${p.rarity}`, title: RARITY_LABEL[p.rarity] }, p.ovr);
+  const d = ovrDelta(p);
+  if (!d) return chip;
+  return h('span', { class: 'ovr-wrap' }, chip, deltaBadge(d));
+}
+
+/** 숫자 뒤에 붙는 변화 표시 "(+3)" (오름 초록·내림 빨강) */
+export function deltaBadge(d) {
+  return d ? h('small', { class: `ovr-d ${deltaClass(d)}`, title: DELTA_TITLE, 'aria-label': `${DELTA_TITLE} ${d > 0 ? '+' : ''}${d}` }, deltaText(d)) : null;
 }
 
 export function link(href, text, cls) { return h('a', { href, class: cls }, text); }

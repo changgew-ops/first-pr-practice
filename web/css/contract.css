@@ -1,0 +1,27 @@
+/* 방출·연장 계약: 확인 창, 로스터·선수 상세의 버튼, 오프시즌 방출·연장 구역 */
+.ct-dialog { width: min(520px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--text); }
+.ct-dialog::backdrop { background: rgba(4, 8, 20, .62); }
+.ct-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.ct-head h2 { margin: 0; font-size: 1.15rem; overflow-wrap: anywhere; }
+.ct-close { padding: 4px 10px; }
+.ct-body { margin: 12px 0; }
+.ct-line { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--panel-2); line-height: 1.5; }
+.ct-line.good { color: var(--good); } .ct-line.bad { color: var(--bad); } .ct-line.warn { color: var(--warn); }
+.ct-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ct-grid > * { display: flex; flex-direction: column; gap: 2px; background: var(--panel-2); border-radius: 8px; padding: 8px 10px; }
+.ct-grid input, .ct-grid select { width: 100%; }
+.ct-foot { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.btn.danger { border-color: color-mix(in srgb, var(--bad) 60%, var(--line)); color: var(--bad); }
+.btn.danger:hover:not(:disabled), .btn.danger:focus-visible { background: var(--bad); color: #fff; border-color: var(--bad); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.ct-btns { display: inline-flex; gap: 6px; }
+.ct-btn { padding: 3px 10px; font-size: .85rem; white-space: nowrap; }
+.ct-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+/* 오프시즌: 방출 구역, 연장 구역 */
+.ct-sec .ct-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.ct-sec .ct-row:first-of-type { border-top: 0; }
+.ct-sec .ct-row.off { opacity: .8; }
+.ct-sec .ct-cost { font-variant-numeric: tabular-nums; text-align: right; min-width: 8em; }
+.ct-ext-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px 12px; align-items: end; margin-top: 6px; }
+.ct-ext-body label { display: flex; flex-direction: column; gap: 2px; }
+@media (max-width: 560px) { .ct-sec .ct-row { grid-template-columns: minmax(0, 1fr) auto; } .ct-sec .ct-cost { grid-column: 1 / -1; text-align: left; } .ct-grid { grid-template-columns: minmax(0, 1fr); } }

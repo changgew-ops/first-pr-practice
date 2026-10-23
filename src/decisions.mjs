@@ -2,8 +2,8 @@
 // 엔진(runOffseason)의 단장 콜백은 동기 함수라 사람의 입력을 기다릴 수 없다. 그래서 같은 시드로 오프시즌을 처음부터 다시 돌리며,
 // 지금까지 받은 결정(decisions)은 그대로 쓰고, 아직 받지 못한 결정 앞에서 멈춘다(NeedDecision). 결정이 늘 때마다 다시 돌려도 결과가 같다.
 // 결정 키: trade · resign · fa:<라운드> · comp:<n번째 보상 선택> · draft:<n번째 지명> · foreign:<n번째 외국인 영입>
-//   trade   { accept: [제안 id], proposals: [{ teamA, teamB, giveA, giveB }] }
-//   resign  { [선수 id]: { salaryEok, years } }   (없는 선수는 재계약하지 않는다)
+//   trade   { accept: [제안 id], proposals: [{ teamA, teamB, giveA, giveB }], release?: [방출할 선수 id] }
+//   resign  { [선수 id]: { salaryEok, years }, extend?: { [선수 id]: { salaryEok, years(총 기간) } } }   (없는 선수는 재계약하지 않는다. extend는 계약이 남은 선수의 연장 계약)
 //   fa:<r>  [{ playerId, salaryEok, years }]
 //   comp:<n> { type: 'cash' } | { type: 'player', playerId }
 //   draft:<n> 신인 id
@@ -28,6 +28,7 @@ export function createReplayPolicy(decisions = {}, fallback = null) {
   return {
     trade: (a) => need('trade', 'trade', a, () => ({ accept: fallback?.trade?.(a) ?? [], proposals: [] })).accept ?? [],
     proposals: () => decisions.trade?.proposals ?? [],
+    release: () => decisions.trade?.release ?? [],
     resign: (a) => need('resign', 'resign', a, () => fallback?.resign?.(a) ?? {}),
     freeAgency: (a) => need(`fa:${a.round}`, 'freeAgency', a, () => fallback?.freeAgency?.(a) ?? []),
     compensation: (a) => need(`comp:${counters.comp++}`, 'compensation', a, () => fallback?.compensation?.(a) ?? { type: 'cash' }),

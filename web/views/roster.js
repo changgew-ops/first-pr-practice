@@ -1,5 +1,6 @@
 import { h, table, ovrChip, eok, ORIGIN_LABEL, POS_ORDER, stat, bar, RARITY_LABEL } from '../lib/dom.js';
 import { rosterOf, payrollInfo, teamPower } from '../lib/game.js';
+import { contractButtons } from '../lib/contract-view.js';
 
 export function render(ctx, [teamParam]) {
   const { game, data } = ctx;
@@ -24,7 +25,8 @@ export function render(ctx, [teamParam]) {
       { key: 'sal', label: '연봉', get: (p) => (p.contract.salaryUsd ? p.contract.salaryUsd / 1e5 : p.contract.salaryEok), render: (p) => (p.origin === 'foreign' ? `$${(p.contract.salaryUsd / 1000).toFixed(0)}k` : eok(p.contract.salaryEok)), align: 'r' },
       { key: 'yrs', label: '계약', get: (p) => p.contract.yearsLeft, render: (p) => (p.contract.yearsLeft <= 0 ? h('span', { class: 'warn' }, '만료') : `${p.contract.yearsLeft}년`), align: 'r' },
       { key: 'origin', label: '구분', get: (p) => p.origin, sort: 'str', render: (p) => ORIGIN_LABEL[p.origin] },
-      { key: 'role', label: '편성', get: (p) => (starters.has(p.id) ? 2 : bench.has(p.id) ? 1 : 0), render: (p) => (starters.has(p.id) ? h('span', { class: 'tag hot' }, '스타팅') : bench.has(p.id) ? h('span', { class: 'tag' }, '벤치') : '') }
+      { key: 'role', label: '편성', get: (p) => (starters.has(p.id) ? 2 : bench.has(p.id) ? 1 : 0), render: (p) => (starters.has(p.id) ? h('span', { class: 'tag hot' }, '스타팅') : bench.has(p.id) ? h('span', { class: 'tag' }, '벤치') : '') },
+      ...(mine ? [{ key: 'act', label: '계약', get: () => 0, sort: false, render: (p) => contractButtons(ctx, p) }] : [])
     ], { sort: { key: 'ovr', dir: -1 }, onRow: (p) => ctx.go(`player/${p.id}`), empty: '조건에 맞는 선수가 없습니다' }));
   };
   const chip = (key, val, label) => h('button', { class: `btn ${f[key] === val ? 'primary' : ''}`, onclick: (e) => { f[key] = val; e.target.parentElement.querySelectorAll('button').forEach((b) => b.classList.remove('primary')); e.target.classList.add('primary'); draw(); } }, label);

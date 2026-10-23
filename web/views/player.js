@@ -1,7 +1,9 @@
-import { h, radar, STAT_KEYS, STAT_LABELS, bar, ORIGIN_LABEL, RARITY_LABEL, eok, link, table, stat, tabs } from '../lib/dom.js';
+import { h, radar, STAT_KEYS, STAT_LABELS, bar, ORIGIN_LABEL, RARITY_LABEL, eok, link, table, stat, tabs, deltaBadge } from '../lib/dom.js';
+import { ovrDelta, statDelta } from '../../src/ovr-delta.mjs';
 import { playerById, gameRecordRows } from '../lib/game.js';
 import { careerRows, TYPE_LABEL } from '../../src/career.mjs';
 import { sumRows } from '../../src/player-record.mjs';
+import { contractButtons, contractBlock } from '../lib/contract-view.js';
 
 export function render(ctx, [id]) {
   const { game } = ctx;
@@ -15,14 +17,14 @@ export function render(ctx, [id]) {
     h('div', { class: 'grid g2' },
       h('div', { class: `pcard r-${p.rarity}` },
         h('div', { class: 'num' }, p.number),
-        h('div', { class: 'row' }, h('div', { class: 'big-ovr' }, p.ovr), h('div', h('div', { class: 'note' }, RARITY_LABEL[p.rarity]), h('div', { class: 'note' }, `코스트 ${p.cost}`))),
+        h('div', { class: 'row' }, h('div', { class: 'big-ovr' }, p.ovr, ovrDelta(p) ? h('span', { class: `big-ovr-d ${ovrDelta(p) > 0 ? 'up' : 'down'}`, title: '지난 시즌 종료 시점 대비' }, ` (${ovrDelta(p) > 0 ? '+' : '-'}${Math.abs(ovrDelta(p))})`) : null), h('div', h('div', { class: 'note' }, RARITY_LABEL[p.rarity]), h('div', { class: 'note' }, `코스트 ${p.cost}`))),
         h('h1', { style: { margin: '10px 0 2px' } }, p.name),
         h('div', { class: 'row' }, h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세 · ${ORIGIN_LABEL[p.origin]}${p.nationality ? ` · ${p.nationality}` : ''}`), h('span', { class: 'tag' }, p.real ? '실제 선수' : '가상 선수')),
         h('div', { style: { marginTop: '14px' } }, radar(p.stats))),
       h('div', { class: 'stack' },
-        h('div', { class: 'card' }, h('h3', '능력치'), h('div', { class: 'stack', style: { '--gap': '6px' } }, STAT_KEYS.map((k) => h('div', { class: 'statline' }, h('span', STAT_LABELS[k]), bar(p.stats[k], 100), h('b', { class: 'r' }, p.stats[k])))),
+        h('div', { class: 'card' }, h('h3', '능력치'), h('div', { class: 'stack', style: { '--gap': '6px' } }, STAT_KEYS.map((k) => h('div', { class: 'statline' }, h('span', STAT_LABELS[k]), bar(p.stats[k], 100), h('b', { class: 'r' }, p.stats[k], deltaBadge(statDelta(p, k)))))),
           h('p', { class: 'note' }, `성장 한도(POT) ${p.potential}${p.age >= 27 ? ' · 27세 이상은 더 오르지 않습니다' : p.potential > p.ovr ? ` · 잠재력 +${p.potential - p.ovr}` : ''}`)),
-        h('div', { class: 'card' }, h('h3', '계약'), h('div', { class: 'grid g3' }, stat('연봉', salary), stat('남은 계약', p.contract.yearsLeft <= 0 ? '만료' : `${p.contract.yearsLeft}년`), stat('소속', ctx.name(p.teamId))))),
+        h('div', { class: 'card' }, h('h3', '계약'), h('div', { class: 'grid g3' }, stat('연봉', salary), stat('남은 계약', p.contract.yearsLeft <= 0 ? '만료' : `${p.contract.yearsLeft}년`), stat('소속', ctx.name(p.teamId))), p.teamId === game.managerId ? h('div', { class: 'ct-actions' }, contractButtons(ctx, p), contractBlock(ctx.session, p) ? h('span', { class: 'note' }, contractBlock(ctx.session, p)) : h('span', { class: 'note' }, '계약이 남아 있어도 연장 협상을 할 수 있고, 방출하면 남은 보수를 냅니다')) : null)),
     ),
     (official || prof) && h('div', { class: 'card' }, h('h3', '실제 프로필'), h('div', { class: 'grid g4' },
       stat('생년월일', official?.birth ?? prof?.birth), stat('신체', `${official?.heightCm ?? prof?.heightCm}cm${(official?.weightKg ?? prof?.weightKg) ? ` · ${official?.weightKg ?? prof?.weightKg}kg` : ''}`),

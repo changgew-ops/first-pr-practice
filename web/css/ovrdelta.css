@@ -1,0 +1,12 @@
+/* OVR 변화 표시: 숫자 뒤 "(+3)" */
+.ovr-wrap { display: inline-flex; align-items: baseline; gap: 3px; white-space: nowrap; }
+.ovr-d { font-size: .72em; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ovr-d.up { color: #12805a; }
+.ovr-d.down { color: #c22c3d; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ovr-d.up { color: #3ecf8e; } :root:not([data-theme="light"]) .ovr-d.down { color: #ff6b78; } }
+:root[data-theme="dark"] .ovr-d.up { color: #3ecf8e; }
+:root[data-theme="dark"] .ovr-d.down { color: #ff6b78; }
+.tr-player .ovr-wrap { grid-area: ovr; }
+.statline .ovr-d { margin-left: 4px; }
+.big-ovr-d { font-size: .4em; margin-left: 6px; font-weight: 700; }
+.big-ovr-d.up { color: #12805a; } .big-ovr-d.down { color: #c22c3d; }

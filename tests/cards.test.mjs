@@ -71,12 +71,15 @@ test('카드 → 선수: 서장훈 카드는 시즌마다 다른 카드이고 �
 
 test('가중 추출: 같은 시드면 같은 결과, 중복 없음, OVR이 높을수록 드물다', () => {
   const items = cards.domestic.filter((c) => c.min >= 600);
-  const w = (c) => ovrWeight(cardOvr(c), rules.cards);
+  const cfg = { weightMid: 64, weightScale: 7 }; // scale > 0: OVR이 높을수록 드물게
+  const w = (c) => ovrWeight(cardOvr(c), cfg);
   const a = weightedSample(items, w, 30, mulberry32(3)).map((c) => `${c.kblId}:${c.season}`);
   const b = weightedSample(items, w, 30, mulberry32(3)).map((c) => `${c.kblId}:${c.season}`);
   assert.deepEqual(a, b);
   assert.equal(new Set(a).size, 30);
-  assert.ok(ovrWeight(60, rules.cards) === 1 && ovrWeight(80, rules.cards) < ovrWeight(70, rules.cards));
+  assert.ok(ovrWeight(60, cfg) === 1 && ovrWeight(80, cfg) < ovrWeight(70, cfg));
+  const star = { weightMid: 62, weightScale: -8 }; // scale < 0: OVR이 높을수록 더 자주
+  assert.ok(ovrWeight(60, star) === 1 && ovrWeight(80, star) > ovrWeight(70, star) && ovrWeight(70, star) > 1);
   const mean = (list) => list.reduce((s, c) => s + cardOvr(c), 0) / list.length;
   let sampled = 0, n = 0;
   for (let seed = 1; seed <= 40; seed++) for (const c of weightedSample(items, w, 10, mulberry32(seed))) { sampled += cardOvr(c); n++; }

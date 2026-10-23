@@ -15,6 +15,7 @@ import { offerScore, capAllows, preferredYears, runFreeAgency } from './freeagen
 import { generateOffers, validateTrade, executeTrade, proposeTrade } from './trade.mjs';
 import { initialFunds } from './funds.mjs';
 import { prestigeTable } from './legacy.mjs';
+import { releaseCost, extensionCheck, extendedPlayer } from './contracts.mjs';
 import { cardPlayer, cardOvr, weightedSample, ovrWeight, foreignPriceUsd } from './cards.mjs';
 import { mulberry32 } from './rng.mjs';
 
@@ -79,6 +80,7 @@ export function progressPlayer(p, rules, rng) {
   }
   const next = withRatings({ ...p, age }, stats);
   delete next.xp; // 남은 훈련 경험치는 한 해가 지나면 사라진다
+  next.ovrWas = p.ovr; next.statsWas = { ...p.stats }; // 변화 표시의 기준: 노화 직전(지난 시즌 종료 시점) 값
   return next;
 }
 
@@ -93,7 +95,8 @@ const round1 = (v) => Math.round(v * 10) / 10;
  * options.manager: 단장이 맡은 구단 id, options.policy: 단장의 의사결정 콜백 (아래 참고)
  *   policy.trade({ offers, league, ctx })                 → 수락할 제안 id 배열
  *   policy.proposals({ league, ctx })                     → 단장이 먼저 거는 트레이드 배열
- *   policy.resign({ expiring, league, ctx })              → { [선수id]: { salaryEok, years } | null(재계약 안 함) }
+ *   policy.release({ league, ctx })                       → 방출할 우리 국내 선수 id 배열(트레이드 처리 뒤·재계약 전, 남은 보수는 구단 자금에서 낸다)
+ *   policy.resign({ expiring, league, ctx })              → { [선수id]: { salaryEok, years } | null(재계약 안 함), extend?: { [선수id]: { salaryEok, years(총 기간) } } (계약이 남은 선수의 연장 계약) }
  *   policy.freeAgency({ round, pool, state, demandNow })  → [{ playerId, salaryEok, years }]
  *   policy.compensation({ player, options, state })       → { type: 'cash' } | { type: 'player', playerId }
  *   policy.draft({ available, team, round, pickInRound, overall, lottery, roster, state, faResults }) → 지명할 신인 id, 또는 'pass'(지명 포기)
@@ -120,7 +123,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   let funds = league.funds ?? initialFunds(teamData, rules);
   const report = {
     season: league.season, retired: [], progressed: [], renewed: [], expired: [], refused: [], drafted: [], released: [],
-    signed: [], foreignReplaced: [], asiaReplaced: [], trades: [], tradeOffers: [], signings: [], compensations: []
+    signed: [], foreignReplaced: [], asiaReplaced: [], trades: [], tradeOffers: [], signings: [], compensations: [], waived: [], extended: [], extendRefused: []
   };
   const avg = (list, fn) => (list.length ? list.reduce((s, p) => s + fn(p), 0) / list.length : 0);
   report.before = { avgOvr: avg(league.players, (p) => p.ovr), avgAge: avg(league.players, (p) => p.age) };
@@ -166,6 +169,17 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       report.trades.push({ with: t.teamA === manager ? t.teamB : t.teamA, executed: r.executed, reason: r.reason ?? null, source: 'proposal', trade: t });
       work = r.league;
     }
+    // 방출(계약 중도 해지): 고른 우리 국내 선수를 FA 풀로 내보내고 남은 보수는 구단 자금에서 바로 낸다(자유계약선수 관리 규정 제5조 ②). 원소속 보상은 없다
+    for (const id of policy?.release ? policy.release({ league: work, ctx }) ?? [] : []) {
+      const p = work.players.find((x) => x.id === id && x.teamId === manager && x.origin === 'domestic');
+      if (!p) continue;
+      const c = releaseCost(p, { phase: 'offseason' });
+      funds = { ...funds, [manager]: Math.round((funds[manager] - c.severance) * 100) / 100 };
+      work = { ...work, players: work.players.filter((x) => x.id !== id) };
+      const { xp, ...rest } = p;
+      pool.push({ ...rest, teamId: null, contract: { yearsLeft: 0 } });
+      report.waived.push({ id, name: p.name, teamId: manager, ovr: p.ovr, salaryEok: p.contract.salaryEok, yearsLeft: p.contract.yearsLeft, severance: c.severance });
+    }
     players = work.players;
   }
 
@@ -184,7 +198,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     let payroll = payrollEok(staying, team.id);
     const isManager = team.id === manager;
     const decisions = isManager && policy?.resign
-      ? policy.resign({ expiring: expiring.filter((p) => p.origin === 'domestic'), league: { ...league, players }, ctx }) ?? {}
+      ? policy.resign({ expiring: expiring.filter((p) => p.origin === 'domestic'), league: { ...league, players, salaryRank: Object.fromEntries(salaryRank) }, ctx }) ?? {}
       : null;
 
     for (const p of expiring.filter((q) => q.origin === 'domestic').sort((a, b) => valueOf(b) - valueOf(a))) {
@@ -217,6 +231,19 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
         report.expired.push({ id: p.id, name: p.name, teamId: team.id, ovr: p.ovr, foreign: true });
       }
     }
+    // 연장 계약: 재계약 단계에서 계약이 남은 우리 국내 선수도 새 연봉·총 기간을 제안할 수 있다(재계약과 같은 수락 규칙·FA 계약기간 규정·캡 한도)
+    if (isManager && decisions?.extend) {
+      for (const [id, o] of Object.entries(decisions.extend)) {
+        const idx = kept.findIndex((x) => x.id === id && x.teamId === team.id && x.origin === 'domestic' && x.contract.yearsLeft > 0);
+        if (idx < 0 || !o) continue;
+        const p = kept[idx];
+        const chk = extensionCheck({ player: p, offer: o, roster: rosterOf(kept, team.id), ctx, rules, rank: salaryRank.get(p.id), teamId: team.id });
+        if (!chk.ok) { report.extendRefused.push({ id, name: p.name, teamId: team.id, offerEok: o.salaryEok, years: o.years, status: chk.status, reason: chk.reason }); continue; }
+        payroll += o.salaryEok - p.contract.salaryEok;
+        kept[idx] = extendedPlayer(p, o);
+        report.extended.push({ id, name: p.name, teamId: team.id, from: { salaryEok: p.contract.salaryEok, yearsLeft: p.contract.yearsLeft }, to: { salaryEok: o.salaryEok, yearsLeft: o.years } });
+      }
+    }
     // 아시아쿼터: 계약이 끝나면 재계약하거나 떠난다(FA 시장에 나오지 않는다)
     for (const p of expiring.filter((q) => q.origin === 'asia')) {
       if (rng() < rules.asiaQuota.renewProbability) {
@@ -230,6 +257,17 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     }
   }
   players = kept;
+
+  // 4-0) 시즌 카드: 과거 시즌의 국내 선수가 FA 시장에도 나온다(원소속 구단이 없어 보상이 없다). 이미 리그에 있거나 먼저 나온 선수, 같은 선수의 다른 시즌 카드는 제외
+  const presentKbl = () => new Set([...players, ...pool].map((p) => p.kblId).filter(Boolean));
+  if (cardRng && cards.domestic && cardCfg.faPerYear) {
+    const present = presentKbl();
+    const picked = weightedSample(
+      cards.domestic.filter((c) => !present.has(c.kblId) && !usedKbl.has(c.kblId) && (c.age ?? cardCfg.unknownAge) <= cardCfg.faAgeMax && c.min >= cardCfg.minMinutes),
+      (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.faWeightMid, weightScale: cardCfg.faWeightScale }), cardCfg.faPerYear, cardRng, (c) => c.kblId);
+    report.faCards = [];
+    for (const c of picked) { usedKbl.add(c.kblId); const cp = cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge }); pool.push(cp); report.faCards.push(cp.id); }
+  }
 
   // 4) FA 시장
   const market = runFreeAgency({ players, pool, funds }, teamData, ctx, rules, rng, policy);
@@ -246,7 +284,6 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   const dr = off.draft;
   const prospects = [];
   // 시즌 카드: 과거 시즌의 국내 선수가 신인 후보로 섞여 나온다(이미 리그에 있거나 먼저 나온 선수는 제외, OVR이 높을수록 드물게)
-  const presentKbl = () => new Set([...players, ...pool].map((p) => p.kblId).filter(Boolean));
   const draftCards = cardRng && cards.domestic
     ? weightedSample(
       cards.domestic.filter((c) => !presentKbl().has(c.kblId) && !usedKbl.has(c.kblId) && c.age != null && c.age <= cardCfg.draftAgeMax && c.min >= cardCfg.minMinutes),

@@ -14,6 +14,7 @@ import { STAT_KEYS } from './rating.mjs';
 import { validateTrade, executeTrade, generateOffers, proposeTrade } from './trade.mjs';
 import { mulberry32, hashString } from './rng.mjs';
 import { eligibility, dleagueSessions, abroadGrowth, programCost, checkpointsPerSeason, PROGRAMS } from './devprogram.mjs';
+import { releaseCheck, releaseCost, extensionCheck, extendedPlayer, extensionAdjust, salaryRanks } from './contracts.mjs';
 
 function withStats(p, stats) {
   const ovr = calcOvr(p.position, stats);
@@ -45,6 +46,10 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   // 육성 프로그램(D리그·유학) 중인 선수. 명단(players)에서 빠져 있다가 소환·시즌 종료에 돌아온다 (src/devprogram.mjs)
   const away = new Map(); // playerId → { program, stat, fromDay, player, before }
   const devDone = []; // 끝난 D리그 파견 기록
+  // 계약 관리(src/contracts.mjs): 방출된 선수(FA 풀로 간다)·방출/연장 기록·정산 보정
+  const released = [];
+  const releaseLog = [];
+  const extendLog = [];
 
   const applyUpdates = () => {
     if (!inSeasonUpdates) return;
@@ -208,6 +213,56 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       regular.setTeams(built.teams, built.baseline);
       return { ok: true, errors: [] };
     },
+    // ---------- 계약 관리: 방출과 연장 계약 (정규리그 중에만, 플레이오프가 시작되면 닫힌다) ----------
+    /** 지금 이 선수를 방출할 수 있는지와 비용: { ok, reason, cost: { severance, earned, years, fraction, salaryEok } } */
+    releaseCheck(playerId) {
+      if (!manager) return { ok: false, reason: '단장 구단이 없습니다', cost: null };
+      if (playoffs) return { ok: false, reason: '플레이오프가 시작된 뒤에는 방출할 수 없습니다(시즌이 끝나면 오프시즌 첫 단계에서 가능)', cost: null };
+      const c = releaseCheck({ players, teamId: manager, playerId, phase: 'season', rules });
+      const p = players.find((x) => x.id === playerId);
+      return { ...c, cost: p ? releaseCost(p, { phase: 'season', day: regular.day, totalDays: regular.schedule.length }) : null };
+    },
+    /** 방출(계약 중도 해지): 남은 보수는 시즌 정산에서 지출로 빠지고, 선수는 FA 풀로 간다. 반환: { ok, errors, cost } */
+    releasePlayer(playerId) {
+      const c = run.releaseCheck(playerId);
+      if (!c.ok) return { ok: false, errors: [c.reason], cost: c.cost };
+      const p = players.find((x) => x.id === playerId);
+      players = players.filter((x) => x.id !== playerId);
+      focus.delete(playerId);
+      if (lineup && [...lineup.starters, ...lineup.bench].includes(playerId)) lineup = null;
+      const { xp, ...rest } = p; // 남은 훈련 경험치는 사라진다
+      released.push({ ...rest, teamId: null, contract: { yearsLeft: 0 } });
+      releaseLog.push({ playerId, name: p.name, day: regular.day, salaryEok: p.contract.salaryEok, yearsLeft: p.contract.yearsLeft, ovr: p.ovr, ...c.cost });
+      const built = buildTeams();
+      regular.setTeams(built.teams, built.baseline);
+      return { ok: true, errors: [], cost: c.cost };
+    },
+    /** 연장 계약 미리 보기·판정. offer: { salaryEok, years(총 기간, 남은 기간 포함) } → extensionCheck 결과 */
+    extendCheck(playerId, offer) {
+      if (!manager) return { ok: false, status: 'invalid', reason: '단장 구단이 없습니다' };
+      if (playoffs) return { ok: false, status: 'invalid', reason: '플레이오프가 시작된 뒤에는 연장할 수 없습니다(시즌이 끝나면 재계약 단계에서 가능)' };
+      const p = players.find((x) => x.id === playerId && x.teamId === manager);
+      if (!p) return { ok: false, status: 'invalid', reason: '우리 구단 선수가 아닙니다' };
+      const ctx = tradeContext();
+      return extensionCheck({ player: p, offer, roster: players.filter((x) => x.teamId === manager && x.origin === 'domestic'), ctx, rules, rank: salaryRanks(players).get(playerId), teamId: manager });
+    },
+    /** 연장 계약 적용(수락될 때만). 반환: { ok, errors, check } */
+    extendContract(playerId, offer) {
+      const check = run.extendCheck(playerId, offer);
+      if (!check.ok) return { ok: false, errors: [check.reason], check };
+      const p = players.find((x) => x.id === playerId);
+      const next = extendedPlayer(p, offer);
+      players = players.map((x) => (x.id === playerId ? next : x));
+      extendLog.push({ playerId, name: p.name, day: regular.day, from: { salaryEok: p.contract.salaryEok, yearsLeft: p.contract.yearsLeft }, to: { salaryEok: offer.salaryEok, yearsLeft: offer.years },
+        adj: extensionAdjust(p.contract.salaryEok, offer.salaryEok, regular.day, regular.schedule.length) });
+      const built = buildTeams();
+      regular.setTeams(built.teams, built.baseline);
+      return { ok: true, errors: [], check };
+    },
+    /** 이번 시즌 방출·연장 기록 */
+    get contractLog() { return { released: releaseLog.map((r) => ({ ...r })), extended: extendLog.map((r) => ({ ...r, from: { ...r.from }, to: { ...r.to } })) }; },
+    /** 방출로 아직 정산 전인 해지 비용 합계(억) — 화면의 "지금 자금"에서 미리 뺀다 */
+    get pendingSeverance() { return Math.round(releaseLog.reduce((s2, r) => s2 + r.severance, 0) * 100) / 100; },
     /** 시즌 중 트레이드가 열려 있는지(마감일 전, 플레이오프 전) */
     get tradeOpen() { return tradeOpen(); },
     get tradeDeadline() { return rules.transactions.trade.deadlineDay; },
@@ -263,9 +318,11 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
         });
       }
       const dev = { teamId: manager, report, totalCost: Math.round(report.reduce((s, r) => s + r.costEok, 0) * 100) / 100, abroadIds };
+      const sum = (list, k) => Math.round(list.reduce((s2, r) => s2 + r[k], 0) * 100) / 100;
+      const contracts = releaseLog.length || extendLog.length ? { teamId: manager, released: released.map((x) => ({ ...x })), releaseLog: releaseLog.map((r) => ({ ...r })), extendLog: extendLog.map((r) => ({ ...r })), severance: sum(releaseLog, 'severance'), earned: sum(releaseLog, 'earned'), adj: sum(extendLog, 'adj') } : null;
       finished = {
         result: { standings: reg.standings, games: reg.games, playoffs: po, championId: po.championId, teams: reg.teams, baseline: reg.baseline },
-        totals, splits, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev
+        totals, splits, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev, contracts
       };
       return finished;
     }
@@ -287,5 +344,15 @@ export function settleYear(league, finished, teamData, rules) {
     settled.funds[t] = round2(settled.funds[t] - dev.totalCost);
     settled.ledger[t] = { ...l, program: dev.totalCost, net: round2(l.net - dev.totalCost) };
   }
-  return { league: { ...league, players: seasonPlayers, funds: settled.funds, att: settled.att, ...(legacy ? { legacy } : {}) }, ledger: settled.ledger };
+  // 계약 관리: 방출한 선수의 남은 보수(해지 비용)와 이미 뛴 만큼의 보수, 시즌 중 연장의 정산 보정을 장부에 넣고 방출된 선수는 FA 풀로 보낸다
+  const { contracts } = finished;
+  let freeAgents = league.freeAgents ?? [];
+  if (contracts) {
+    const t = contracts.teamId, l = settled.ledger[t], round2 = (v) => Math.round(v * 100) / 100;
+    const extra = round2(contracts.severance + contracts.earned + contracts.adj);
+    settled.funds[t] = round2(settled.funds[t] - extra);
+    settled.ledger[t] = { ...l, payroll: round2(l.payroll + contracts.earned + contracts.adj), severance: contracts.severance, net: round2(l.net - extra) };
+    freeAgents = [...freeAgents, ...contracts.released];
+  }
+  return { league: { ...league, players: seasonPlayers, freeAgents, funds: settled.funds, att: settled.att, ...(legacy ? { legacy } : {}) }, ledger: settled.ledger };
 }
