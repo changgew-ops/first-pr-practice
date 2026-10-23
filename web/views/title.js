@@ -24,7 +24,7 @@ export function render(ctx) {
   const save = h('button', { class: 'ts-hot', type: 'button', 'aria-label': '저장 불러오기', style: place(HOT.save), onclick: () => ctx.go('save') });
   const note = latest ? h('p', { class: 'ts-note' }, `${latest.meta.gmName} 단장 · ${ctx.name(latest.meta.teamId)} · ${latest.meta.season}${latest.meta.stage === 'regular' && latest.meta.day ? ` ${latest.meta.day}일차` : ''}`) : null;
   const stage = h('div', { class: 'ts-stage', style: { aspectRatio: `${SIZE.w} / ${SIZE.h}` } },
-    h('img', { class: 'ts-art', src: ART, alt: 'KBL 단장 게임: 구단주 집무실에서 경기장이 내려다보이는 타이틀 화면', width: SIZE.w, height: SIZE.h, onerror: (e) => { e.currentTarget.onerror = null; e.currentTarget.src = ART_FALLBACK; } }),
+    h('img', { class: 'ts-art', src: ART, alt: '프로농구 단장 게임: 구단주 집무실에서 경기장이 내려다보이는 타이틀 화면', width: SIZE.w, height: SIZE.h, onerror: (e) => { e.currentTarget.onerror = null; e.currentTarget.src = ART_FALLBACK; } }),
     push, cont, save, note);
   return { title: '타이틀', body: h('div', { class: 'title-screen ts' }, stage) };
 }

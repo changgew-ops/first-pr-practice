@@ -1,4 +1,4 @@
-// KBL 단장 게임 — 화면 진입점: 데이터 불러오기, 세션·저장, 경로(#/…), 공통 틀.
+// 프로농구 단장 게임 — 화면 진입점: 데이터 불러오기, 세션·저장, 경로(#/…), 공통 틀.
 //
 // 화면(views/*.js)이 받는 ctx:
 //   ctx.data        { rules, teams, players, history, profiles, careers }
@@ -81,7 +81,7 @@ function shell(route, view) {
   const stageLabel = { regular: s.day === 0 ? '시즌 시작 전' : `정규리그 ${s.day}/${s.totalDays}일차`, playoffs: '플레이오프', offseason: '오프시즌' }[s.stage];
   return h('div', { class: 'shell', style: { '--team': colorOf(my) } },
     h('aside', { class: 'side' },
-      h('div', { class: 'brand' }, 'KBL 단장 게임', h('small', `${s.game.gm.name} 단장 · ${ctx.name(my)}`), h('small', `${seasonLabel(s.season)} · ${stageLabel}`)),
+      h('div', { class: 'brand' }, '프로농구 단장 게임', h('small', `${s.game.gm.name} 단장 · ${ctx.name(my)}`), h('small', `${seasonLabel(s.season)} · ${stageLabel}`)),
       h('nav', { class: 'nav', 'aria-label': '주 메뉴' }, NAV.map(([key, label]) => h('a', { href: `#/${key}`, class: route === key || (route === 'player' && key === 'roster') ? 'on' : '', 'aria-current': route === key ? 'page' : null }, label, key === 'offseason' && s.stage === 'offseason' ? h('span', { class: 'dotmark', 'aria-label': '결정 필요' }) : null))),
       h('div', { class: 'spacer' }),
       h('div', { class: 'small' }, '자동 저장 중 · 저장 화면에서 직접 저장'),
@@ -97,13 +97,13 @@ async function render() {
   if (!ctx.session) {
     const mod = FREE[route] ?? titleView;
     const out = mod.render(ctx, params);
-    document.title = `${out.title ?? 'KBL 단장 게임'} · KBL 단장 게임`;
+    document.title = `${out.title ?? '프로농구 단장 게임'} · 프로농구 단장 게임`;
     root.replaceChildren(out.body ?? out);
     return;
   }
   const key = ROUTES[route] ? route : 'home';
   const out = ROUTES[key].render(ctx, params);
-  document.title = `${out.title ?? key} · KBL 단장 게임`;
+  document.title = `${out.title ?? key} · 프로농구 단장 게임`;
   root.replaceChildren(shell(key, out.body ?? out));
 }
 
