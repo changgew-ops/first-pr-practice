@@ -9,7 +9,7 @@
 // 화면은 render(ctx, params) → { title, body } 를 내보낸다.
 import { h } from './lib/dom.js';
 import { loadData, profileIndex } from './lib/data.js';
-import { listSlots, readSlot, writeSlot, latestSlot } from './lib/save.js';
+import { listSlots, readSlot, writeSlot, latestSlot, configureSave } from './lib/save.js';
 import { Session } from './lib/session.js';
 import { seasonLabel } from './lib/game.js';
 import { colorOf } from './lib/team-ui.js';
@@ -141,6 +141,7 @@ window.addEventListener('keydown', (e) => {
     // 세션이 없으면(타이틀·새 게임) 원본 그대로. 이렇게 하면 모든 화면의 캡·연봉·요구액 숫자가 한 곳에서 시즌에 맞춰 바뀐다.
     const baseRules = ctx.data.rules;
     ctx.data.baseRules = baseRules;
+    configureSave(baseRules.save);
     Object.defineProperty(ctx.data, 'rules', { configurable: true, enumerable: true, get: () => ctx.session?.rules ?? baseRules });
     ctx.profiles = profileIndex(ctx.data.profiles);
     render();
