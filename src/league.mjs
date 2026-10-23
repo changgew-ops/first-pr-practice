@@ -37,5 +37,5 @@ export function playLeagueYear(league, teamData, rules, rng, options = {}) {
   const settled = settleYear(league, finished, teamData, rules);
   const { league: next, report } = runOffseason(settled.league, finished.result.standings, teamData, rules, rng, { manager, policy, cards });
   report.ledger = settled.ledger;
-  return { league: next, report, result: finished.result, totals: finished.totals, seasonPlayers: finished.seasonPlayers, startStats: finished.startStats };
+  return { league: next, report, result: finished.result, totals: finished.totals, splits: finished.splits, seasonPlayers: finished.seasonPlayers, startStats: finished.startStats };
 }

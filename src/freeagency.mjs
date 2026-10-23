@@ -75,7 +75,7 @@ const years = (p, rng, rules) => { const [lo, hi] = yearsRange(p, rules); return
 /**
  * FA 시장 진행.
  * state: { players, pool, funds }, ctx: { season, ranks, winPct, managerTeamId }, policy(선택):
- *   policy.freeAgency({ round, pool, state }) → [{ playerId, salaryEok, years }]  (단장의 제안)
+ *   policy.freeAgency({ round, pool, state, demandNow, lastResults }) → [{ playerId, salaryEok, years }]  (단장의 제안; lastResults: 지난 라운드 우리 제안의 결과)
  *   policy.compensation({ player, options, state }) → { type: 'cash' } | { type: 'player', playerId }
  * 반환: { players, pool, funds, signings, compensations }
  */
@@ -87,6 +87,8 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
   let funds = { ...state.funds };
   const signings = [];
   const compensations = [];
+  const roundResults = new Map(); // 라운드 → 단장 제안 결과
+  const offerResults = [];
   const teamIds = teamData.map((t) => t.id);
 
   const usedNumber = (teamId) => new Set(players.filter((p) => p.teamId === teamId).map((p) => p.number));
@@ -126,16 +128,23 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
     }
 
     // 단장의 제안
+    const mgrOffers = []; // 결과 기록용: { o: 단장이 낸 제안, off: 시장에 들어간 제안 }
+    const poolStart = new Map(pool.map((p) => [p.id, p]));
     if (policy?.freeAgency && ctx.managerTeamId) {
-      const mine = policy.freeAgency({ round, pool, state: { players, funds }, demandNow }) ?? [];
+      const mine = policy.freeAgency({ round, pool, state: { players, funds }, demandNow, lastResults: roundResults.get(round - 1) ?? null }) ?? [];
       const poolById = new Map(pool.map((p) => [p.id, p]));
-      const poolIds = new Set(poolById.keys());
       for (const o of mine) {
-        if (poolIds.has(o.playerId)) add(o.playerId, { teamId: ctx.managerTeamId, salaryEok: o.salaryEok, years: (() => { const [lo, hi] = yearsRange(poolById.get(o.playerId), rules); return Math.max(lo, Math.min(hi, o.years ?? 2)); })(), manager: true });
+        if (!poolById.has(o.playerId)) continue;
+        const [lo, hi] = yearsRange(poolById.get(o.playerId), rules);
+        const off = { teamId: ctx.managerTeamId, salaryEok: o.salaryEok, years: Math.max(lo, Math.min(hi, o.years ?? 2)), manager: true };
+        add(o.playerId, off);
+        mgrOffers.push({ o, off });
       }
     }
 
     // 선수는 가치가 높은 순서로 제안을 고른다
+    const evalOf = new Map(); // 단장 제안의 평가(기록용): 제안 객체 → { why, score, ratio, demand }
+    const signedNow = new Map(); // 이번 라운드에 계약한 선수 → { teamId, score, salaryEok, years }
     const order = [...pool].sort((a, b) => valueOf(b) - valueOf(a));
     for (const p of order) {
       const offers = offersFor.get(p.id);
@@ -143,12 +152,14 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
       let best = null;
       for (const o of offers) {
         const roster = domesticOf(players, o.teamId);
-        if (roster.length >= slotsMax) continue;
-        if (!capAllows(payrollEok(players, o.teamId), o.salaryEok, rules, { isManager: Boolean(o.manager) })) continue;
+        if (roster.length >= slotsMax) { if (o.manager) evalOf.set(o, { why: 'roster' }); continue; }
+        if (!capAllows(payrollEok(players, o.teamId), o.salaryEok, rules, { isManager: Boolean(o.manager) })) { if (o.manager) evalOf.set(o, { why: 'cap' }); continue; }
         const r = offerScore(p, o.salaryEok, o.teamId, roster, ctx, rules, round);
+        if (o.manager) evalOf.set(o, { score: r.score, ratio: r.ratio, demand: r.demand, accept: r.accept });
         if (r.accept && (!best || r.score > best.score)) best = { ...o, score: r.score };
       }
       if (!best) continue;
+      signedNow.set(p.id, { teamId: best.teamId, score: best.score, salaryEok: best.salaryEok, years: best.years });
 
       const comp = best.teamId !== p.prevTeamId ? compensationFor(p, rules, ctx.season + 1) : null;
       const signed = {
@@ -185,6 +196,21 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
         round, manager: Boolean(best.manager), compensation: compInfo
       });
     }
+
+    // 이번 라운드 단장 제안의 결과(왜 됐고 왜 안 됐는지). 계산은 기록뿐이고 결과에는 영향이 없다
+    if (mgrOffers.length) {
+      const list = mgrOffers.map(({ o, off }) => {
+        const p = poolStart.get(o.playerId), ev = evalOf.get(off) ?? {}, won = signedNow.get(o.playerId);
+        const base = { round, playerId: o.playerId, name: p.name, salaryEok: off.salaryEok, years: off.years, demandEok: round1(ev.demand ?? demandNow(p)) };
+        if (won?.teamId === ctx.managerTeamId) return { ...base, status: 'accepted' };
+        if (won) return { ...base, status: 'lost', teamId: won.teamId, theirSalaryEok: won.salaryEok, myScore: ev.score ?? null, theirScore: round1(won.score * 100) / 100 };
+        if (ev.why) return { ...base, status: ev.why };
+        if (ev.ratio < fa.minOfferRatio) return { ...base, status: 'low', ratio: Math.round(ev.ratio * 100) / 100, minRatio: fa.minOfferRatio, minSalaryEok: round1(ev.demand * fa.minOfferRatio + 0.05) };
+        return { ...base, status: 'score', score: Math.round(ev.score * 100) / 100, need: fa.acceptScore };
+      });
+      roundResults.set(round, list);
+      offerResults.push(...list);
+    }
   }
-  return { players, pool, funds, signings, compensations };
+  return { players, pool, funds, signings, compensations, offerResults };
 }

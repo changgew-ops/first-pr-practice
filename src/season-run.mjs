@@ -4,6 +4,7 @@ import { buildLineup, validateLineup } from './lineup.mjs';
 import { leagueBaseline } from './game.mjs';
 import { createRegularSeason, createPlayoffs } from './season.mjs';
 import { addBox } from './stats.mjs';
+import { addGameToSplits } from './player-record.mjs';
 import { updateSkillsFromSeason } from './stats-rating.mjs';
 import { trainPlayer, autoFocus } from './training.mjs';
 import { seedLegacy, appendSeason, prestigeTable } from './legacy.mjs';
@@ -38,6 +39,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   let players = league.players;
   const start = new Map(players.map((p) => [p.id, { ...p.stats }])); // 시즌 시작 능력치
   const totals = new Map();
+  const splits = new Map(); // 선수 → 구단 → 기록+승패 (선수 상세의 팀·승-패 열, src/player-record.mjs)
   const focus = new Map(manager ? players.filter((p) => p.teamId === manager).map((p) => [p.id, autoFocus(p)]) : []);
   let lineup = null; // 단장의 직접 편성 { starters: [id], bench: [id] } (없으면 자동)
   // 육성 프로그램(D리그·유학) 중인 선수. 명단(players)에서 빠져 있다가 소환·시즌 종료에 돌아온다 (src/devprogram.mjs)
@@ -112,7 +114,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const initial = buildTeams();
   const regular = createRegularSeason(initial.teams, initial.baseline, rules.simulation, rng, {
     keepGames,
-    onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); },
+    onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); addGameToSplits(splits, g); },
     checkpointEvery: rules.ratingModel.checkpointDays,
     onCheckpoint: () => { applyUpdates(); applyTraining(); return buildTeams(); }
   });
@@ -129,6 +131,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     get lineup() { return lineup; },
     get playoffs() { return playoffs; },
     get totals() { return totals; },
+    get splits() { return splits; },
     schedule: regular.schedule,
     standings: () => regular.standings(),
     playDay: () => regular.playDay(),
@@ -262,7 +265,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const dev = { teamId: manager, report, totalCost: Math.round(report.reduce((s, r) => s + r.costEok, 0) * 100) / 100, abroadIds };
       finished = {
         result: { standings: reg.standings, games: reg.games, playoffs: po, championId: po.championId, teams: reg.teams, baseline: reg.baseline },
-        totals, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev
+        totals, splits, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev
       };
       return finished;
     }

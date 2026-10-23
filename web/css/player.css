@@ -1,0 +1,6 @@
+/* 선수 상세: 실제 + 게임 시즌 기록 한 표 */
+.rec-scroll { overflow-x: auto; }
+.rec-scroll table { min-width: 720px; }
+tr.game-row td { background: color-mix(in srgb, var(--accent, #8b5cf6) 7%, transparent); color: var(--muted, #667085); }
+tr.game-row td a { color: inherit; }
+.rec-badge { display: inline-block; margin-left: 4px; padding: 0 6px; border-radius: 999px; font-size: .68rem; line-height: 1.5; border: 1px solid currentColor; color: var(--accent, #6d4fd6); white-space: nowrap; }

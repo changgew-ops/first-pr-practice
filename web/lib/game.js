@@ -1,6 +1,7 @@
 // 화면이 쓰는 게임 상태와 규칙 호출. 브라우저 API를 쓰지 않는 순수 모듈이라 node에서도 테스트한다.
 // 상태(game)는 JSON으로 저장할 수 있다: { version, seed, managerId, league, log: [시즌 결과 …] }
 import { createLeague, playLeagueYear } from '../../src/league.mjs';
+import { compactRegular, compactPlayoffs, entryRows, liveRows } from '../../src/player-record.mjs';
 import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
 import { prestigeTable } from '../../src/legacy.mjs';
@@ -68,13 +69,13 @@ const line = (t, teamId) => [t.games, t.minutes, t.points, t.rebounds, t.assists
 export const LINE_KEYS = ['games', 'minutes', 'points', 'rebounds', 'assists', 'steals', 'blocks', 'fgm', 'fga', 'tpm', 'tpa', 'ftm', 'fta', 'teamId'];
 
 function summarizeYear(game, data, season, out) {
-  const entry = summarizeSeason(game, data, season, { result: out.result, totals: out.totals, seasonPlayers: out.seasonPlayers }, out.report.ledger);
+  const entry = summarizeSeason(game, data, season, { result: out.result, totals: out.totals, splits: out.splits, seasonPlayers: out.seasonPlayers }, out.report.ledger);
   return attachOffseason(entry, out.report, out.league.funds);
 }
 
 /** 시즌 결과(순위·플레이오프·리더·우리 팀 경기·장부)만 묶는다. 오프시즌 보고서는 attachOffseason으로 나중에 붙인다 */
 export function summarizeSeason(game, data, season, finished, ledger) {
-  const { result, totals, seasonPlayers } = finished;
+  const { result, totals, seasonPlayers, splits } = finished;
   const my = game.managerId;
   const names = new Map(seasonPlayers.map((p) => [p.id, p]));
   const lines = {};
@@ -99,6 +100,8 @@ export function summarizeSeason(game, data, season, finished, ledger) {
     championId: result.championId,
     stage: Object.fromEntries(data.teams.map((t) => [t.id, stage(t.id)])),
     leaders: keptLeaders, lines, myGames,
+    // 선수 상세의 팀·승-패·플레이오프 열: 정규리그 승패(wl), 시즌 중 구단을 옮긴 선수의 구단별 줄(split), 플레이오프 줄(po). 이전 저장에는 없다
+    ...(splits ? { ...compactRegular(splits), po: compactPlayoffs(result.playoffs.series, data.rules.playoffs.rounds.at(-1).name) } : {}),
     ledger,
     playerNames: Object.fromEntries([...names].map(([id, p]) => [id, p.name]))
   };
@@ -157,6 +160,19 @@ export function logToHistory(entry) {
 export function fullHistory(game, data) {
   const seasons = [...data.history.seasons, ...(game?.log ?? []).map(logToHistory)];
   return { seasons, franchises: data.history.franchises, summary: franchiseSummary({ seasons, franchises: data.history.franchises }) };
+}
+
+/**
+ * 선수 상세의 기록 줄(실제 기록 줄과 같은 필드: season, type, teamId, gp, w, l, sec, pts …). 게임에서 끝난 시즌 + 진행 중인 시즌(session을 주면).
+ * 각 줄에 game: true. 이전 저장의 줄은 승패가 null.
+ */
+export function gameRecordRows(game, playerId, session = null) {
+  const rows = (game?.log ?? []).flatMap((e) => entryRows(e, playerId));
+  if (session && (session.stage === 'regular' && session.day > 0 || session.stage === 'playoffs')) {
+    const run = session.run;
+    if (run) rows.push(...liveRows(`${seasonLabel(session.season)}`, run.splits, run.playoffs?.series, playerId, session.data.rules.playoffs.rounds.at(-1).name));
+  }
+  return rows;
 }
 
 /** 선수의 게임 내 시즌별 기록 [{ season, teamId?, games, ppg, rpg, apg }] */

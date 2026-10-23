@@ -96,8 +96,10 @@ const round1 = (v) => Math.round(v * 10) / 10;
  *   policy.resign({ expiring, league, ctx })              → { [선수id]: { salaryEok, years } | null(재계약 안 함) }
  *   policy.freeAgency({ round, pool, state, demandNow })  → [{ playerId, salaryEok, years }]
  *   policy.compensation({ player, options, state })       → { type: 'cash' } | { type: 'player', playerId }
- *   policy.draft({ available, team, round, pickInRound, overall, lottery, roster }) → 지명할 신인 id, 또는 'pass'(지명 포기)
- *   policy.foreign({ team, candidates, maxUsd })          → 영입할 외국인 카드 선수 id (candidates: [{ player, usd }])
+ *   policy.draft({ available, team, round, pickInRound, overall, lottery, roster, state, faResults }) → 지명할 신인 id, 또는 'pass'(지명 포기)
+ *   policy.foreign({ team, candidates, maxUsd, state, taken, … })  → 영입할 외국인 카드 선수 id
+ *       candidates: 모든 후보 [{ player, usd, ok, why }] (ok=false는 연봉 한도로 못 고름, 고르면 엔진이 무시하고 자동 선택),
+ *       taken: 우리 앞에서 이미 영입된 [{ teamId, playerName, usd }], foreignUsd: { used, total, perPlayer }, vacancies·slot·slots·turn·turns
  * options.cards: { domestic, foreign } 시즌 카드(src/cards.mjs expandCard 객체 배열). 없으면 가상 신인·가상 외국인만 쓴다
  * 반환: { league: 다음 시즌 상태, report }
  */
@@ -232,7 +234,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   // 4) FA 시장
   const market = runFreeAgency({ players, pool, funds }, teamData, ctx, rules, rng, policy);
   players = market.players; pool = market.pool; funds = market.funds;
-  report.signings = market.signings; report.compensations = market.compensations;
+  report.signings = market.signings; report.compensations = market.compensations; report.faOffers = market.offerResults;
 
   // 5) 신인 드래프트: 순번 추첨 → 뱀 순서로 라운드마다 지명, 3라운드부터 포기 가능 (신인 계약은 캡 면제, 한도는 캡 × 1.2)
   const takenNumbers = (teamId) => new Set(players.filter((p) => p.teamId === teamId).map((p) => p.number));
@@ -291,7 +293,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       if (payrollEok(players, teamId) + salary > hardLimitEok(rules) + EPS) continue;
       let idx;
       if (teamId === manager && policy?.draft) {
-        const choice = policy.draft({ available: prospects, team: teamId, round: round + 1, pickInRound: slot + 1, overall: pickNo, lottery, roster: mine });
+        const choice = policy.draft({ available: prospects, team: teamId, round: round + 1, pickInRound: slot + 1, overall: pickNo, lottery, roster: mine, state: { players: players.slice(), funds }, faResults: market.offerResults });
         if (choice === 'pass') { report.draftPasses.push({ round: round + 1, teamId }); continue; }
         idx = prospects.findIndex((p) => p.id === choice);
       }
@@ -362,20 +364,41 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     const offered = weightedSample(eligible, (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.foreignWeightMid, weightScale: cardCfg.foreignWeightScale }), cardCfg.foreignPoolSize, cardRng, (c) => c.kblId)
       .map((c) => cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge }));
     for (const p of offered) usedKbl.add(p.kblId);
-    for (const teamId of [...standings].reverse().map((s) => s.id)) {
+    const order = [...standings].reverse().map((s) => s.id);
+    const takenLog = [];
+    let mgrSlot = 0;
+    const man = (v) => `${Math.round(v / 10000)}만 달러`;
+    for (const [turn, teamId] of order.entries()) {
       while (foreignOf(players, teamId).length < rules.roster.foreign && offered.length) {
         const mine = foreignOf(players, teamId);
-        const left = rules.salaryCap.foreignUsdTotal - mine.reduce((s, p) => s + p.contract.salaryUsd, 0);
+        const usedUsd = mine.reduce((s, p) => s + p.contract.salaryUsd, 0);
+        const left = rules.salaryCap.foreignUsdTotal - usedUsd;
         const slotsAfter = rules.roster.foreign - mine.length - 1;
         const maxUsd = Math.min(rules.salaryCap.foreignUsdPerPlayer, left - slotsAfter * 200000);
-        const options = offered.map((p) => ({ player: p, usd: foreignPriceUsd(p.ovr, cardCfg.foreignUsd) })).filter((o) => o.usd <= maxUsd);
-        if (!options.length) break;
+        const all = offered.map((p) => {
+          const usd = foreignPriceUsd(p.ovr, cardCfg.foreignUsd);
+          const ok = usd <= maxUsd;
+          const why = ok ? null : usd > rules.salaryCap.foreignUsdPerPlayer
+            ? `요구 ${man(usd)} > 1인 한도 ${man(rules.salaryCap.foreignUsdPerPlayer)}`
+            : `요구 ${man(usd)} > 이번 계약 최대 ${man(Math.max(0, maxUsd))}(외국 선수 연봉 합계 ${man(rules.salaryCap.foreignUsdTotal)} 중 남은 ${man(left)}${slotsAfter ? `에서 다른 빈 자리 몫 ${man(slotsAfter * 200000)} 제외` : ''})`;
+          return { player: p, usd, ok, why };
+        });
+        const options = all.filter((o) => o.ok);
         let chosen = null;
-        if (teamId === manager && policy?.foreign) chosen = options.find((o) => o.player.id === policy.foreign({ team: teamId, candidates: options, maxUsd })) ?? null;
+        if (teamId === manager && policy?.foreign) {
+          const pick = policy.foreign({
+            team: teamId, candidates: all, maxUsd, state: { players: players.slice(), funds }, taken: takenLog.slice(),
+            foreignUsd: { used: usedUsd, total: rules.salaryCap.foreignUsdTotal, perPlayer: rules.salaryCap.foreignUsdPerPlayer },
+            vacancies: rules.roster.foreign - mine.length, slot: ++mgrSlot, slots: rules.roster.foreign, turn: turn + 1, turns: order.length
+          });
+          chosen = options.find((o) => o.player.id === pick) ?? null;
+        }
+        if (!options.length) break;
         chosen ??= [...options].sort((a, b) => (b.player.ovr - b.usd / 50000) - (a.player.ovr - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0];
         offered.splice(offered.indexOf(chosen.player), 1);
         const p = { ...chosen.player, teamId, number: freeNumber(teamId), contract: { salaryUsd: chosen.usd, yearsLeft: f.randInt(1, 2) } };
         players.push(p);
+        takenLog.push({ teamId, playerName: p.name, usd: chosen.usd, years: p.contract.yearsLeft, manager: teamId === manager });
         report.foreignReplaced.push({ id: p.id, name: p.name, teamId, ovr: p.ovr, card: p.card.label });
       }
     }
