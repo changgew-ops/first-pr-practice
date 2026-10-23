@@ -64,7 +64,7 @@ test('외국선수 교체 판정: 일시교체 2주·시즌대체 8주·기타 �
   // 일시교체 선수가 대신 뛰는 중인 부상 선수는 합계에서 빠진다
   assert.equal(foreignReplaceCheck({ players: team, teamId: 'A', outId: 'f1', candidate: cand(600000), kind: 'other', rules, exclude: ['f2'] }).ok, true);
   assert.match(foreignReplaceCheck({ players: [...team, { ...fp('t1', 'A', 300000), temp: { forId: 'f2' } }], teamId: 'A', outId: 't1', candidate: cand(300000), kind: 'other', rules }).reason, /일시교체로 들어온/);
-  assert.match(chk('other', null, { outId: 'zz' }).reason, /외국인 선수가 아닙니다/);
+  assert.match(chk('other', null, { outId: 'zz' }).reason, /외국인·아시아쿼터 선수가 아닙니다/);
   assert.equal(proratedEok(2, 27, 54), 1);
   assert.equal(freeNumber([{ teamId: 'A', number: 1 }, { teamId: 'A', number: 2 }], 'A'), 3);
 });
@@ -207,7 +207,7 @@ test('세션: 부상이 잦은 시즌에서 AI 구단도 외국인을 교체하�
   const s = Session.create(hot, { managerId: MY, gmName: 't', seed: 4 });
   while (!s.regularDone) s.advance(9);
   const log = s.rosterLog;
-  const ai = log.filter((e) => e.type === 'foreign' && e.teamId !== MY && ['temp', 'season'].includes(e.kind));
+  const ai = log.filter((e) => e.type === 'foreign' && !e.asia && e.teamId !== MY && ['temp', 'season'].includes(e.kind)); // 아시아쿼터 교체는 tests/asia.test.mjs
   assert.ok(ai.length >= 2, `AI 외국인 교체 ${ai.length}건`);
   for (const e of ai) assert.ok(e.usd <= rules.salaryCap.foreignUsdPerPlayer);
   s.startPlayoffs(); while (!s.playoffs.done) s.playoffRound();
