@@ -12,6 +12,7 @@ const rules = read('league-rules.json');
 const cards = { domestic: read('cards/domestic.json').rows.map(expandCard), foreign: read('cards/foreign.json').rows.map(expandCard) };
 const base = { rules, teams: read('teams.json'), players: read('players.json'), history: loadHistory(), profiles: read('players/profiles.json'), cards };
 const hot = { ...base, rules: { ...rules, injuries: { ...rules.injuries, perMinute: 0.01 } } }; // 부상이 자주 나는 규칙(교체 흐름 시험용)
+const noWaiver = { ...base, rules: { ...rules, waivers: { ...rules.waivers, enabled: false } } }; // 웨이버를 끈 규칙(방출한 선수가 곧바로 시장에 나오는 이전 동작)
 const MY = 'busan-kcc';
 const mine = (s) => s.players.filter((p) => p.teamId === MY);
 
@@ -84,7 +85,7 @@ test('외국인 후보 풀: 같은 시드면 같고, 로스터에 있는 선수�
 
 // ---------- 세션 흐름 ----------
 test('세션: 시즌 중 FA 영입 — 방출 뒤 영입, 로스터·캡·정산이 바뀌고 저장·복원해도 같으며 시장에서 빠진다', () => {
-  const s = Session.create(base, { managerId: MY, gmName: 't', seed: 21 });
+  const s = Session.create(noWaiver, { managerId: MY, gmName: 't', seed: 21 });
   while (!s.regularDone) s.advance(9);
   s.startPlayoffs(); while (!s.playoffs.done) s.playoffRound();
   s.endSeason(); s.autoOffseason();
@@ -113,7 +114,7 @@ test('세션: 시즌 중 FA 영입 — 방출 뒤 영입, 로스터·캡·정산
   assert.equal(s.game.actions.at(-1).type, 'fasign');
   assert.ok(s.rosterLog.some((e) => e.type === 'fa' && e.playerId === cand.player.id));
   // 저장·복원
-  const back = restore(base, serialize(s));
+  const back = restore(noWaiver, serialize(s));
   assert.deepEqual(back.players.map((p) => [p.id, p.teamId]).sort(), s.players.map((p) => [p.id, p.teamId]).sort());
   assert.equal(back.funds[MY], s.funds[MY]);
   // 시즌 끝: 정산 — 합류 전 비율의 보수는 내지 않는다(최종 명단 기준 연봉에서 일할 보정)

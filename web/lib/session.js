@@ -214,6 +214,27 @@ export class Session {
     if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'release', playerId }); this.emit(); }
     return r;
   }
+  // ---------- 웨이버: 공시 중인 선수를 양수 신청한다(마감 때 전 시즌 순위 역순 우선권으로 정해진다, src/waivers.mjs) ----------
+  /** 공시 중인 선수들: [{ player, fromTeamId, day, expires, left, mine, check, priority }] */
+  get waivers() { return this.state.stage === 'regular' && this.run ? this.run.waivers : []; }
+  waiverCheck(playerId) {
+    if (this.state.stage !== 'regular' || !this.run) return { ok: false, reason: '지금은 양수할 수 없습니다' };
+    return this.run.waiverCheck(playerId);
+  }
+  /** 양수 신청. 반환 { ok, errors } */
+  claimWaiver(playerId) {
+    this.#need('regular');
+    const r = this.run.claimWaiver(playerId);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'claim', playerId }); this.emit(); }
+    return r;
+  }
+  /** 양수 신청 취소 */
+  cancelWaiverClaim(playerId) {
+    this.#need('regular');
+    const r = this.run.cancelWaiverClaim(playerId);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'unclaim', playerId }); this.emit(); }
+    return r;
+  }
   /** 연장 계약 미리 보기: offer = { salaryEok, years(총 기간) } → { ok, status, range, verdict, reason } */
   extendCheck(playerId, offer) {
     if (this.state.stage !== 'regular' || !this.run) return { ok: false, status: 'invalid', reason: this.state.stage === 'offseason' ? '오프시즌에는 재계약 단계의 "연장 계약" 구역에서 합니다' : '지금은 연장할 수 없습니다' };
@@ -407,6 +428,8 @@ export class Session {
         else if (a.type === 'trade') run.executeTrade(a.trade);
         else if (a.type === 'program') run.setProgram(a.playerId, a.program, a.stat);
         else if (a.type === 'release') run.releasePlayer(a.playerId);
+        else if (a.type === 'claim') run.claimWaiver(a.playerId);
+        else if (a.type === 'unclaim') run.cancelWaiverClaim(a.playerId);
         else if (a.type === 'extend') run.extendContract(a.playerId, { salaryEok: a.salaryEok, years: a.years });
         else if (a.type === 'fasign') run.signFa(a.playerId, { salaryEok: a.salaryEok, years: a.years });
         else if (a.type === 'forrep') run.replaceForeign(a.outId, a.kind, a.candId);

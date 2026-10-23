@@ -29,7 +29,37 @@ function openModal(id, title, sub, body, foot) {
 export function marketPanels(ctx) {
   const s = ctx.session;
   if (s.stage !== 'regular' || s.regularDone) return null;
-  return h('div', { class: 'mk-panels' }, faPanel(ctx), foreignPanel(ctx));
+  return h('div', { class: 'mk-panels' }, ...(ctx.data.rules.waivers?.enabled ? [waiverPanel(ctx)] : []), faPanel(ctx), foreignPanel(ctx));
+}
+
+// ---------- 웨이버 공시 (규약 제101조, src/waivers.mjs) ----------
+const WV_RESULT = { claim: '양수', waiver_fa: 'FA로', claim_fail: '양수 실패' };
+
+function waiverPanel(ctx) {
+  const s = ctx.session, rules = ctx.data.rules, my = s.managerId, wv = rules.waivers;
+  const list = s.waivers;
+  const recent = s.rosterLog.filter((e) => ['claim', 'waiver_fa', 'claim_fail'].includes(e.type) && (e.teamId === my || e.fromTeamId === my || e.mineApplied)).slice(-5).reverse();
+  const act = (w) => {
+    if (w.fromTeamId === my) return h('span', { class: 'note' }, '우리가 공시');
+    if (w.mine) return h('button', { class: 'btn mk-btn', type: 'button', 'aria-label': `${w.player.name} 양수 신청 취소`, onclick: () => { const r = s.cancelWaiverClaim(w.player.id); ctx.toast(r.ok ? `${w.player.name} 양수 신청을 취소했습니다` : r.errors[0]); ctx.refresh(); } }, '신청 취소');
+    return h('button', { class: 'btn mk-btn primary', type: 'button', disabled: !w.check.ok, title: w.check.ok ? `${w.player.name}의 남은 계약을 이어받는 양수 신청(마감 때 우선권 순서로 결정)` : w.check.reason, 'aria-label': `${w.player.name} 양수 신청`,
+      onclick: () => { const r = s.claimWaiver(w.player.id); ctx.toast(r.ok ? `${w.player.name} 양수 신청 — 마감일(${w.left}경기일 뒤)에 결과가 나옵니다` : r.errors[0]); ctx.refresh(); } }, '양수 신청');
+  };
+  const rows = list.map((w) => h('tr', { class: 'mk-row' },
+    h('td', nameButton(w.player)), h('td', h('span', { class: 'pos' }, w.player.position)), h('td', { class: 'r' }, w.player.age), h('td', { class: 'r' }, ovrChip(w.player)),
+    h('td', { class: 'r' }, `${eok(w.player.contract.salaryEok)} · ${w.player.contract.yearsLeft}년`),
+    h('td', ctx.name(w.fromTeamId)),
+    h('td', { class: 'r' }, `${w.left}경기일`),
+    h('td', w.mine ? h('span', { class: 'tag hot' }, `신청함 · 우선권 ${w.priority}번째`) : (!w.check.ok && w.fromTeamId !== my ? h('span', { class: 'wv-why' }, w.check.reason) : h('span', { class: 'note' }, w.fromTeamId === my ? '양수 구단 대기 중' : `우선권 ${w.priority}번째`))),
+    h('td', { class: 'r' }, act(w))));
+  return h('div', { class: 'card wv-panel' },
+    h('div', { class: 'mk-head' }, h('h2', { style: { margin: 0 } }, '웨이버 공시'), h('span', { class: 'note' }, `공시 중 ${list.length}명`)),
+    h('p', { class: 'note', style: { margin: '4px 0 8px' } }, `방출된 국내 선수는 먼저 웨이버로 공시되고, 공시기간(${wv.periodGames}경기일, 길이는 규정에 없어 게임용 가정) 동안 다른 구단이 남은 계약을 이어받을 수 있습니다. 여러 구단이 원하면 전 시즌 정규리그 순위의 역순으로 우선권을 가집니다(규약 제101조 ①, 우리 구단은 ${list[0]?.priority ?? '-'}번째). 양수한 구단은 영입일로부터 약 ${wv.reWaiverLockGames}경기(30일) 안에는 그 선수를 다시 웨이버 조치할 수 없습니다(② 환산). 신청은 마감 때 우선권 순서로 정해지고, 정원 ${rules.roster.domestic}명이 차 있거나 캡을 넘기면 실패합니다. 아무도 양수하지 않으면 FA 시장으로 나갑니다.`),
+    list.length
+      ? h('div', { class: 'table-wrap' }, h('table', h('thead', h('tr', ['선수', '포지션', '나이', 'OVR', '계약', '공시 구단', '남은 기간', '상태', ''].map((t, i) => h('th', { class: i >= 2 && i <= 6 && i !== 5 ? 'r' : '' }, t)))), h('tbody', rows)))
+      : h('p', { class: 'muted' }, '지금 공시 중인 선수가 없습니다. 우리 구단이나 AI 구단이 선수를 방출하면 여기에 나타납니다.'),
+    recent.length ? h('div', { class: 'wv-recent' }, h('h3', { style: { margin: '10px 0 4px' } }, '최근 결과'),
+      h('ul', recent.map((e) => h('li', { class: 'note' }, `${e.day}일차 · ${e.name} — ${WV_RESULT[e.type]}${e.type === 'claim' ? `(${ctx.name(e.teamId)})` : ''}${e.reason ? ` · ${e.reason}` : ''}`)))) : null);
 }
 
 // ---------- 시즌 중 FA ----------

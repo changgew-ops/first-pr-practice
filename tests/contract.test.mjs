@@ -11,6 +11,8 @@ const data = { rules: read('league-rules.json'), teams: read('teams.json'), play
 const { rules } = data;
 const MY = 'busan-kcc';
 const mk = (seed) => Session.create(data, { managerId: MY, gmName: 'T', seed });
+const dataOff = { ...data, rules: { ...rules, waivers: { ...rules.waivers, enabled: false } } }; // 웨이버를 끈 규칙(방출한 선수가 곧바로 FA 풀로 가는 이전 동작)
+const mkOff = (seed) => Session.create(dataOff, { managerId: MY, gmName: 'T', seed });
 const mine = (s) => s.players.filter((p) => p.teamId === MY);
 const toOffseason = (s) => { while (!s.regularDone) s.advance(9); s.startPlayoffs(); while (!s.playoffs.done) s.playoffRound(); return s.endSeason(); };
 const baseName = (p) => p.baseName ?? p.name;
@@ -53,7 +55,7 @@ test('방출 조건: 외국인·아시아쿼터는 불가, 라인업 엔트리�
 });
 
 test('세션: 시즌 중 방출 — 로스터·캡·자금이 바로 바뀌고 편성이 보정되며, 저장·복원해도 같고, 선수는 FA 풀로 간다', () => {
-  const s = mk(11);
+  const s = mkOff(11);
   s.advance(9);
   const victim = mine(s).filter((p) => p.origin === 'domestic' && p.contract.yearsLeft >= 2).sort((a, b) => b.contract.salaryEok - a.contract.salaryEok)[0];
   const before = { n: mine(s).length, pay: payrollEok(s.players, MY), funds: s.funds[MY] };
@@ -75,7 +77,7 @@ test('세션: 시즌 중 방출 — 로스터·캡·자금이 바로 바뀌고 �
   assert.ok(out.every((d) => d.games.every((g) => ![...g.box.home, ...g.box.away].some((l) => l.id === victim.id && l.minutes > 0))));
   void dom;
   // 저장·복원: 같은 상태
-  const back = restore(data, serialize(s));
+  const back = restore(dataOff, serialize(s));
   assert.equal(back.day, s.day);
   assert.deepEqual(back.players.map((p) => p.id).sort(), s.players.map((p) => p.id).sort());
   assert.equal(back.funds[MY], s.funds[MY]);

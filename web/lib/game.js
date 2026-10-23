@@ -146,11 +146,15 @@ function seasonAwards(game, data, finished) {
 /**
  * 시즌 중 변동 기록(run.rosterLog)의 저장용 요약(작게): 우리 구단 부상 전부와 리그의 5경기 이상 부상, 우리 구단 FA 영입, 모든 외국인 교체.
  * inj 행 = [선수 id, 구단, 날짜, 결장 경기, 종류, 부위, 이름], mv 행 = ['fa', null, 날짜, 구단, 이름, 연봉(억), 연수, OVR] | ['foreign', 교체 종류, 날짜, 구단, 이름, 나간 선수, 연봉($), OVR]
+ * | ['wv', 'waive'|'claim'|'waiver_fa'|'claim_fail', 날짜, 구단, 이름, 공시한 구단, 연봉(억), OVR, 사유] (우리 구단이 얽힌 웨이버만)
  */
 export function rosterSummary(log, my) {
   const inj = log.filter((e) => e.type === 'injury' && (e.games >= 5 || e.teamId === my)).map((e) => [e.playerId, e.teamId, e.day, e.games, e.kind, e.part, e.name]);
-  const mv = log.filter((e) => (e.type === 'fa' && e.teamId === my) || (e.type === 'foreign' && ['temp', 'season', 'other'].includes(e.kind)))
-    .map((e) => (e.type === 'fa' ? ['fa', null, e.day, e.teamId, e.name, e.salaryEok, e.years, e.ovr] : ['foreign', e.kind, e.day, e.teamId, e.name, e.outName, e.usd, e.ovr]));
+  const wvMine = (e) => (e.type === 'waive' && e.teamId === my) || (e.type === 'claim' && (e.teamId === my || e.fromTeamId === my)) || (e.type === 'waiver_fa' && e.teamId === my) || (e.type === 'claim_fail' && e.teamId === my);
+  const mv = log.filter((e) => (e.type === 'fa' && e.teamId === my) || (e.type === 'foreign' && ['temp', 'season', 'other'].includes(e.kind)) || wvMine(e))
+    .map((e) => (e.type === 'fa' ? ['fa', null, e.day, e.teamId, e.name, e.salaryEok, e.years, e.ovr]
+      : e.type === 'foreign' ? ['foreign', e.kind, e.day, e.teamId, e.name, e.outName, e.usd, e.ovr]
+      : ['wv', e.type, e.day, e.teamId, e.name, e.fromTeamId ?? null, e.salaryEok ?? null, e.ovr ?? null, e.reason ?? null]));
   return inj.length || mv.length ? { inj, mv } : null;
 }
 

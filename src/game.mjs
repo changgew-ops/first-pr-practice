@@ -77,9 +77,9 @@ function allocate(n, weights, rng) {
 
 // 득점(pts)을 자유투·2점·3점으로 나누고 슈팅 능력에 맞는 성공률로 시도 수를 만든다.
 // 항상 pts = ftm + 2×(fgm−tpm) + 3×tpm 이 성립한다.
-function shotLine(p, pts, sim, rng) {
+function shotLine(p, pts, sim, rng, threeMul = 1) {
   const s = p.stats.shooting;
-  const share3 = clamp(THREE_SHARE[p.position] * (0.6 + (s / 100) * 0.8), 0, 0.6);
+  const share3 = clamp(THREE_SHARE[p.position] * (0.6 + (s / 100) * 0.8) * threeMul, 0, 0.6); // threeMul: 전술의 3점 비중 배수(src/tactics.mjs)
   let m3 = Math.floor((pts * share3) / 3 + rng());
   let ftm = Math.round(pts * sim.freeThrowShare * (0.7 + rng() * 0.6));
   if (3 * m3 > pts) m3 = Math.floor(pts / 3);
@@ -98,13 +98,14 @@ function shotLine(p, pts, sim, rng) {
   return { fgm: m2 + m3, fga: fga2 + tpa, tpm: m3, tpa, ftm, fta: att(ftm, pf) };
 }
 
-function boxScore(lineup, pts, sim, rng) {
+// mods: 전술·감독 보정 { three, reb, toMul }(없으면 1) — 기록 열만 바꾸고 득점·출전 시간은 바꾸지 않는다
+function boxScore(lineup, pts, sim, rng, mods = null) {
   const players = [...lineup.starters, ...lineup.bench];
   const minutes = lineupMinutes(lineup, sim);
   const scored = splitPoints(pts, players, minutes, rng);
   const w = (fn) => players.map((p) => Math.max(0.01, minutes.get(p.id) * fn(p)));
   const tot = (mean, sd) => Math.max(0, Math.round(mean + sd * normal(rng)));
-  const rebs = allocate(tot(sim.teamRebounds, 4), w((p) => (p.stats.rebound / 50) ** 2.2), rng);
+  const rebs = allocate(tot(sim.teamRebounds * (mods?.reb ?? 1), 4), w((p) => (p.stats.rebound / 50) ** 2.2), rng);
   const asts = allocate(tot(sim.teamAssists, 3), w((p) => (p.stats.passing / 50) ** 2.2), rng);
   const stls = allocate(tot(sim.teamSteals, 2), w((p) => (p.stats.defense / 50) ** 1.5 * (p.stats.athletic / 50)), rng);
   const blks = allocate(tot(sim.teamBlocks, 1.6), w((p) => (p.stats.rebound / 50) ** 1.5 * (p.stats.defense / 50) ** 1.5), rng);
@@ -117,35 +118,39 @@ function boxScore(lineup, pts, sim, rng) {
     assists: asts[i],
     steals: stls[i],
     blocks: blks[i],
-    ...shotLine(p, scored[i], sim, rng)
+    ...shotLine(p, scored[i], sim, rng, mods?.three ?? 1)
   }));
-  return withTurnoversFouls(lines, players, sim);
+  return withTurnoversFouls(lines, players, sim, mods?.toMul ?? 1);
 }
 
 // 턴오버·파울: 기록만 하는 열이다(득점·출전 시간에 영향 없음). 경기 난수(rng)는 쓰지 않고, 이미 정해진 기록에서 뽑은 시드로 따로 굴려
 // 같은 시드의 경기 결과(점수와 박스스코어의 다른 열)가 이 열을 넣기 전과 똑같다.
 // 턴오버는 공을 많이 만지는 선수(득점·어시스트)에게, 패스 능력이 낮은 선수일수록 더 몰린다. 파울은 수비·리바운드 비중이 큰 선수가 많이 한다.
-function withTurnoversFouls(lines, players, sim) {
+function withTurnoversFouls(lines, players, sim, toMul = 1) {
   if (sim.teamTurnovers == null || sim.teamFouls == null) return lines;
   const rng = mulberry32(hashString(lines.map((l) => `${l.id}:${l.points}:${l.rebounds}:${l.assists}:${l.steals}:${l.blocks}:${l.fga}:${l.fta}`).join('|')));
   // 선수마다 타고난 버릇(같은 선수는 늘 같은 값): 능력치가 같아도 턴오버·파울이 잦은 선수와 적은 선수가 있다
   const habit = (kind, id, sd) => Math.exp(sd * normal(mulberry32(hashString(`${kind}:${id}`))));
   const tot = (mean) => Math.max(0, Math.round(mean + 0.9 * Math.sqrt(mean) * normal(rng)));
   const w = (fn) => lines.map((l, i) => Math.max(0.01, l.minutes * fn(players[i], l)));
-  const tos = allocate(tot(sim.teamTurnovers), w((p, l) => ((l.points + 1.3 * l.assists + 1) / Math.max(1, l.minutes) / 0.5) ** 1.6 * (60 / (p.stats.passing + 10)) ** 0.8 * habit('to', l.id, 0.35)), rng);
+  const tos = allocate(tot(sim.teamTurnovers * toMul), w((p, l) => ((l.points + 1.3 * l.assists + 1) / Math.max(1, l.minutes) / 0.5) ** 1.6 * (60 / (p.stats.passing + 10)) ** 0.8 * habit('to', l.id, 0.35)), rng);
   const pfs = allocate(tot(sim.teamFouls), w((p, l) => (p.stats.defense / 50) ** 1.3 * (p.stats.rebound / 50) ** 0.9 * habit('pf', l.id, 0.2)), rng);
   return lines.map((l, i) => ({ ...l, turnovers: tos[i], fouls: pfs[i] }));
 }
 
 /**
  * 한 경기 시뮬레이션 (순수 함수: 같은 입력과 같은 rng 상태면 같은 결과).
- * home / away: { id, lineup: { starters, bench } }
+ * home / away: { id, lineup: { starters, bench }, mods? }
+ * mods(전술·감독·컨디션, src/tactics.mjs·coaching.mjs·condition.mjs): { edge(그 팀 기대 득점에 더하는 점수), pace(두 팀 평균이 기대 득점에 곱해짐),
+ *   three·reb·to·oppTo(박스스코어 기록 열 배수) }. 없거나 모두 중립이면 결과가 mods를 넣기 전과 똑같다(난수를 더 쓰지 않는다).
  */
 export function simulateGame(home, away, baseline, sim, rng) {
   const hr = teamRatings(home.lineup, sim);
   const ar = teamRatings(away.lineup, sim);
-  const hExp = expectedPoints(hr, ar, baseline, sim, true);
-  const aExp = expectedPoints(ar, hr, baseline, sim, false);
+  const hm = home.mods ?? null, am = away.mods ?? null;
+  const pace = hm || am ? ((hm?.pace ?? 1) + (am?.pace ?? 1)) / 2 : 1;
+  const hExp = expectedPoints(hr, ar, baseline, sim, true) * pace + (hm?.edge ?? 0);
+  const aExp = expectedPoints(ar, hr, baseline, sim, false) * pace + (am?.edge ?? 0);
 
   let h = Math.max(40, Math.round(hExp + sim.pointsSd * normal(rng)));
   let a = Math.max(40, Math.round(aExp + sim.pointsSd * normal(rng)));
@@ -163,6 +168,9 @@ export function simulateGame(home, away, baseline, sim, rng) {
     awayPts: a,
     winnerId: h > a ? home.id : away.id,
     overtimes,
-    box: { home: boxScore(home.lineup, h, sim, rng), away: boxScore(away.lineup, a, sim, rng) }
+    box: {
+      home: boxScore(home.lineup, h, sim, rng, hm || am ? { three: hm?.three, reb: hm?.reb, toMul: (hm?.to ?? 1) * (am?.oppTo ?? 1) } : null),
+      away: boxScore(away.lineup, a, sim, rng, hm || am ? { three: am?.three, reb: am?.reb, toMul: (am?.to ?? 1) * (hm?.oppTo ?? 1) } : null)
+    }
   };
 }

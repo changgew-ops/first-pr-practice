@@ -179,6 +179,10 @@ export const TEMPLATES = {
     h: ['모기업 시즌 평가: {team}, 목표 {goalsTotal}개 중 {goalsMet}개 달성', '{season} 모기업 평가 발표… 단장 신뢰도 {trust}점', '{team} 모기업, {season} 시즌 성적표를 공개했다', '{season} 목표 달성도 {goalsMet}/{goalsTotal}, 단장 신뢰도 {trust}점', '모기업이 본 {team}의 {season} 시즌'],
     b: ['{team}의 모기업이 {season} 시즌 평가를 마쳤다. 시즌 초에 제시한 목표 {goalsTotal}개 가운데 {goalsMet}개를 달성했고, 단장 신뢰도는 {trustMove}.', '{season} 시즌 목표 {goalsTotal}개 중 {goalsMet}개가 달성으로 인정됐다. 이에 따라 단장 신뢰도는 {trustMove}.', '모기업은 {season} 시즌 목표({goalsText}) 달성 여부를 평가했다. 결과는 {goalsMet}/{goalsTotal}이고 단장 신뢰도는 {trustMove}.', '{team:은/는} {season} 시즌 모기업 평가에서 {goalsMet}개 목표를 채웠다. 단장 신뢰도는 {trustMove}.']
   },
+  waiver_my: {
+    h: ['{player}, 웨이버 {outcomeShort}… {team}', '웨이버 시장 소식: {player} {outcomeShort}', '{team} {player} 웨이버, {outcomeShort}', '{player}의 웨이버 결과는 {outcomeShort}', '{day}일차 웨이버: {player} {outcomeShort}'],
+    b: ['{statusText}', '{day}일차 웨이버 소식이다. {statusText}', 'KBL 웨이버 절차에 따른 결과다. {statusText}', '{statusText} 규약이 정한 절차를 그대로 밟았다.']
+  },
   injury_my: {
     h: ['{player}, {part:으로/로} {absence}', '{team} {player} 부상… {absence}', '{team}에 부상 악재, {player}의 {part}', '{player} 부상 이탈, {team:은/는} 대안을 찾아야 한다', '{part} 진단 {player}, 한동안 코트를 떠난다'],
     b: ['{team}의 {player:이/가} {day}일차 경기에서 {part} 진단을 받았다. 예상 결장 기간은 {gamesText:이다/다}.', '{player:이/가} {part:으로/로} 이탈한다. 진단 결과 결장 기간은 {gamesText:이다/다}.', '{team:은/는} {day}일차 경기 뒤 {player}의 부상({part})을 확인했다. 예상 결장은 {gamesText:이다/다}.', '{part} 진단을 받은 {player:은/는} {gamesText:을/를} 쉬어야 한다. {team}의 선수단 운영에 변수가 생겼다.']
@@ -349,6 +353,10 @@ export const SENT = {
   inj_lineup: ['부상 선수는 라인업에서 자동으로 빠지고 건강한 선수가 같은 자리에 선다.', '{team:은/는} 남은 선수들로 로테이션을 다시 짜야 한다. 직접 편성한 라인업이라면 대체 선수가 자동으로 들어간다.', '결장하는 동안 출전 시간과 기록은 쌓이지 않고, 라인업은 건강한 선수들로 채워진다.', '당분간 {team}의 라인업은 건강한 선수만으로 구성된다. 복귀하면 원래 편성으로 돌아간다.'],
   inj_back: ['{backDay}일차 경기부터 복귀가 가능하다.', '일정대로라면 {backDay}일차 경기부터 다시 코트에 설 수 있다.', '복귀 가능 시점은 {backDay}일차 경기다.', '{backDay}일차부터는 출전이 가능하다는 계산이다.'],
   inj_kind: ['{kindText} 수준의 부상은 시즌 중 언제든 생길 수 있는 일이다. 이번 일로 선수층의 깊이가 시험대에 올랐다.', '이런 부상은 출전 시간이 길수록 잦아진다. 체력과 나이, 연속 출전이 위험을 조금씩 높인다.', '부상 변수가 생긴 만큼 벤치 자원의 역할이 커졌다. 로스터 관리가 시즌의 변수가 된다.', '시즌이 길어질수록 부상은 순위 싸움의 변수가 된다. 대체 자원을 점검해 둘 시점이다.'],
+  wv_info: ['{pAge}세 {pPos} 선수 {player}의 OVR은 {pOvr}이다.', '{player:은/는} 포지션 {pPos}, 나이 {pAge}세, OVR {pOvr}의 선수다.', '{pPos} 포지션의 {player}({pAge}세, OVR {pOvr})를 둘러싼 움직임이다.', 'OVR {pOvr}의 {pPos} {player}({pAge}세)가 이번 웨이버의 주인공이다.'],
+  wv_rule: ['{ruleText}', '참고로 {ruleText}', '규약은 이렇게 정한다. {ruleText}', '이번 절차의 근거 규정: {ruleText}'],
+  wv_money: ['{moneyText}', '정산은 이렇게 처리된다. {moneyText}', '{moneyText} 자세한 내역은 시즌 결산 장부에 남는다.', '돈 문제는 이렇다. {moneyText}'],
+  wv_next: ['{nextText}', '남은 시즌 {remain}경기, {nextText}', '{nextText} 선수단 운영의 방향이 곧 드러난다.', '시즌은 {remain}경기가 남았다. {nextText}'],
   fs_info: ['{pAge}세 {pPos} 선수 {player}의 OVR은 {pOvr}이다.', '{player:은/는} 포지션 {pPos}, 나이 {pAge}세, OVR {pOvr}의 선수다.', '{pPos} 자리를 보강하는 {player}({pAge}세)는 OVR {pOvr}이다.', 'OVR {pOvr}의 {pPos} {player}({pAge}세)가 선수단에 더해졌다.'],
   fs_contract: ['계약은 연봉 {salary}억에 이번 시즌 포함 {years}년이다. 이미 지난 경기 비율만큼은 보수를 내지 않고 합류한 뒤부터 정산한다.', '연봉 {salary}억은 시즌 정산에서 합류한 뒤의 비율만큼만 지출로 잡힌다. 계약 기간은 이번 시즌을 포함해 {years}년이다.', '조건은 연봉 {salary}억, {years}년(이번 시즌 포함)이다. 보수는 합류한 날부터 계산한다.', '{team}이 낸 연봉 {salary}억은 캡 계산에 바로 들어간다. 지출은 합류 이후의 경기 비율만큼 정산된다.'],
   fs_why: ['시즌 중 영입은 오프시즌 FA에서 계약하지 못한 선수 가운데에서 고른다. 국내 선수 12명의 자리가 차 있으면 먼저 방출이 필요하다.', '시장에 남은 선수는 오프시즌 요구액보다 낮은 조건으로 계약할 수 있다. 최저 연봉 아래로는 내려가지 않는다.', '{team:은/는} 로스터와 캡 여유를 확인한 뒤 영입했다. 소프트캡 초과분은 시즌 말 기금으로 정산된다.', '선수층을 두껍게 하려는 선택이다. 영입 선수도 훈련과 출전 기록이 일반 선수와 똑같이 쌓인다.'],
@@ -441,6 +449,7 @@ const PLAN_REVIEW = [['lead', 'rv_record'], ['lastSeason', 'rv_top', 'rv_leader'
 export const PLAN = {
   injury_my: [['lead', 'inj_status'], ['inj_info', 'inj_lineup'], ['inj_back', 'inj_kind']],
   injury_star: [['lead', 'inj_status'], ['inj_info', 'inj_lineup'], ['inj_back', 'inj_kind']],
+  waiver_my: [['lead', 'wv_info'], ['wv_rule', 'wv_money'], ['wv_next']],
   fa_season: [['lead', 'fs_info'], ['fs_contract', 'fs_why'], ['fs_next']],
   foreign_swap_my: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
   foreign_swap_lg: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
@@ -796,7 +805,7 @@ export function buildNews(src) {
   };
   const fromEntryRoster = (r) => (r ? [
     ...(r.inj ?? []).map(([playerId, teamId, day, games, kind, part, name]) => ({ type: 'injury', playerId, teamId, day, games, kind, part, name })),
-    ...(r.mv ?? []).map((m) => (m[0] === 'fa' ? { type: 'fa', day: m[2], teamId: m[3], name: m[4], salaryEok: m[5], years: m[6], ovr: m[7] } : { type: 'foreign', kind: m[1], day: m[2], teamId: m[3], name: m[4], outName: m[5], usd: m[6], ovr: m[7] }))
+    ...(r.mv ?? []).map((m) => (m[0] === 'wv' ? { type: m[1], day: m[2], teamId: m[3], name: m[4], fromTeamId: m[5], salaryEok: m[6], ovr: m[7], ...(m[8] ? { reason: m[8] } : {}) } : m[0] === 'fa' ? { type: 'fa', day: m[2], teamId: m[3], name: m[4], salaryEok: m[5], years: m[6], ovr: m[7] } : { type: 'foreign', kind: m[1], day: m[2], teamId: m[3], name: m[4], outName: m[5], usd: m[6], ovr: m[7] }))
   ] : []);
   const rosterEvents = (y, label, rows) => {
     const tot = y === sy ? totalDays : games;
@@ -823,6 +832,38 @@ export function buildNews(src) {
       });
     });
   };
+  // 웨이버(src/waivers.mjs): 우리 구단이 공시한 선수, 우리 선수를 다른 구단이 양수하거나 FA로 풀린 결과, 우리가 양수 신청한 결과만 기사로 쓴다
+  const WV_RULE = '규약 제101조는 웨이버 선수를 여러 구단이 원하면 전 시즌 정규 경기 순위의 역순으로 계약 우선권을 주고, 영입한 구단은 30일 안에 그 선수를 다시 웨이버 조치할 수 없다고 정한다.';
+  const waiverEvents = (y, label, rows) => {
+    const tot = y === sy ? totalDays : games;
+    const at = (day, i) => base(y) + day + 0.6 + i * 0.01;
+    const nmOf = (e) => cleanName(e.name ?? '');
+    const J = (w, pair) => `${w}${josa(w, pair)}`;
+    const mineRows = rows.filter((e) => (e.type === 'waive' && e.teamId === my) || (e.type === 'claim' && (e.teamId === my || e.fromTeamId === my)) || (e.type === 'waiver_fa' && e.teamId === my) || (e.type === 'claim_fail' && e.teamId === my));
+    mineRows.slice(0, 6).forEach((e, i) => {
+      const player = nmOf(e);
+      const common = { team: nameOf(my), player, day: e.day, remain: Math.max(0, tot - e.day), ...pInfo(e.playerId ?? '') };
+      let tone = 'neutral', delta = 0, v;
+      if (e.type === 'waive') {
+        const gamesLeft = e.until != null ? e.until - e.day : undefined;
+        v = { outcomeShort: '공시', statusText: `${J(nameOf(my), '이/가')} ${e.day}일차에 ${J(player, '을/를')} 웨이버로 공시했다. ${gamesLeft ? `공시기간은 ${gamesLeft}경기일이고` : '공시기간 동안'} 다른 구단이 남은 계약을 양수할 수 있다.`, ruleText: WV_RULE, moneyText: `남은 계약 ${e.salaryEok != null ? `(연봉 ${fmt1(e.salaryEok)}억)` : ''}은 양수하는 구단이 없으면 해지 비용으로 정산되고, 양수 구단이 나오면 그 구단이 이어받는다.`, nextText: '공시가 끝나면 결과가 새 기사로 전해진다.' };
+      } else if (e.type === 'claim' && e.fromTeamId === my) {
+        tone = 'good'; delta = 0.5;
+        v = { outcomeShort: `${nameOf(e.teamId)} 양수`, statusText: `${J(nameOf(e.teamId), '이/가')} ${e.day}일차에 ${J(nameOf(my), '이/가')} 공시한 ${player}의 남은 계약을 양수했다.`, ruleText: WV_RULE, moneyText: `${J(nameOf(my), '은/는')} 남은 보수를 지급할 의무에서 벗어나고, 공시기간까지의 보수만 정산한다.${e.salaryEok != null ? ` 이어받은 계약은 연봉 ${fmt1(e.salaryEok)}억이다.` : ''}`, nextText: '방출 비용이 사라진 만큼 시즌 자금에 여유가 생겼다.' };
+      } else if (e.type === 'claim') {
+        tone = 'good'; delta = 1;
+        v = { outcomeShort: '양수 성공', statusText: `${J(nameOf(my), '이/가')} ${e.day}일차 공시가 끝나는 시점에 ${J(nameOf(e.fromTeamId), '이/가')} 내놓은 ${player}의 계약을 양수했다.`, ruleText: WV_RULE, moneyText: `${e.salaryEok != null ? `연봉 ${fmt1(e.salaryEok)}억` : '기존 연봉'}에 남은 계약 ${e.yearsLeft ?? '-'}년을 이어받았고, 합류한 뒤의 보수만 낸다.`, nextText: '영입일로부터 30일(약 10경기) 안에는 이 선수를 다시 웨이버 조치할 수 없다.' };
+      } else if (e.type === 'waiver_fa') {
+        v = { outcomeShort: '양수 없음, FA로', statusText: `${J(nameOf(my), '이/가')} 공시한 ${player}${josa(player, '을/를')} 양수하겠다는 구단이 나오지 않았다. ${e.day}일차에 공시가 끝나 FA 시장으로 풀렸다.`, ruleText: WV_RULE, moneyText: '남은 계약은 방출 비용으로 정산된다.', nextText: '시장에 나온 선수는 다른 구단이 FA로 영입할 수 있다.' };
+      } else {
+        tone = 'bad'; delta = -0.5;
+        v = { outcomeShort: '양수 실패', statusText: `${J(nameOf(my), '이/가')} 신청한 ${player} 양수가 이뤄지지 않았다. ${e.reason ?? ''}`.trim(), ruleText: WV_RULE, moneyText: '양수에 실패했으므로 추가로 나가는 보수는 없다.', nextText: '다른 선수나 시즌 중 FA 시장에서 빈자리를 채우는 방법이 남아 있다.' };
+      }
+      add({ key: `${y}:wv:${e.type}:${e.playerId}:${e.day}:${i}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 웨이버`, kind: 'waiver_my', scope: 'move', tags: ['우리 팀', '웨이버'], tone, delta, comments: 2, vars: { ...common, ...v } });
+    });
+  };
+  if (cur.stage !== 'offseason') waiverEvents(sy, seasonLabel, cur.rosterLog ?? []);
+  log.forEach((entry) => { if (entry.roster) waiverEvents(entry.startYear, entry.season, fromEntryRoster(entry.roster)); });
   if (cur.stage !== 'offseason') rosterEvents(sy, seasonLabel, (cur.rosterLog ?? []).filter((e) => e.type !== 'return' && e.type !== 'release'));
   log.forEach((entry) => { if (entry.roster) rosterEvents(entry.startYear, entry.season, fromEntryRoster(entry.roster)); });
 

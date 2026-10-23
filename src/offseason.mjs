@@ -19,6 +19,7 @@ import { releaseCost, extensionCheck, extendedPlayer } from './contracts.mjs';
 import { cardPlayer, cardOvr, weightedSample, ovrWeight, foreignPriceUsd, careerHighIndex } from './cards.mjs';
 import { mulberry32 } from './rng.mjs';
 import { rulesFor } from './economy.mjs';
+import { coachingOn, staffOf, devBonus } from './coaching.mjs';
 
 const PHYSICAL = ['athletic', 'stamina'];
 const SKILLS = ['shooting', 'passing', 'defense', 'rebound'];
@@ -54,9 +55,10 @@ function withRatings(p, stats, extra = {}) {
  * 나이를 한 살 올리고 성장·노쇠를 적용한 새 선수 객체를 돌려준다.
  *  - 성장: 나이가 어릴수록·잠재력 여유가 클수록 크게(aging.growthFactors, growthGapDivisor, growthMaxStep)
  *  - 출전 경험: 지난 시즌 경기당 출전 시간(p.lastMin / p.lastGp)이 길수록 어린 선수의 성장이 커진다(aging.playingTime). 기록이 없으면 보너스 없음
+ *  - 육성 가산: devBonus(감독 육성·코치 능력치, src/coaching.mjs)만큼 성장폭 배수가 커지거나 작아진다(난수는 더 쓰지 않는다)
  *  - 깨달음: 낮은 확률로 한 능력치가 크게 오른다(aging.breakthrough). next.breakthrough에 [{ stat, from, to }]를 남기고, runOffseason이 보고서로 옮긴 뒤 지운다
  */
-export function progressPlayer(p, rules, rng) {
+export function progressPlayer(p, rules, rng, devBonus = 0) {
   const a = rules.aging;
   const age = p.age + 1;
   const stats = { ...p.stats };
@@ -74,7 +76,7 @@ export function progressPlayer(p, rules, rng) {
     let delta = 0;
     if (age <= a.growthMaxAge) {
       if (gap > 0) {
-        const maxStep = clamp(1 + gap / a.growthGapDivisor, 1, a.growthMaxStep) * ageFactor * (1 + exp);
+        const maxStep = clamp(1 + gap / a.growthGapDivisor, 1, a.growthMaxStep) * ageFactor * (1 + exp + devBonus); // devBonus: 감독·코치진의 육성 가산(src/coaching.mjs)
         delta = Math.round(maxStep * (a.growthFloor + (1 - a.growthFloor) * rng()));
       }
     } else if (age < a.physicalDeclineFrom) {
@@ -159,10 +161,12 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   report.before = { avgOvr: avg(league.players, (p) => p.ovr), avgAge: avg(league.players, (p) => p.age) };
 
   // 1) 노화·성장 + 은퇴
+  const staffNow = coachingOn(rules) ? staffOf(league, teamData, rules) : null; // 구단별 감독·코치진(없으면 기본 스태프)
+  const devBonusOf = (teamId) => (staffNow?.[teamId] ? devBonus(staffNow[teamId], rules) : 0);
   const progressAll = (list, label) => {
     const out = [];
     for (const old of list) {
-      const p = progressPlayer(old, rules, rng);
+      const p = progressPlayer(old, rules, rng, devBonusOf(old.teamId));
       const quits = p.origin === 'foreign' ? p.age > rules.aging.foreignMaxAge
         : p.origin === 'asia' ? p.age > rules.asiaQuota.maxAge
         : rng() < retireProbability(p.age, p.ovr, rules.aging);

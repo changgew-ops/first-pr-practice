@@ -1,0 +1,6 @@
+/* 웨이버 공시 패널 (wv- 접두). 표·버튼은 시즌 중 FA 패널(mk-)과 같은 모양을 쓴다 */
+.wv-panel .table-wrap { margin-top: 4px; }
+.wv-why { display: inline-block; max-width: 340px; font-size: 12px; color: var(--bad, #b42323); line-height: 1.35; }
+.wv-recent ul { margin: 0; padding-left: 18px; }
+.wv-recent li { line-height: 1.5; }
+@media (max-width: 640px) { .wv-why { max-width: 200px; } }

@@ -19,14 +19,14 @@ export const trainingThreshold = (stat, cfg) => Math.max(4, cfg.thresholdBase + 
 
 /**
  * 훈련 sessions회 반영. 반환: 새 선수 객체 (원본은 바꾸지 않음)
- * p.xp에 능력치별 남은 경험치를 저장한다.
+ * p.xp에 능력치별 남은 경험치를 저장한다. gainMul: 코치 능력치에 따른 성장 배수(기본 1).
  */
-export function trainPlayer(p, focus, sessions, rules) {
+export function trainPlayer(p, focus, sessions, rules, gainMul = 1) {
   if (!STAT_KEYS.includes(focus)) throw new Error(`알 수 없는 능력치: ${focus}`);
   const cfg = rules.training;
   const stats = { ...p.stats };
   const xp = { ...(p.xp ?? {}) };
-  const gain = sessions * cfg.baseGain * ageMultiplier(p.age, cfg) * potentialMultiplier(p, cfg);
+  const gain = sessions * cfg.baseGain * ageMultiplier(p.age, cfg) * potentialMultiplier(p, cfg) * gainMul; // gainMul: 담당 코치의 능력치 배수(src/coaching.mjs)
   xp[focus] = (xp[focus] ?? 0) + gain;
   while (stats[focus] < rules.stats.max && xp[focus] >= trainingThreshold(stats[focus], cfg)) {
     xp[focus] -= trainingThreshold(stats[focus], cfg);

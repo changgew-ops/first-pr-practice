@@ -15,7 +15,10 @@ export function releaseLines(player, check, funds) {
   lines.push({ tone: '', text: `남은 계약 ${c.years}년 × 연봉 ${eok(c.salaryEok)} → 해지 비용 ${eok(c.severance)}을(를) 시즌 정산에서 지급합니다${frac}. 구단 자금 ${eok(funds)} → ${eok(funds - c.severance)}` });
   if (c.earned > 0) lines.push({ tone: '', text: `이미 뛴 만큼의 보수 ${eok(c.earned)}은 평소 연봉 지출로 처리됩니다.` });
   if (funds - c.severance < 0) lines.push({ tone: 'warn', text: '구단 자금이 마이너스가 됩니다.' });
-  lines.push({ tone: '', text: `연봉 ${eok(c.salaryEok)}은 샐러리캡 계산에서 바로 빠지고, 선수는 FA 시장으로 나갑니다(원소속 보상은 없고 다음 오프시즌 FA 시장에서 AI 구단이나 우리가 다시 영입할 수 있습니다).` });
+  if (check.waiverGames) {
+    lines.push({ tone: '', text: `연봉 ${eok(c.salaryEok)}은 샐러리캡 계산에서 바로 빠지고, 선수는 웨이버로 공시됩니다. 공시기간 ${check.waiverGames}경기일 동안 다른 구단이 남은 계약을 양수할 수 있고(전 시즌 순위의 역순으로 우선권, 규약 제101조), 양수하는 구단이 나오면 위 해지 비용은 사라지고 공시기간까지의 보수만 부담합니다.` });
+    lines.push({ tone: '', text: '웨이버 공시 후 아무도 양수하지 않으면 FA 시장으로 나가고(원소속 보상은 없습니다) 위 해지 비용을 그대로 냅니다.' });
+  } else lines.push({ tone: '', text: `연봉 ${eok(c.salaryEok)}은 샐러리캡 계산에서 바로 빠지고, 선수는 FA 시장으로 나갑니다(원소속 보상은 없고 다음 오프시즌 FA 시장에서 AI 구단이나 우리가 다시 영입할 수 있습니다).` });
   if (check.warning) lines.push({ tone: 'warn', text: check.warning });
   return lines;
 }
@@ -59,7 +62,7 @@ export function openReleaseDialog(ctx, player, { onDone = () => ctx.refresh() } 
       h('button', { class: 'btn danger', type: 'button', disabled: !check.ok, onclick: () => {
         const r = s.releasePlayer(player.id);
         if (!r.ok) { ctx.toast(r.errors[0]); return; }
-        close(); ctx.toast(`${player.name} 방출 — 해지 비용 ${eok(r.cost.severance)}`); onDone(r);
+        close(); ctx.toast(check.waiverGames ? `${player.name} 웨이버 공시 — 양수 구단이 없으면 해지 비용 ${eok(r.cost.severance)}` : `${player.name} 방출 — 해지 비용 ${eok(r.cost.severance)}`); onDone(r);
       } }, '방출 확정')
     ]);
 }
@@ -109,7 +112,7 @@ export function openExtendDialog(ctx, player, { onDone = () => ctx.refresh() } =
 /** 선수가 "우리 구단 국내 선수"인지, 아니라면 버튼을 못 쓰는 이유(순수). 반환: null이면 쓸 수 있음 */
 export function contractBlock(session, p) {
   if (p.teamId !== session.managerId) return '우리 구단 선수가 아닙니다';
-  if (p.origin !== 'domestic') return p.origin === 'foreign' ? '외국인 선수는 방출·연장 규정이 따로 있어 아직 할 수 없습니다' : '아시아쿼터 선수는 아직 할 수 없습니다';
+  if (p.origin !== 'domestic') return p.origin === 'foreign' ? '외국인 선수는 방출·연장 규정이 따로 있어 아직 할 수 없습니다' : '아시아쿼터 선수의 방출·교체는 제공된 규정에 절차가 없어 게임에서 지원하지 않습니다';
   if (session.stage === 'offseason') return '오프시즌에는 첫 단계(방출)와 재계약 단계(연장)에서 합니다';
   if (session.stage === 'playoffs') return '플레이오프 중에는 할 수 없습니다';
   return null;
