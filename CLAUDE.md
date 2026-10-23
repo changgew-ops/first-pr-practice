@@ -21,6 +21,7 @@
 4. 선수 사진·실제 초상은 가져오지 않는다. KBL 사이트(www.kbl.or.kr)는 이 환경에서 막혀 있다. 사용자가 보내는 화면 녹화로 읽는다.
 5. 사용자가 요청하기 전에는 PR을 만들지 않는다. 개발 브랜치는 `claude/tender-pascal-rqifwe`. 커밋 메시지 끝에 사용자 지정 attribution 줄을 붙인다.
 6. 병렬로 일할 때(포크·서브에이전트)는 **파일 단위로 나눈다**: 각자 자기 시즌 파일 하나만 만들고, `src/`·`tools/`·`tests/`·생성물·다른 시즌 파일은 건드리지 않으며, 커밋과 `npm run build:history`는 맡은 한 사람(조정자)만 한다.
+7. **픽셀 오피스는 항상 같이 갱신한다.** 사용자가 주문하거나 에이전트(포크·서브에이전트)를 투입·완료할 때마다 오피스 artifact(https://claude.ai/artifact/HbVEtrL8vYJGQ3gzvByX5r)의 db를 `ArtifactData`로 고친다: `agents/<id>`(name, role, color, look, state `working|done|idle`, status, order, items[{label, code(영문 6자 이하), state `done|work|wait|fix`}]), `feed/<id>`(at 밀리초, kind `order|start|done|note`, text), `office/main`(headline, detail, say[], updatedAt). 주문을 받으면 `order` 기록과 headline, 에이전트를 투입하면 `start`와 책상 배정(state `working`), 보고를 받으면 `done`과 state `done`으로 바꾼다. 여러 문서는 batch 한 번으로. 페이지를 다시 게시할 필요는 없다.
 
 ## 폴더
 - `data/history/` 시즌 원본·생성물(순위, 플레이오프, 라운드, 상대전적, 수상, 우승팀, 타이틀 스폰서, 이벤트, 드래프트). 형식은 각 README.
