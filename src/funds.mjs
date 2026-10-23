@@ -24,13 +24,41 @@ const round2 = (v) => Math.round(v * 100) / 100;
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const MAN = 0.0001; // 1만 원 = 0.0001억 원
 
-/** 구단 인기 지수(1이 리그 평균): 전통 점수와 올해 승률에서 규칙으로 얻는다. 구단별 관중 수를 따로 정해 두지 않는다 */
-export function popularity(prestigeScore, winPct, rules) {
+// ---------- 관중 상태: 구단별 팬 기반(fan)과 리그 전체 관중 규모(index) ----------
+// 2023-24 KBL 집계(data/history/attendance-2023-24.json)에서 구단별 팬 기반의 출발값을 정하고(rules.revenue.gate.fanBase),
+// 해마다 성적(승률·플레이오프)에 따라 ±하며 원래 값 쪽으로 서서히 돌아온다. 리그 전체 규모는 평균회귀 + 작은 무작위 변동이다.
+// 상태는 league.att = { index, fan: { [구단 id]: 값 } }. 없으면(이전 저장) 출발값으로 만든다.
+export function initialAttendance(teamData, rules) {
   const g = rules.revenue.gate;
-  return clamp(1 + g.prestigeSpread * (prestigeScore - g.prestigeCenter) + g.winPctSpread * (winPct - 0.5), g.minFactor, g.maxFactor);
+  return { index: 1, fan: Object.fromEntries(teamData.map((t) => [t.id, g.fanBase?.[t.id] ?? g.fanBaseDefault])) };
 }
 
-/** 관중 한 명이 낸 평균 입장료(만 원): 좌석 등급별 가격대 안에서 인기가 높을수록 비싼 쪽, 유료 비율을 곱한다. priceMul: 플레이오프 가격 배수 */
+/** 한 시즌이 끝난 뒤의 관중 상태: 구단별 팬 기반(승률·플레이오프 성적으로 ±, 출발값 쪽으로 복귀)과 리그 규모 */
+export function advanceAttendance(att, { standings, playoffs, teamData, season }, rules) {
+  const g = rules.revenue.gate, up = g.fanGrowth;
+  const fan = {};
+  for (const t of teamData) {
+    const rec = standings.find((r) => r.id === t.id);
+    const winPct = rec ? rec.wins / Math.max(1, rec.wins + rec.losses) : 0.5;
+    const stage = playoffStage(t.id, playoffs);
+    const growth = clamp(up.perWinPct * (winPct - 0.5) + (up.stage[stage ?? 'none'] ?? 0), -up.maxDown, up.maxUp);
+    const anchor = g.fanBase?.[t.id] ?? g.fanBaseDefault;
+    const next = att.fan[t.id] * (1 + growth) + g.fanReversion * (anchor - att.fan[t.id]);
+    fan[t.id] = round2(clamp(next, anchor * g.fanMin, anchor * g.fanMax));
+  }
+  // 리그 전체 규모: 평균회귀 + 작은 변동(같은 시즌 결과면 같은 값). 해마다 ±몇 %가 현실적 범위(과거 표의 연간 변동폭 근거는 rules.revenue._note)
+  const noise = mulberry32(hashString(`att-league:${season}:${standings.map((r) => `${r.id}${r.wins}`).join(',')}`))();
+  const index = clamp(att.index + g.leagueReversion * (1 - att.index) + g.leagueDrift + (noise - 0.5) * 2 * g.leagueNoise, g.leagueMin, g.leagueMax);
+  return { index: Math.round(index * 1000) / 1000, fan };
+}
+
+/** 구단 인기 지수(그 해의 관중 규모 배수): 팬 기반 × 올해 승률 효과. 구단별 관중 수를 따로 정해 두지 않는다 */
+export function popularity(fan, winPct, rules) {
+  const g = rules.revenue.gate;
+  return clamp(fan * (1 + g.inSeasonWin * (winPct - 0.5)), g.minFactor, g.maxFactor);
+}
+
+/** 관중 한 명이 낸 평균 입장료(만 원): 좌석 등급별 가격대와 비중, 유료 비율. priceMul: 플레이오프 가격 배수 */
 export function ticketYieldMan(pop, rules, priceMul = 1) {
   const g = rules.revenue.gate;
   const t = clamp(0.5 + g.priceTilt * (pop - 1), 0.15, 0.85);
@@ -39,12 +67,12 @@ export function ticketYieldMan(pop, rules, priceMul = 1) {
 }
 
 /** 홈 경기 한 번의 관중: 같은 입력이면 같은 값. venue 수용 인원이 있으면 상한(매진). 반환 { attendance, demand, sellout } */
-export function attendanceFor({ season, teamId, key, pop, oppPop = 1, weight = 1, capacity = null }, rules) {
+export function attendanceFor({ season, teamId, key, pop, oppPop = 1, weight = 1, capacity = null, scale = 1 }, rules) {
   const g = rules.revenue.gate;
   const rng = mulberry32(hashString(`${season}:${teamId}:att:${key}`));
   const day = 1 + (rng() - 0.5) * 2 * g.dayJitter; // 요일·날씨 같은 경기별 변동
   const opp = 1 + g.oppSpread * (oppPop - 1);
-  const demand = g.leagueAvgAttendance * pop * day * opp * weight;
+  const demand = g.leagueAvgAttendance * scale * pop * day * opp * weight;
   const attendance = Math.round(capacity != null ? Math.min(capacity, demand) : demand);
   return { attendance, demand: Math.round(demand), sellout: capacity != null && demand >= capacity };
 }
@@ -63,27 +91,29 @@ function playoffHomeGames(teamId, playoffs) {
   return out;
 }
 
-/** 수입 계산(억 원). 반환: { parts: { gate, playoffGate, broadcast, sponsor, merch, playoffBonus }, revenue, attendance: {…} } */
+/** 수입 계산(억 원). ctx.att: 관중 상태(없으면 출발값). 반환: { parts: { gate, playoffGate, broadcast, sponsor, merch, playoffBonus }, revenue, attendance: {…} } */
 export function revenueOf(teamId, ctx, rules) {
   const { team, teamData, rec, stage, playoffs, prestige, season = 0 } = ctx;
+  const att = ctx.att ?? initialAttendance(teamData, rules);
   const f = rules.transactions.funds, rv = rules.revenue;
   const score = prestige?.[teamId]?.score ?? 0.5;
   const winPct = rec.wins / Math.max(1, rec.wins + rec.losses);
-  const pop = popularity(score, winPct, rules);
+  const pop = popularity(att.fan[teamId] ?? 1, winPct, rules);
   const cap = capacityOf(team);
-  const popOf = (id) => popularity(prestige?.[id]?.score ?? 0.5, 0.5, rules);
+  const meanFan = Object.values(att.fan).reduce((s, v) => s + v, 0) / Math.max(1, Object.keys(att.fan).length);
+  const popOf = (id) => (att.fan[id] ?? 1) / meanFan;
   const yieldMan = ticketYieldMan(pop, rules);
   let total = 0, sellouts = 0, gate = 0;
   const games = homeOpponents(teamId, teamData, rules);
   games.forEach((opp, i) => {
-    const a = attendanceFor({ season, teamId, key: `r${i}`, pop, oppPop: popOf(opp), capacity: cap }, rules);
+    const a = attendanceFor({ season, teamId, key: `r${i}`, pop, oppPop: popOf(opp), capacity: cap, scale: att.index }, rules);
     total += a.attendance; if (a.sellout) sellouts++;
     gate += a.attendance * yieldMan * MAN;
   });
   let playoffGate = 0, poGames = 0, poPeople = 0;
   for (const g of playoffHomeGames(teamId, playoffs)) {
     const w = rv.gate.playoff[g.round === '챔피언결정전' ? '결승' : g.round] ?? rv.gate.playoff['6강'];
-    const a = attendanceFor({ season, teamId, key: `p${g.key}`, pop, weight: w.attendance, capacity: cap }, rules);
+    const a = attendanceFor({ season, teamId, key: `p${g.key}`, pop, weight: w.attendance, capacity: cap, scale: att.index }, rules);
     playoffGate += a.attendance * ticketYieldMan(pop, rules, w.price) * MAN;
     poPeople += a.attendance; poGames++; if (a.sellout) sellouts++;
   }
@@ -100,21 +130,22 @@ export function revenueOf(teamId, ctx, rules) {
     parts, revenue,
     attendance: {
       avg: Math.round(total / games.length), total, homeGames: games.length, sellouts, capacity: cap,
-      occupancy: cap ? round2(total / games.length / cap) : null, yieldMan: round2(yieldMan), popularity: round2(pop),
+      occupancy: cap ? round2(total / games.length / cap) : null, yieldMan: round2(yieldMan), popularity: round2(pop), fan: round2(att.fan[teamId] ?? 1), leagueIndex: round2(att.index),
       playoffGames: poGames, playoffAvg: poGames ? Math.round(poPeople / poGames) : null
     }
   };
 }
 
-/** 시즌 정산. 반환: { funds, ledger } (ledger = 구단별 수입·지출 내역: revenue, parts, attendance, payroll, penalty, net) */
-export function settleSeason(funds, players, standings, playoffs, teamData, rules, prestige = null, season = 0) {
+/** 시즌 정산. 반환: { funds, ledger, att } (ledger = 구단별 수입·지출 내역: revenue, parts, attendance, payroll, penalty, net. att = 다음 시즌 관중 상태) */
+export function settleSeason(funds, players, standings, playoffs, teamData, rules, prestige = null, season = 0, att = null) {
   const f = rules.transactions.funds;
   const next = { ...funds };
   const ledger = {};
+  const state = att ?? initialAttendance(teamData, rules);
   for (const t of teamData) {
     const rec = standings.find((s) => s.id === t.id);
     const stage = playoffStage(t.id, playoffs);
-    const rev = revenueOf(t.id, { team: t, teamData, rec, stage, playoffs, prestige, season }, rules);
+    const rev = revenueOf(t.id, { team: t, teamData, rec, stage, playoffs, prestige, season, att: state }, rules);
     const domestic = payrollEok(players, t.id);
     const payroll = domestic + asiaPayrollEok(players, t.id) + foreignPayrollUsd(players, t.id) * f.foreignUsdToEok;
     const penalty = softCapPenaltyEok(domestic, rules);
@@ -122,15 +153,15 @@ export function settleSeason(funds, players, standings, playoffs, teamData, rule
     next[t.id] = round2(next[t.id] + net);
     ledger[t.id] = { revenue: rev.revenue, parts: rev.parts, attendance: rev.attendance, payroll: round2(payroll), penalty, net: round2(net) };
   }
-  return { funds: next, ledger };
+  return { funds: next, ledger, att: advanceAttendance(state, { standings, playoffs, teamData, season }, rules) };
 }
 
 /** 지금 상태로 본 이번 시즌 예상 수입(홈 화면용). wins·losses는 지금까지의 성적(없으면 5할), stage는 아직 모르면 null */
-export function estimateRevenue(teamId, { teamData, standings, prestige, season, stage = null }, rules) {
+export function estimateRevenue(teamId, { teamData, standings, prestige, season, stage = null, att = null }, rules) {
   const rec = standings?.find((s) => s.id === teamId) ?? { wins: 0, losses: 0 };
   const played = rec.wins + rec.losses;
   const r = played >= 6 ? rec : { wins: 1, losses: 1 };
-  return revenueOf(teamId, { team: teamData.find((t) => t.id === teamId), teamData, rec: r, stage, playoffs: null, prestige, season }, rules);
+  return revenueOf(teamId, { team: teamData.find((t) => t.id === teamId), teamData, rec: r, stage, playoffs: null, prestige, season, att }, rules);
 }
 
 /** 구단 사이 현금 이동 (보상금 등) */

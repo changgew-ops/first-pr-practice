@@ -21,6 +21,8 @@ export const STAT_COLS = [
   { key: 'min', label: '출전', title: '출전 시간(분)', kind: 'min', calc: (t) => t.min },
   { key: 'pts', label: '득점', title: '득점', kind: 'cnt', calc: (t) => t.pts, bar: true },
   { key: 'reb', label: '리바', title: '리바운드', kind: 'cnt', calc: (t) => t.reb, bar: true },
+  { key: 'oreb', label: '공R', title: '공격 리바운드', kind: 'cnt', calc: (t) => t.oreb },
+  { key: 'dreb', label: '수R', title: '수비 리바운드', kind: 'cnt', calc: (t) => t.dreb },
   { key: 'ast', label: '어시', title: '어시스트', kind: 'cnt', calc: (t) => t.ast, bar: true },
   { key: 'stl', label: '스틸', title: '스틸', kind: 'cnt', calc: (t) => t.stl, bar: true },
   { key: 'blk', label: '블록', title: '블록', kind: 'cnt', calc: (t) => t.blk, bar: true },
@@ -213,4 +215,39 @@ export function formatTeamValue(v, key, mode = 'avg') {
   if (key === 'diff') return `${v > 0 ? '+' : ''}${mode === 'avg' ? v.toFixed(1) : Math.round(v)}`;
   if (key === 'pa') return mode === 'avg' ? v.toFixed(1) : String(Math.round(v));
   return formatValue(v, key, mode);
+}
+
+// ---------- 집계: 게임에서 이미 끝난 시즌(저장된 선수 줄) ----------
+/**
+ * 게임 로그의 시즌 결과(entry.lines: 선수별 한 줄, entry.standings: 순위표)에서 기록을 모은다.
+ * 줄의 앞 7칸(경기·출전·득점·리바·어시·스틸·블록)은 모든 저장에 있고, 뒤 7칸(야투·3점·자유투 성공/시도, 시즌 끝 소속)은 새 저장에만 있다 — 없으면 null.
+ * 구단 기록: 득점·실점·승패는 순위표(정확), 나머지는 선수 줄의 합(시즌 중 이적한 선수는 시즌 끝 소속에 합산되어 조금 어긋날 수 있다).
+ */
+export function aggregateLines(entry) {
+  const leaderTeam = new Map((entry.leaders ?? []).map((l) => [l.id, l.teamId]));
+  const players = Object.entries(entry.lines ?? {}).map(([id, l]) => {
+    const full = l.length >= 14;
+    const { base, label } = splitCardName(entry.playerNames?.[id] ?? id);
+    const teamId = (full ? l[13] : null) ?? leaderTeam.get(id) ?? null;
+    return {
+      id, name: base, card: label, teamId, teamIds: teamId ? [teamId] : [],
+      gp: l[0], min: l[1], pts: l[2], reb: l[3], oreb: null, dreb: null, ast: l[4], stl: l[5], blk: l[6],
+      fgm: full ? l[7] : null, fga: full ? l[8] : null, tpm: full ? l[9] : null, tpa: full ? l[10] : null, ftm: full ? l[11] : null, fta: full ? l[12] : null, to: null, pf: null
+    };
+  });
+  const teams = (entry.standings ?? []).map((s) => {
+    const mine = players.filter((p) => p.teamId === s.id);
+    const sum = (k) => (mine.length && mine.every((p) => p[k] != null) ? mine.reduce((a, p) => a + p[k], 0) : null);
+    return {
+      id: s.id, gp: s.wins + s.losses, w: s.wins, l: s.losses, pts: s.pointsFor ?? sum('pts'), pa: s.pointsAgainst ?? null,
+      min: sum('min'), reb: sum('reb'), oreb: null, dreb: null, ast: sum('ast'), stl: sum('stl'), blk: sum('blk'),
+      fgm: sum('fgm'), fga: sum('fga'), tpm: sum('tpm'), tpa: sum('tpa'), ftm: sum('ftm'), fta: sum('fta'), to: null, pf: null
+    };
+  });
+  return { players, teams, teamsEstimated: false };
+}
+
+/** 이 열에 값이 하나라도 있는가(오래된 시즌은 턴오버·파울이 모두 0으로 기록된 경우가 있어 0만 있으면 없는 것으로 본다) */
+export function hasData(rows, key) {
+  return rows.some((r) => { const v = valueOf(r, key, 'total'); return v != null && v !== 0; });
 }

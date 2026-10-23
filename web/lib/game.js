@@ -63,8 +63,9 @@ export function playYear(game, data) {
   return { ...game, league: out.league, log: [...game.log, summarizeYear(game, data, season, out)] };
 }
 
-const line = (t) => [t.games, t.minutes, t.points, t.rebounds, t.assists, t.steals, t.blocks];
-export const LINE_KEYS = ['games', 'minutes', 'points', 'rebounds', 'assists', 'steals', 'blocks'];
+// 선수 시즌 기록 한 줄: 앞 7칸은 예전부터(careerLines가 읽는다), 뒤 7칸(야투·3점·자유투 성공/시도와 시즌 끝 소속)은 리그 화면의 전체 기록용. 이전 저장에는 앞 7칸만 있다
+const line = (t, teamId) => [t.games, t.minutes, t.points, t.rebounds, t.assists, t.steals, t.blocks, t.fgm ?? 0, t.fga ?? 0, t.tpm ?? 0, t.tpa ?? 0, t.ftm ?? 0, t.fta ?? 0, teamId ?? null];
+export const LINE_KEYS = ['games', 'minutes', 'points', 'rebounds', 'assists', 'steals', 'blocks', 'fgm', 'fga', 'tpm', 'tpa', 'ftm', 'fta', 'teamId'];
 
 function summarizeYear(game, data, season, out) {
   const entry = summarizeSeason(game, data, season, { result: out.result, totals: out.totals, seasonPlayers: out.seasonPlayers }, out.report.ledger);
@@ -77,7 +78,7 @@ export function summarizeSeason(game, data, season, finished, ledger) {
   const my = game.managerId;
   const names = new Map(seasonPlayers.map((p) => [p.id, p]));
   const lines = {};
-  for (const [id, t] of totals) if (names.has(id)) lines[id] = line(t);
+  for (const [id, t] of totals) if (names.has(id)) lines[id] = line(t, names.get(id).teamId);
   const leaders = [...totals.entries()].filter(([id, t]) => names.has(id) && t.games >= 20)
     .map(([id, t]) => ({ id, name: names.get(id).name, teamId: names.get(id).teamId, games: t.games, ppg: t.points / t.games, rpg: t.rebounds / t.games, apg: t.assists / t.games, spg: t.steals / t.games, bpg: t.blocks / t.games }));
   // 저장 크기를 줄이려고 부문별 상위 10명(합집합)만 남긴다. 화면은 부문별 상위 7명만 보여 준다
