@@ -27,22 +27,33 @@ const REPORTERS = [
 const COMMENT_TEMPLATES = {
   power: [
     '{team}의 전력이 한 수 위다. 주전과 벤치 모두 리그 상위권이라 긴 레이스에서 유리하다.',
-    '숫자가 말해 준다. {team}은 라인업 평균 능력치가 가장 안정적이다.',
-    '{star}를 중심으로 한 {team}의 짜임새가 가장 좋아 보인다.'
+    '숫자가 말해 준다. 라인업 평균 능력치가 가장 안정적인 팀은 {team}.',
+    '{team}의 짜임새가 가장 좋아 보인다. 중심에는 {star}.',
+    '약점이 가장 적은 팀을 꼽으라면 {team}이다. 54경기를 버티는 힘이 다르다.',
+    '{star}가 이끄는 {team}, 라인업만 놓고 보면 리그에서 가장 완성도가 높다.',
+    '냉정하게 전력만 비교했다. {team}이 앞서 있다.'
   ],
   tradition: [
-    '우승 DNA는 쉽게 사라지지 않는다. 큰 경기 경험이 많은 {team}을 꼽았다.',
-    '전통의 힘을 믿는다. {team}은 위기 때 버티는 법을 안다.',
-    '플레이오프는 경험 싸움이다. 그런 면에서 {team}이 앞선다.'
+    '우승 DNA는 쉽게 사라지지 않는다. 큰 경기 경험이 많은 팀, {team}을 꼽았다.',
+    '전통의 힘을 믿는다. 위기 때 버티는 법을 아는 팀은 {team}.',
+    '플레이오프는 경험 싸움이다. 그 점에서 앞서는 팀은 {team}.',
+    '{team}의 역사가 말해 준다. 단기전에서는 이름값이 곧 자신감이다.',
+    '숫자 밖의 요소, 우승 경험까지 더하면 {team}이 가장 앞선다.',
+    '큰 무대에서 흔들리지 않는 팀이라면 {team}. 올해도 그럴 것이다.'
   ],
   foreign: [
-    '외국 선수 활약이 변수인데 {team}의 구성이 가장 낫다. {star}가 시즌을 끌고 갈 것이다.',
-    '외국 선수 복이 있는 {team}이 한 발 앞선다고 봤다.',
-    '{team}은 외국 선수 두 명의 합이 좋다. 우승 후보로 충분하다.'
+    '외국 선수 활약이 변수인데 {team}의 구성이 가장 낫다. 시즌을 끌고 갈 선수는 {star}.',
+    '외국 선수 복이 있는 팀, {team}이 한 발 앞선다고 봤다.',
+    '외국 선수 두 명의 합이 좋은 팀은 {team}. 우승 후보로 충분하다.',
+    '코트를 지배하는 외국 선수를 가진 {team}이 시즌 내내 유리하다.',
+    '{team}의 외국 선수 조합은 리그 최고 수준이다. {star}와의 호흡도 좋다.',
+    '결국 외국 선수 싸움이다. 그 부분에서 {team}에 점수를 줬다.'
   ],
   depth: [
     '한두 명에 기대지 않는 {team}의 선수층이 시즌 후반에 힘을 낼 것이다.',
-    '부상이 변수지만 대체 자원이 탄탄한 {team}이 안전한 선택이다.'
+    '부상이 변수지만 대체 자원이 탄탄한 팀, {team}이 안전한 선택이다.',
+    '뚜렷한 우세 팀이 없어 보인다. 그래서 가장 균형 잡힌 {team}을 골랐다.',
+    '올해는 혼전이다. 그래도 한 번쯤 웃을 팀을 꼽는다면 {team}.'
   ]
 };
 
@@ -72,10 +83,10 @@ export function seriesWinProb(p, bestOf) {
   return sum;
 }
 
-/** 확률 → 가상 배당(소수 한 자리): 1 / (확률 × (1 + 마진)), 하한 minOdds */
-export function oddsOf(prob, { margin, minOdds }) {
-  if (!(prob > 0)) return null;
-  return round(Math.max(minOdds, 1 / (prob * (1 + margin))), 1);
+/** 확률 → 가상 배당(소수 한 자리): 1 / (확률 × (1 + 마진)), 하한 minOdds·상한 maxOdds(화면에서 "99배↑") */
+export function oddsOf(prob, { margin, minOdds, maxOdds = 99 }) {
+  if (!(prob > 0)) return maxOdds;
+  return round(clamp(1 / (prob * (1 + margin)), minOdds, maxOdds), 1);
 }
 
 /**
@@ -133,6 +144,7 @@ export function reporterPoll(rows, { cfg, seedKey, names }) {
   const nameOf = (id) => names[id] ?? id;
   const votes = Object.fromEntries(rows.map((r) => [r.id, { title: 0, final: 0, playoff: 0 }]));
   const reporters = [];
+  const usedLines = new Set();
   for (let i = 0; i < Math.min(cfg.reporters, REPORTERS.length); i++) {
     const rep = REPORTERS[i];
     const rng = mulberry32(hashString(`poll:${seedKey}:${rep.name}`));
@@ -145,7 +157,12 @@ export function reporterPoll(rows, { cfg, seedKey, names }) {
     const best = Object.entries(top.parts).sort((a, b) => b[1] - a[1])[0];
     const reason = best[1] > 0.3 ? best[0] : 'depth';
     const pool = COMMENT_TEMPLATES[reason];
-    const line = pool[Math.floor(rng() * pool.length)].replaceAll('{team}', nameOf(top.r.id)).replaceAll('{star}', top.r.star ?? '에이스');
+    // 같은 이유의 코멘트가 겹치지 않게, 앞 기자들이 쓰지 않은 문장 중에서 고른다(다 쓰였으면 처음부터 다시)
+    let free = pool.map((_, k) => k).filter((k) => !usedLines.has(`${reason}:${k}`));
+    if (!free.length) { pool.forEach((_, k) => usedLines.delete(`${reason}:${k}`)); free = pool.map((_, k) => k); }
+    const pick = free[Math.floor(rng() * free.length)];
+    usedLines.add(`${reason}:${pick}`);
+    const line = pool[pick].replaceAll('{team}', nameOf(top.r.id)).replaceAll('{star}', top.r.star ?? '에이스');
     votes[top.r.id].title++;
     scored.slice(0, 2).forEach((x) => votes[x.r.id].final++);
     scored.slice(0, cfg.playoffPicks).forEach((x) => votes[x.r.id].playoff++);
@@ -188,7 +205,8 @@ const topN = (players, teamId, n) => players.filter((p) => p.teamId === teamId).
  * 반환: { season, rows(우승 확률 순), reporters, expectedBest, spotlight, keyPlayers, my, disclaimer }
  */
 export function buildPreview(input) {
-  const { season, myId, teams, players, powers, prestige = {}, games, playoffs } = input;
+  const { season, myId, teams, powers, prestige = {}, games, playoffs } = input;
+  const players = input.players.filter((p) => p.teamId); // 소속이 있는 선수만(FA 풀은 제외)
   const cfg = input.rules;
   const names = Object.fromEntries(teams.map((t) => [t.id, t.name]));
   const seedKey = `${season}:${Object.keys(powers).sort().map((id) => `${id}=${round(powers[id], 2)}`).join(',')}`;
@@ -227,11 +245,13 @@ export function previewNewsVars(pv, nameOf = (id) => id) {
   const byVotes = [...pv.rows].filter((r) => r.votes.title > 0).sort((a, b) => b.votes.title - a.votes.title || b.titleP - a.titleP);
   const top = byVotes[0];
   const my = pv.my;
+  const quoter = top ? pv.reporters.find((r) => r.titlePick === top.id) : null;
   return {
     pollCount: pv.reporterCount,
     pollText: byVotes.slice(0, 3).map((r) => `${nameOf(r.id)} ${r.votes.title}표`).join(', '),
     pollTop: top ? nameOf(top.id) : '',
     pollTopVotes: top?.votes.title ?? 0,
+    ...(quoter ? { quoteName: quoter.name, quoteOutlet: quoter.outlet, quoteText: quoter.comment } : {}),
     oddsFav: nameOf(pv.favoriteId),
     oddsFavValue: pv.rows[0].titleOdds,
     oddsFavPct: round(pv.rows[0].titleP * 100, 1),

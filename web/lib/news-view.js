@@ -1,5 +1,6 @@
 // 뉴스 화면이 쓰는 계산(브라우저 API 없음). 세션 → 뉴스 생성기 입력 → 기사 목록.
 import { buildNews } from '../../src/news.mjs';
+import { previewNewsVars } from '../../src/preview.mjs';
 import { powerRanking, seasonLabel, prestigeOf, payrollInfo, fundsOf, fullHistory } from './game.js';
 import { careerRows, careerTotals } from '../../src/career.mjs';
 import { Session } from './session.js';
@@ -51,6 +52,7 @@ export function newsSource(session, data) {
     seed: g.seed, myTeamId: g.managerId, teams, startYear: sy, season: seasonLabel(sy), games: data.rules.regularSeasonGames,
     capEok: data.rules.salaryCap.domesticEok, teamName: (id) => name.get(id) ?? id, log, names,
     power: session.stage === 'regular' && session.day === 0 ? powerRanking(session.view, data) : null,
+    previewVars: session.stage === 'regular' && session.day === 0 ? previewNewsVars(session.preview(), (id) => name.get(id) ?? id) : null, // 기자단 설문·가상 배당(src/preview.mjs)
     current: {
       stage: session.stage, day: session.day, totalDays: dayMemo.key === memoKey ? dayMemo.totalDays : data.rules.regularSeasonGames, dayResults,
       playoffSeries: session.stage === 'playoffs' ? (session.playoffs?.series ?? []) : [],

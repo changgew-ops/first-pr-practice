@@ -36,7 +36,7 @@ function heroCard(ctx, season, lastSeason, lastRow) {
   } else if (s.day === 0) {
     title = `${season} 시즌 시작 전`;
     text = `정규리그 ${ctx.data.rules.regularSeasonGames}경기 → 상위 6팀 플레이오프. 전 시즌: ${lastSeason.season} ${lastRow ? `${lastRow.rank}위 (${lastRow.wins}승 ${lastRow.losses}패)` : '-'}${lastSeason.championId === my ? ' · 우승' : ''}. 라인업과 훈련을 정하고 시작하세요.`;
-    actions = [go('season', `${season} 시즌 시작`), go('lineup', '라인업', false), go('training', '훈련', false)];
+    actions = [go('season', `${season} 시즌 시작`), go('preview', '시즌 프리뷰', false), go('lineup', '라인업', false), go('training', '훈련', false)];
   } else {
     const next = s.nextGame();
     title = `${season} 정규리그 ${s.day}/${s.totalDays}일차`;

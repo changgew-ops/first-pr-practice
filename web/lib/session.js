@@ -19,8 +19,13 @@ import { trustOf } from '../../src/goals.mjs';
 import { moodOf } from '../../src/fans.mjs';
 import { newCodexKeys } from '../../src/codex.mjs';
 import { newAchievements } from '../../src/achievements.mjs';
+import { buildPreview } from '../../src/preview.mjs';
+import { teamPower } from './game.js';
+import { prestigeTable } from '../../src/legacy.mjs';
 
 export const VERSION = 2;
+
+const previewMemo = new Map(); // `${seed}:${시즌}` → 시즌 시작 전에 만든 프리뷰(화면을 여는 동안 유지)
 
 export class Session {
   constructor(data, game) {
@@ -90,6 +95,31 @@ export class Session {
   standings() {
     if (this.state.stage === 'offseason') return this.state.seasonEnd.standings.map((s, i) => ({ rank: i + 1, ...s }));
     return this.run.standings().map((s, i) => ({ rank: i + 1, ...s }));
+  }
+
+  /**
+   * 시즌 프리뷰(src/preview.mjs): 우승·플레이오프 확률, 기자단 예측, 예상 베스트5, 가상 배당.
+   * 시즌 시작 전(0일차)의 전력으로 만들고, 시즌이 시작된 뒤에도 그 값을 보여 주도록 이 화면을 연 동안은 기억해 둔다
+   * (저장했다가 다시 불러온 경우에는 불러온 시점의 로스터로 다시 계산한다). 반환: { …buildPreview, atStart(0일차에 계산했는가) }
+   */
+  preview() {
+    const key = `${this.state.seed}:${this.season}`;
+    const hit = previewMemo.get(key);
+    const atStart = this.state.stage === 'regular' && this.state.day === 0;
+    if (hit && !atStart) return { ...hit.pv, atStart: false };
+    if (this.state.stage === 'offseason') return null;
+    const data = this.data, rules = this.rules, view = this.view;
+    const powers = Object.fromEntries(data.teams.map((t) => [t.id, teamPower(view, { ...data, rules }, t.id).power]));
+    const sig = Object.values(powers).map((v) => v.toFixed(3)).join(',');
+    if (hit && hit.sig === sig) return { ...hit.pv, atStart };
+    const prestige = Object.fromEntries(Object.entries(prestigeTable(this.state.league.legacy, rules)).map(([id, v]) => [id, v.score]));
+    const players = this.players.filter((p) => p.teamId).map((p) => ({ id: p.id, name: p.name, baseName: p.baseName ?? p.name, teamId: p.teamId, position: p.position, ovr: p.ovr, potential: p.potential, cost: p.cost, age: p.age, origin: p.origin }));
+    const pv = buildPreview({
+      season: seasonLabel(this.season), myId: this.managerId, teams: data.teams.map((t) => ({ id: t.id, name: t.name })), players, powers, prestige,
+      games: rules.regularSeasonGames, playoffs: rules.playoffs, rules: rules.preview
+    });
+    previewMemo.set(key, { sig, pv });
+    return { ...pv, atStart };
   }
 
   /** 우리 구단의 다음 경기: { day(몇 일차), home, oppId } 또는 null(정규리그 종료) */

@@ -187,6 +187,10 @@ export const TEMPLATES = {
     h: ['{team}, {oldHead} 감독과 결별… 새 사령탑 {newHead}', '{team:은/는} {newHead} 감독을 선임했다', '{season} 시즌 {rank}위 {team}, 감독 교체 단행', '{newHead} 감독, {team} 지휘봉 잡는다', '{team}의 사령탑이 바뀐다: {oldHead}에서 {newHead}로'],
     b: ['{team:은/는} {season} 시즌을 {rank}위({record})로 마친 뒤 {oldHead} 감독과 계약을 정리하고 {newHead} 감독을 새 사령탑으로 선임했다.', '{season} 정규리그 {rank}위에 그친 {team:이/가} 감독을 바꿨다. {oldHead} 감독이 물러나고 {newHead} 감독이 {nextSeason} 시즌부터 팀을 이끈다.', '{team}의 {oldHead} 감독이 시즌 종료와 함께 지휘봉을 내려놓았다. 후임은 {newHead} 감독이다.', '{rank}위({record})라는 성적표를 받은 {team:은/는} {newHead} 감독 체제로 {nextSeason} 시즌을 준비한다.']
   },
+  preview_poll: {
+    h: ['기자단 설문: 올 시즌 우승 후보는 {pollTop}', '{season} 우승 후보 설문, {pollTop}에 {pollTopVotes}표', '가상 기자 {pollCount}명이 꼽은 우승 후보 1순위는 {pollTop}', '{season} 개막 설문 결과: 우승 후보는?', '{pollTop}, 기자단 설문에서 우승 후보로 가장 많이 거론'],
+    b: ['{season} 개막을 앞두고 가상 기자 {pollCount}명에게 우승 후보를 물은 결과 {pollTop:이/가} {pollTopVotes}표로 1순위에 올랐다.', '기자단 설문에서 {season} 시즌 우승 후보 1순위는 {pollTop}({pollTopVotes}표)이었다. 득표는 {pollText} 순이다.', '{pollCount}명이 참여한 개막 전 설문에서 가장 많은 표를 받은 팀은 {pollTop}이다. {pollTopVotes}표를 얻었다.', '{season} 시즌 개막 설문 결과가 나왔다. 우승 후보 1순위는 {pollTop}, 득표는 {pollTopVotes}표였다.']
+  },
   injury_my: {
     h: ['{player}, {part:으로/로} {absence}', '{team} {player} 부상… {absence}', '{team}에 부상 악재, {player}의 {part}', '{player} 부상 이탈, {team:은/는} 대안을 찾아야 한다', '{part} 진단 {player}, 한동안 코트를 떠난다'],
     b: ['{team}의 {player:이/가} {day}일차 경기에서 {part} 진단을 받았다. 예상 결장 기간은 {gamesText:이다/다}.', '{player:이/가} {part:으로/로} 이탈한다. 진단 결과 결장 기간은 {gamesText:이다/다}.', '{team:은/는} {day}일차 경기 뒤 {player}의 부상({part})을 확인했다. 예상 결장은 {gamesText:이다/다}.', '{part} 진단을 받은 {player:은/는} {gamesText:을/를} 쉬어야 한다. {team}의 선수단 운영에 변수가 생겼다.']
@@ -386,8 +390,8 @@ export const SENT = {
   pv_foreign: ['외국 선수는 {foreignText}.', '코트에 서는 외국 선수 진용은 {foreignText}.', '{foreignText}. 아시아쿼터는 {asiaText}.', '외국 선수는 {foreignText}, 아시아쿼터는 {asiaText}.'],
   pv_cap: ['국내 선수 연봉은 {payroll}억으로 캡 {cap}억 대비 {capRoom:이다/다}. 구단 자금은 {funds}억이다.', '캡 사정을 보면 국내 선수 연봉 {payroll}억, 캡 {cap}억으로 {capRoom:이다/다}. 자금은 {funds}억을 쥐고 있다.', '{team:은/는} 국내 선수 연봉이 {payroll}억이고 캡은 {cap}억이라 {capRoom:이다/다}.', '재정은 국내 선수 연봉 {payroll}억(캡 {cap}억, {capRoom}), 구단 자금 {funds}억이다.'],
   pv_last: ['지난 시즌 {team:은/는} {lastRec:으로/로} {lastRank}위에 올랐고, 통산 우승 {titles}회에 정규리그 1위 {regTitles}회의 전통이 있다.', '{lastRank}위({lastRec})로 마친 지난 시즌 기록 위에 새 시즌이 시작된다. 통산 우승은 {titles}회다.', '지난 시즌 성적은 {lastRank}위, 전통 점수는 {tradition}점이다.', '통산 우승 {titles}회의 구단이 지난 시즌 {lastRank}위({lastRec})를 딛고 새 시즌을 맞는다.'],
-  pv_city: ['같은 {city:을/를} 연고로 하는 {cityRival:은/는} 지난 시즌 {cityRivalRank}위였다. 연고 라이벌과의 대결이 관심을 모은다.', '{city} 연고 {cityRival}과는 지난 시즌 순위가 {cityRivalRank}위였다. 서로를 의식할 수밖에 없는 사이다.', '{team}의 홈 {arena}에서는 같은 도시의 {cityRival:과/와} 맞대결이 열린다.', '{cityRival:은/는} 같은 {city} 구단으로, 지난 시즌 {cityRivalRank}위를 했다.'],
-  pv_top: ['게임이 계산한 전력 1위는 {topRival}이다. {team}과의 격차를 줄이는 것이 과제다.', '전력 순위 맨 위의 {topRival:은/는} 우승 후보로 꼽힌다.', '가장 높은 평가를 받은 팀은 {topRival}이다.', '전력만 보면 {topRival:이/가} 가장 앞서 있다.'],
+  pv_city: ['같은 {city:을/를} 연고로 하는 {cityRival:은/는} 지난 시즌 {cityRivalRank}위였다. 연고 라이벌과의 대결이 관심을 모은다.', '{city} 연고 {cityRival:과/와}는 지난 시즌 순위가 {cityRivalRank}위였다. 서로를 의식할 수밖에 없는 사이다.', '{team}의 홈 {arena}에서는 같은 도시의 {cityRival:과/와} 맞대결이 열린다.', '{cityRival:은/는} 같은 {city} 구단으로, 지난 시즌 {cityRivalRank}위를 했다.'],
+  pv_top: ['게임이 계산한 전력 1위는 {topRival}이다. {team:과/와}의 격차를 줄이는 것이 과제다.', '전력 순위 맨 위의 {topRival:은/는} 우승 후보로 꼽힌다.', '가장 높은 평가를 받은 팀은 {topRival}이다.', '전력만 보면 {topRival:이/가} 가장 앞서 있다.'],
   pv_task: ['올 시즌 {team}의 과제는 분명하다. {taskText}', '{season} 시즌 목표는 {taskText}', '출발선에서 {team:이/가} 안고 있는 숙제는 이것이다. {taskText}'],
   // 경기·순위 기사 보조
   st_info: ['{player:은/는} {sAge}세 {sPos} 선수로 {sOrigin} 소속이며 현재 OVR은 {sOvr}이다.', '{sPos} 포지션의 {player:은/는} {sAge}세로 OVR {sOvr}의 선수다.', '{starTeam}의 {player:은/는} {sAge}세, 포지션 {sPos}, 능력치 OVR {sOvr}이다.', '{sAge}세 {sPos} {player:은/는} OVR {sOvr:으로/로} 평가된다.'],
@@ -424,6 +428,13 @@ export const SENT = {
   cc_old: ['떠나는 {oldHead} 감독의 성향은 {oldSpec}으로 알려졌다. 선수 육성과 로테이션 운영에서 아쉬움이 있었다는 평가가 따른다.', '{oldHead} 감독은 {oldSpec}이라는 평을 받았다. 그의 지도 방식이 팀 구성과 잘 맞지 않았다는 지적도 있었다.', '{oldSpec}으로 평가받던 {oldHead} 감독은 이번 시즌 성적에 책임을 지고 물러난다.', '{oldHead} 감독의 지도 스타일은 {oldSpec}이었다. 구단은 후임에게 다른 색깔을 기대하고 있다.'],
   cc_new: ['새로 부임하는 {newHead} 감독은 {newSpec}으로 평가된다. 구단은 이 점에 기대를 걸고 계약을 맺었다.', '{newHead} 감독의 지도 성향은 {newSpec}이다. 취임 일성으로 "준비된 만큼 보여 주겠다"는 각오를 밝혔다.', '후임 {newHead} 감독은 {newSpec}의 지도자다. 구단은 선수단 구성에 맞는 색깔을 입혀 주길 바란다.', '{newSpec}으로 알려진 {newHead} 감독이 부임했다. 전술과 육성에서 얼마나 변화를 줄지가 관심사다.'],
   cc_next: ['{nextSeason} 시즌 {team}의 성적이 새 감독 체제의 첫 시험대가 될 전망이다.', '구단은 {nextSeason} 시즌 개막 전까지 코칭스태프 구성을 마무리할 계획이다.', '새 사령탑이 선수단과 어떤 호흡을 보일지는 {nextSeason} 시즌 초반 경기에서 드러날 것이다.', '{team:은/는} 감독 교체 효과가 나타나는 데 시간이 필요하다고 보고 있다.'],
+  pv_poll: ['가상 기자 {pollCount}명의 우승 후보 설문에서는 {pollText} 순으로 표가 모였다.', '기자단 설문 결과 우승 후보 득표는 {pollText}이다.', '개막 전 기자단 설문에서 우승 후보로 가장 많이 꼽힌 팀은 {pollTop}({pollTopVotes}표)이다.', '우승 후보 설문에는 가상 기자 {pollCount}명이 참여했고 득표는 {pollText} 순이다.'],
+  pv_odds: ['게임 안의 가상 배당으로는 {oddsFav:이/가} {oddsFavValue}배로 가장 낮다.', '가상 배당 1순위는 {oddsFav}({oddsFavValue}배, 우승 확률 {oddsFavPct}%)이다.', '게임이 계산한 우승 확률 1위는 {oddsFav:으로/로} {oddsFavPct}%, 가상 배당은 {oddsFavValue}배다.', '우승 확률이 가장 높은 팀은 {oddsFav}({oddsFavPct}%)이며 가상 배당은 {oddsFavValue}배다.'],
+  pp_vote: ['우승 후보 득표는 {pollText} 순이었다. 설문에는 가상 기자 {pollCount}명이 참여했다.', '표는 {pollText} 순으로 모였고, 참여한 가상 기자는 {pollCount}명이다.', '득표 순위는 {pollText}이며 기자 {pollCount}명이 한 표씩 던졌다.', '가상 기자 {pollCount}명이 던진 표는 {pollText} 순으로 집계됐다.'],
+  pp_quote: ['{quoteOutlet}의 {quoteName:은/는} "{quoteText}"라고 말했다.', '1순위로 {pollTop:을/를} 꼽은 {quoteName}({quoteOutlet})는 "{quoteText}"라고 이유를 밝혔다.', '"{quoteText}" {quoteOutlet}의 {quoteName:이/가} 남긴 한마디다.', '{quoteName} 기자({quoteOutlet})는 {pollTop:을/를} 1순위로 꼽으며 "{quoteText}"라고 말했다.'],
+  pp_odds: ['게임 안의 가상 배당으로는 {oddsFav:이/가} {oddsFavValue}배로 가장 낮고, 게임이 계산한 우승 확률은 {oddsFavPct}%다.', '확률로 보면 우승 후보 1순위는 {oddsFav:으로/로} {oddsFavPct}%, 가상 배당은 {oddsFavValue}배다.', '가상 배당 기준으로는 {oddsFav:이/가} {oddsFavValue}배로 가장 낮다. 우승 확률은 {oddsFavPct}%로 계산됐다.', '게임이 계산한 우승 확률 1위는 {oddsFav}({oddsFavPct}%)이고 가상 배당은 {oddsFavValue}배다.', '{oddsFav}의 가상 배당은 {oddsFavValue}배로 전체에서 가장 낮고, 우승 확률은 {oddsFavPct}%다.'],
+  pp_my: ['{team:은/는} 기자단 설문에서 {myTitleVotes}표를 받았다. 게임이 계산한 우승 확률은 {oddsMyPct}%, 플레이오프 진출 확률은 {playoffMyPct}%다.', '우리 팀 {team:은/는} 예상 {winsMy}승으로 우승 확률 {oddsMyPct}%(가상 배당 {oddsMy}배), 플레이오프 진출 확률 {playoffMyPct}%로 계산됐다.', '우리 팀 {team}의 우승 확률은 {oddsMyPct}%이고 가상 배당은 {oddsMy}배다. 플레이오프 진출 확률은 {playoffMyPct}%, 설문 득표는 {myTitleVotes}표다.', '{team}의 계산 결과는 우승 확률 {oddsMyPct}%, 플레이오프 진출 확률 {playoffMyPct}%, 예상 {winsMy}승이다. 설문에서는 {myTitleVotes}표를 받았다.'],
+  pp_note: ['이 설문과 배당은 게임이 만든 가상 콘텐츠이며 현금을 걸 수 없다.', '배당은 확률을 보기 쉽게 바꾼 게임 안의 점수일 뿐이다.', '배당은 우승 확률을 바꿔 보여 주는 게임 안의 점수이고 현금과는 관계가 없다.', '이 기사의 기자와 설문, 배당은 모두 게임이 만든 가상 콘텐츠다.'],
   gl_next: ['다음 {nextSeason} 시즌에도 모기업은 새 목표를 제시할 예정이다.', '모기업은 {nextSeason} 시즌 목표를 시즌 시작 전에 다시 전달한다.', '새 시즌 목표는 개막 전에 발표된다.'],
   // 오프시즌
   of_last: ['{lastSeasonLabel} 시즌 {team:은/는} 정규리그 {rank}위({record})로 마쳤고 플레이오프 성적은 {stage:이었다/였다}.', '지난 {lastSeasonLabel} 시즌 {team}의 성적은 {rank}위({record}), 플레이오프는 {stage}.', '{lastSeasonLabel} 시즌을 {record}, {rank}위로 마친 {team}의 오프시즌이다.', '{lastSeasonLabel} 시즌 결과를 안고 {team:은/는} {nextSeason} 시즌을 준비한다. 정규리그 {rank}위({record}), 플레이오프는 {stage:이었다/였다}.'],
@@ -464,7 +475,8 @@ export const PLAN = {
   coach_change: [['lead', 'cc_why'], ['cc_old', 'cc_new'], ['cc_next']],
   goals_eval: [['lead', 'gl_missed', 'gl_all'], ['gl_trust'], ['gl_bonus', 'gl_warn', 'gl_risk'], ['gl_next']],
   awards: [['lead', 'aw_mvp'], ['aw_best5', 'aw_rookie'], ['aw_defense', 'aw_improved', 'aw_leaders'], ['aw_finals', 'aw_my']],
-  preview: [['lead', 'pv_core'], ['pv_foreign', 'pv_depth'], ['pv_cap', 'pv_last', 'pv_city'], ['pv_contenders', 'pv_top', 'pv_task']],
+  preview: [['lead', 'pv_core'], ['pv_foreign', 'pv_depth'], ['pv_cap', 'pv_last', 'pv_city'], ['pv_contenders', 'pv_poll', 'pv_odds', 'pv_top', 'pv_task']],
+  preview_poll: [['lead', 'pp_vote'], ['pp_quote', 'pp_odds'], ['pp_my', 'pp_note']],
   opener_win: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
   opener_loss: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
   result_win: PLAN_GAME, result_loss: PLAN_GAME, thriller_win: PLAN_GAME, thriller_loss: PLAN_GAME, blowout_win: PLAN_GAME, blowout_loss: PLAN_GAME, streak_win: PLAN_GAME, streak_lose: PLAN_GAME,
@@ -591,9 +603,10 @@ export function buildNews(src) {
           ...capVars, ...(src.funds != null ? { funds: fmt1(src.funds) } : {}),
           ...(lr ? { lastRank: lr.rank, lastRec: recordText(lr.wins, lr.losses) } : {}), ...(titlesOf(my) != null ? { titles: titlesOf(my), regTitles: pr?.regularTitles ?? 0, tradition: fmt1(pr?.score ?? 0) } : {}),
           ...(cityRivalId && cr ? { city, cityRival: nameOf(cityRivalId), cityRivalRank: cr.rank } : {}), ...(city ? { arena: src.teamInfo[my].arena ?? undefined } : {}),
-          ...(top ? { topRival: nameOf(top.id) } : {}), taskText
+          ...(top ? { topRival: nameOf(top.id) } : {}), taskText, ...(src.previewVars ?? {})
         }
       });
+      if (src.previewVars?.pollTop) add({ key: `${sy}:preview_poll`, t: base(sy) - 0.5, season: seasonLabel, when: `${seasonLabel} 개막 전`, kind: 'preview_poll', scope: 'league', tags: ['리그', '전망'], tone: 'neutral', delta: 0, comments: 3, vars: { team: nameOf(my), season: seasonLabel, ...src.previewVars } });
     }
   }
 

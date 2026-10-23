@@ -1,0 +1,27 @@
+/* 시즌 프리뷰(web/views/preview.js). 색은 style.css의 토큰만 쓴다. */
+.pv .callout { margin: 0; }
+.pv-team { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; white-space: nowrap; }
+.pv-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--muted)); display: inline-block; }
+.pv-p { display: inline-flex; flex-direction: column; align-items: flex-end; gap: 3px; min-width: 70px; }
+.pv-bar { height: 5px; width: 70px; }
+.pv-my p { line-height: 1.6; }
+tr.me td { background: color-mix(in srgb, var(--team) 8%, transparent); }
+.pv-grid { align-items: start; }
+.pv-votes { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 12px; }
+.pv-vote { display: grid; grid-template-columns: minmax(96px, 120px) 1fr 40px; align-items: center; gap: 8px; }
+.pv-vote .pv-bar { width: 100%; }
+.pv-vote.mine .pv-vn { color: var(--team); font-weight: 700; }
+.pv-reps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pv-reps li { border-top: 1px solid var(--line); padding-top: 8px; }
+.pv-rep-line { margin-top: 2px; line-height: 1.5; }
+.pv-pick.mine { color: var(--team); font-weight: 700; }
+.pv-best { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.pv-best li, .pv-spot li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+.pv-spot h3 { margin: 14px 0 6px; font-size: .95rem; }
+.pv-keys { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px 18px; }
+.pv-keys li { display: flex; gap: 10px; align-items: baseline; padding: 4px 6px; border-radius: 6px; }
+.pv-keys li.mine { background: color-mix(in srgb, var(--team) 12%, transparent); }
+.pv-kt { font-weight: 700; min-width: 112px; }
+.pv-kp { display: flex; flex-wrap: wrap; gap: 2px 12px; }
+.pv-disclaimer { margin: 0; line-height: 1.5; }
+@media (max-width: 860px) { .pv-grid { grid-template-columns: 1fr; } .pv-keys { grid-template-columns: 1fr; } .pv-kt { min-width: 96px; } }

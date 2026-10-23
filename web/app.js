@@ -32,6 +32,7 @@ import * as reportView from './views/report.js';
 import * as saveView from './views/save.js';
 import * as achievementsView from './views/achievements.js';
 import * as codexView from './views/codex.js';
+import * as previewView from './views/preview.js';
 import * as staffView from './views/staff.js';
 import { ACHIEVEMENT_BY_ID } from '../src/achievements.mjs';
 
@@ -39,13 +40,13 @@ const root = document.getElementById('app');
 const FREE = { title: titleView, intro: introView, new: newView, save: saveView }; // 세션 없이도 여는 화면
 const ROUTES = {
   home: homeView, news: newsView, season: seasonView, roster: rosterView, player: playerView, lineup: lineupView, training: trainingView, trades: tradesView,
-  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, staff: staffView, save: saveView
+  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, preview: previewView, staff: staffView, save: saveView
 };
 // 사이드 메뉴 묶음: 앞쪽이 자주 쓰는 화면. 제목이 null인 묶음은 제목 없이 맨 위에 둔다.
 const NAV_GROUPS = [
   { title: null, items: [['home', '홈'], ['season', '시즌'], ['lineup', '라인업'], ['roster', '로스터']] },
   { title: '구단 운영', items: [['training', '훈련'], ['staff', '감독·코치'], ['trades', '트레이드'], ['offseason', '오프시즌']] },
-  { title: '기록·소식', items: [['news', '뉴스'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산']] },
+  { title: '기록·소식', items: [['preview', '시즌 프리뷰'], ['news', '뉴스'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산']] },
   { title: '수집', items: [['achievements', '업적'], ['codex', '카드 도감']] }
 ];
 const SAVE_NAV = ['save', '저장'];
