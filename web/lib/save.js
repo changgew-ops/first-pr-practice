@@ -87,6 +87,13 @@ export function oldestManualSlot(slots) {
   return slots.filter((s) => s.meta && s.slot !== 'auto').sort((a, b) => a.meta.savedAt - b.meta.savedAt)[0]?.slot ?? null;
 }
 
+/** 경고 문구(순수 함수): 저장에 실패했거나 사용량이 80%를 넘으면 { level, text }, 아니면 null */
+export function capacityNotice({ ok = true, status }) {
+  if (!ok) return { level: 'full', text: '저장 공간이 부족해 저장하지 못했습니다. 오래된 슬롯을 지우거나 파일로 내보낸 뒤 다시 저장해 주세요.' };
+  if (!status || status.level === 'ok') return null;
+  return { level: status.level, text: `저장 공간이 ${status.percent}% 찼습니다. 가득 차면 저장이 막히니 오래된 슬롯을 지우거나 파일로 내보내 두세요.` };
+}
+
 /** 저장할 때마다 창에 알린다(화면 쪽이 경고 띠를 띄운다): detail = { slot, ok, status } */
 function announce(slot, ok) {
   try {
