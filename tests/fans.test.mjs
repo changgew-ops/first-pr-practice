@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { moodOf, fanFactor, fanAppeal, advanceMood, initialMood, moodTier } from '../src/fans.mjs';
-import { revenueOf, initialAttendance, popularity } from '../src/funds.mjs';
+import { revenueOf, initialAttendance } from '../src/funds.mjs';
 import { offerScore } from '../src/freeagency.mjs';
 import { createLeague, playLeagueYear } from '../src/league.mjs';
 import { mulberry32 } from '../src/rng.mjs';
@@ -71,9 +71,9 @@ test('관중·FA 연결: 팬 열기가 높은 구단의 인기·관중이 늘고
   assert.ok(rev(90).attendance.avg / neutral < 1 + f.attendance + 0.01, '효과는 설정한 크기 안');
   // 화면의 경기별 관중 계산도 같은 열기를 쓴다
   const st = teams.map((t) => ({ id: t.id, wins: 27, losses: 27 }));
-  const games = [{ homeId: team.id, awayId: teams[1].id, key: 'r0', round: null }];
-  const hasCalc = typeof attendanceCalc === 'function';
-  assert.ok(hasCalc);
+  const calc = (mood) => attendanceCalc({ teamData: teams, standings: st, att: mood == null ? att : { ...att, mood: { [team.id]: mood } }, season: '2026-27', rules })({ homeId: team.id, awayId: teams[1].id }, { key: 'r0' }).attendance;
+  assert.equal(calc(50), calc(null));
+  assert.ok(calc(90) > calc(null) && calc(10) < calc(null), '경기별 관중 계산도 팬 열기를 쓴다');
   // FA: 같은 제안이라도 열기가 높은 구단에서 점수가 높다
   const p = { id: 'p1', ovr: 70, potential: 72, age: 27, prevTeamId: null, teamId: null };
   const ctx = (mood) => ({ season: 2026, winPct: new Map([[team.id, 0.5]]), prestige: new Map([[team.id, 0.5]]), fans: mood == null ? null : new Map([[team.id, mood]]) });
@@ -83,7 +83,6 @@ test('관중·FA 연결: 팬 열기가 높은 구단의 인기·관중이 늘고
   assert.ok(offerScore(p, 3, team.id, roster, ctx(90), rules).score > base);
   assert.ok(offerScore(p, 3, team.id, roster, ctx(10), rules).score < base);
   assert.ok(Math.abs(offerScore(p, 3, team.id, roster, ctx(100), rules).score - base - f.freeAgency) < 1e-9);
-  void games; void st; void popularity;
 });
 
 test('이전 저장 호환: 팬 열기 상태가 없는 league도 정산되고 다음 상태에 mood가 생긴다, 같은 시드는 같은 값', () => {
