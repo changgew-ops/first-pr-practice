@@ -1,6 +1,7 @@
 // 선수 시즌 기록의 구단별 줄·승패·플레이오프. 실제 기록(KBL 공식 시즌 기록)과 같은 열(팀, 경기, 승-패, 출전, 득점, 리바, 어시, 스틸, 블록, FG%, 3P%, FT%)을
 // 게임에서 진행한 시즌에도 채우려고, 경기마다 선수별 줄을 (구단, 승/패)로 나눠 쌓는다. 순수 함수.
 import { TOTAL_KEYS } from './stats.mjs';
+import { expandRow } from './career.mjs';
 
 const NUM = TOTAL_KEYS.slice(1); // games 제외: minutes points rebounds assists steals blocks fgm fga tpm tpa ftm fta
 const blank = () => ({ w: 0, l: 0, ...Object.fromEntries(TOTAL_KEYS.map((k) => [k, 0])) });
@@ -54,10 +55,11 @@ export function compactPlayoffs(series, finalName) {
 }
 
 const FIELDS = ['season', 'type', 'teamId', 'gp', 'w', 'l', 'sec', 'pts', 'reb', 'ast', 'stl', 'blk', 'fgm', 'fga', 'pm3', 'pa3', 'ftm', 'fta', 'to', 'pf'];
+// 저장용 줄 → 실제 기록 줄과 같은 필드 + 경기당 평균·성공률(src/career.mjs expandRow). 턴오버·파울은 시뮬레이션이 만들지 않아 null
 const toRow = (season, type, p) => {
   // p: [구단, 경기, 승, 패, 분, 득점, 리바, 어시, 스틸, 블록, fgm, fga, tpm, tpa, ftm, fta]
   const [teamId, gp, w, l, min, pts, reb, ast, stl, blk, fgm, fga, pm3, pa3, ftm, fta] = p;
-  return Object.fromEntries(FIELDS.map((k, i) => [k, [season, type, teamId, gp, w, l, min * 60, pts, reb, ast, stl, blk, fgm, fga, pm3, pa3, ftm, fta, null, null][i]]));
+  return expandRow([season, type, teamId, gp, w, l, min * 60, pts, reb, ast, stl, blk, fgm, fga, pm3, pa3, ftm, fta, 0, 0]);
 };
 
 /**

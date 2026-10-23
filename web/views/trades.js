@@ -2,12 +2,14 @@
 import { h, stat, ovrChip, eok } from '../lib/dom.js';
 import { windowStatus, tradablePlayers, valueComparison, precheck, rejectionText, payrollAfter, salaryOf, byOvr } from '../lib/trades-view.js';
 import { payrollInfo } from '../lib/game.js';
+import { nameButton, bindInfoCtx } from '../lib/player-info.js';
 
 const playerLine = (p, extra = null) => h('div', { class: 'tr-player' },
-  ovrChip(p), h('a', { href: `#/player/${p.id}`, class: 'tr-name' }, p.name), h('span', { class: 'pos' }, p.position),
+  ovrChip(p), nameButton(p, { cls: 'tr-name' }), h('span', { class: 'pos' }, p.position),
   h('span', { class: 'note' }, `${p.age}세 · POT ${p.potential} · ${eok(p.contract.salaryEok)} · ${p.contract.yearsLeft <= 0 ? '계약 만료' : `${p.contract.yearsLeft}년`}`), extra);
 
 export function render(ctx) {
+  bindInfoCtx(ctx);
   const s = ctx.session, { rules } = ctx.data, my = s.managerId;
   const win = windowStatus(s);
   const pay = payrollInfo(ctx.game, ctx.data, my);

@@ -87,3 +87,19 @@
 .os-lottery li { padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; }
 .os-lottery li.me { border-color: var(--team, currentColor); font-weight: 600; }
 .os-lottery li b { display: inline-block; min-width: 1.6em; }
+
+/* 외국인 영입: 자리 표시·불가 사유·이미 영입된 선수 */
+.os-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; margin: 8px 0 10px; }
+.os-slot { display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border-radius: 10px; border: 2px solid var(--line); background: var(--panel-2); }
+.os-slot.full { border-color: var(--good); }
+.os-slot.empty { border-style: dashed; border-color: var(--warn); }
+.os-taken { margin-top: 6px; padding: 8px 12px; border-radius: 8px; background: var(--panel-2); }
+.os-taken ul { margin: 4px 0 0; }
+.os-blocked { border-color: var(--bad); }
+.os-draft-row.disabled { opacity: .55; cursor: not-allowed; }
+.os-draft-row .os-why { flex-basis: 100%; font-size: .82rem; }
+.os-results ul { margin: 6px 0 0; }
+.os-results li { display: flex; flex-wrap: wrap; gap: 4px 10px; padding: 6px 0; border-top: 1px solid var(--line); }
+.os-results li:first-child { border-top: 0; }
+.os-results .os-why { flex-basis: 100%; }
+.os-lottery li { list-style: none; }

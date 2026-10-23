@@ -2,7 +2,8 @@
 import { h, eok } from '../../lib/dom.js';
 import { compensationCandidates } from '../../lib/offseason-view.js';
 import { compensationRule } from '../../../src/freeagency.mjs';
-import { playerLine, salaryText, contractText, decide } from './common.js';
+import { nameButton } from '../../lib/player-info.js';
+import { playerLine, salaryText, contractText, decide, fill } from './common.js';
 
 export function render(ctx, pending) {
   const { player, options, state } = pending.payload;
@@ -17,10 +18,10 @@ export function render(ctx, pending) {
   function draw() {
     const cost = choice.type === 'cash' ? options.cashOnly : options.withPlayerCash;
     const needPlayer = choice.type === 'player' && !choice.playerId;
-    host.replaceChildren(
+    fill(host, 
       h('div', { class: 'card' },
         h('h2', 'FA 보상 선택'),
-        h('p', {}, h('b', player.name), `을(를) 영입했습니다. ${options.grade ? `보상 ${options.grade}등급(` : '('}전년 보수 ${options.tierMaxRank}위 이내) 선수라 원소속 구단${from ? `(${ctx.name(from)})` : ''}에 보상을 해야 합니다.`),
+        h('p', {}, h('b', nameButton(player)), `을(를) 영입했습니다. ${options.grade ? `보상 ${options.grade}등급(` : '('}전년 보수 ${options.tierMaxRank}위 이내) 선수라 원소속 구단${from ? `(${ctx.name(from)})` : ''}에 보상을 해야 합니다.`),
         h('div', { class: 'os-cols' },
           h('div', { class: 'os-side' }, h('div', { class: 'os-side-title' }, '영입한 선수'), h('ul', { class: 'plain' }, h('li', playerLine(player), h('span', { class: 'grow' }), h('span', { class: 'note' }, `${salaryText(player)} · ${contractText(player)}`)))),
           h('div', { class: 'os-side' }, h('div', { class: 'os-side-title' }, '구단 자금'), h('p', { style: { margin: 0 } }, `지금 ${eok(funds)} → 보상 후 ${eok(funds - cost)}`))),

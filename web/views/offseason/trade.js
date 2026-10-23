@@ -3,7 +3,7 @@ import { h, signed, link } from '../../lib/dom.js';
 import { validateTrade, proposeTrade } from '../../../src/trade.mjs';
 import { domesticOf } from '../../../src/valuation.mjs';
 import { offerHint, usedPlayerIds } from '../../lib/offseason-view.js';
-import { playerLine, salaryText, contractText, decide } from './common.js';
+import { playerLine, salaryText, contractText, decide, fill } from './common.js';
 
 const TONE = { good: ['우리에게 이득', 'good'], even: ['비슷한 거래', ''], bad: ['우리에게 손해', 'bad'] };
 
@@ -86,7 +86,7 @@ export function render(ctx, pending) {
 
   function draw() {
     const used = usedPlayerIds(offers, accepted, proposals);
-    root.replaceChildren(
+    fill(root, 
       changesCard(ctx),
       h('div', { class: 'card' }, h('h2', `받은 트레이드 제안 ${offers.length}건`),
         offers.length ? h('p', { class: 'note' }, '곧 계약이 끝나는 선수를 노린 제안이 많습니다. 재계약 협상 전에 팔면 연봉 부담 없이 대가를 받을 수 있습니다. 가치는 우리 구단 기준 추정입니다.') : h('p', { class: 'muted' }, '이번에는 받은 제안이 없습니다.'),

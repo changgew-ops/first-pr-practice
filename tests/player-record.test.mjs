@@ -52,7 +52,7 @@ test('게임 시즌 기록: 같은 시드면 같은 기록, 저장·복원해도
   const a = playSeason(7), b = playSeason(7);
   assert.deepEqual([a.entry.wl, a.entry.split, a.entry.po], [b.entry.wl, b.entry.split, b.entry.po]);
   const back = restore(data, JSON.parse(JSON.stringify(serialize(a.s))));
-  assert.deepEqual(back.game.log[0].wl, a.entry.wl);
+  assert.deepEqual(back.game.seasonEnd.entry.wl, a.entry.wl);
 });
 
 test('시즌 중 구단을 옮긴 선수는 구단별로 줄이 나뉘고 합치면 시즌 합계와 같다', () => {

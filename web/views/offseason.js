@@ -3,6 +3,7 @@
 import { h } from '../lib/dom.js';
 import { seasonLabel } from '../lib/game.js';
 import { currentStep } from '../lib/offseason-view.js';
+import { bindInfoCtx } from '../lib/player-info.js';
 import { stepBar, summaryCard, autoButton, snapshotOf } from './offseason/common.js';
 import * as trade from './offseason/trade.js';
 import * as resign from './offseason/resign.js';
@@ -15,6 +16,7 @@ const VIEWS = { trade, resign, freeAgency: fa, compensation: comp, draft, foreig
 const TITLE = { trade: '트레이드', resign: '재계약', freeAgency: 'FA', compensation: 'FA 보상', draft: '드래프트', foreign: '외국인 영입' };
 
 export function render(ctx) {
+  bindInfoCtx(ctx);
   const s = ctx.session;
   const notice = (title, text, to, label) => ({ title: '오프시즌', body: h('div', { class: 'card' }, h('h2', title), h('p', { class: 'muted' }, text), h('button', { class: 'btn primary', onclick: () => ctx.go(to) }, label)) });
   if (s.stage !== 'offseason' || !s.pending) {

@@ -1,6 +1,7 @@
 // 오프시즌 화면 공통 부품.
 import { h, ovrChip, eok, bar, ORIGIN_LABEL } from '../../lib/dom.js';
 import { STEPS, teamSummary, positionCounts } from '../../lib/offseason-view.js';
+import { nameButton } from '../../lib/player-info.js';
 
 /** 마지막으로 본 우리 구단 선수·자금(드래프트 단계의 결정 상황에는 선수 목록이 없어 이전 단계 값을 쓴다) */
 export const cache = { season: null, players: null, funds: null };
@@ -21,7 +22,7 @@ export const salaryText = (p) => (p.contract.salaryEok != null ? eok(p.contract.
 
 /** OVR 칩 + 이름 + 포지션 + 나이 한 줄 */
 export function playerLine(p, { extra = null } = {}) {
-  return h('span', { class: 'os-pl' }, ovrChip(p), h('b', { class: 'os-name' }, p.name), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`), extra);
+  return h('span', { class: 'os-pl' }, ovrChip(p), h('b', { class: 'os-name' }, nameButton(p)), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`), extra);
 }
 
 export function stepBar(currentId) {
@@ -61,4 +62,28 @@ export function decide(ctx, key, value) {
   try { ctx.session.decide(key, value); } catch (e) { ctx.toast(e.message); return false; }
   if (ctx.session.stage !== 'offseason') ctx.go('report/offseason'); else ctx.refresh();
   return true;
+}
+
+/** host.replaceChildren의 안전판: null·false·빈 값을 걸러서 넣는다(그냥 넘기면 "null" 글자가 찍힌다) */
+export function fill(host, ...nodes) {
+  host.replaceChildren(...nodes.flat(Infinity).filter((n) => n != null && n !== false));
+}
+
+const RESULT = {
+  accepted: (r) => ['수락', 'good', `연봉 ${eok(r.salaryEok)}, ${r.years}년 계약을 맺었습니다.`],
+  lost: (r, ctx) => ['다른 구단과 계약', 'bad', `${ctx.name(r.teamId)}가 더 좋은 조건(연봉 ${eok(r.theirSalaryEok)})을 내서 선수가 그쪽을 골랐습니다${r.myScore != null ? ` (선수의 평가 점수: 우리 ${r.myScore.toFixed(2)} / 그쪽 ${r.theirScore.toFixed(2)})` : ''}.`],
+  low: (r) => ['제안이 너무 낮음', 'bad', `이번 라운드 요구액 ${eok(r.demandEok)}의 ${Math.round(r.minRatio * 100)}% 미만(우리 제안은 ${Math.round(r.ratio * 100)}%)이라 항상 거절됩니다. 최소 ${eok(r.minSalaryEok)} 이상은 제시해야 합니다.`],
+  score: (r) => ['조건이 부족', 'warn', `수락 점수 ${r.score.toFixed(2)}가 기준 ${r.need}에 못 미쳤습니다. 점수는 제시액이 요구액에 가까운 정도와 우리 성적·전통·출전 기회·선수의 기분으로 정해지니 연봉을 올리거나 다음 라운드(요구액이 조금씩 내려갑니다)를 노려 보세요.`],
+  cap: () => ['캡·한도에 걸림', 'bad', '이 계약을 하면 국내 연봉이 소프트캡 한도(캡의 120%)를 넘어 계약이 성사되지 않았습니다.'],
+  roster: () => ['로스터 자리 없음', 'bad', '국내 선수 자리가 가득 차 있어 계약할 수 없었습니다.']
+};
+
+/** FA에서 우리가 낸 제안의 결과 목록 카드. results: freeagency.mjs offerResults의 항목들 */
+export function offerResultsCard(ctx, results, { title, withRound = false } = {}) {
+  if (!results?.length) return null;
+  return h('div', { class: 'card os-results' }, h('h3', title),
+    h('ul', { class: 'plain' }, results.map((r) => {
+      const [label, cls, why] = (RESULT[r.status] ?? (() => [r.status, '', '']))(r, ctx);
+      return h('li', h('span', { class: 'grow' }, withRound ? `${r.round}라운드 · ` : '', h('b', r.name), ` · 제안 ${eok(r.salaryEok)} ${r.years}년`), h('b', { class: cls }, label), h('div', { class: 'note os-why' }, why));
+    })));
 }

@@ -25,10 +25,10 @@ export function render(ctx, [id]) {
         h('div', { class: 'card' }, h('h3', '계약'), h('div', { class: 'grid g3' }, stat('연봉', salary), stat('남은 계약', p.contract.yearsLeft <= 0 ? '만료' : `${p.contract.yearsLeft}년`), stat('소속', ctx.name(p.teamId))))),
     ),
     (official || prof) && h('div', { class: 'card' }, h('h3', '실제 프로필'), h('div', { class: 'grid g4' },
-      stat('생년월일', official?.birth ?? prof.birth), stat('신체', `${official?.heightCm ?? prof.heightCm}cm${(official?.weightKg ?? prof.weightKg) ? ` · ${official?.weightKg ?? prof.weightKg}kg` : ''}`),
-      stat('학교', official?.school ?? prof.school ?? '-'), stat('포지션', official?.position ?? (prof?.position ?? []).join('/') ?? '-')),
-      prof?.nationality && h('p', { class: 'note' }, `국적: ${prof.nationality.join(' · ')}`),
-      prof?.career && h('p', { class: 'note' }, 'KBL 경력: ', prof.career.map((c) => `${ctx.name(c.team)} ${c.years}`).join(' → ')),
+      stat('생년월일', official?.birth ?? prof?.birth), stat('신체', `${official?.heightCm ?? prof?.heightCm}cm${(official?.weightKg ?? prof?.weightKg) ? ` · ${official?.weightKg ?? prof?.weightKg}kg` : ''}`),
+      stat('학교', official?.school ?? prof?.school ?? '-'), stat('포지션', official?.position ?? (prof?.position ?? []).join('/') ?? '-')),
+      prof?.nationality && h('p', { class: 'note' }, `국적: ${prof?.nationality.join(' · ')}`),
+      prof?.career && h('p', { class: 'note' }, 'KBL 경력: ', prof?.career.map((c) => `${ctx.name(c.team)} ${c.years}`).join(' → ')),
       h('p', { class: 'note' }, `출처: ${official ? 'KBL 공식 프로필(2026-10-23 조회; 신체·등번호는 조회 시점 값)' : prof.source}`)),
     recordCard(ctx, p));
   return { title: p.name, body };

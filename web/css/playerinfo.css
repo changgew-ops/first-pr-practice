@@ -1,1 +1,25 @@
-/* 선수 정보 창 스타일 (담당 에이전트가 채운다) */
+/* 선수 정보 창과 눌러지는 선수 이름 */
+.pl-name { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; color: inherit; cursor: pointer; text-align: left; text-decoration: underline dotted; text-underline-offset: 3px; text-decoration-color: var(--muted); }
+.pl-name:hover, .pl-name:focus-visible { color: var(--accent); text-decoration-color: var(--accent); }
+.pi-dialog { width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--text); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.pi-dialog::backdrop { background: rgba(4, 8, 20, .62); }
+.pi-head { display: flex; align-items: center; gap: 12px; }
+.pi-head .ovr { font-size: 1.3rem; min-width: 2.6em; text-align: center; }
+.pi-id { flex: 1; min-width: 0; }
+.pi-id h2 { margin: 0; font-size: 1.2rem; overflow-wrap: anywhere; }
+.pi-close { padding: 4px 10px; }
+.pi-nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.pi-nums > div { display: flex; flex-direction: column; background: var(--panel-2); border-radius: 8px; padding: 6px 10px; font-variant-numeric: tabular-nums; }
+.pi-nums b { font-size: 1rem; }
+.pi-stats { display: grid; gap: 6px; margin: 6px 0 4px; }
+.pi-stat { display: grid; grid-template-columns: 5.2em minmax(0, 1fr) 2em 2.6em; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+.pi-bar { position: relative; height: 10px; border-radius: 99px; background: var(--panel-2); border: 1px solid var(--line); }
+.pi-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; background: var(--accent); }
+.pi-bar u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); opacity: .75; text-decoration: none; }
+.pi-diff { font-size: .8rem; text-align: right; color: var(--muted); }
+.pi-diff.good { color: var(--good); } .pi-diff.bad { color: var(--bad); }
+.pi-fact { display: flex; gap: 10px; justify-content: space-between; padding: 5px 0; border-top: 1px solid var(--line); font-size: .9rem; }
+.pi-fact > span:last-child { text-align: right; }
+.pi-career { margin-top: 8px; }
+.pi-foot { display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+@media (max-width: 480px) { .pi-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pi-stat { grid-template-columns: 4.6em minmax(0, 1fr) 1.8em 2.4em; } }
