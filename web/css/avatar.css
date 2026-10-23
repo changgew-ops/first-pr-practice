@@ -1,0 +1,13 @@
+/* 선수 카드 일러스트(web/lib/avatar.js): 자동 생성한 그림, 실제 선수의 모습이 아니다 */
+.avatar { display: inline-block; flex: none; line-height: 0; border-radius: 10px; overflow: hidden; vertical-align: middle; box-shadow: 0 0 0 1.5px var(--line); }
+.avatar svg { display: block; width: 100%; height: 100%; }
+.avatar.r-rare { box-shadow: 0 0 0 1.5px #86b3f2; }
+.avatar.r-ace { box-shadow: 0 0 0 1.5px #a58cf0; }
+.avatar.r-legend { box-shadow: 0 0 0 2px #e6a417; }
+.avatar-pcard { float: right; border-radius: 14px; margin: 0 0 6px 10px; }
+.avatar-row { margin-right: 8px; border-radius: 7px; }
+.avatar-pi { border-radius: 12px; }
+.avatar-lu { border-radius: 8px; }
+.name-with-avatar { display: inline-flex; align-items: center; }
+.pcard .avatar-pcard { margin-top: 62px; }
+@media (max-width: 560px) { .avatar-pcard { width: 88px !important; height: 88px !important; } }

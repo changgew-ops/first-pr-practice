@@ -6,6 +6,8 @@
 //   · 키보드: 칸·행에서 Enter/Space로 누르기와 같다.
 // 적용한 편성은 시즌이 끝날 때까지 쓰이고(선수가 팀을 떠나면 자동으로 돌아간다), 새 시즌에는 자동 편성으로 초기화된다.
 import { h, svg, ovrChip, bar, stat, ORIGIN_LABEL } from '../lib/dom.js';
+import { avatarEl } from '../lib/avatar.js';
+import { colorOf } from '../lib/team-ui.js';
 import {
   evalDraft, autoDraft, rosterOfTeam, POSITIONS, powerOf, seatFit, slotsFromDraft, draftFromSlots, sameArrangement,
   firstFreeSlot, placeInSlot, slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS
@@ -197,7 +199,7 @@ export function render(ctx) {
         onclick: () => press(ref)
       },
       seatPos ? h('span', { class: 'lu-seatpos' }, seatPos) : h('span', { class: 'lu-seatpos' }, `벤치 ${ref.index + 1}`),
-      p ? [h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p), h('span', { class: 'lu-cost' }, `코 ${p.cost}`)), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
+      p ? [avatarEl(p, { size: seatPos ? 36 : 34, teamColor: colorOf(p.teamId), cls: 'avatar-lu' }), h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p), h('span', { class: 'lu-cost' }, `코 ${p.cost}`)), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
         : [h('span', { class: 'lu-plus', 'aria-hidden': 'true' }, '+'), h('span', { class: 'lu-emptylabel' }, emptyLabel)]);
       if (p) enableDrag(el, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return el;

@@ -126,6 +126,32 @@ export function attachOffseason(entry, report, fundsAfter) {
   };
 }
 
+// ---------- 저장 정리 ----------
+/** 시즌 기록을 통째로 남기는 최근 시즌 수의 기본값(규칙 save.keepSeasonsDetail) */
+export const DEFAULT_KEEP_SEASONS = 3;
+
+/**
+ * 오래된 시즌 결과에서 지금 화면이 읽지 않는 큰 필드를 버린다: 오프시즌 보고서(report)·우리 경기 목록(myGames)·육성 결과(devProgram)·방출/연장 기록(contracts).
+ * 순위·플레이오프·선수별 시즌 줄(lines·wl·split·po)·재정(ledger)·이름(playerNames)은 남긴다(선수 기록 표·리그 기록·구단 역사·뉴스가 읽는다).
+ * 득점 상위 목록(leaders)은 우리 팀 에이스 한 명만 남긴다(뉴스 결산이 쓴다). 줄에 소속이 없는 옛 저장은 leaders가 소속 대신이라 그대로 둔다.
+ */
+export function pruneEntry(entry) {
+  const { report, myGames, devProgram, contracts, ...rest } = entry;
+  const teamInLines = Object.values(entry.lines ?? {}).every((l) => l.length >= 14);
+  if (!teamInLines) return rest;
+  const ace = (entry.leaders ?? []).filter((l) => l.teamId === entry.myTeamId).sort((a, b) => b.ppg - a.ppg).slice(0, 1);
+  return { ...rest, leaders: ace };
+}
+
+/** 로그에서 가장 최근 keep시즌은 그대로, 그보다 오래된 시즌은 pruneEntry로 줄인다(원본은 건드리지 않는다) */
+export const pruneLog = (log, keep = DEFAULT_KEEP_SEASONS) => {
+  const cut = log.length - Math.max(1, keep);
+  return log.map((e, i) => (i < cut ? pruneEntry(e) : e));
+};
+
+/** 저장용 게임 상태: 로그의 오래된 시즌을 줄인 얕은 복사본. 시드·조작·결정·시즌 시작 리그는 그대로라 다시 돌린 결과(복원)는 같다 */
+export const pruneGame = (game, keep = DEFAULT_KEEP_SEASONS) => ({ ...game, log: pruneLog(game.log ?? [], keep) });
+
 /** 플레이오프에서 어디까지 갔는지: 우승·결승·4강·6강, 진출 못 했으면 null */
 export function stageOf(playoffs, id) {
   const s = playoffs.series;

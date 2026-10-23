@@ -55,9 +55,9 @@ function newsCard(ctx) {
 }
 
 /** "이번 시즌 캡 N억 (2026-27 대비 +x%)" — 샐러리캡은 물가 지수(src/economy.mjs)에 맞춰 해마다 오른다 */
-function capNote(data, cap) {
-  const base = (data.baseRules ?? data.rules).salaryCap.domesticEok, up = (cap / base - 1) * 100;
-  return `이번 시즌 캡 ${eok(cap, 1)} (${data.rules.season} 대비 ${up >= 0.05 ? `+${up.toFixed(1)}%` : '변동 없음'}). 샐러리캡·최저 연봉·요구 연봉은 해마다 연 ${(data.rules.economy.inflation * 100).toFixed(1)}%씩 오릅니다.`;
+function capNote(data, cap, offseason) {
+  const up = ((data.rules.econ?.index ?? 1) - 1) * 100;
+  return `${offseason ? '다음 시즌' : '이번 시즌'} 캡 ${eok(cap, 1)} (2026-27 대비 ${up >= 0.05 ? `+${up.toFixed(1)}%` : '변동 없음'}). 샐러리캡·최저 연봉·요구 연봉은 해마다 연 ${(data.rules.economy.inflation * 100).toFixed(1)}%씩 오릅니다.`;
 }
 
 export function render(ctx) {
@@ -87,7 +87,7 @@ export function render(ctx) {
       stat('구단 자금', eok(fundsOf(game, data, my)), last ? `지난 시즌 ${last.ledger[my].net >= 0 ? '+' : ''}${last.ledger[my].net.toFixed(1)}억` : '시작 자금'),
       stat('전통 점수', pr.score.toFixed(2), `통산 우승 ${pr.titles}회 · 정규 1위 ${pr.regularTitles}회`)),
     h('div', { class: 'card' }, h('div', { class: 'row between' }, h('span', { class: 'note' }, '캡 사용률'), h('span', { class: 'note' }, `${(capRatio * 100).toFixed(0)}%`)), bar(Math.min(pay.domestic, pay.hardLimit), pay.hardLimit, { cls: capRatio > 1 ? 'warn' : '', label: `소프트캡 ${pay.cap}억, 한도 ${pay.hardLimit.toFixed(1)}억` }),
-      h('p', { class: 'note', style: { margin: '6px 0 0' } }, capNote(data, pay.cap))),
+      h('p', { class: 'note', style: { margin: '6px 0 0' } }, capNote(data, pay.cap, game.stage === 'offseason'))),
     h('div', { class: 'grid split' },
       h('div', { class: 'card' }, h('h2', '최근 순위 흐름'), rankChart(recentRanks(hist, my)), h('p', { class: 'note' }, '노란 점은 우승. 2019-20은 코로나로 조기 종료, 이후 시즌은 게임에서 진행한 결과가 이어집니다.')),
       h('div', { class: 'card' }, h('h2', '핵심 선수'), h('ul', { class: 'plain' }, top.map((p) => h('li', ovrChip(p), h('span', { class: 'grow' }, link(`#/player/${p.id}`, p.name)), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`)))), h('p', {}, link('#/roster', '로스터 전체 보기 →')))),

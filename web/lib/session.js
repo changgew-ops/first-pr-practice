@@ -13,7 +13,7 @@ import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
 import { initialFunds } from '../../src/funds.mjs';
 import { rulesFor } from '../../src/economy.mjs';
-import { summarizeSeason, attachOffseason, VERSION as GAME_VERSION } from './game.js';
+import { summarizeSeason, attachOffseason, pruneGame, VERSION as GAME_VERSION } from './game.js';
 
 export const VERSION = 2;
 
@@ -332,6 +332,9 @@ export class Session {
   }
 }
 
-/** 세션이 저장하는 JSON 문자열(저장 슬롯용) */
-export const serialize = (session) => JSON.stringify(session.game);
+/**
+ * 세션이 저장하는 JSON 문자열(저장 슬롯용). 로그(지난 시즌 결과)는 화면에 보여 주는 기록일 뿐 시즌을 다시 돌리는 데 쓰이지 않으므로(복원은 league·actions·decisions·시드),
+ * 오래된 시즌은 화면이 읽는 요약만 남긴다(최근 rules.save.keepSeasonsDetail시즌은 전체. game.js pruneGame). 살아 있는 세션의 game은 줄이지 않는다.
+ */
+export const serialize = (session) => JSON.stringify(pruneGame(session.game, session.data?.rules?.save?.keepSeasonsDetail));
 export const restore = (data, text) => new Session(data, JSON.parse(text));

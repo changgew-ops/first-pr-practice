@@ -1,6 +1,8 @@
 import { h, table, ovrChip, eok, ORIGIN_LABEL, POS_ORDER, stat, bar, RARITY_LABEL } from '../lib/dom.js';
 import { rosterOf, payrollInfo, teamPower } from '../lib/game.js';
 import { contractButtons } from '../lib/contract-view.js';
+import { avatarEl } from '../lib/avatar.js';
+import { colorOf } from '../lib/team-ui.js';
 
 export function render(ctx, [teamParam]) {
   const { game, data } = ctx;
@@ -16,7 +18,7 @@ export function render(ctx, [teamParam]) {
     const rows = roster.filter((p) => (f.origin === 'all' || p.origin === f.origin) && (f.pos === 'all' || p.position === f.pos) && (!f.q || p.name.includes(f.q)));
     host.replaceChildren(table(rows, [
       { key: 'number', label: '#', get: (p) => p.number, align: 'r' },
-      { key: 'name', label: '이름', get: (p) => p.name, sort: 'str', render: (p) => h('a', { href: `#/player/${p.id}` }, p.name, p.real ? '' : h('span', { class: 'tag', style: { marginLeft: '6px' } }, '신인·가상')) },
+      { key: 'name', label: '이름', get: (p) => p.name, sort: 'str', render: (p) => h('span', { class: 'name-with-avatar' }, avatarEl(p, { size: 28, teamColor: colorOf(teamId), cls: 'avatar-row' }), h('a', { href: `#/player/${p.id}` }, p.name, p.real ? '' : h('span', { class: 'tag', style: { marginLeft: '6px' } }, '신인·가상'))) },
       { key: 'pos', label: '포지션', get: (p) => POS_ORDER.indexOf(p.position), render: (p) => h('span', { class: 'pos' }, p.position) },
       { key: 'age', label: '나이', get: (p) => p.age, align: 'r' },
       { key: 'ovr', label: 'OVR', get: (p) => p.ovr, render: ovrChip, align: 'r' },

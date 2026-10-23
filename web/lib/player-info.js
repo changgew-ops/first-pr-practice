@@ -3,6 +3,8 @@
 import { h, ovrChip, STAT_KEYS, STAT_LABELS, ORIGIN_LABEL, RARITY_LABEL, eok } from './dom.js';
 import { careerRows } from '../../src/career.mjs';
 import { demandEok } from '../../src/valuation.mjs';
+import { avatarEl, AVATAR_NOTE } from './avatar.js';
+import { colorOf } from './team-ui.js';
 
 /** 같은 포지션 선수들의 능력치 평균: Map<포지션, { shooting: 61.2, … }> (players: 리그 전체 선수 목록) */
 export function positionAverages(players) {
@@ -89,6 +91,7 @@ export function openPlayerInfo(ctx, p, extra = []) {
   const titleId = `pi-title-${p.id}`;
   const dlg = h('dialog', { class: 'pi-dialog', 'aria-labelledby': titleId },
     h('div', { class: 'pi-head' },
+      avatarEl(p, { size: 56, teamColor: p.teamId ? colorOf(p.teamId) : null, cls: 'avatar-pi' }),
       ovrChip(p),
       h('div', { class: 'pi-id' },
         h('h2', { id: titleId }, p.name),
@@ -104,6 +107,7 @@ export function openPlayerInfo(ctx, p, extra = []) {
         h('b', r.value),
         h('span', { class: `pi-diff ${r.diff > 0 ? 'good' : r.diff < 0 ? 'bad' : ''}`, title: `같은 포지션(${p.position}) 평균 ${f1(r.avg)}` }, r.diff == null ? '' : r.diff > 0 ? `+${r.diff}` : `${r.diff}`)))),
     h('p', { class: 'note' }, '막대의 세로 눈금과 오른쪽 숫자는 같은 포지션 선수들의 현재 리그 평균과의 차이입니다.'),
+    h('p', { class: 'note' }, AVATAR_NOTE),
     ...[...extraFacts(ctx, p), ...extra].map(([k, v]) => h('div', { class: 'pi-fact' }, h('span', { class: 'note' }, k), h('span', v))),
     line ? h('div', { class: 'pi-fact' }, h('span', { class: 'note' }, line.label), h('span', `${line.gp}경기 · ${f1(line.mpg)}분 · ${f1(line.ppg)}점 ${f1(line.rpg)}리바 ${f1(line.apg)}어시`)) : null,
     career.length ? h('div', { class: 'pi-career' }, h('div', { class: 'note' }, 'KBL 공식 기록(최근)'),
