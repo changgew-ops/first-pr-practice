@@ -18,10 +18,11 @@
 .cx-f { display: grid; gap: 2px; min-width: 96px; }
 .cx-rar { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 6px; }
 .cx-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
-.cx-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 3px; justify-items: center; text-align: center; }
+.cx-card { cursor: pointer; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px; display: grid; gap: 3px; justify-items: center; text-align: center; }
 .cx-card.miss { opacity: .5; }
 .cx-card.got.r-rare { border-color: #86b3f2; } .cx-card.got.r-ace { border-color: #a58cf0; } .cx-card.got.r-legend { border-color: var(--legend); }
 .cx-lock { width: 56px; height: 56px; border-radius: 50%; background: var(--panel-2); display: grid; place-items: center; font-size: 1.4rem; color: var(--muted); }
 .cx-name { font-weight: 600; font-size: .88rem; }
 .cx-tags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
 @media (max-width: 860px) { .ach { grid-template-columns: 30px 1fr; } .ach-when { grid-column: 2; text-align: left; } }
+.cx-card:hover, .cx-card:focus-visible { border-color: var(--team, var(--accent)); outline: none; }

@@ -2,10 +2,22 @@
 import { h, RARITY_LABEL, POS_ORDER } from '../lib/dom.js';
 import { buildCatalog, filterCatalog, codexProgress } from '../../src/codex.mjs';
 import { avatarEl, AVATAR_NOTE } from '../lib/avatar.js';
+import { openPlayerInfo } from '../lib/player-info.js';
+import { cardPlayer } from '../../src/cards.mjs';
+import { careerHighIndex } from '../../src/cards.mjs';
 
 const PAGE = 48;
 const ui = { collected: 'all', rarity: 'all', position: 'all', kind: 'all', season: 'all', query: '', page: 0 };
 const KIND = { d: '국내', f: '외국', a: '아시아쿼터' };
+
+// 도감 카드 → 정보 창에 띄울 선수. 시즌 카드는 data.cards, 시작 로스터 카드("26 …")는 data.players에서 찾는다(둘 다 능력치는 그 카드의 값).
+function cardAsPlayer(ctx, c) {
+  const { data } = ctx;
+  const found = [...(data.cards?.domestic ?? []), ...(data.cards?.foreign ?? [])].find((x) => x.kblId === c.kblId && x.season === c.season);
+  if (found) return cardPlayer(found, { id: `cx:${c.key}`, potentialRules: data.rules.cards?.potential ?? null, careerHigh: careerHighIndex(data.cards).get(c.kblId) });
+  const start = data.players.find((p) => p.kblId === c.kblId && p.real);
+  return start ? { ...start, id: `cx:${c.key}`, name: c.display, teamId: null } : null;
+}
 
 function select(label, key, options, ctx) {
   return h('label', { class: 'cx-f' }, h('span', { class: 'note' }, label),
@@ -26,7 +38,11 @@ export function render(ctx) {
   const slice = rows.slice(ui.page * PAGE, (ui.page + 1) * PAGE);
   const card = (c) => {
     const got = have.has(c.key);
-    return h('li', { class: `cx-card r-${c.rarity} ${got ? 'got' : 'miss'}`, title: got ? c.display : `${c.display} (미수집)` },
+    const open = () => { const p = cardAsPlayer(ctx, c); if (p) openPlayerInfo(ctx, p); };
+    return h('li', {
+      class: `cx-card r-${c.rarity} ${got ? 'got' : 'miss'}`, title: got ? `${c.display} · 눌러서 선수 정보 보기` : `${c.display} (미수집) · 눌러서 선수 정보 보기`,
+      tabindex: '0', role: 'button', 'aria-haspopup': 'dialog', onclick: open, onkeydown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } }
+    },
       got ? avatarEl({ kblId: c.kblId, baseName: c.name, age: c.age, position: c.position, rarity: c.rarity }, { size: 56 }) : h('div', { class: 'cx-lock', 'aria-hidden': 'true' }, '?'),
       h('div', { class: 'cx-name' }, c.display), h('div', { class: 'note' }, `${c.position} · OVR ${c.ovr}`),
       h('div', { class: 'cx-tags' }, h('span', { class: 'tag' }, RARITY_LABEL[c.rarity]), c.kind !== 'd' ? h('span', { class: 'tag' }, KIND[c.kind]) : null));
