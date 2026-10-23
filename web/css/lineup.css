@@ -51,15 +51,16 @@
 .lineup-view .lu-role { font-size: .82rem; font-weight: 600; }
 .lineup-view .lu-role.out { color: var(--muted); font-weight: 500; }
 .lineup-view .lu-row .lu-tag { margin-left: 4px; }
-tr/* 넓은 화면: 코트 옆에 선수 목록을 붙여 끌어 놓기가 한 화면 안에서 되게 한다 */
-@media (min-width: 1180px) {
+/* 넓은 화면(화면 틀 안쪽 폭 기준): 코트 옆에 선수 목록을 붙여 끌어 놓기가 한 화면 안에서 되게 한다 */
+.lineup-view { container-type: inline-size; }
+.lineup-view .lu-split { display: flex; flex-direction: column; gap: 16px; }
+@container (min-width: 820px) {
   .lineup-view .lu-split { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; align-items: start; }
   .lineup-view .lu-listcard { position: sticky; top: 12px; }
   .lineup-view .lu-listscroll { max-height: calc(100vh - 150px); overflow: auto; }
   .lineup-view .lu-hide-md { display: none; }
 }
-.lineup-view .lu-split { display: flex; flex-direction: column; gap: 16px; }
-@media (min-width: 1180px) { .lineup-view .lu-split { display: grid; } }
+
 @media (max-width: 560px) {
   .lineup-view .lu-bench { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
   .lineup-view .lu-cmp-grid { grid-template-columns: 1fr; }

@@ -46,10 +46,21 @@ export function advanceAttendance(att, { standings, playoffs, teamData, season }
     const next = att.fan[t.id] * (1 + growth) + g.fanReversion * (anchor - att.fan[t.id]);
     fan[t.id] = round2(clamp(next, anchor * g.fanMin, anchor * g.fanMax));
   }
-  // 리그 전체 규모: 평균회귀 + 작은 변동(같은 시즌 결과면 같은 값). 해마다 ±몇 %가 현실적 범위(과거 표의 연간 변동폭 근거는 rules.revenue._note)
+  // 리그 전체 규모 = 완만한 장기 상승(attendanceTrend, 물가·시장 성장) × 흔들림. 흔들림은 평균회귀 + 작은 변동이고(같은 시즌 결과면 같은 값),
+  // 변동폭은 과거 표에서 코로나·진행 중 시즌을 뺀 연간 변동의 표준편차 약 9%를 따랐다(rules.revenue._note). 상한 attendanceCap.
+  const rv = rules.revenue;
+  const trend = (y) => (1 + rv.attendanceTrend) ** (y - rv.startYear);
+  const dev = att.index / trend(season);
   const noise = mulberry32(hashString(`att-league:${season}:${standings.map((r) => `${r.id}${r.wins}`).join(',')}`))();
-  const index = clamp(att.index + g.leagueReversion * (1 - att.index) + g.leagueDrift + (noise - 0.5) * 2 * g.leagueNoise, g.leagueMin, g.leagueMax);
+  const devNext = clamp(dev + g.leagueReversion * (1 - dev) + (noise - 0.5) * 2 * g.leagueNoise, g.leagueMin, g.leagueMax);
+  const index = Math.min(rv.attendanceCap, trend(season + 1) * devNext);
   return { index: Math.round(index * 1000) / 1000, fan };
+}
+
+/** 물가 지수: 시작 시즌(rules.revenue.startYear, 2026-27)이 1.0이고 해마다 inflation만큼 오른다. 시즌 연도에서 바로 계산하므로 결정적이다 */
+export function priceIndex(season, rules) {
+  const rv = rules.revenue;
+  return (1 + rv.inflation) ** Math.max(0, season - rv.startYear);
 }
 
 /** 구단 인기 지수(그 해의 관중 규모 배수): 팬 기반 × 올해 승률 효과. 구단별 관중 수를 따로 정해 두지 않는다 */
@@ -102,7 +113,8 @@ export function revenueOf(teamId, ctx, rules) {
   const cap = capacityOf(team);
   const meanFan = Object.values(att.fan).reduce((s, v) => s + v, 0) / Math.max(1, Object.keys(att.fan).length);
   const popOf = (id) => (att.fan[id] ?? 1) / meanFan;
-  const yieldMan = ticketYieldMan(pop, rules);
+  const pi = priceIndex(season, rules); // 물가: 객단가·중계권·스폰서·굿즈에 곱한다
+  const yieldMan = ticketYieldMan(pop, rules) * pi;
   let total = 0, sellouts = 0, gate = 0;
   const games = homeOpponents(teamId, teamData, rules);
   games.forEach((opp, i) => {
@@ -114,15 +126,15 @@ export function revenueOf(teamId, ctx, rules) {
   for (const g of playoffHomeGames(teamId, playoffs)) {
     const w = rv.gate.playoff[g.round === '챔피언결정전' ? '결승' : g.round] ?? rv.gate.playoff['6강'];
     const a = attendanceFor({ season, teamId, key: `p${g.key}`, pop, weight: w.attendance, capacity: cap, scale: att.index }, rules);
-    playoffGate += a.attendance * ticketYieldMan(pop, rules, w.price) * MAN;
+    playoffGate += a.attendance * ticketYieldMan(pop, rules, w.price) * pi * MAN;
     poPeople += a.attendance; poGames++; if (a.sellout) sellouts++;
   }
   const parts = {
     gate: round2(gate),
     playoffGate: round2(playoffGate),
-    broadcast: round2(rv.broadcast.base + rv.broadcast.perWinPct * winPct),
-    sponsor: round2(rv.sponsor.base * (1 + rv.sponsor.prestigeSpread * (score - rv.gate.prestigeCenter))),
-    merch: round2(rv.merch.base * (1 + rv.merch.prestigeSpread * (pop - 1)) + (stage === '우승' ? rv.merch.titleBonus : 0)),
+    broadcast: round2((rv.broadcast.base + rv.broadcast.perWinPct * winPct) * pi),
+    sponsor: round2(rv.sponsor.base * (1 + rv.sponsor.prestigeSpread * (score - rv.gate.prestigeCenter)) * pi),
+    merch: round2((rv.merch.base * (1 + rv.merch.prestigeSpread * (pop - 1)) + (stage === '우승' ? rv.merch.titleBonus : 0)) * pi),
     playoffBonus: stage ? f.playoffBonus[stage] : 0
   };
   const revenue = round2(Object.values(parts).reduce((s, v) => s + v, 0));
@@ -130,7 +142,7 @@ export function revenueOf(teamId, ctx, rules) {
     parts, revenue,
     attendance: {
       avg: Math.round(total / games.length), total, homeGames: games.length, sellouts, capacity: cap,
-      occupancy: cap ? round2(total / games.length / cap) : null, yieldMan: round2(yieldMan), popularity: round2(pop), fan: round2(att.fan[teamId] ?? 1), leagueIndex: round2(att.index),
+      occupancy: cap ? round2(total / games.length / cap) : null, yieldMan: round2(yieldMan), priceIndex: round2(pi), popularity: round2(pop), fan: round2(att.fan[teamId] ?? 1), leagueIndex: round2(att.index),
       playoffGames: poGames, playoffAvg: poGames ? Math.round(poPeople / poGames) : null
     }
   };

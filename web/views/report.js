@@ -1,6 +1,7 @@
 import { h, table, tabs, link, stat, ovrChip, eok, signed, ORIGIN_LABEL } from '../lib/dom.js';
 import { bracket } from './league.js';
 import { logToHistory, seasonLabel, playerById } from '../lib/game.js';
+import { partsBar, PART_LABEL } from './finance-card.js';
 
 export function render(ctx, [tabParam]) {
   const { game, data } = ctx;
@@ -23,6 +24,15 @@ export function render(ctx, [tabParam]) {
         stat('플레이오프', stage ?? '진출 실패', e.championId === my ? '챔피언' : `우승 ${ctx.name(e.championId)}`),
         stat('시즌 수입', eok(led.revenue), `선수단 연봉 ${eok(led.payroll)}`),
         stat('순이익', `${led.net >= 0 ? '+' : ''}${led.net.toFixed(1)}억`, `자금 ${eok(e.fundsAfter[my])}${led.penalty ? ` · 기금 ${eok(led.penalty)}` : ''}`)),
+      led.parts ? h('div', { class: 'card fin-card' }, h('h3', '재정 내역'),
+        h('div', { class: 'fin-facts' },
+          ...(led.attendance ? [
+            h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '경기당 관중'), h('b', `${led.attendance.avg.toLocaleString('ko-KR')}명`), h('span', { class: 'note' }, `홈 ${led.attendance.homeGames}경기 합계 ${led.attendance.total.toLocaleString('ko-KR')}명${led.attendance.occupancy != null ? ` · 점유율 ${Math.round(led.attendance.occupancy * 100)}%` : ''}${led.attendance.sellouts ? ` · 매진 ${led.attendance.sellouts}경기` : ''}`)),
+            h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '1인당 입장료'), h('b', `${led.attendance.yieldMan.toFixed(2)}만원`), h('span', { class: 'note' }, `물가 ×${(led.attendance.priceIndex ?? 1).toFixed(2)} 반영 · 게임용 추정`))] : []),
+          h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '총수입'), h('b', eok(led.revenue)), h('span', { class: 'note' }, `연봉 ${eok(led.payroll)}${led.penalty ? ` · 기금 ${eok(led.penalty)}` : ''}${led.program ? ` · 육성 ${eok(led.program)}` : ''}`)),
+          h('div', { class: 'fin-fact' }, h('span', { class: 'note' }, '순이익'), h('b', `${led.net >= 0 ? '+' : ''}${led.net.toFixed(1)}억`), h('span', { class: 'note' }, `시즌 뒤 자금 ${eok(e.fundsAfter[my])}`))),
+        partsBar(led.parts),
+        h('p', { class: 'note fin-foot' }, '2023-24 KBL 집계(관중·입장 수입)에 맞춘 추정 모델입니다. 중계권·스폰서·굿즈는 자료가 없어 지은 값이고, 객단가·중계권·스폰서·굿즈는 해마다 물가만큼 오릅니다.')) : null,
       h('div', { class: 'grid g2' },
         h('div', { class: 'card' }, h('h3', '우리 팀 득점 순위'), h('ul', { class: 'plain' }, mineLeaders.slice(0, 6).map((l) => h('li', h('span', { class: 'grow' }, link(`#/player/${l.id}`, l.name)), h('span', { class: 'note' }, `${l.ppg.toFixed(1)}점 ${l.rpg.toFixed(1)}리 ${l.apg.toFixed(1)}어`))))),
         h('div', { class: 'card' }, h('h3', '리그 득점 TOP 5'), h('ul', { class: 'plain' }, [...e.leaders].sort((a, b) => b.ppg - a.ppg).slice(0, 5).map((l, i) => h('li', h('span', { class: 'note' }, i + 1), h('span', { class: 'grow' }, link(`#/player/${l.id}`, l.name), ' ', h('span', { class: 'note' }, ctx.name(l.teamId))), h('b', l.ppg.toFixed(1))))))),

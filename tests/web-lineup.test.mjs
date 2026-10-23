@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
   evalDraft, autoDraft, setRole, roleOf, sameDraft, prune, rosterOfTeam, powerOf,
-  POSITIONS, seatFit, arrangeSeats, slotsFromDraft, draftFromSlots, sameArrangement, locate, placeInSlot, clearSlot, swapSlots, firstFreeSlot
+  POSITIONS, seatFit, arrangeSeats, slotsFromDraft, draftFromSlots, sameArrangement, locate, placeInSlot, clearSlot, swapSlots, firstFreeSlot,
+  slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS
 } from '../web/lib/lineup-view.js';
 import { remainingCheckpoints, previewGain, projectGain } from '../web/lib/training-view.js';
 import { Session } from '../web/lib/session.js';
@@ -167,4 +168,66 @@ test('출전 시간은 자리·목록 순서가 아니라 OVR 순서로 나눈�
   assert.equal(lineupMinutes(l1, sim).get('x7'), sim.minutesBench[0]);
   assert.equal([...lineupMinutes(l1, sim).values()].reduce((a, b) => a + b, 0), 200);
   assert.equal(sim.minutesBench.length, rules.lineup.bench);
+});
+
+test('눌러서 바꾸기·끌어 놓기: moveRefs가 모든 조합(칸↔칸, 칸↔목록 선수, 목록→칸, 칸→빼기)을 같은 규칙으로 처리한다', () => {
+  const roster = rosterOfTeam(data.players, MY);
+  const slots = slotsFromDraft(autoDraft(roster, rules), roster, rules, { arrange: true });
+  const out = roster.find((p) => !locate(slots, p.id));
+  const seat0 = slotRef('seat', 0), seat3 = slotRef('seat', 3), bench2 = slotRef('bench', 2), bench5 = slotRef('bench', 5);
+  const idAt = (s, ref) => idOfRef(s, ref);
+  // 코트 ↔ 코트, 코트 ↔ 벤치, 벤치 ↔ 벤치: 서로 바꾼다
+  for (const [x, y] of [[seat0, seat3], [seat0, bench2], [bench2, bench5]]) {
+    const a = idAt(slots, x), b = idAt(slots, y);
+    const n = moveRefs(slots, x, y);
+    assert.equal(idAt(n, x), b); assert.equal(idAt(n, y), a);
+    assert.equal(draftFromSlots(n).starters.length + draftFromSlots(n).bench.length, 12, '인원은 그대로');
+  }
+  // 칸 → 제외 선수(목록 행): 제외 선수가 그 칸에 들어가고 원래 선수는 빠진다 / 반대 방향도 같다
+  const was = idAt(slots, seat0);
+  const n1 = moveRefs(slots, seat0, refOfPlayer(slots, out.id));
+  assert.equal(idAt(n1, seat0), out.id); assert.equal(locate(n1, was), null);
+  const n2 = moveRefs(slots, refOfPlayer(slots, out.id), seat0);
+  assert.deepEqual(n2, n1);
+  // 칸 → 빼기: 비운다. 빈 칸이나 제외 선수를 빼려 하면 변화 없음
+  const n3 = moveRefs(slots, bench2, OUT_REF);
+  assert.equal(idAt(n3, bench2), null); assert.equal(locate(n3, slots.bench[2]), null);
+  assert.equal(moveRefs(n3, bench2, OUT_REF), n3);
+  assert.equal(moveRefs(slots, refOfPlayer(slots, out.id), OUT_REF), slots);
+  // 빈 칸으로 이동, 목록 선수 → 빈 칸
+  const n4 = moveRefs(n3, seat0, bench2);
+  assert.equal(idAt(n4, bench2), was); assert.equal(idAt(n4, seat0), idAt(n3, bench2));
+  const n5 = moveRefs(n3, refOfPlayer(n3, out.id), bench2);
+  assert.equal(idAt(n5, bench2), out.id);
+  // 같은 것끼리, 목록 ↔ 목록은 변화 없음, 원본 불변
+  assert.equal(moveRefs(slots, seat0, seat0), slots);
+  assert.equal(moveRefs(slots, refOfPlayer(slots, out.id), refOfPlayer(slots, out.id)), slots);
+  assert.equal(slots.seats[0], was);
+  assert.ok(sameRef(refOfPlayer(slots, was), seat0) && !sameRef(seat0, seat3) && sameRef(OUT_REF, OUT_REF));
+  // 어떤 이동 순서를 거쳐도 선수가 중복되지 않는다
+  let cur = slots; const refs = [seat0, seat3, bench2, bench5, OUT_REF, refOfPlayer(slots, out.id)];
+  for (let i = 0; i < 40; i++) {
+    cur = moveRefs(cur, refs[i % refs.length], refs[(i * 7 + 3) % refs.length]);
+    const ids = [...cur.seats, ...cur.bench].filter(Boolean);
+    assert.equal(new Set(ids).size, ids.length);
+  }
+});
+
+test('포지션 현황: 포지션별 로스터·스타팅·벤치·엔트리 밖 인원과 목록 필터·정렬', () => {
+  const roster = rosterOfTeam(data.players, MY);
+  const slots = slotsFromDraft(autoDraft(roster, rules), roster, rules, { arrange: true });
+  const sum = positionSummary(roster, slots);
+  assert.deepEqual(sum.map((r) => r.pos), POSITIONS);
+  assert.equal(sum.reduce((a, r) => a + r.total, 0), roster.length);
+  assert.equal(sum.reduce((a, r) => a + r.starters, 0), 5);
+  assert.equal(sum.reduce((a, r) => a + r.bench, 0), 7);
+  assert.equal(sum.reduce((a, r) => a + r.out, 0), roster.length - 12);
+  for (const r of sum) assert.equal(r.total, r.starters + r.bench + r.out);
+  const short = positionSummary(roster, slots, { PG: 99 });
+  assert.equal(short.find((r) => r.pos === 'PG').status, 'short');
+  assert.equal(short.find((r) => r.pos === 'SG').status, 'ok');
+  for (const pos of POSITIONS) assert.ok(poolList(roster, { pos }).every((p) => p.position === pos));
+  const byCost = poolList(roster, { sort: 'cost' });
+  assert.ok(byCost.every((p, i) => i === 0 || byCost[i - 1].cost >= p.cost));
+  assert.ok(Object.keys(POOL_SORTS).length >= 4);
 });

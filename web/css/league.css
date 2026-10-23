@@ -1,1 +1,76 @@
-/* league 화면 스타일 (담당 에이전트가 채운다) */
+/* 리그 화면(web/views/league.js). 색은 style.css의 토큰만 쓴다. */
+.lg .sr-only, .lg-records .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.lg .good { color: var(--good); } .lg .bad { color: var(--bad); }
+.lg-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; flex: none; }
+.lg-team { display: inline-flex; align-items: center; }
+.lg-select, .lg-search { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font: inherit; }
+.lg-search { min-width: 170px; }
+.lg-select { max-width: 100%; }
+
+/* 보기 설정 줄 */
+.lg-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.lg-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--panel); }
+.lg-seg button { background: none; border: 0; padding: 6px 14px; color: var(--muted); font-weight: 600; }
+.lg-seg button.on { background: var(--team); color: #fff; }
+.lg-check { display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; color: var(--muted); }
+.lg-note { margin: 2px 2px 0; line-height: 1.5; }
+
+/* 부문별 상위 카드 */
+.lg-leaders { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.lg-leader { padding: 12px 14px 10px; }
+.lg-leader header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.lg-leader h3 { margin: 0; font-size: .95rem; }
+.lg-more { background: none; border: 0; color: var(--muted); font-size: .8rem; padding: 2px 4px; border-radius: 6px; }
+.lg-more:hover { color: var(--text); background: var(--panel-2); }
+.lg-leader ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.lg-leader li { display: grid; grid-template-columns: 1.7em minmax(0, 1fr) auto; column-gap: 8px; row-gap: 3px; align-items: center; }
+.lg-leader li.me .lg-who { font-weight: 700; }
+.lg-rank { display: inline-grid; place-items: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-size: .78rem; font-weight: 800; background: var(--panel-2); color: var(--muted); font-variant-numeric: tabular-nums; }
+.lg-rank.r1 { background: var(--legend); color: #1a1200; }
+.lg-rank.r2 { background: color-mix(in srgb, var(--common) 55%, var(--text)); color: var(--bg); }
+.lg-rank.r3 { background: color-mix(in srgb, var(--warn) 55%, #7a4a1a); color: #fff; }
+.lg-who { min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+.lg-who > a, .lg-who > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lg-who small { color: var(--muted); font-size: .76rem; display: flex; align-items: center; overflow: hidden; white-space: nowrap; }
+.lg-val { font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.lg-meter { grid-column: 2 / -1; height: 4px; background: var(--panel-2); border-radius: 99px; overflow: hidden; }
+.lg-meter i { display: block; height: 100%; border-radius: 99px; opacity: .85; }
+
+/* 기록 표 */
+.lg-tablebox { overflow: hidden; }
+.lg-wrap { max-height: 72vh; overflow: auto; }
+.lg-table { border-collapse: separate; border-spacing: 0; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.lg-table th, .lg-table td { padding: 7px 10px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.lg-table thead th { position: sticky; top: 0; z-index: 3; background: var(--panel-2); font-size: .76rem; color: var(--muted); font-weight: 600; text-align: left; }
+.lg-table thead th.r { text-align: right; }
+.lg-table th button { background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; white-space: nowrap; }
+.lg-table th button:hover { color: var(--text); }
+.lg-table th.sorted, .lg-table th.sorted button { color: var(--text); }
+.lg-table td.sorted { font-weight: 700; }
+.lg-table tbody tr:hover td { background: color-mix(in srgb, var(--team) 8%, var(--panel)); }
+.lg-table tr.me td { background: color-mix(in srgb, var(--team) 14%, var(--panel)); }
+.lg-table tr.me td.lg-bar { background-color: color-mix(in srgb, var(--team) 14%, var(--panel)); }
+.lg-table td.lg-bar { background-image: linear-gradient(90deg, color-mix(in srgb, var(--team) 18%, transparent) var(--w), transparent var(--w)); }
+.lg-table tbody tr:last-child td { border-bottom: 0; }
+.lg-table tfoot td { position: sticky; bottom: 0; z-index: 2; background: var(--panel-2); font-weight: 700; border-top: 1px solid var(--line); border-bottom: 0; }
+
+/* 첫 두 열(순번·이름) 고정 */
+.lg-c-rank { position: sticky; left: 0; z-index: 2; width: 44px; min-width: 44px; text-align: right; color: var(--muted); }
+.lg-c-name { position: sticky; left: 44px; z-index: 2; min-width: 130px; font-weight: 600; box-shadow: 1px 0 0 var(--line); }
+.lg-table thead .lg-c-rank, .lg-table thead .lg-c-name { z-index: 4; }
+.lg-table tfoot .lg-c-rank, .lg-table tfoot .lg-c-name { z-index: 4; }
+.lg-table td.m1 { color: var(--legend); font-weight: 800; }
+.lg-table td.m2 { color: color-mix(in srgb, var(--common) 40%, var(--text)); font-weight: 800; }
+.lg-table td.m3 { color: color-mix(in srgb, var(--warn) 60%, #a5611f); font-weight: 800; }
+.lg-card { font-style: normal; font-size: .68rem; font-weight: 700; margin-left: 6px; padding: 1px 5px; border-radius: 4px; background: var(--panel-2); border: 1px solid var(--line); color: var(--muted); }
+.lg-multi { font-style: normal; font-size: .7rem; margin-left: 6px; padding: 0 5px; border-radius: 99px; background: var(--panel-2); color: var(--muted); }
+.lg-table td.best { color: var(--good); font-weight: 800; }
+.lg-more-row { display: flex; gap: 8px; justify-content: center; padding: 12px; border-top: 1px solid var(--line); }
+
+@media (max-width: 640px) {
+  .lg-search { flex: 1 1 100%; }
+  .lg-c-name { min-width: 112px; left: 36px; }
+  .lg-c-rank { width: 36px; min-width: 36px; }
+  .lg-table th, .lg-table td { padding: 6px 8px; }
+  .lg-leaders { grid-template-columns: 1fr; }
+}

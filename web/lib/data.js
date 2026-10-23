@@ -21,7 +21,10 @@ export async function loadData() {
   // 경기장(수용 인원 등). 파일이 없거나 깨져도 게임은 열린다(수용 인원 자료 없음으로 표시)
   let arenaRows = [];
   try { arenaRows = parseArenasCsv(await (await get('arenas.csv')).text()); } catch (e) { console.warn('arenas.csv를 읽지 못했습니다:', e.message); }
-  return { rules, teams: applyArenas(teams, arenaRows), players, history: { seasons, franchises }, profiles, careers, cards };
+  // 시즌별 총 관중(공식 집계 표). 없어도 게임은 열린다
+  let attendance = [];
+  try { attendance = (await (await get('history/attendance.csv')).text()).split(/\r?\n/).filter((l) => l && !l.startsWith('#')).slice(1).map((l) => l.split(',')).map(([season, total]) => ({ season, total: Number(total) })); } catch (e) { console.warn('attendance.csv를 읽지 못했습니다:', e.message); }
+  return { rules, teams: applyArenas(teams, arenaRows), attendance, players, history: { seasons, franchises }, profiles, careers, cards };
 }
 
 /** 선수 이름(또는 별칭)으로 찾는 실제 프로필 (생년월일·키·학교·KBL 경력). 없으면 undefined */

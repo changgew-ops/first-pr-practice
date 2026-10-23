@@ -1,1 +1,23 @@
-/* finance 화면 스타일 (담당 에이전트가 채운다) */
+/* 재정·경기장 카드(홈)와 시즌 결산의 재정 내역 */
+.fin-card { display: flex; flex-direction: column; gap: 10px; }
+.fin-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 14px; }
+.fin-fact { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2, transparent); min-width: 0; }
+.fin-fact b { font-size: 1.15rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.fin-parts { display: flex; flex-direction: column; gap: 8px; }
+.fin-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--line); }
+.fin-bar i { display: block; height: 100%; min-width: 2px; }
+.fin-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .88rem; }
+.fin-legend li { display: flex; align-items: center; gap: 6px; }
+.fin-legend .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.p-gate { background: var(--team, #4a8fe0); } .p-playoffGate { background: #7fb4ff; } .p-broadcast { background: #9a6be0; }
+.p-sponsor { background: #e8a23c; } .p-merch { background: #43b584; } .p-playoffBonus { background: #e85a78; }
+.fin-trend-wrap { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.fin-trend { display: flex; align-items: flex-end; gap: 8px; height: 112px; padding-top: 4px; }
+.fin-t { flex: 1 1 0; min-width: 0; height: 100%; display: grid; grid-template-rows: 1fr auto auto; justify-items: center; align-items: end; gap: 2px; }
+.fin-t i { display: block; width: 70%; max-width: 44px; border-radius: 4px 4px 0 0; align-self: end; }
+.fin-t.off i { background: var(--line); }
+.fin-t.game i { background: var(--team, #4a8fe0); }
+.fin-t b { font-size: .78rem; font-variant-numeric: tabular-nums; }
+.fin-t span { font-size: .72rem; }
+.fin-foot { margin: 0; line-height: 1.5; }
+@media (max-width: 520px) { .fin-trend { gap: 4px; } }

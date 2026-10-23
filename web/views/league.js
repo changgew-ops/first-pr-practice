@@ -2,7 +2,7 @@
 // 기록의 출처는 시즌마다 다르다: 진행 중인 시즌은 게임의 박스스코어 집계, 게임에서 끝난 시즌은 저장된 선수 줄,
 // 실제 시즌(1997~2025-26)은 공식 기록(data/history/stats/<시즌>.json, 선택한 시즌만 불러온다).
 import { h, table, tabs, link } from '../lib/dom.js';
-import { fullHistory, liveSeason } from '../lib/game.js';
+import { fullHistory, liveSeason, logToHistory } from '../lib/game.js';
 import { colorOf } from '../lib/team-ui.js';
 import { loadSeasonStats } from '../lib/season-stats.js';
 import {
@@ -23,7 +23,7 @@ export function bracket(ctx, season, my) {
 }
 
 // 화면을 다시 그려도(시즌·탭을 바꿔도) 남는 보기 설정
-const ui = { mode: 'avg', gt: 'r', q: '', team: 'all', qualified: false, shown: 50, sort: { players: { key: 'pts', dir: -1 }, teams: { key: 'wpct', dir: -1 } } };
+const ui = { season: null, mode: 'avg', gt: 'r', q: '', team: 'all', qualified: false, shown: 50, sort: { players: { key: 'pts', dir: -1 }, teams: { key: 'wpct', dir: -1 } } };
 const PAGE = 50;
 const WORSE_IS_HIGHER = new Set(['pa', 'to']); // 팀 기록에서 낮을수록 좋은 열
 
@@ -45,10 +45,10 @@ function resolveRecords(ctx, season, entry, kind, gt) {
 }
 
 const NOTE = {
-  live: '게임이 시즌 진행 중 계산한 기록입니다(정규리그). 시뮬레이션은 턴오버·파울·공격/수비 리바운드를 만들지 않아 "-"로 나옵니다.',
+  live: '게임이 시즌 진행 중 계산한 기록입니다(정규리그). 시뮬레이션은 턴오버·파울·공격/수비 리바운드를 만들지 않아 그 열은 표시하지 않습니다.',
   game: '게임에서 진행한 시즌의 저장된 기록입니다. 구단의 득점·실점·승패는 순위표, 나머지는 선수 기록의 합입니다(시즌 중에 이적한 선수는 시즌 끝 소속에 합산). 이전 버전에서 저장한 시즌은 슈팅 기록이 없어 "-"로 나옵니다.',
-  real: 'KBL 공식 기록입니다. 구단 기록은 그 구단 선수 기록의 합이고, 경기 수와 승패는 그 시즌 순위표입니다. 구단 실점·득실은 자료가 없어 "-"입니다.',
-  realPo: 'KBL 공식 기록(플레이오프와 챔피언결정전 합산)입니다. 구단의 경기 수와 승패는 선수 기록에서 가장 많이 뛴 선수 기준으로 추정했고, 구단 실점·득실은 자료가 없어 "-"입니다.'
+  real: 'KBL 공식 기록입니다. 구단 기록은 그 구단 선수 기록의 합이고, 경기 수와 승패는 그 시즌 순위표입니다. 구단 실점·득실은 자료가 없어 표시하지 않습니다.',
+  realPo: 'KBL 공식 기록(플레이오프와 챔피언결정전 합산)입니다. 구단의 경기 수와 승패는 선수 기록에서 가장 많이 뛴 선수 기준으로 추정했고, 구단 실점·득실은 자료가 없어 표시하지 않습니다.'
 };
 
 // ---------- 선수 기록 ----------
@@ -60,7 +60,7 @@ function playersPanel(ctx, rec, season, kind, my, nameFor) {
   const minGames = Math.max(1, qualifyGames(teams, 0.5));
   const teamIds = [...new Set(players.flatMap((p) => p.teamIds?.length ? p.teamIds : [p.teamId]).filter(Boolean))].sort((a, b) => nameFor(a).localeCompare(nameFor(b), 'ko'));
   const cfg = ui.sort.players;
-  if (!cols.some((c) => c.key === cfg.key)) { cfg.key = 'pts'; cfg.dir = -1; }
+  if (cfg.key !== 'name' && cfg.key !== 'team' && !cols.some((c) => c.key === cfg.key)) { cfg.key = 'pts'; cfg.dir = -1; }
 
   const host = h('div', { class: 'stack' });
   const leadersHost = h('div', { class: 'lg-leaders' });
@@ -145,7 +145,9 @@ function playersPanel(ctx, rec, season, kind, my, nameFor) {
 function teamsPanel(ctx, rec, season, kind, my, nameFor) {
   const { teams } = rec;
   const cfg = ui.sort.teams;
-  const cols = TEAM_COLS.filter((c) => !c.stat || hasData(teams, c.key === 'fg' || c.key === 'tp' || c.key === 'ft' ? ({ fg: 'fg', tp: 'tp', ft: 'ft' })[c.key] : c.key) || c.key === 'pts');
+  if (cfg.key !== 'name' && !TEAM_COLS.some((c) => c.key === cfg.key)) { cfg.key = 'wpct'; cfg.dir = -1; }
+  const noAgainst = teams.every((t) => t.pa == null);
+  const cols = TEAM_COLS.filter((c) => (!c.stat || c.key === 'pts' || hasData(teams, c.key)) && !(c.special && noAgainst));
   const host = h('div', { class: 'stack' });
   const boxHost = h('div', { class: 'lg-tablebox card flush' });
   const mode = () => ui.mode;
@@ -201,7 +203,7 @@ function teamsPanel(ctx, rec, season, kind, my, nameFor) {
 // ---------- 기록 탭(선수/팀 공통 틀: 불러오기·오류·정규/플레이오프 토글) ----------
 function recordsTab(ctx, which, season, entry, my) {
   const kind = kindOf(season, entry);
-  const nameFor = (id) => season.teams?.find((t) => t.franchiseId === id)?.displayName ?? ctx.name(id);
+  const nameFor = (id) => season.teams?.find((t) => t.franchiseId === id)?.displayName ?? (id ? ctx.name(id) : '-');
   const host = h('div', { class: 'stack lg-records' });
   const body = h('div', { class: 'stack' });
   const note = h('p', { class: 'note lg-note' });
@@ -229,15 +231,18 @@ export function render(ctx, [seasonParam, tabParam]) {
   const my = game.managerId;
   const hist = fullHistory(game, data);
   const live = liveSeason(ctx.session);
-  const seasons = [...(live ? [live] : []), ...[...hist.seasons].reverse()];
+  // 정규리그·플레이오프는 끝났고 오프시즌 결정 중인 시즌은 아직 로그에 없으므로 따로 끼워 넣는다
+  const ended = ctx.session.stage === 'offseason' ? ctx.session.game.seasonEnd?.entry ?? null : null;
+  const seasons = [...(live ? [live] : []), ...(ended ? [logToHistory(ended)] : []), ...[...hist.seasons].reverse()];
   const season = seasons.find((s) => s.season === seasonParam) ?? seasons[0];
-  const entry = game.log.find((e) => e.season === season.season) ?? null;
+  const entry = (ended?.season === season.season ? ended : null) ?? game.log.find((e) => e.season === season.season) ?? null;
+  if (ui.season !== season.season) { ui.season = season.season; ui.team = 'all'; ui.q = ''; ui.shown = PAGE; } // 시즌을 바꾸면 검색·구단 필터는 처음으로
   const tabList = [['standings', '순위'], ['playoffs', '플레이오프'], ['players', '선수 기록'], ['teams', '팀 기록'], ...(season.awards ? [['awards', '수상']] : [])];
   const wanted = tabParam === 'leaders' ? 'players' : tabParam;
   const tab = tabList.some(([k]) => k === wanted) ? wanted : 'standings';
   const top = season.teams[0];
   const nav = (t) => ctx.go(`league/${season.season}/${t}`);
-  const nameFor = (id) => season.teams?.find((t) => t.franchiseId === id)?.displayName ?? ctx.name(id);
+  const nameFor = (id) => season.teams?.find((t) => t.franchiseId === id)?.displayName ?? (id ? ctx.name(id) : '-');
 
   let content;
   if (tab === 'standings') {

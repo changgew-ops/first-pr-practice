@@ -77,10 +77,12 @@ test('시즌 정산: 수입 − 연봉 − 기금이 자금에 반영되고 구�
     assert.ok(Math.abs(e.net - (e.revenue - e.payroll - e.penalty)) < 0.02, t.id);
     assert.ok(Math.abs(next[t.id] - (funds[t.id] + e.net)) < 0.02);
   }
-  // 우승팀이 같은 승률 조건에서 더 많이 번다
-  const champ = ledger[standings[0].id];
+  // 수입 = 입장·플레이오프 입장·중계권·스폰서·굿즈·플레이오프 상금(모델은 tests/revenue.test.mjs). 우승팀은 우승 상금을 받고 꼴찌보다 더 번다
+  const champ = ledger[standings[0].id], last = ledger[standings.at(-1).id];
   const f = rules.transactions.funds;
-  assert.ok(Math.abs(champ.revenue - (f.revenueBase + f.revenuePerWinPct * winPct.get(standings[0].id) + f.playoffBonus['우승'])) < 0.02);
+  assert.ok(Math.abs(champ.revenue - Object.values(champ.parts).reduce((a, b) => a + b, 0)) < 0.02);
+  assert.equal(champ.parts.playoffBonus, f.playoffBonus['우승']);
+  assert.ok(champ.revenue > last.revenue);
 });
 
 test('구단 간 현금 이동은 합계가 변하지 않는다', () => {
