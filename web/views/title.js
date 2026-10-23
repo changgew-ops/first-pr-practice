@@ -6,8 +6,9 @@ import { latestSlot } from '../lib/save.js';
 const ART = new URL('../assets/title-bg.webp', import.meta.url).href;
 const ART_FALLBACK = new URL('../assets/title.svg', import.meta.url).href;
 const SIZE = { w: 1024, h: 691 };
-// 그림 속 버튼 위치(왼쪽·위·너비·높이, 그림 크기에 대한 %)
-const HOT = { push: [37.4, 71.3, 25.9, 12.3], cont: [33.9, 88.0, 15.8, 6.4], save: [50.8, 88.0, 15.8, 6.4] };
+// 그림 속 버튼 위치(왼쪽·위·너비·높이, 1024×691 그림 안의 px)
+const px = (x, y, w, hgt) => [(x / SIZE.w) * 100, (y / SIZE.h) * 100, (w / SIZE.w) * 100, (hgt / SIZE.h) * 100];
+const HOT = { push: px(376, 495, 265, 84), cont: px(341, 610, 162, 45), save: px(514, 610, 163, 45) };
 const place = ([l, t, w, hgt]) => ({ left: `${l}%`, top: `${t}%`, width: `${w}%`, height: `${hgt}%` });
 
 export function render(ctx) {
