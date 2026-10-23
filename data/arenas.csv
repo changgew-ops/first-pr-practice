@@ -1,0 +1,13 @@
+# 구단 홈 경기장. capacity(수용 인원)는 확인한 값만 채운다 — 비어 있으면 화면에 '수용 인원 자료 없음'으로 나오고 관중 모델은 상한 없이 계산한다.
+# source에는 값의 출처(붙여넣은 문서·URL)를 적는다. 구단 id와 경기장 이름은 data/teams.json과 같아야 한다(테스트가 확인).
+teamId,arena,capacity,source,note
+wonju-db,원주종합체육관,,,
+seoul-samsung,잠실학생체육관,,,
+goyang-sono,고양 소노 아레나,,,
+seoul-sk,잠실학생체육관,,,
+changwon-lg,창원체육관,,,
+anyang-jungkwanjang,안양 정관장 아레나,,,
+busan-kcc,사직실내체육관,,,
+suwon-kt,수원 KT 소닉붐 아레나,,,
+daegu-kogas,대구체육관,,,
+ulsan-hyundai-mobis,울산동천체육관,,,

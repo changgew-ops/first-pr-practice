@@ -7,6 +7,7 @@ const get = async (path) => {
   return res;
 };
 import { expandCard } from '../../src/cards.mjs';
+import { parseArenasCsv, applyArenas } from '../../src/arenas.mjs';
 const json = async (path) => (await get(path)).json();
 
 export async function loadData() {
@@ -17,7 +18,10 @@ export async function loadData() {
   ]);
   // 시즌 카드(과거 시즌의 선수 시즌 하나 = 카드 한 장): 신인 드래프트와 외국인 영입 후보로 쓴다
   const cards = { domestic: cardsDomestic.rows.map(expandCard), foreign: cardsForeign.rows.map(expandCard) };
-  return { rules, teams, players, history: { seasons, franchises }, profiles, careers, cards };
+  // 경기장(수용 인원 등). 파일이 없거나 깨져도 게임은 열린다(수용 인원 자료 없음으로 표시)
+  let arenaRows = [];
+  try { arenaRows = parseArenasCsv(await (await get('arenas.csv')).text()); } catch (e) { console.warn('arenas.csv를 읽지 못했습니다:', e.message); }
+  return { rules, teams: applyArenas(teams, arenaRows), players, history: { seasons, franchises }, profiles, careers, cards };
 }
 
 /** 선수 이름(또는 별칭)으로 찾는 실제 프로필 (생년월일·키·학교·KBL 경력). 없으면 undefined */

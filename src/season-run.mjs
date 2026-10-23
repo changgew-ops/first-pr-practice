@@ -278,7 +278,7 @@ export function settleYear(league, finished, teamData, rules) {
   // 유학 중이던 선수는 등록 명단 밖이라 캡·연봉 지출에서 빠지고, 대신 프로그램 비용(유학비 + 연봉의 일부)을 낸다
   const { dev } = finished;
   const payPlayers = dev?.abroadIds?.length ? seasonPlayers.filter((p) => !dev.abroadIds.includes(p.id)) : seasonPlayers;
-  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), payPlayers, result.standings, result.playoffs, teamData, rules, prestigeTable(league.legacy, rules)); // 수입은 이번 시즌 이전의 전통으로
+  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), payPlayers, result.standings, result.playoffs, teamData, rules, prestigeTable(league.legacy, rules), league.season); // 수입은 이번 시즌 이전의 전통으로
   if (dev?.totalCost > 0) {
     const t = dev.teamId, l = settled.ledger[t], round2 = (v) => Math.round(v * 100) / 100;
     settled.funds[t] = round2(settled.funds[t] - dev.totalCost);

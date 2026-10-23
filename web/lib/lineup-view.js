@@ -1,5 +1,6 @@
 // 라인업 편성 화면의 순수 계산(브라우저 API 없음). 편집 중인 편성(draft)은 { starters: [선수 id], bench: [선수 id] }.
 import { validateLineup, buildLineup, lineupCost } from '../../src/lineup.mjs';
+import { POSITION_TARGET } from '../../src/valuation.mjs';
 
 export const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C'];
 
@@ -140,6 +141,66 @@ export function firstFreeSlot(slots, player) {
   }
   const bi = slots.bench.indexOf(null);
   return bi >= 0 ? { area: 'bench', index: bi } : null;
+}
+
+// ---- 눌러서 바꾸기·끌어 놓기 공용: 칸/선수를 가리키는 ref ------------------------------------------------
+// ref = { kind: 'slot', area: 'seat'|'bench', index } | { kind: 'pool', id }(편성에 없는 선수) | { kind: 'out' }(편성에서 빼는 곳)
+
+export const slotRef = (area, index) => ({ kind: 'slot', area, index });
+export const OUT_REF = { kind: 'out' };
+
+/** 선수 → ref: 편성에 있으면 그 칸, 없으면 pool */
+export function refOfPlayer(slots, id) {
+  const at = locate(slots, id);
+  return at ? { kind: 'slot', ...at } : { kind: 'pool', id };
+}
+
+export const sameRef = (a, b) => Boolean(a && b && a.kind === b.kind && (a.kind === 'out' || (a.kind === 'pool' ? a.id === b.id : a.area === b.area && a.index === b.index)));
+
+/** ref가 가리키는 선수 id(빈 칸·빼기는 null) */
+export const idOfRef = (slots, ref) => (ref.kind === 'pool' ? ref.id : ref.kind === 'slot' ? getAt(slots, ref) ?? null : null);
+
+/**
+ * from을 to로 옮긴다(눌러서 두 번·끌어 놓기 공통). 새 slots를 돌려주고, 바뀔 게 없으면 같은 객체를 돌려준다.
+ *  칸 ↔ 칸: 서로 바꾼다(빈 칸이면 이동)   칸 → pool 선수: 그 선수가 이 칸에 들어오고 원래 선수는 빠진다
+ *  pool 선수 → 칸: 그 칸에 들어가고 있던 선수는 빠진다   칸 → 빼기: 그 칸을 비운다   그 밖: 변화 없음
+ */
+export function moveRefs(slots, from, to) {
+  if (!from || !to || sameRef(from, to)) return slots;
+  if (from.kind === 'slot' && to.kind === 'slot') return swapSlots(slots, from, to);
+  if (from.kind === 'slot' && to.kind === 'pool') return placeInSlot(slots, to.id, from);
+  if (from.kind === 'slot' && to.kind === 'out') return getAt(slots, from) ? clearSlot(slots, from) : slots;
+  if (from.kind === 'pool' && to.kind === 'slot') return placeInSlot(slots, from.id, to);
+  return slots;
+}
+
+/**
+ * 포지션별 현황(선수 본래 포지션 기준): 로스터 전체, 그중 국내 선수, 스타팅·벤치·제외 인원, 국내 권장 인원(오프시즌 영입 기준 POSITION_TARGET).
+ * status: 'short'(국내 선수가 권장보다 적음) | 'ok'
+ */
+export function positionSummary(roster, slots, target = POSITION_TARGET) {
+  return POSITIONS.map((pos) => {
+    const list = roster.filter((p) => p.position === pos);
+    const where = (p) => locate(slots, p.id)?.area ?? 'out';
+    const domestic = list.filter((p) => p.origin === 'domestic').length;
+    return {
+      pos, total: list.length, domestic, target: target?.[pos] ?? null,
+      starters: list.filter((p) => where(p) === 'seat').length, bench: list.filter((p) => where(p) === 'bench').length, out: list.filter((p) => where(p) === 'out').length,
+      status: target?.[pos] != null && domestic < target[pos] ? 'short' : 'ok'
+    };
+  });
+}
+
+export const POOL_SORTS = {
+  ovr: ['OVR순', (a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id)],
+  cost: ['코스트순', (a, b) => b.cost - a.cost || b.ovr - a.ovr || a.id.localeCompare(b.id)],
+  pos: ['포지션순', (a, b) => POSITIONS.indexOf(a.position) - POSITIONS.indexOf(b.position) || b.ovr - a.ovr || a.id.localeCompare(b.id)],
+  age: ['나이 어린 순', (a, b) => a.age - b.age || b.ovr - a.ovr || a.id.localeCompare(b.id)]
+};
+
+/** 선수 목록: 포지션 필터(null이면 전체)와 정렬 */
+export function poolList(roster, { pos = null, sort = 'ovr' } = {}) {
+  return roster.filter((p) => !pos || p.position === pos).sort((POOL_SORTS[sort] ?? POOL_SORTS.ovr)[1]);
 }
 
 export { lineupCost };

@@ -1,20 +1,28 @@
 // 라인업 편성: 코트 위 포지션 자리(PG·SG·SF·PF·C)와 벤치 칸에 우리 구단 선수를 넣고, 코스트 제한·외국 선수 수를 확인해 적용한다.
-// 선수 옮기기: 자리를 누른 뒤 목록의 선수(또는 다른 자리)를 누른다 / 마우스로 끌어다 놓는다 / 키보드는 버튼에서 Enter.
+// 선수 옮기기(셋 다 같은 규칙):
+//   · 누르기: 코트 카드·벤치 칸·목록 행 어디든 한 번 누르면 선택, 이어서 다른 선수나 빈 칸을 누르면 서로 바뀐다(목록 선수는 그 자리로 들어가고 원래 선수는 빠진다).
+//     선택한 선수는 [빼기]나 위쪽 "빼기" 칸을 눌러 한 번에 뺀다. Esc나 같은 칸을 다시 누르면 선택 해제.
+//   · 끌기: 마우스는 바로, 터치는 길게 눌렀다가 끌면 FM처럼 고스트 카드가 따라오고 놓을 수 있는 칸이 강조된다.
+//   · 키보드: 칸·행에서 Enter/Space로 누르기와 같다.
 // 적용한 편성은 시즌이 끝날 때까지 쓰이고(선수가 팀을 떠나면 자동으로 돌아간다), 새 시즌에는 자동 편성으로 초기화된다.
-import { h, svg, ovrChip, bar, stat, link, ORIGIN_LABEL } from '../lib/dom.js';
+import { h, svg, ovrChip, bar, stat, ORIGIN_LABEL } from '../lib/dom.js';
 import {
-  evalDraft, autoDraft, prune, rosterOfTeam, POSITIONS, powerOf, seatFit, slotsFromDraft, draftFromSlots, sameArrangement,
-  locate, placeInSlot, clearSlot, swapSlots, firstFreeSlot
+  evalDraft, autoDraft, rosterOfTeam, POSITIONS, powerOf, seatFit, slotsFromDraft, draftFromSlots, sameArrangement,
+  firstFreeSlot, placeInSlot, slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS
 } from '../lib/lineup-view.js';
 
 let edit = null; // { key, slots } — 화면을 다시 그려도(다른 화면에 갔다 와도) 편집 중인 편성을 유지한다
 let autoCache = null;
-let ui = { key: null, sel: null, pick: null }; // sel: 고른 칸 { area, index }, pick: 고른 선수 id
+let ui = { key: null, sel: null, pos: null, sort: 'ovr', unusedOnly: false }; // sel: 선택한 ref
 let justDragged = false;
+let escHandler = null;
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && escHandler) escHandler(); });
 
 // 코트 위 자리 위치(코트 그림 크기에 대한 %)
 const SEAT_XY = { PG: [50, 79], SG: [83, 58], SF: [17, 58], PF: [70, 30], C: [30, 30] };
 const FIT_LABEL = { exact: '', near: '인접', off: '어색' };
+const DRAG_PX = 5;      // 이 거리 안의 움직임은 끌기가 아니라 누르기
+const LONG_PRESS = 380; // 터치로 끌려면 이만큼(ms) 누르고 있는다
 
 function courtSvg() {
   const line = { fill: 'none', stroke: 'rgba(255,255,255,.8)', 'stroke-width': 3, 'stroke-linejoin': 'round' };
@@ -32,36 +40,60 @@ function courtSvg() {
     svg('path', { d: 'M190 430 A60 60 0 0 1 310 430', ...line }));
 }
 
-/** 마우스(펜)로 끌어 놓기. 터치는 탭 선택 방식을 쓴다. payload: { type: 'slot'|'player', id, from? }, onDrop(target element dataset) */
-function enableDrag(el, payload, enabled, onDrop) {
+/** 끌어 놓을 수 있는 칸: data-drop(slot·row·out) 속성이 있는 가장 가까운 요소 */
+const dropTargetAt = (x, y) => document.elementsFromPoint(x, y).map((n) => n.closest?.('[data-drop]')).find(Boolean) ?? null;
+
+/**
+ * 끌어 놓기. 마우스·펜은 5px 넘게 움직이면 끌기, 터치는 380ms 눌러야 끌기(그 전에 움직이면 스크롤).
+ * ghostText: 따라다니는 카드에 적을 글, from: 끌기를 시작한 ref, onDrop(from, 놓은 요소)
+ */
+function enableDrag(el, { ghostText, from, enabled, onDrop }) {
   if (!enabled) return;
-  el.addEventListener('dragstart', (e) => e.preventDefault()); // 이름 링크를 끌 때 브라우저의 링크 끌기가 가로채지 않게
+  el.addEventListener('dragstart', (e) => e.preventDefault()); // 브라우저 기본 끌기(링크·이미지)가 가로채지 않게
   el.addEventListener('pointerdown', (e) => {
-    if (e.pointerType === 'touch' || e.button !== 0) return;
+    if (e.button !== 0 && e.pointerType !== 'touch') return;
+    if (e.target.closest?.('a, [data-nodrag]')) return;
+    const touch = e.pointerType === 'touch';
     const sx = e.clientX, sy = e.clientY;
-    let ghost = null, over = null;
-    const targetAt = (x, y) => document.elementsFromPoint(x, y).map((n) => n.closest?.('[data-drop]')).find(Boolean) ?? null;
+    let ghost = null, over = null, timer = null, armed = !touch;
+    const stopScroll = (ev) => { if (ghost) ev.preventDefault(); };
+    const targetOf = (x, y) => { const t = dropTargetAt(x, y); return t && t !== el ? t : null; };
+    const startGhost = (x, y) => {
+      ghost = h('div', { class: 'lu-ghost' }, ghostText);
+      document.body.append(ghost); el.classList.add('dragging'); document.body.classList.add('lu-dragging');
+      ghost.style.left = `${x}px`; ghost.style.top = `${y}px`;
+    };
     const move = (ev) => {
       if (!ghost) {
-        if (Math.hypot(ev.clientX - sx, ev.clientY - sy) < 6) return;
-        ghost = el.cloneNode(true); ghost.classList.add('lu-ghost'); ghost.style.width = `${el.offsetWidth}px`;
-        ghost.removeAttribute('id'); document.body.append(ghost); el.classList.add('dragging');
+        const d = Math.hypot(ev.clientX - sx, ev.clientY - sy);
+        if (touch && !armed) { if (d > 10) cleanup(); return; } // 길게 누르기 전에 움직였다 → 스크롤
+        if (d < DRAG_PX) return;
+        startGhost(ev.clientX, ev.clientY);
       }
       ghost.style.left = `${ev.clientX}px`; ghost.style.top = `${ev.clientY}px`;
-      const t = targetAt(ev.clientX, ev.clientY);
+      const t = targetOf(ev.clientX, ev.clientY);
       if (t !== over) { over?.classList.remove('drop-hot'); over = t; over?.classList.add('drop-hot'); }
     };
-    const end = (ev, cancelled) => {
+    const cleanup = () => {
+      clearTimeout(timer);
       window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', cancel);
+      window.removeEventListener('touchmove', stopScroll);
+    };
+    const end = (ev, cancelled) => {
+      cleanup();
       if (!ghost) return;
-      const t = cancelled ? null : targetAt(ev.clientX, ev.clientY);
-      over?.classList.remove('drop-hot'); ghost.remove(); el.classList.remove('dragging');
-      justDragged = true; setTimeout(() => { justDragged = false; }, 0);
-      if (t) onDrop(payload, t.dataset);
+      const t = cancelled ? null : targetOf(ev.clientX, ev.clientY);
+      over?.classList.remove('drop-hot'); ghost.remove(); el.classList.remove('dragging'); document.body.classList.remove('lu-dragging');
+      justDragged = true; setTimeout(() => { justDragged = false; }, 50);
+      if (t) onDrop(from, t);
     };
     const up = (ev) => end(ev, false);
     const cancel = (ev) => end(ev, true);
     window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', cancel);
+    if (touch) {
+      window.addEventListener('touchmove', stopScroll, { passive: false });
+      timer = setTimeout(() => { armed = true; if (navigator.vibrate) try { navigator.vibrate(12); } catch { /* 진동 미지원 */ } startGhost(sx, sy); }, LONG_PRESS);
+    }
   });
 }
 
@@ -79,12 +111,12 @@ export function render(ctx) {
   }
   const auto = autoCache.draft;
   const appliedNow = () => s.lineup ?? auto; // 지금 경기에 쓰이는 편성(적용할 때마다 바뀐다)
-  if (ui.key !== key) ui = { key, sel: null, pick: null };
+  if (ui.key !== key) ui = { key, sel: null, pos: null, sort: 'ovr', unusedOnly: false };
   if (!edit || edit.key !== key) edit = { key, slots: slotsFromDraft(appliedNow(), roster, rules, { arrange: !s.lineup }) };
   { // 없어진 선수(방출·이적)를 비운다
     const ids = new Set(roster.map((p) => p.id));
     edit.slots = { seats: edit.slots.seats.map((id) => (ids.has(id) ? id : null)), bench: edit.slots.bench.map((id) => (ids.has(id) ? id : null)) };
-    if (ui.pick && !ids.has(ui.pick)) ui.pick = null;
+    if (ui.sel?.kind === 'pool' && !ids.has(ui.sel.id)) ui.sel = null;
   }
 
   const host = h('div', { class: 'stack' });
@@ -101,36 +133,40 @@ export function render(ctx) {
     const diff = e.power - autoEval.power;
     const nBench = rules.lineup.bench;
     const message = (text, kind = 'ok') => h('div', { class: `lu-msg ${kind}`, role: 'status' }, text);
-    const setSlots = (next) => { edit.slots = next; ui.sel = null; ui.pick = null; draw(); };
-    const targetOf = (area, index) => ({ area, index });
-    const sameTarget = (a, b) => a && b && a.area === b.area && a.index === b.index;
-    const idAt = (t) => (t.area === 'seat' ? slots.seats[t.index] : slots.bench[t.index]);
+    const setSlots = (next) => { edit.slots = next; ui.sel = null; draw(); };
     const nameOf = (id) => byId.get(id)?.name ?? '';
-    const labelOf = (t) => (t.area === 'seat' ? `${POSITIONS[t.index]} 자리` : `벤치 ${t.index + 1}`);
+    const labelOf = (ref) => (ref.kind === 'slot' ? (ref.area === 'seat' ? `${POSITIONS[ref.index]} 자리` : `벤치 ${ref.index + 1}`) : '');
+    const selId = ui.sel ? idOfRef(slots, ui.sel) : null;
+    const selIsInLineup = ui.sel?.kind === 'slot' && selId;
+    escHandler = () => { if (ui.sel) { ui.sel = null; draw(); } };
 
     // ---- 동작 ----
-    const clickSlot = (t) => {
+    // 누르기: 아무것도 고르지 않았으면 선택, 같은 걸 다시 누르면 해제, 다른 걸 누르면 서로 바꾼다(목록 ↔ 목록은 선택만 옮긴다)
+    const press = (ref) => {
       if (!live || justDragged) return;
-      if (ui.pick) { setSlots(placeInSlot(slots, ui.pick, t)); return; }
-      if (ui.sel && !sameTarget(ui.sel, t)) { setSlots(swapSlots(slots, ui.sel, t)); return; }
-      ui.sel = sameTarget(ui.sel, t) ? null : t; draw();
+      if (!ui.sel) { ui.sel = ref; draw(); return; }
+      if (sameRef(ui.sel, ref)) { ui.sel = null; draw(); return; }
+      if (ui.sel.kind === 'pool' && ref.kind === 'pool') { ui.sel = ref; draw(); return; }
+      setSlots(moveRefs(slots, ui.sel, ref));
     };
-    const clickPlayer = (p) => {
+    const removeSelected = () => { if (selIsInLineup) setSlots(moveRefs(slots, ui.sel, OUT_REF)); };
+    const pressOut = () => {
       if (!live || justDragged) return;
-      if (ui.sel) { setSlots(placeInSlot(slots, p.id, ui.sel)); return; }
-      ui.pick = ui.pick === p.id ? null : p.id; draw();
+      if (selIsInLineup) removeSelected();
+      else ctx.toast('빼려면 먼저 코트나 벤치의 선수를 누르세요. 끌어서 이 칸에 놓아도 됩니다.');
     };
+    // 끌어 놓기: 놓은 요소의 data-drop에 따라 ref를 만들어 같은 규칙(moveRefs)으로 처리
+    const refOfDrop = (d) => {
+      if (d.dataset.drop === 'out') return OUT_REF;
+      if (d.dataset.drop === 'slot') return slotRef(d.dataset.area, Number(d.dataset.index));
+      if (d.dataset.drop === 'row') return refOfPlayer(slots, d.dataset.id);
+      return null;
+    };
+    const onDrop = (from, el) => { const to = refOfDrop(el); if (to) setSlots(moveRefs(slots, from, to)); };
     const quickAdd = (p) => {
       const t = firstFreeSlot(slots, p);
-      if (!t) { ctx.toast('빈 칸이 없습니다. 자리를 누르고 선수를 골라 바꾸거나, 먼저 한 칸을 비워 주세요.'); return; }
-      if (locate(slots, p.id)) { ctx.toast(`${p.name}은(는) 이미 편성에 있습니다`); return; }
+      if (!t) { ctx.toast('빈 칸이 없습니다. 칸을 누르고 바꿀 선수를 고르거나, 먼저 한 칸을 비워 주세요.'); return; }
       setSlots(placeInSlot(slots, p.id, t));
-    };
-    const onDrop = (payload, d) => {
-      if (d.drop === 'out') { if (payload.type === 'slot') { const from = locate(slots, payload.id); if (from) setSlots(clearSlot(slots, from)); } return; }
-      const t = targetOf(d.area, Number(d.index));
-      if (payload.type === 'slot') { const from = locate(slots, payload.id); if (from && !sameTarget(from, t)) setSlots(swapSlots(slots, from, t)); }
-      else setSlots(placeInSlot(slots, payload.id, t));
     };
     const apply = () => {
       const r = s.setLineup({ starters: draft.starters, bench: draft.bench });
@@ -141,7 +177,7 @@ export function render(ctx) {
     const useAuto = () => {
       s.setLineup(null);
       edit.slots = slotsFromDraft(auto, roster, rules);
-      ui.sel = null; ui.pick = null;
+      ui.sel = null;
       ctx.toast('자동 편성으로 돌아갔습니다');
       draw();
     };
@@ -152,56 +188,81 @@ export function render(ctx) {
       p.origin !== 'domestic' ? h('span', { class: 'lu-tag foreign', title: ORIGIN_LABEL[p.origin] }, p.origin === 'foreign' ? '외국' : '아쿼') : null,
       seatPos && seatFit(p, seatPos) !== 'exact' ? h('span', { class: `lu-tag fit-${seatFit(p, seatPos)}`, title: `${p.position} 선수를 ${seatPos} 자리에 두었습니다` }, `${p.position} ${FIT_LABEL[seatFit(p, seatPos)]}`) : null
     ];
-    const slotButton = (cls, t, p, seatPos, emptyLabel) => {
-      const selected = sameTarget(ui.sel, t);
+    const slotButton = (cls, ref, p, seatPos, emptyLabel) => {
+      const selected = sameRef(ui.sel, ref);
       const el = h('button', {
         type: 'button', class: `lu-slot ${cls} ${p ? 'filled' : 'empty'} ${selected ? 'selected' : ''} ${p && seatPos ? `fit-${seatFit(p, seatPos)}` : ''}`,
-        'data-drop': 'slot', 'data-area': t.area, 'data-index': t.index, 'aria-pressed': String(selected), disabled: !live,
-        'aria-label': p ? `${labelOf(t)}: ${p.name}, ${p.position}, OVR ${p.ovr}, 코스트 ${p.cost}` : `${labelOf(t)}: 비어 있음`,
-        onclick: () => clickSlot(t)
+        'data-drop': 'slot', 'data-area': ref.area, 'data-index': ref.index, 'aria-pressed': String(selected), disabled: !live,
+        'aria-label': p ? `${labelOf(ref)}: ${p.name}, ${p.position}, OVR ${p.ovr}, 코스트 ${p.cost}` : `${labelOf(ref)}: 비어 있음`,
+        onclick: () => press(ref)
       },
-      seatPos ? h('span', { class: 'lu-seatpos' }, seatPos) : h('span', { class: 'lu-seatpos' }, `벤치 ${t.index + 1}`),
+      seatPos ? h('span', { class: 'lu-seatpos' }, seatPos) : h('span', { class: 'lu-seatpos' }, `벤치 ${ref.index + 1}`),
       p ? [h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p), h('span', { class: 'lu-cost' }, `코 ${p.cost}`)), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
         : [h('span', { class: 'lu-plus', 'aria-hidden': 'true' }, '+'), h('span', { class: 'lu-emptylabel' }, emptyLabel)]);
-      if (p) enableDrag(el, { type: 'slot', id: p.id }, live, onDrop);
+      if (p) enableDrag(el, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return el;
     };
 
     const court = h('div', { class: 'lu-court' }, courtSvg(),
       POSITIONS.map((pos, i) => {
         const p = byId.get(slots.seats[i]);
-        const el = slotButton('lu-seat', targetOf('seat', i), p, pos, `${pos} 비어 있음`);
+        const el = slotButton('lu-seat', slotRef('seat', i), p, pos, `${pos} 비어 있음`);
         el.style.left = `${SEAT_XY[pos][0]}%`; el.style.top = `${SEAT_XY[pos][1]}%`;
         return el;
       }));
-    const benchRow = h('div', { class: 'lu-bench' }, Array.from({ length: nBench }, (_, i) => slotButton('lu-bslot', targetOf('bench', i), byId.get(slots.bench[i]), null, '비어 있음')));
+    const benchRow = h('div', { class: 'lu-bench' }, Array.from({ length: nBench }, (_, i) => slotButton('lu-bslot', slotRef('bench', i), byId.get(slots.bench[i]), null, '비어 있음')));
 
-    const selId = ui.sel ? idAt(ui.sel) : null;
-    const hint = ui.pick
-      ? h('div', { class: 'lu-hint', role: 'status' }, h('b', byId.get(ui.pick)?.name), '을(를) 넣을 자리나 벤치 칸을 누르세요.', h('button', { type: 'button', class: 'btn ghost', onclick: () => { ui.pick = null; draw(); } }, '취소'))
-      : ui.sel
-        ? h('div', { class: 'lu-hint', role: 'status' }, h('b', labelOf(ui.sel)), selId ? ` (${nameOf(selId)})` : ' (비어 있음)', ' 선택됨. 아래 목록에서 선수를 누르면 이 칸에 들어가고, 다른 칸을 누르면 서로 바뀝니다.',
-          selId ? h('button', { type: 'button', class: 'btn', onclick: () => setSlots(clearSlot(slots, ui.sel)) }, '이 칸 비우기') : null,
-          h('button', { type: 'button', class: 'btn ghost', onclick: () => { ui.sel = null; draw(); } }, '선택 해제'))
-        : h('div', { class: 'lu-hint quiet' }, live ? '자리를 누르고 선수를 고르거나, 선수를 끌어다 놓으세요.' : '');
+    const hint = ui.sel
+      ? h('div', { class: 'lu-hint', role: 'status' },
+        h('span', { class: 'lu-hinttext' }, selId ? h('b', nameOf(selId)) : h('b', labelOf(ui.sel) || '빈 칸'), ' 선택됨 — ', selId && ui.sel.kind === 'pool' ? '들어갈 코트 자리·벤치 칸(또는 바꿀 선수)을 누르세요.' : '바꿀 상대(코트·벤치·목록의 선수나 빈 칸)를 누르세요.'),
+        selIsInLineup ? h('button', { type: 'button', class: 'btn lu-removebtn', onclick: removeSelected }, '빼기') : null,
+        selId && ui.sel.kind === 'pool' ? h('button', { type: 'button', class: 'btn', onclick: () => quickAdd(byId.get(selId)) }, '빈 칸에 넣기') : null,
+        h('button', { type: 'button', class: 'btn ghost', onclick: () => { ui.sel = null; draw(); } }, '선택 해제 (Esc)'))
+      : h('div', { class: 'lu-hint quiet' }, live ? '선수를 한 번 누르고 바꿀 상대를 누르거나, 끌어다 놓으세요. 목록의 선수도 똑같이 됩니다.' : '');
+    const outZone = h('button', { type: 'button', class: `lu-outzone ${selIsInLineup ? 'armed' : ''}`, 'data-drop': 'out', disabled: !live, onclick: pressOut },
+      h('b', '빼기'), h('span', selIsInLineup ? `${nameOf(selId)}을(를) 편성에서 뺍니다 — 누르세요` : '선수를 여기로 끌어 놓거나, 선수를 고른 뒤 누르면 편성에서 빠집니다'));
+
+    // ---- 포지션 현황 ----
+    const summary = positionSummary(roster, slots);
+    const posPanel = h('div', { class: 'card lu-pos' },
+      h('div', { class: 'row between lu-poshead' }, h('h2', { style: { margin: 0 } }, '포지션별 인원'), h('span', { class: 'note' }, '선수 본래 포지션 기준 · 칩을 누르면 선수 목록이 그 포지션만 보입니다')),
+      h('div', { class: 'lu-posgrid' }, summary.map((r) => h('button', { type: 'button', class: `lu-poscell ${ui.pos === r.pos ? 'on' : ''} ${r.status === 'short' ? 'short' : ''}`, 'aria-pressed': String(ui.pos === r.pos), onclick: () => { ui.pos = ui.pos === r.pos ? null : r.pos; draw(); } },
+        h('span', { class: 'lu-posname' }, r.pos),
+        h('span', { class: 'lu-posnum' }, r.total, h('small', '명')),
+        h('span', { class: 'lu-posbar', 'aria-hidden': 'true' },
+          r.total ? [h('i', { class: 'st', style: { flex: r.starters } }), h('i', { class: 'bn', style: { flex: r.bench } }), h('i', { class: 'ot', style: { flex: r.out } })] : null),
+        h('span', { class: 'lu-posdetail' }, h('b', { class: 'st' }, `스${r.starters}`), h('b', { class: 'bn' }, `벤${r.bench}`), h('b', { class: 'ot' }, `외${r.out}`)),
+        h('span', { class: 'lu-postarget' }, r.target != null ? `국내 ${r.domestic}/${r.target}${r.status === 'short' ? ' 부족' : ''}` : `국내 ${r.domestic}`)))),
+      h('p', { class: 'note lu-poslegend' }, h('b', { class: 'st' }, '스'), ' 스타팅 · ', h('b', { class: 'bn' }, '벤'), ' 벤치 · ', h('b', { class: 'ot' }, '외'), ' 엔트리 밖. 국내 권장 인원은 오프시즌 영입에 쓰는 기준(PG 3·SG 2·SF 3·PF 2·C 2)입니다.'));
 
     // ---- 선수 목록 ----
-    const roleText = (p) => { const t = locate(slots, p.id); return !t ? '제외' : t.area === 'seat' ? `스타팅 ${POSITIONS[t.index]}` : `벤치 ${t.index + 1}`; };
-    const rows = [...roster].sort((a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id)).map((p) => {
-      const t = locate(slots, p.id);
-      const selSeat = ui.sel?.area === 'seat' ? POSITIONS[ui.sel.index] : null;
-      const tr = h('tr', { class: `lu-row ${t ? (t.area === 'seat' ? 'starter' : 'bench') : 'out'} ${ui.pick === p.id ? 'picked' : ''}`, 'data-drop-row': '1' },
-        h('td', link(`#/player/${p.id}`, p.name)), h('td', h('span', { class: 'pos' }, p.position), selSeat && seatFit(p, selSeat) !== 'exact' ? h('span', { class: `lu-tag fit-${seatFit(p, selSeat)}` }, FIT_LABEL[seatFit(p, selSeat)]) : null),
-        h('td', { class: 'r lu-hide-sm lu-hide-md' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.cost),
-        h('td', { class: 'lu-hide-sm lu-hide-md' }, p.origin === 'domestic' ? '' : h('span', { class: 'tag' }, ORIGIN_LABEL[p.origin])),
-        h('td', h('span', { class: `lu-role ${t ? '' : 'out'}` }, roleText(p))),
-        h('td', h('div', { class: 'lu-rowbtns' },
-          h('button', { type: 'button', class: `btn lu-pickbtn ${ui.pick === p.id ? 'on' : ''}`, disabled: !live, 'aria-pressed': String(ui.pick === p.id), 'aria-label': ui.sel ? `${p.name}을(를) ${labelOf(ui.sel)}에 넣기` : `${p.name} 고르기`, onclick: () => clickPlayer(p) }, ui.sel ? '넣기' : ui.pick === p.id ? '고름' : '고르기'),
-          t ? null : h('button', { type: 'button', class: 'btn ghost', disabled: !live, 'aria-label': `${p.name}을(를) 빈 칸에 넣기`, onclick: () => quickAdd(p) }, '빈 칸에'))));
-      enableDrag(tr, { type: 'player', id: p.id }, live, onDrop);
+    const roleText = (p) => { const t = refOfPlayer(slots, p.id); return t.kind === 'pool' ? '제외' : t.area === 'seat' ? `스타팅 ${POSITIONS[t.index]}` : `벤치 ${t.index + 1}`; };
+    const selSeat = ui.sel?.kind === 'slot' && ui.sel.area === 'seat' ? POSITIONS[ui.sel.index] : null;
+    const shown = poolList(roster, { pos: ui.pos, sort: ui.sort }).filter((p) => !ui.unusedOnly || refOfPlayer(slots, p.id).kind === 'pool');
+    const rows = shown.map((p) => {
+      const ref = refOfPlayer(slots, p.id);
+      const picked = sameRef(ui.sel, ref) || (ui.sel?.kind === 'slot' && selId === p.id);
+      const tr = h('tr', {
+        class: `lu-row ${ref.kind === 'pool' ? 'out' : ref.area === 'seat' ? 'starter' : 'bench'} ${picked ? 'picked' : ''}`,
+        'data-drop': 'row', 'data-id': p.id, tabindex: live ? '0' : null, role: 'button', 'aria-pressed': String(picked),
+        'aria-label': `${p.name}, ${p.position}, OVR ${p.ovr}, ${roleText(p)}`,
+        onclick: (ev) => { if (ev.target.closest('a, [data-nodrag]')) return; press(refOfPlayer(slots, p.id)); },
+        onkeydown: (ev) => { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target === tr) { ev.preventDefault(); press(refOfPlayer(slots, p.id)); } }
+      },
+      h('td', { class: 'lu-namecell' }, h('span', { class: 'lu-pname' }, p.name), h('a', { href: `#/player/${p.id}`, class: 'lu-info', title: `${p.name} 선수 정보`, 'aria-label': `${p.name} 선수 정보`, 'data-nodrag': '1', onclick: (ev) => ev.stopPropagation() }, 'ⓘ')),
+      h('td', h('span', { class: 'pos' }, p.position), selSeat && seatFit(p, selSeat) !== 'exact' ? h('span', { class: `lu-tag fit-${seatFit(p, selSeat)}` }, FIT_LABEL[seatFit(p, selSeat)]) : null),
+      h('td', { class: 'r lu-hide-sm lu-hide-md' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.cost),
+      h('td', { class: 'lu-hide-sm lu-hide-md' }, p.origin === 'domestic' ? '' : h('span', { class: 'tag' }, ORIGIN_LABEL[p.origin])),
+      h('td', h('span', { class: `lu-role ${ref.kind === 'pool' ? 'out' : ''}` }, roleText(p))),
+      h('td', ref.kind === 'pool' ? h('button', { type: 'button', class: 'btn ghost lu-quick', 'data-nodrag': '1', disabled: !live, title: '빈 칸에 바로 넣기', 'aria-label': `${p.name}을(를) 빈 칸에 넣기`, onclick: (ev) => { ev.stopPropagation(); quickAdd(p); } }, '＋') : null));
+      enableDrag(tr, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return tr;
     });
-    const outZone = h('div', { class: 'lu-outzone', 'data-drop': 'out' }, '여기로 끌어 놓으면 편성에서 뺍니다');
+    const chip = (label, on, fn) => h('button', { type: 'button', class: `lu-chip ${on ? 'on' : ''}`, 'aria-pressed': String(on), onclick: fn }, label);
+    const filters = h('div', { class: 'lu-filters' },
+      h('div', { class: 'lu-chips', role: 'group', 'aria-label': '포지션 필터' }, chip('전체', !ui.pos, () => { ui.pos = null; draw(); }), POSITIONS.map((pos) => chip(pos, ui.pos === pos, () => { ui.pos = ui.pos === pos ? null : pos; draw(); }))),
+      h('label', { class: 'lu-sort' }, h('span', { class: 'note' }, '정렬'), h('select', { onchange: (ev) => { ui.sort = ev.target.value; draw(); } }, Object.entries(POOL_SORTS).map(([k, [label]]) => h('option', { value: k, selected: ui.sort === k }, label)))),
+      chip('엔트리 밖만', ui.unusedOnly, () => { ui.unusedOnly = !ui.unusedOnly; draw(); }));
 
     host.replaceChildren(...[
       !live ? h('div', { class: 'callout' }, s.stage === 'offseason' ? '지금은 오프시즌이라 라인업을 바꿀 수 없습니다. 시즌이 시작되면 자동 편성으로 시작하고, 여기서 직접 편성할 수 있습니다.' : '지금은 라인업을 바꿀 수 없습니다.') : null,
@@ -218,20 +279,22 @@ export function render(ctx) {
           h('button', { class: 'btn primary', disabled: !live || !dirty || e.errors.length > 0, onclick: apply }, '적용'),
           h('button', { class: 'btn', disabled: !live || !dirty, onclick: () => setSlots(slotsFromDraft(applied, roster, rules)) }, '변경 취소'),
           h('button', { class: 'btn ghost', disabled: !live || !customApplied, onclick: useAuto }, '자동 편성 사용')),
-        h('p', { class: 'note' }, '채우기와 선수 선택은 편집 상태만 바꿉니다. [적용]을 눌러야 다음 경기부터 쓰입니다. 시즌이 끝나면 직접 편성은 초기화되어 새 시즌은 자동 편성으로 시작합니다.')),
+        h('p', { class: 'note' }, '채우기와 선수 옮기기는 편집 상태만 바꿉니다. [적용]을 눌러야 다음 경기부터 쓰입니다. 시즌이 끝나면 직접 편성은 초기화되어 새 시즌은 자동 편성으로 시작합니다.')),
+      posPanel,
       h('div', { class: 'lu-split' },
-      h('div', { class: 'card lu-courtcard' },
-        h('div', { class: 'row between lu-courthead' }, h('h2', { style: { margin: 0 } }, '코트'), h('div', { class: 'lu-state' },
-          customApplied ? h('span', { class: 'tag hot' }, '직접 편성 적용 중') : h('span', { class: 'tag' }, '자동 편성 사용 중'),
-          dirty ? h('span', { class: 'tag warn' }, '미적용 변경 있음') : h('span', { class: 'tag' }, '적용된 편성과 같음'))),
-        hint, court,
-        h('h3', { class: 'lu-benchtitle' }, `벤치 ${nBench}명`), benchRow, outZone,
-        h('p', { class: 'note' }, '포지션 자리는 보기용입니다. 경기 시뮬레이션은 자리와 포지션이 맞는지 따지지 않고, 출전 시간은 스타팅·벤치 각각 OVR이 높은 순서로 나눕니다. 외국 선수는 스타팅에 동시에 2명까지 둘 수 있습니다.')),
-      h('div', { class: 'card flush lu-listcard' },
-        h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '선수 고르기'), h('p', { class: 'note', style: { margin: '4px 0 0' } }, '[고르기]를 누른 뒤 코트의 칸을 누르거나, 칸을 먼저 누르고 [넣기]를 누르세요. 행을 칸으로 끌어 놓아도 됩니다. 능력치는 시즌 중 갱신된 값입니다.')),
-        h('div', { class: 'table-wrap lu-listscroll' }, h('table', { class: 'lu-table' },
-          h('thead', h('tr', ['이름', '포지션', '나이', 'OVR', '코스트', '구분', '지금', ''].map((t, i) => h('th', { class: `${[2, 3, 4].includes(i) ? 'r' : ''} ${[2, 5].includes(i) ? 'lu-hide-sm lu-hide-md' : ''}` }, t)))),
-          h('tbody', rows))))),
+        h('div', { class: 'card lu-courtcard' },
+          h('div', { class: 'row between lu-courthead' }, h('h2', { style: { margin: 0 } }, '코트'), h('div', { class: 'lu-state' },
+            customApplied ? h('span', { class: 'tag hot' }, '직접 편성 적용 중') : h('span', { class: 'tag' }, '자동 편성 사용 중'),
+            dirty ? h('span', { class: 'tag warn' }, '미적용 변경 있음') : h('span', { class: 'tag' }, '적용된 편성과 같음'))),
+          hint, outZone, court,
+          h('h3', { class: 'lu-benchtitle' }, `벤치 ${nBench}명`), benchRow,
+          h('p', { class: 'note' }, '포지션 자리는 보기용입니다. 경기 시뮬레이션은 자리와 포지션이 맞는지 따지지 않고, 출전 시간은 스타팅·벤치 각각 OVR이 높은 순서로 나눕니다. 외국 선수는 스타팅에 동시에 2명까지 둘 수 있습니다.')),
+        h('div', { class: 'card flush lu-listcard', 'data-drop': 'out' },
+          h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '선수 목록'), h('p', { class: 'note', style: { margin: '4px 0 8px' } }, '행을 누르면 선택, 이어서 코트의 칸이나 다른 선수를 누르면 바뀝니다. 행을 칸으로 끌어 놓아도 되고, 코트 선수를 이 목록으로 끌어 오면 편성에서 빠집니다. 이름 옆 ⓘ는 선수 정보입니다.'), filters),
+          h('div', { class: 'table-wrap lu-listscroll' }, h('table', { class: 'lu-table' },
+            h('thead', h('tr', ['이름', '포지션', '나이', 'OVR', '코스트', '구분', '지금', ''].map((t, i) => h('th', { class: `${[2, 3, 4].includes(i) ? 'r' : ''} ${[2, 5].includes(i) ? 'lu-hide-sm lu-hide-md' : ''}` }, t)))),
+            h('tbody', rows.length ? rows : h('tr', h('td', { colspan: 8, class: 'muted' }, '조건에 맞는 선수가 없습니다.')))))),
+      ),
       h('div', { class: 'card lu-compare' },
         h('h2', '자동 편성과 비교'),
         h('div', { class: 'lu-cmp-grid' },

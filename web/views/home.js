@@ -3,6 +3,7 @@ import { seasonLabel, powerRanking, payrollInfo, prestigeOf, fundsOf, rosterOf, 
 import { colorOf } from '../lib/team-ui.js';
 import { getNews } from '../lib/news-view.js';
 import { moodCard } from './news.js';
+import { financeCard } from './finance-card.js';
 
 export function recentRanks(hist, teamId, n = 16) {
   return hist.seasons.slice(-n).map((s) => {
@@ -73,6 +74,7 @@ export function render(ctx) {
     h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, `${gm} 단장`), h('h1', team.name)))),
     heroCard(ctx, season, lastSeason, lastRow),
     newsCard(ctx),
+    financeCard(ctx),
     h('div', { class: 'grid g4' },
       stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 전력 ${myPower.power.toFixed(1)}`),
       stat('국내 선수 연봉', eok(pay.domestic), `캡 ${eok(pay.cap, 0)}${pay.over ? ` · ${eok(pay.over)} 초과` : ` · 여유 ${eok(pay.cap - pay.domestic)}`}`),

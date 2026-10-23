@@ -1,0 +1,22 @@
+{
+  "_source": "한스경제 박종민 기자 기사(사용자 제공, 2026-10-23): '2023-2024 정관장 프로농구 정규리그 관중 대폭 증가, 입장 수입 사상 최고'. 한국농구연맹(KBL) 집계 인용. 숫자는 기사 그대로.",
+  "season": "2023-24",
+  "scope": "정규리그",
+  "league": {
+    "totalAttendance": 738420,
+    "prevSeasonTotalAttendance": 599572,
+    "attendanceChangePct": 23,
+    "gateRevenueEok": 100,
+    "gateRevenueApprox": true,
+    "prevSeasonGateRevenueEok": 73.4,
+    "gateRevenueChangePct": 36,
+    "note": "입장 수입은 기사에 '약 100억 원'. 종전 최고는 2022-23의 약 86억 원(정규리그+플레이오프). 사용자 메모: 경기당 평균 약 2,700여 명(738,420 / 270경기 = 2,735).",
+    "avgPoints": 83.5, "prevAvgPoints": 80.0, "twoPointPct": [51.7, 53.3], "threePointPct": [32.7, 33.4], "assists": [17.4, 18.4]
+  },
+  "teams": [
+    { "team": "서울 SK", "total": 114229, "avg": 4231, "rank": 1, "gateRevenueEok": 15.3, "note": "입장 수입 약 15억 3000만 원, 1위" },
+    { "team": "창원 LG", "total": 96449, "avg": 3572, "rank": 2 },
+    { "team": "부산 KCC", "total": 90681, "avg": 3359, "rank": 3 },
+    { "team": "원주 DB", "total": 85634, "prevTotal": 52797, "paid": 72678, "prevPaid": 43049, "totalGrowthPct": 62, "paidGrowthPct": 69, "note": "관중 증가율·유료 관중 증가율 모두 1위" }
+  ]
+}
