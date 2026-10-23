@@ -10,6 +10,8 @@ import { initialFunds } from '../../src/funds.mjs';
 import { domesticOf, foreignOf, asiaOf, payrollEok, hardLimitEok } from '../../src/valuation.mjs';
 import { franchiseSummary } from '../../src/history-summary.mjs';
 import { computeAwards } from '../../src/awards.mjs';
+import { rulesFor, inflationIndex } from '../../src/economy.mjs';
+import { chooseGoals, evaluateSeason, expectedRank, trustOf, lowStreakOf, rewardOf } from '../../src/goals.mjs';
 
 export const VERSION = 1;
 export const seasonLabel = (startYear) => `${startYear}-${String(startYear + 1).slice(2)}`;
@@ -62,7 +64,9 @@ export function playYear(game, data) {
   const out = playLeagueYear(game.league, teams, rules, rng, {
     manager: game.managerId, keepGames: true, policy: createManagerBot(game.managerId, rules)
   });
-  return { ...game, league: out.league, log: [...game.log, summarizeYear(game, data, season, out)] };
+  const entry = summarizeYear(game, data, season, out);
+  const funds = bonusFunds(out.league.funds, entry); // 모기업 목표 보너스(src/goals.mjs): 신뢰도가 높으면 다음 시즌 예산에 더한다
+  return { ...game, league: funds === out.league.funds ? out.league : { ...out.league, funds }, log: [...game.log, funds === out.league.funds ? entry : { ...entry, fundsAfter: funds }] };
 }
 
 // 선수 시즌 기록 한 줄: 앞 7칸은 예전부터(careerLines가 읽는다), 다음 7칸(야투·3점·자유투 성공/시도와 시즌 끝 소속)은 리그 화면의 전체 기록용, 마지막 2칸은 턴오버·파울. 이전 저장에는 뒤쪽 칸이 없다
@@ -78,6 +82,56 @@ function summarizeYear(game, data, season, out) {
 function rookieIdsOf(game) {
   const drafted = game.log?.at(-1)?.report?.drafted;
   return drafted ? new Set(drafted.map((d) => d.id)) : null;
+}
+
+// ---------- 모기업 목표 ----------
+const GOAL_CACHE = new WeakMap();
+/**
+ * 이번 시즌 모기업 목표(src/goals.mjs). game.league가 시즌 시작 상태일 때(시즌 중·플레이오프·시즌 종료 직후) 호출한다. 규칙에 goals가 없으면 [].
+ * 직전 시즌 순위(없으면 실제 이력의 마지막 시즌)와 지금 전력 순위의 평균으로 난이도를 정한다. 같은 상태면 같은 목표(결정적).
+ */
+export function seasonGoals(game, data) {
+  const hit = GOAL_CACHE.get(game.league);
+  if (hit) return hit;
+  const my = game.managerId, season = game.league.season;
+  const rules = rulesFor(data.rules, season);
+  if (!rules.goals) return [];
+  const last = game.log?.at(-1);
+  const prev = last ? last.standings.find((s) => s.id === my) : data.history?.seasons?.at(-1)?.teams?.find((t) => t.franchiseId === my);
+  const power = powerRanking(game, data).find((r) => r.id === my)?.rank ?? 5;
+  const roster = rosterOf(game, my);
+  const goals = chooseGoals({
+    expected: expectedRank(prev?.rank ?? null, power, data.teams.length),
+    payrollRatio: payrollEok(game.league.players, my) / rules.salaryCap.domesticEok,
+    hasYouth: roster.some((p) => p.age <= rules.goals.extra.youthMaxAge), season, teamId: my
+  }, rules);
+  GOAL_CACHE.set(game.league, goals);
+  return goals;
+}
+
+/** 시즌 평가(entry.eval): 목표별 결과와 신뢰도 변화. 규칙에 goals가 없으면 null */
+function seasonEval(game, data, finished, ledger, season) {
+  const rules = rulesFor(data.rules, season);
+  if (!rules.goals) return null;
+  const my = game.managerId;
+  const { result, totals, seasonPlayers } = finished;
+  const i = result.standings.findIndex((s) => s.id === my);
+  const row = result.standings[i];
+  const youth = seasonPlayers.filter((p) => p.teamId === my && p.age <= rules.goals.extra.youthMaxAge).reduce((s, p) => s + (totals.get(p.id)?.minutes ?? 0), 0);
+  const ev = evaluateSeason({
+    goals: seasonGoals(game, data),
+    actual: { rank: i + 1, wins: row.wins, losses: row.losses, stage: stageOf(result.playoffs, my), net: ledger?.[my]?.net ?? 0, payrollRatio: payrollEok(seasonPlayers, my) / rules.salaryCap.domesticEok, youthMinutes: youth },
+    before: { trust: trustOf(game.log, rules), low: lowStreakOf(game.log) }
+  }, rules);
+  const bonus = rewardOf(ev, inflationIndex(season + 1, rules), rules);
+  return bonus ? { ...ev, bonus } : ev;
+}
+
+/** 목표 보너스(entry.eval.bonus)를 우리 구단 자금에 더한 자금표. 보너스가 없으면 같은 객체를 돌려준다 */
+export function bonusFunds(funds, entry) {
+  const bonus = entry.eval?.bonus ?? 0;
+  if (!bonus || !funds) return funds;
+  return { ...funds, [entry.myTeamId]: Math.round((funds[entry.myTeamId] + bonus) * 100) / 100 };
 }
 
 function seasonAwards(game, data, finished) {
@@ -116,6 +170,7 @@ export function summarizeSeason(game, data, season, finished, ledger) {
     stage: Object.fromEntries(data.teams.map((t) => [t.id, stage(t.id)])),
     leaders: keptLeaders, lines, myGames,
     awards: seasonAwards(game, data, finished), // 시즌 어워드(선수 id만, src/awards.mjs). 이전 저장에는 없다
+    ...(() => { const ev = seasonEval(game, data, finished, ledger, season); return ev ? { eval: ev } : {}; })(), // 모기업 목표 평가(src/goals.mjs). 이전 저장에는 없다
     // 선수 상세의 팀·승-패·플레이오프 열: 정규리그 승패(wl), 시즌 중 구단을 옮긴 선수의 구단별 줄(split), 플레이오프 줄(po). 이전 저장에는 없다
     ...(splits ? { ...compactRegular(splits), po: compactPlayoffs(result.playoffs.series, data.rules.playoffs.rounds.at(-1).name) } : {}),
     ledger,

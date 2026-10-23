@@ -4,6 +4,7 @@ import { inflationIndex } from './economy.mjs';
 import { payrollEok, asiaPayrollEok, foreignPayrollUsd, softCapPenaltyEok } from './valuation.mjs';
 import { hashString, mulberry32 } from './rng.mjs';
 import { capacityOf } from './arenas.mjs';
+import { moodOf, fanFactor } from './fans.mjs';
 
 export function initialFunds(teamData, rules) {
   return Object.fromEntries(teamData.map((t) => [t.id, rules.transactions.funds.start]));
@@ -109,7 +110,7 @@ export function revenueOf(teamId, ctx, rules) {
   const f = rules.transactions.funds, rv = rules.revenue;
   const score = prestige?.[teamId]?.score ?? 0.5;
   const winPct = rec.wins / Math.max(1, rec.wins + rec.losses);
-  const pop = popularity(att.fan[teamId] ?? 1, winPct, rules);
+  const pop = popularity((att.fan[teamId] ?? 1) * fanFactor(moodOf(att, teamId, rules), rules), winPct, rules); // 팬 열기(src/fans.mjs)가 관중 규모에 소폭 반영된다
   const cap = capacityOf(team);
   const meanFan = Object.values(att.fan).reduce((s, v) => s + v, 0) / Math.max(1, Object.keys(att.fan).length);
   const popOf = (id) => (att.fan[id] ?? 1) / meanFan;

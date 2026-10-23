@@ -148,7 +148,8 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   const ranks = new Map(standings.map((s, i) => [s.id, i + 1]));
   const winPct = new Map(standings.map((s) => [s.id, s.wins / Math.max(1, s.wins + s.losses)]));
   const prestige = new Map(Object.entries(prestigeTable(league.legacy, rules)).map(([id, v]) => [id, v.score]));
-  const ctx = { season: league.season, ranks, winPct, prestige, managerTeamId: manager, teamCount: teamData.length };
+  const fans = league.att?.mood ? new Map(Object.entries(league.att.mood)) : null; // 구단별 팬 열기(src/fans.mjs). 없으면(첫 시즌 전·이전 저장) FA 호감에 반영하지 않는다
+  const ctx = { season: league.season, ranks, winPct, prestige, fans, managerTeamId: manager, teamCount: teamData.length };
   let funds = league.funds ?? initialFunds(teamData, rules);
   const report = {
     season: league.season, retired: [], progressed: [], renewed: [], expired: [], refused: [], drafted: [], released: [],

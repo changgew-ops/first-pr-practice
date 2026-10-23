@@ -6,6 +6,7 @@
 import { shuffle } from './rng.mjs';
 import { executeTrade } from './trade.mjs';
 import { transferFunds } from './funds.mjs';
+import { fanAppeal } from './fans.mjs';
 import {
   domesticOf, payrollEok, hardLimitEok, demandEok, valueOf, needBonus, strategyOf, hash01
 } from './valuation.mjs';
@@ -26,7 +27,8 @@ export function offerScore(p, offerEok, teamId, roster, ctx, rules, round = 1) {
   const loyalty = teamId === p.prevTeamId || teamId === p.teamId ? fa.loyaltyBonus : 0;
   const mood = (hash01(`${p.id}:${ctx.season}`) - 0.5) * 2 * fa.moodRange;
   const prestige = ctx.prestige?.get(teamId) ?? 0.5; // 명문 구단 선호(전통 점수)
-  const score = ratio + fa.successWeight * (winPct - 0.5) + fa.prestigeWeight * (prestige - 0.5) + (starter ? fa.starterBonus : 0) + loyalty + mood;
+  const fans = ctx.fans?.has(teamId) ? fanAppeal(ctx.fans.get(teamId), rules) : 0; // 팬 열기가 높은 구단은 선수가 조금 더 좋아한다(src/fans.mjs)
+  const score = ratio + fa.successWeight * (winPct - 0.5) + fa.prestigeWeight * (prestige - 0.5) + (starter ? fa.starterBonus : 0) + loyalty + mood + fans;
   return { ratio, score, accept: ratio >= fa.minOfferRatio && score >= fa.acceptScore, demand };
 }
 

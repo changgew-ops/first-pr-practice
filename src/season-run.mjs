@@ -1,7 +1,10 @@
 // 한 시즌을 하루씩·라운드씩 진행하는 진행기. 화면(웹)이 쓰고, playLeagueYear도 이 위에서 돌아간다.
 // 같은 시드·같은 조작(라인업·훈련 지정)이면 항상 같은 결과다 — 저장은 "조작 기록"만 하고 불러올 때 다시 돌려 복원한다.
 import { rulesFor } from './economy.mjs';
-import { buildLineup, validateLineup } from './lineup.mjs';
+import { buildLineup, validateLineup, buildLineupHealthy, substituteInjured } from './lineup.mjs';
+import { rollInjury, foreignGameThresholds } from './injuries.mjs';
+import { proratedEok, freeNumber, faAsking, faSignCheck, signedFa, buildForeignPool, foreignReplaceCheck, signedForeign, aiForeignChoice } from './inseason.mjs';
+import { valueOf, needBonus, foreignOf as foreignOfTeam } from './valuation.mjs';
 import { leagueBaseline } from './game.mjs';
 import { createRegularSeason, createPlayoffs } from './season.mjs';
 import { addBox } from './stats.mjs';
@@ -10,12 +13,15 @@ import { updateSkillsFromSeason } from './stats-rating.mjs';
 import { trainPlayer, autoFocus } from './training.mjs';
 import { seedLegacy, appendSeason, prestigeTable } from './legacy.mjs';
 import { initialFunds, settleSeason } from './funds.mjs';
+import { advanceMood } from './fans.mjs';
 import { calcOvr, calcCost } from './rating.mjs';
 import { STAT_KEYS } from './rating.mjs';
 import { validateTrade, executeTrade, generateOffers, proposeTrade } from './trade.mjs';
 import { mulberry32, hashString } from './rng.mjs';
 import { eligibility, dleagueSessions, abroadGrowth, programCost, checkpointsPerSeason, PROGRAMS } from './devprogram.mjs';
 import { releaseCheck, releaseCost, extensionCheck, extendedPlayer, extensionAdjust, salaryRanks } from './contracts.mjs';
+
+const round2 = (v) => Math.round(v * 100) / 100;
 
 // 턴오버·파울은 기록만 하는 열이라 능력치 갱신이 읽는 합계(src/stats.mjs TOTAL_KEYS)와 따로 쌓는다. 옛 박스스코어에는 없다
 function addRecordOnly(totals, box) {
@@ -63,6 +69,23 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const releaseLog = [];
   const extendLog = [];
 
+  // 부상(src/injuries.mjs)과 시즌 중 선수단 변동(src/inseason.mjs: 시장에 남은 FA 영입, 외국선수 일시교체·시즌대체)
+  const injuriesOn = Boolean(rules.injuries?.enabled);
+  const injSeed = options.seed ?? (injuriesOn ? Math.floor(rng() * 2 ** 32) : 0); // 부상 난수의 시드. 경기 난수(rng)는 시드가 없을 때 한 번만 쓴다
+  const injured = new Map(); // 선수 id → { playerId, name, teamId, day(다친 날), total(진단 결장 경기 수), left(남은 결장), kind, part, temp(일시교체 선수 id | null), handled(AI가 판단함) }
+  const streak = new Map(); // 선수 id → 24분 이상 연속 출전 경기 수
+  const rosterLog = []; // 시즌 중 변동 기록: { type: 'injury'|'return'|'fa'|'foreign'|'release', day, teamId, … }
+  let faPool = [...(league.freeAgents ?? [])]; // 시장에 남은 선수(시즌 시작 때의 FA 풀 + 시즌 중 방출된 선수 − 영입된 선수)
+  const payAdj = new Map(); // 구단 → 정산 보정(억 원, 양수면 추가 지출): 시즌 중 영입·교체로 생긴 일할 계산 차이
+  const addAdj = (teamId, eok) => { if (eok) payAdj.set(teamId, round2((payAdj.get(teamId) ?? 0) + eok)); };
+  const usedKblNew = []; // 시즌 중 새로 들어온 카드 선수의 kblId(다음 시즌 카드 중복 방지)
+  const otherCount = new Map(); // 구단 → 기타 사유 교체 횟수
+  const foreignTaken = new Set(); // 시즌 중 외국인 후보 풀에서 이미 영입된 후보 id
+  let foreignPoolCache = null;
+  const foreignPool = () => (foreignPoolCache ??= buildForeignPool({ players: league.players, freeAgents: league.freeAgents ?? [], usedKbl: league.usedKbl ?? [], cards: options.cards ?? null, rules, season: league.season, seed: injSeed }));
+  const usdToEok = (usd) => usd * rules.transactions.funds.foreignUsdToEok;
+  let lineupSwaps = []; // 우리 구단의 직접 편성에서 부상 선수를 대신해 자동으로 들어간 선수들
+
   const applyUpdates = () => {
     if (!inSeasonUpdates) return;
     const updates = updateSkillsFromSeason(players, start, totals, rules.ratingModel);
@@ -83,16 +106,23 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     });
   };
   const buildTeams = () => {
+    const hurt = new Map([...injured].map(([id, i]) => [id, i.left])); // 결장 중인 선수 → 남은 경기
+    const swaps = [];
     const teams = teamData.map((t) => {
       const roster = players.filter((p) => p.teamId === t.id);
       let built = null;
       if (t.id === manager && lineup) {
         const byId = new Map(roster.map((p) => [p.id, p]));
         const check = checkLineup(players, manager, lineup, rules);
-        if (check.ok) built = { starters: lineup.starters.map((id) => byId.get(id)), bench: lineup.bench.map((id) => byId.get(id)) };
+        if (check.ok) {
+          const mine = { starters: lineup.starters.map((id) => byId.get(id)), bench: lineup.bench.map((id) => byId.get(id)) };
+          const sub = hurt.size ? substituteInjured(mine, roster, hurt, rules) : mine; // 부상 선수는 같은 자리에 건강한 선수가 대신 선다(편성 자체는 그대로 두어 복귀하면 돌아간다)
+          if (sub) { built = { starters: sub.starters, bench: sub.bench }; swaps.push(...(sub.swaps ?? [])); }
+        }
       }
-      return { id: t.id, name: t.name, lineup: built ?? buildLineup(roster, rules, rules.simulation.benchWeight) };
+      return { id: t.id, name: t.name, lineup: built ?? buildLineupHealthy(roster, rules, rules.simulation.benchWeight, hurt, rules.injuries?.minHealthy ?? 8) };
     });
+    lineupSwaps = swaps;
     return { teams, baseline: leagueBaseline(teams.map((t) => t.lineup), rules.simulation) };
   };
 
@@ -103,7 +133,8 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       season: league.season, managerTeamId: manager, teamCount: teamData.length,
       ranks: new Map(st.map((s, i) => [s.id, i + 1])),
       winPct: new Map(st.map((s) => [s.id, s.wins / Math.max(1, s.wins + s.losses)])),
-      prestige: new Map(Object.entries(prestigeTable(league.legacy, rules)).map(([id, v]) => [id, v.score]))
+      prestige: new Map(Object.entries(prestigeTable(league.legacy, rules)).map(([id, v]) => [id, v.score])),
+      fans: league.att?.mood ? new Map(Object.entries(league.att.mood)) : null // 팬 열기(src/fans.mjs)
     };
   };
   // 트레이드가 성사되면 선수 소속·훈련 지정·직접 편성을 정리하고 팀 구성을 다시 만든다
@@ -128,10 +159,20 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     };
   };
 
+  // 구단별 최장 연패(팬 열기에 쓴다, src/fans.mjs). 경기 결과를 보관하지 않아도(keepGames 꺼짐) 센다
+  const losing = new Map(), worstLosing = new Map();
+  const trackStreaks = (g) => {
+    for (const [id, win] of [[g.homeId, g.winnerId === g.homeId], [g.awayId, g.winnerId === g.awayId]]) {
+      const n = win ? 0 : (losing.get(id) ?? 0) + 1;
+      losing.set(id, n);
+      if (n > (worstLosing.get(id) ?? 0)) worstLosing.set(id, n);
+    }
+  };
+
   const initial = buildTeams();
   const regular = createRegularSeason(initial.teams, initial.baseline, rules.simulation, rng, {
     keepGames,
-    onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); addRecordOnly(totals, g.box.home); addRecordOnly(totals, g.box.away); addGameToSplits(splits, g); },
+    onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); addRecordOnly(totals, g.box.home); addRecordOnly(totals, g.box.away); addGameToSplits(splits, g); trackStreaks(g); },
     checkpointEvery: rules.ratingModel.checkpointDays,
     onCheckpoint: () => { applyUpdates(); applyTraining(); return buildTeams(); }
   });
@@ -334,7 +375,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const contracts = releaseLog.length || extendLog.length ? { teamId: manager, released: released.map((x) => ({ ...x })), releaseLog: releaseLog.map((r) => ({ ...r })), extendLog: extendLog.map((r) => ({ ...r })), severance: sum(releaseLog, 'severance'), earned: sum(releaseLog, 'earned'), adj: sum(extendLog, 'adj') } : null;
       finished = {
         result: { standings: reg.standings, games: reg.games, playoffs: po, championId: po.championId, teams: reg.teams, baseline: reg.baseline },
-        totals, splits, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev, contracts
+        totals, splits, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev, contracts, streaks: Object.fromEntries(worstLosing)
       };
       return finished;
     }
@@ -369,5 +410,8 @@ export function settleYear(league, finished, teamData, rules) {
     settled.ledger[t] = { ...l, payroll: round2(l.payroll + contracts.earned + contracts.adj), severance: contracts.severance, net: round2(l.net - extra) };
     freeAgents = [...freeAgents, ...contracts.released];
   }
-  return { league: { ...league, players: seasonPlayers, freeAgents, funds: settled.funds, att: settled.att, ...(legacy ? { legacy } : {}) }, ledger: settled.ledger };
+  // 팬 열기: 이번 시즌 성적·스타·연패로 갱신(관중 상태에 얹어 저장한다, src/fans.mjs). 규칙이 없으면 건드리지 않는다
+  const mood = advanceMood(league.att?.mood ?? null, { standings: result.standings, playoffs: result.playoffs, teamData, startPlayers: league.players, endPlayers: seasonPlayers, streaks: finished.streaks ?? {} }, rules);
+  const att = mood ? { ...settled.att, mood } : settled.att;
+  return { league: { ...league, players: seasonPlayers, freeAgents, funds: settled.funds, att, ...(legacy ? { legacy } : {}) }, ledger: settled.ledger };
 }

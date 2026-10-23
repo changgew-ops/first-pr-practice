@@ -35,6 +35,7 @@ export function buildCtx(seasonEnd, teamCount, rules, managerId) {
     ranks: new Map(standings.map((s, i) => [s.id, i + 1])),
     winPct: new Map(standings.map((s) => [s.id, s.wins / Math.max(1, s.wins + s.losses)])),
     prestige: new Map(Object.entries(prestigeTable(seasonEnd.league.legacy, rules)).map(([id, v]) => [id, v.score])),
+    fans: seasonEnd.league.att?.mood ? new Map(Object.entries(seasonEnd.league.att.mood)) : null, // 엔진과 같은 팬 열기(src/fans.mjs)
     managerTeamId: managerId, teamCount
   };
 }

@@ -1,5 +1,6 @@
 // 시즌 화면이 쓰는 순수 가공 함수(브라우저 API 없음, node에서 테스트한다).
 import { attendanceFor, popularity, initialAttendance } from '../../src/funds.mjs';
+import { moodOf, fanFactor } from '../../src/fans.mjs';
 import { capacityOf } from '../../src/arenas.mjs';
 
 const pct = (w, l) => (w + l > 0 ? w / (w + l) : 0);
@@ -126,7 +127,7 @@ export function attendanceCalc({ teamData, standings, att, season, rules }) {
   return (g, { key, round = null }) => {
     const team = teamData.find((t) => t.id === g.homeId);
     const capacity = team ? capacityOf(team) : null;
-    const pop = popularity(state.fan[g.homeId] ?? 1, winPct(g.homeId), rules);
+    const pop = popularity((state.fan[g.homeId] ?? 1) * fanFactor(moodOf(state, g.homeId, rules), rules), winPct(g.homeId), rules);
     const a = round
       ? attendanceFor({ season, teamId: g.homeId, key, pop, weight: (poRules[round === '챔피언결정전' ? '결승' : round] ?? poRules['6강']).attendance, capacity, scale: state.index }, rules)
       : attendanceFor({ season, teamId: g.homeId, key, pop, oppPop: popOf(g.awayId), capacity, scale: state.index }, rules);

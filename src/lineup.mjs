@@ -61,3 +61,52 @@ export function buildLineup(roster, rules, benchWeight = 0.45) {
   }
   return { starters: best.chosen.slice(0, nStart), bench: best.chosen.slice(nStart) };
 }
+
+// ---------- 부상 반영 (src/injuries.mjs) ----------
+// injured: 결장 중인 선수 → 남은 결장 경기 수의 Map (또는 id Set)
+
+/** 편성 후보: 부상 선수를 뺀 로스터. 건강한 선수가 minHealthy명보다 적으면 가장 빨리 돌아올 선수부터 부상을 안고 뛴다(playingHurt) */
+export function availableRoster(roster, injured, minHealthy = 8) {
+  if (!injured || !injured.size) return { roster, playingHurt: [] };
+  const left = (p) => (typeof injured.get === 'function' ? injured.get(p.id) ?? 1 : 1);
+  const healthy = roster.filter((p) => !injured.has(p.id));
+  if (healthy.length >= minHealthy) return { roster: healthy, playingHurt: [] };
+  const extra = roster.filter((p) => injured.has(p.id)).sort((a, b) => left(a) - left(b) || b.ovr - a.ovr || a.id.localeCompare(b.id)).slice(0, minHealthy - healthy.length);
+  return { roster: [...healthy, ...extra], playingHurt: extra.map((p) => p.id) };
+}
+
+/** 부상 선수를 뺀 자동 편성. 남은 선수가 엔트리(5+7)보다 적으면 벤치를 줄여서 편성한다 */
+export function buildLineupHealthy(roster, rules, benchWeight, injured = null, minHealthy = 8) {
+  const { roster: pool, playingHurt } = availableRoster(roster, injured, minHealthy);
+  const { starters: nStart, bench: nBench } = rules.lineup;
+  const r = pool.length >= nStart + nBench ? rules : { ...rules, lineup: { ...rules.lineup, bench: Math.max(0, pool.length - nStart) } };
+  const lineup = buildLineup(pool, r, benchWeight);
+  return playingHurt.length ? { ...lineup, playingHurt } : lineup;
+}
+
+/**
+ * 직접 편성(선수 객체)에 부상 선수가 있으면 건강한 선수로 같은 자리(스타팅·벤치)를 메운다.
+ * 후보는 OVR 높은 순이고 코스트 제한·외국 선수 동시 출전 제한을 지키는 첫 선수다.
+ * 반환: { starters, bench, swaps: [{ out, in }] } 또는 (메울 수 없으면) null — 그때는 자동 편성을 쓴다
+ */
+export function substituteInjured(lineup, roster, injured, rules) {
+  const hurt = [...lineup.starters, ...lineup.bench].filter((p) => injured.has(p.id));
+  if (!hurt.length) return { starters: lineup.starters, bench: lineup.bench, swaps: [] };
+  const inLineup = new Set([...lineup.starters, ...lineup.bench].map((p) => p.id));
+  const pool = roster.filter((p) => !injured.has(p.id) && !inLineup.has(p.id)).sort((a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id));
+  let starters = [...lineup.starters], bench = [...lineup.bench];
+  const swaps = [];
+  for (const out of hurt) {
+    const isStarter = starters.some((p) => p.id === out.id);
+    let done = false;
+    for (let i = 0; i < pool.length && !done; i++) {
+      const cand = pool[i];
+      const s2 = isStarter ? starters.map((p) => (p.id === out.id ? cand : p)) : starters;
+      const b2 = isStarter ? bench : bench.map((p) => (p.id === out.id ? cand : p));
+      if (!validateLineup(s2, b2, rules).ok) continue;
+      starters = s2; bench = b2; pool.splice(i, 1); swaps.push({ out, in: cand }); done = true;
+    }
+    if (!done) return null;
+  }
+  return { starters, bench, swaps };
+}
