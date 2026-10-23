@@ -27,7 +27,7 @@ function bannerFor({ ok, status }) {
   if (!note) { dismissed = null; return; }
   if (ok && dismissed === note.level) return;
   if (location.hash.startsWith('#/save')) return; // 저장 화면은 자기 안내가 있다
-  const bar = h('div', { id: 'save-banner', class: `sv-banner ${note.level}`, role: 'alert' },
+  const bar = h('div', { id: 'save-banner', class: `slt-banner ${note.level}`, role: 'alert' },
     h('span', note.text),
     h('a', { href: '#/save' }, '저장 화면 열기'),
     h('button', { class: 'btn ghost', type: 'button', onclick: () => { dismissed = note.level; bar.remove(); } }, '닫기'));
@@ -37,7 +37,7 @@ if (typeof window !== 'undefined') window.addEventListener('kblgm:save', (e) => 
 
 export function render(ctx) {
   const host = h('div', { class: 'stack' });
-  const usageHost = h('div', { class: 'card sv-usage' });
+  const usageHost = h('div', { class: 'card slt-usage' });
   const msgHost = h('div', { class: 'stack' });
   let msg = null; // { kind: 'ok'|'bad', text }
   let copyText = null; // 파일 받기가 막혔을 때 보여 줄 내용
@@ -49,11 +49,11 @@ export function render(ctx) {
     const note = capacityNotice({ ok: true, status: st });
     const old = oldestManualSlot(slots);
     usageHost.replaceChildren(
-      h('div', { class: 'sv-usage-head' }, h('h3', { style: { margin: 0 } }, '저장 공간'),
+      h('div', { class: 'slt-usage-head' }, h('h3', { style: { margin: 0 } }, '저장 공간'),
         h('span', { class: 'note' }, h('b', fmtSize(st.used)), ` / 약 ${fmtSize(QUOTA)} · ${st.percent}%`)),
-      h('div', { class: `sv-meter ${st.level}`, role: 'meter', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': Math.min(100, st.percent), 'aria-label': '저장 공간 사용량' }, h('i', { style: { width: `${Math.min(100, st.ratio * 100)}%` } })),
-      note ? h('p', { class: `sv-note ${note.level}` }, note.text) : h('p', { class: 'note', style: { margin: 0 } }, '브라우저가 허용하는 크기(보통 5MB)의 추정치입니다. 80%를 넘으면 알려 드립니다.'),
-      note && old ? h('div', { class: 'sv-actions' },
+      h('div', { class: `slt-meter ${st.level}`, role: 'meter', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': Math.min(100, st.percent), 'aria-label': '저장 공간 사용량' }, h('i', { style: { width: `${Math.min(100, st.ratio * 100)}%` } })),
+      note ? h('p', { class: `slt-note ${note.level}` }, note.text) : h('p', { class: 'note', style: { margin: 0 } }, '브라우저가 허용하는 크기(보통 5MB)의 추정치입니다. 80%를 넘으면 알려 드립니다.'),
+      note && old ? h('div', { class: 'slt-actions' },
         h('button', { class: 'btn danger', type: 'button', onclick: () => { deleteSlot(old); msg = { kind: 'ok', text: `${label(old)}를 지웠습니다` }; draw(); } }, `가장 오래된 ${label(old)} 지우기`),
         h('span', { class: 'note' }, '지우기 전에 “파일로 내보내기”로 받아 두면 나중에 가져올 수 있습니다.')) : null);
   }
@@ -83,21 +83,21 @@ export function render(ctx) {
   const importCard = h('div', { class: 'card stack' },
     h('h3', { style: { margin: 0 } }, '파일에서 가져오기'),
     h('p', { class: 'note', style: { margin: 0 } }, '“파일로 내보내기”로 받은 .json 파일을 고르세요. 형식·버전·시드·구단을 확인한 뒤 고른 슬롯에 저장합니다.'),
-    h('div', { class: 'sv-import' }, fileInput, h('label', '넣을 슬롯', slotPick),
+    h('div', { class: 'slt-import' }, fileInput, h('label', '넣을 슬롯', slotPick),
       h('button', { class: 'btn primary', type: 'button', onclick: () => importFile(fileInput.files?.[0], slotPick.value) }, '가져오기')));
 
   function draw() {
     const slots = listSlots();
     drawUsage(slots);
-    msgHost.replaceChildren(...[msg ? h('p', { class: `sv-msg ${msg.kind}`, role: 'status' }, msg.text) : null,
-      copyText ? h('div', { class: 'card stack' }, h('textarea', { class: 'sv-copy', readonly: true, 'aria-label': '저장 내용(복사용)' }, copyText),
+    msgHost.replaceChildren(...[msg ? h('p', { class: `slt-msg ${msg.kind}`, role: 'status' }, msg.text) : null,
+      copyText ? h('div', { class: 'card stack' }, h('textarea', { class: 'slt-copy', readonly: true, 'aria-label': '저장 내용(복사용)' }, copyText),
         h('button', { class: 'btn', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(copyText); msg = { kind: 'ok', text: '복사했습니다' }; } catch { msg = { kind: 'bad', text: '복사하지 못했습니다. 위 글을 직접 선택해 복사하세요.' }; } draw(); } }, '복사')) : null].filter(Boolean));
     host.replaceChildren(...slots.map(({ slot, meta, size }) => {
       const stage = meta && ({ regular: meta.day ? `정규리그 ${meta.day}일차` : '시즌 시작 전', playoffs: '플레이오프', offseason: '오프시즌' }[meta.stage] ?? '');
       return h('div', { class: 'card slot' },
         h('div', { class: 'row between' },
           h('div', h('h3', { style: { margin: 0 } }, label(slot)),
-            meta ? h('div', { class: 'note' }, `${meta.gmName} 단장 · ${ctx.name(meta.teamId)} · ${meta.season} ${stage} · ${meta.seasonsPlayed}시즌 완료 · ${fmtTime(meta.savedAt)} · `, h('span', { class: 'sv-size', 'data-size': size }, fmtSize(size))) : h('div', { class: 'note' }, '비어 있음')),
+            meta ? h('div', { class: 'note' }, `${meta.gmName} 단장 · ${ctx.name(meta.teamId)} · ${meta.season} ${stage} · ${meta.seasonsPlayed}시즌 완료 · ${fmtTime(meta.savedAt)} · `, h('span', { class: 'slt-size', 'data-size': size }, fmtSize(size))) : h('div', { class: 'note' }, '비어 있음')),
           h('div', { class: 'row' },
             ctx.session && slot !== 'auto' ? h('button', { class: 'btn primary', onclick: () => { ctx.save(slot); draw(); } }, meta ? '덮어쓰기' : '여기에 저장') : null,
             meta ? h('button', { class: 'btn', onclick: () => ctx.loadSlot(slot) }, '불러오기') : null,

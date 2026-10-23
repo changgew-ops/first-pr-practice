@@ -1,24 +1,24 @@
-/* 저장 화면: 용량 막대, 슬롯 버튼, 가져오기, 용량 경고 띠 */
-.sv-usage { display: flex; flex-direction: column; gap: 8px; }
-.sv-usage-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.sv-usage-head b { font-variant-numeric: tabular-nums; }
-.sv-meter { position: relative; height: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; }
-.sv-meter i { display: block; height: 100%; background: var(--good); border-radius: 99px; transition: width .25s; }
-.sv-meter.warn i { background: var(--warn); } .sv-meter.full i { background: var(--bad); }
-.sv-meter::after { content: ''; position: absolute; top: 0; bottom: 0; left: 80%; width: 1px; background: var(--muted); opacity: .7; }
-.sv-note { margin: 0; padding: 8px 10px; border-left: 3px solid var(--warn); background: var(--panel-2); border-radius: 0 8px 8px 0; font-size: .9rem; line-height: 1.5; }
-.sv-note.full { border-left-color: var(--bad); }
-.sv-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.sv-size { font-variant-numeric: tabular-nums; }
-.sv-import { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.sv-import label { display: inline-flex; gap: 6px; align-items: center; }
-.sv-import input[type="file"] { max-width: 100%; }
-.sv-msg { margin: 0; font-size: .9rem; }
-.sv-msg.ok { color: var(--good); } .sv-msg.bad { color: var(--bad); }
-.sv-copy { width: 100%; min-height: 6em; font: inherit; font-size: .8rem; color: var(--text); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px; resize: vertical; }
+/* 저장 화면: 용량 막대, 슬롯 버튼, 가져오기, 용량 경고 띠 (클래스 접두사 slt-) */
+.slt-usage { display: flex; flex-direction: column; gap: 8px; }
+.slt-usage-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.slt-usage-head b { font-variant-numeric: tabular-nums; }
+.slt-meter { position: relative; height: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 99px; overflow: hidden; }
+.slt-meter i { display: block; height: 100%; background: var(--good); border-radius: 99px; transition: width .25s; }
+.slt-meter.warn i { background: var(--warn); } .slt-meter.full i { background: var(--bad); }
+.slt-meter::after { content: ''; position: absolute; top: 0; bottom: 0; left: 80%; width: 1px; background: var(--muted); opacity: .7; }
+.slt-note { margin: 0; padding: 8px 10px; border-left: 3px solid var(--warn); background: var(--panel-2); border-radius: 0 8px 8px 0; font-size: .9rem; line-height: 1.5; }
+.slt-note.full { border-left-color: var(--bad); }
+.slt-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.slt-size { font-variant-numeric: tabular-nums; }
+.slt-import { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.slt-import label { display: inline-flex; gap: 6px; align-items: center; }
+.slt-import input[type="file"] { max-width: 100%; }
+.slt-msg { margin: 0; font-size: .9rem; }
+.slt-msg.ok { color: var(--good); } .slt-msg.bad { color: var(--bad); }
+.slt-copy { width: 100%; min-height: 6em; font: inherit; font-size: .8rem; color: var(--text); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px; resize: vertical; }
 /* 어느 화면에서나 뜨는 경고 띠 */
-.sv-banner { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; max-width: calc(100vw - 32px); padding: 10px 14px; background: var(--panel); border: 1px solid var(--warn); border-radius: 10px; box-shadow: 0 6px 24px rgba(0, 0, 0, .35); font-size: .9rem; line-height: 1.45; }
-.sv-banner.full { border-color: var(--bad); }
-.sv-banner a { font-weight: 700; color: var(--focus); }
-.sv-banner button { padding: 4px 10px; font-size: .85rem; }
-@media (max-width: 560px) { .sv-banner { top: 6px; padding: 8px 10px; } }
+.slt-banner { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; max-width: calc(100vw - 32px); padding: 10px 14px; background: var(--panel); border: 1px solid var(--warn); border-radius: 10px; box-shadow: 0 6px 24px rgba(0, 0, 0, .35); font-size: .9rem; line-height: 1.45; }
+.slt-banner.full { border-color: var(--bad); }
+.slt-banner a { font-weight: 700; color: var(--focus); }
+.slt-banner button { padding: 4px 10px; font-size: .85rem; }
+@media (max-width: 560px) { .slt-banner { top: 6px; padding: 8px 10px; } }

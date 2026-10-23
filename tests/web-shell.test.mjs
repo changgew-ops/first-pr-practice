@@ -19,7 +19,8 @@ test('저장 슬롯: 쓰고 읽고 지우고, 메타(단장 이름·구단·시�
   const s = Session.create(data, { managerId: 'busan-kcc', gmName: '김단장', seed: 4 });
   s.advance(5);
   assert.equal(writeSlot('1', s.game), true);
-  const meta = listSlots().find((x) => x.slot === '1').meta;
+  assert.ok(localStorage.getItem('kblgm.v2.slot.1').startsWith('KZ1\n')); // 압축해서 저장(자세한 검사는 save.test.mjs)
+  const meta =listSlots().find((x) => x.slot === '1').meta;
   assert.equal(meta.gmName, '김단장'); assert.equal(meta.teamId, 'busan-kcc'); assert.equal(meta.season, '2026-27'); assert.equal(meta.day, 5); assert.equal(meta.stage, 'regular');
   const back = new Session(data, readSlot('1'));
   assert.equal(back.day, 5); assert.deepEqual(back.standings(), s.standings());
