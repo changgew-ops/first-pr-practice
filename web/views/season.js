@@ -7,7 +7,7 @@ import {
 } from '../lib/season-view.js';
 
 // 화면을 다시 그려도 유지할 보기 상태(보고 있는 경기일, 열어 둔 박스스코어)
-const ui = { season: null, lastDay: -1, dayView: null, box: null };
+const ui = { season: null, lastDay: -1, dayView: null, box: null, poBox: null };
 
 const act = (ctx, fn) => { try { fn(); } catch (e) { console.error(e); ctx.toast(e.message); } ctx.refresh(); };
 const pct3 = (v) => v.toFixed(3);
@@ -155,9 +155,9 @@ function boxTable(ctx, teamId, pts, lines, won) {
       h('thead', h('tr', h('th', '선수'), ...BOX_COLS.map(([, l]) => h('th', { class: 'r' }, l)), h('th', { class: 'r' }, 'FG'), h('th', { class: 'r' }, '3P'), h('th', { class: 'r' }, 'FT'))),
       h('tbody', [...lines].sort((a, b) => b.minutes - a.minutes).map((p) => row(p, false)), row(tot, true)))));
 }
-function boxScore(ctx, g) {
+function boxScore(ctx, g, close = () => { ui.box = null; ctx.refresh(); }) {
   return h('div', { class: 'sv-box-wrap' },
-    h('div', { class: 'row between' }, h('h3', { style: { margin: 0 } }, '박스스코어'), h('button', { class: 'btn ghost', onclick: () => { ui.box = null; ctx.refresh(); } }, '닫기')),
+    h('div', { class: 'row between' }, h('h3', { style: { margin: 0 } }, '박스스코어'), h('button', { class: 'btn ghost', onclick: close }, '닫기')),
     boxTable(ctx, g.awayId, g.awayPts, g.box.away, g.winnerId === g.awayId),
     boxTable(ctx, g.homeId, g.homePts, g.box.home, g.winnerId === g.homeId));
 }
@@ -213,7 +213,13 @@ function seriesCard(ctx, m, seeds) {
       h('span', { class: 'sv-name' }, id ? ctx.name(id) : h('i', label)),
       h('b', { class: 'sv-wins' }, m.played ? w : ''));
   };
-  return h('div', { class: `sv-series ${m.played ? 'played' : ''} ${mine ? 'mine' : ''}` },
+  const open = () => {
+    ui.poBox = `${m.round}:${m.a}:${m.b}:${m.games.length}`; ctx.refresh();
+    setTimeout(() => document.getElementById(`po-${m.round}-${m.a}-${m.b}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' }), 0);
+  };
+  return h('div', m.played && m.games?.length
+    ? { class: `sv-series pickable played ${mine ? 'mine' : ''}`, tabindex: 0, role: 'button', 'aria-label': `${ctx.name(m.a)} 대 ${ctx.name(m.b)} 경기 결과 보기`, onclick: open, onkeydown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } } }
+    : { class: `sv-series ${m.played ? 'played' : ''} ${mine ? 'mine' : ''}` },
     row(m.a, m.aLabel, m.played ? m.wins[m.a] : ''), row(m.b, m.bLabel, m.played ? m.wins[m.b] : ''));
 }
 
@@ -221,13 +227,22 @@ function seriesDetail(ctx, m) {
   const my = ctx.session.managerId;
   const mine = m.a === my || m.b === my;
   const rows = seriesGameRows({ games: m.games });
-  return h('div', { class: `sv-detail ${mine ? 'mine' : ''}` },
+  const key = (n) => `${m.round}:${m.a}:${m.b}:${n}`;
+  const openN = ui.poBox && ui.poBox.startsWith(`${m.round}:${m.a}:${m.b}:`) ? Number(ui.poBox.split(':').pop()) : null;
+  const toggle = (n) => { ui.poBox = ui.poBox === key(n) ? null : key(n); ctx.refresh(); };
+  const openGame = openN != null ? m.games[openN - 1] : null;
+  return h('div', { class: `sv-detail ${mine ? 'mine' : ''} ${openN != null ? 'has-box' : ''}`, id: `po-${m.round}-${m.a}-${m.b}` },
     h('div', { class: 'row between' }, h('b', `${ctx.name(m.a)} ${seriesScore({ wins: m.wins, higherId: m.a, lowerId: m.b })} ${ctx.name(m.b)}`), h('span', { class: 'tag' }, `${ctx.name(m.winnerId)} 승`)),
-    h('div', { class: 'table-wrap' }, h('table', { class: 'sv-sg' }, h('tbody', rows.map((g) => h('tr', { class: g.winnerId === my ? 'win' : '' },
+    h('p', { class: 'note', style: { margin: '4px 0' } }, '경기를 누르면 박스스코어를 봅니다.'),
+    h('div', { class: 'table-wrap' }, h('table', { class: 'sv-sg' }, h('tbody', rows.map((g) => h('tr', {
+      class: `pick ${g.winnerId === my ? 'win' : ''} ${openN === g.n ? 'open' : ''}`, tabindex: 0, role: 'button', 'aria-pressed': String(openN === g.n), 'aria-label': `${g.n}차전 박스스코어`,
+      onclick: () => toggle(g.n), onkeydown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(g.n); } }
+    },
       h('td', `${g.n}차전`),
       h('td', { class: g.winnerId === g.awayId ? 'won' : '' }, ctx.name(g.awayId)),
       h('td', { class: 'r' }, h('b', `${g.awayPts} : ${g.homePts}`), g.ot ? h('small', ' 연장') : null),
-      h('td', { class: `r ${g.winnerId === g.homeId ? 'won' : ''}` }, ctx.name(g.homeId), h('small', ' (홈)'))))))));
+      h('td', { class: `r ${g.winnerId === g.homeId ? 'won' : ''}` }, ctx.name(g.homeId), h('small', ' (홈)'))))))),
+    openGame?.box ? boxScore(ctx, openGame, () => { ui.poBox = null; ctx.refresh(); }) : null);
 }
 
 // ---------- 오프시즌 ----------

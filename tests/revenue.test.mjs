@@ -121,7 +121,7 @@ test('팬 기반: 성적이 좋으면 오르고 나쁘면 내리며, 상·하한
 
 test('리그 관중 규모: 시작 1.0, 장기적으로 완만한 상승, 상한 안(여러 시드 평균)', () => {
   assert.equal(initialAttendance(teams, rules).index, 1);
-  assert.equal(rv.attendanceCap, 1.8); assert.ok(rv.attendanceTrend > 0 && rv.inflation > 0);
+  assert.equal(rv.attendanceCap, 1.8); assert.ok(rv.attendanceTrend > 0 && rules.economy.inflation > 0);
   const years = 30, seeds = [1, 2, 3];
   const tot = Array.from({ length: years }, () => []);
   let leagues = seeds.map((seed) => ({ rng: mulberry32(seed), league: createLeague(players, rules, { history: loadHistory(), teamData: teams }) }));

@@ -10,6 +10,7 @@ import { mulberry32 } from '../src/rng.mjs';
 import { createManagerBot } from '../src/manager-bot.mjs';
 import { loadHistory } from '../src/history.mjs';
 import { prestigeTable } from '../src/legacy.mjs';
+import { rulesFor } from '../src/economy.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (f) => JSON.parse(readFileSync(join(ROOT, 'data', f), 'utf8'));
@@ -38,7 +39,7 @@ const avg = (list, fn) => list.reduce((s, p) => s + fn(p), 0) / list.length;
 
 for (let y = 0; y < years; y++) {
   const season = league.season;
-  const { league: next, report, result, totals, seasonPlayers } = playLeagueYear(league, teamData, rules, rng, { manager, inSeasonUpdates, policy: useBot ? createManagerBot(manager, rules) : null });
+  const { league: next, report, result, totals, seasonPlayers } = playLeagueYear(league, teamData, rules, rng, { manager, inSeasonUpdates, policy: useBot ? createManagerBot(manager, rulesFor(rules, season + 1)) : null });
   titles.set(result.championId, titles.get(result.championId) + 1);
   for (const s of result.standings) winPct.set(s.id, winPct.get(s.id) + s.wins / rules.regularSeasonGames);
   const mgrRank = manager ? result.standings.findIndex((s) => s.id === manager) + 1 : null;

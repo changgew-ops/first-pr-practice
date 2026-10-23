@@ -53,6 +53,6 @@ export function financeCard(ctx) {
     h('p', { class: 'note', style: { margin: '10px 0 4px' } }, `이번 시즌 예상 수입 ${eok(est.revenue)} (지금 성적 기준)`),
     partsBar(est.parts),
     h('div', { class: 'fin-trend-wrap' }, h('div', { class: 'row between' }, h('b', '리그 총 관중 추이'), h('span', { class: 'note' }, '회색 = 공식 집계(플레이오프 포함 추정), 색 = 게임 진행')), trendBars(attendanceTrend(game, data))),
-    h('p', { class: 'note fin-foot' }, `물가 반영: 객단가·중계권·스폰서·굿즈는 해마다 연 ${(data.rules.revenue.inflation * 100).toFixed(1)}%씩 오르고(올해 ×${priceIndex(game.league.season, data.rules).toFixed(2)}), 리그 관중도 연 ${(data.rules.revenue.attendanceTrend * 100).toFixed(1)}% 안팎으로 완만히 늘어납니다. `),
+    h('p', { class: 'note fin-foot' }, `물가 반영: 샐러리캡·최저 연봉·요구 연봉과 객단가·중계권·스폰서·굿즈가 해마다 연 ${(data.rules.economy.inflation * 100).toFixed(1)}%씩 오르고(올해 ×${priceIndex(game.league.season, data.rules).toFixed(2)}), 리그 관중도 연 ${(data.rules.revenue.attendanceTrend * 100).toFixed(1)}% 안팎으로 완만히 늘어납니다. `),
     h('p', { class: 'note fin-foot' }, '2023-24 KBL 집계(리그 관중 73.8만 명, 입장 수입 약 100억 원, 서울 SK·창원 LG·부산 KCC·원주 DB 평균 관중)에 맞춘 추정 모델입니다. 중계권·스폰서·굿즈 금액은 자료가 없어 지은 값입니다. 구단별 관중은 팬 기반(2023-24 평균 관중)과 해마다의 성적으로 정합니다.' + (cap ? '' : ' 경기장 수용 인원은 자료가 확인되면 채웁니다.')));
 }

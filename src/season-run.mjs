@@ -1,5 +1,6 @@
 // 한 시즌을 하루씩·라운드씩 진행하는 진행기. 화면(웹)이 쓰고, playLeagueYear도 이 위에서 돌아간다.
 // 같은 시드·같은 조작(라인업·훈련 지정)이면 항상 같은 결과다 — 저장은 "조작 기록"만 하고 불러올 때 다시 돌려 복원한다.
+import { rulesFor } from './economy.mjs';
 import { buildLineup, validateLineup } from './lineup.mjs';
 import { leagueBaseline } from './game.mjs';
 import { createRegularSeason, createPlayoffs } from './season.mjs';
@@ -36,6 +37,7 @@ export function checkLineup(players, managerId, lineup, rules) {
  *   playoffs() 시작 → playoffRound(), finish()
  */
 export function beginSeason(league, teamData, rules, rng, options = {}) {
+  rules = rulesFor(rules, league.season); // 그 시즌의 물가 지수를 곱한 규칙(src/economy.mjs)
   const { manager = null, inSeasonUpdates = true, keepGames = false } = options;
   let players = league.players;
   const start = new Map(players.map((p) => [p.id, { ...p.stats }])); // 시즌 시작 능력치
@@ -332,7 +334,10 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
 
 /** 시즌 정산: 구단 전통 기록 추가 + 수입·연봉·기금 정산. 반환: 오프시즌 처리에 넘길 league와 구단별 장부 */
 export function settleYear(league, finished, teamData, rules) {
-  const { result, seasonPlayers } = finished;
+  rules = rulesFor(rules, league.season);
+  const { result } = finished;
+  // 이번 시즌 경기 수·출전 시간을 선수에 찍어 둔다(오프시즌 성장의 출전 경험 보너스가 쓴다). 이전 저장·기록 없는 선수는 0
+  const seasonPlayers = finished.seasonPlayers.map((p) => { const t = finished.totals?.get(p.id); return { ...p, lastGp: t?.games ?? 0, lastMin: Math.round((t?.minutes ?? 0) * 10) / 10 }; });
   const label = `${league.season}-${String(league.season + 1).slice(2)}`;
   const legacy = league.legacy ? appendSeason(league.legacy, label, result, rules) : undefined;
   // 유학 중이던 선수는 등록 명단 밖이라 캡·연봉 지출에서 빠지고, 대신 프로그램 비용(유학비 + 연봉의 일부)을 낸다

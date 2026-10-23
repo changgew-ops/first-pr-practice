@@ -71,3 +71,14 @@
 .sv .sv-cols > *, .sv .grid > * { min-width: 0; }
 @media (max-width: 1180px) { .sv .sv-cols { grid-template-columns: minmax(0, 1fr); } }
 .sv .sv-series-detail > .stack { margin-top: 16px; }
+
+/* 플레이오프 경기 결과: 줄을 눌러 박스스코어 */
+.sv-sg tr.pick { cursor: pointer; }
+.sv-sg tr.pick:hover td { background: color-mix(in srgb, var(--accent, #5a6) 10%, transparent); }
+.sv-sg tr.pick:focus-visible { outline: 2px solid var(--accent, currentColor); outline-offset: -2px; }
+.sv-sg tr.pick.open td { background: color-mix(in srgb, var(--accent, #5a6) 18%, transparent); font-weight: 600; }
+.sv-detail .sv-box-wrap { margin-top: 10px; }
+.sv-series.pickable { cursor: pointer; }
+.sv-series.pickable:hover { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent, #5a6) 45%, transparent); }
+.sv-series.pickable:focus-visible { outline: 2px solid var(--accent, currentColor); outline-offset: 2px; }
+.sv-detail.has-box { grid-column: 1 / -1; }

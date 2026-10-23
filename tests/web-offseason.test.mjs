@@ -1,3 +1,4 @@
+import { rulesFor } from '../src/economy.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -152,7 +153,7 @@ test('외국인 영입 payload: 현재 로스터(state)·먼저 영입된 선수
           assert.ok(pl.candidates.length > 0 && pl.candidates.every((c) => typeof c.ok === 'boolean' && (c.ok ? c.why == null : typeof c.why === 'string' && c.usd > pl.maxUsd)));
           assert.equal(pl.slots, data.rules.roster.foreign);
           assert.ok(pl.vacancies >= 1 && pl.slot >= 1 && pl.slot <= pl.vacancies && pl.turn >= 1 && pl.turn <= pl.turns);
-          assert.equal(pl.foreignUsd.total, data.rules.salaryCap.foreignUsdTotal);
+          assert.equal(pl.foreignUsd.total, rulesFor(data.rules, 2027).salaryCap.foreignUsdTotal); // 오프시즌 계약은 다음 시즌 규칙
           assert.ok(Array.isArray(pl.taken) && pl.taken.every((t) => t.teamId && t.playerName && t.usd > 0));
           const mine = pl.state.players.filter((p) => p.teamId === MY && p.origin === 'foreign');
           assert.equal(mine.length, pl.slots - pl.vacancies, '요약이 쓰는 현재 외국 선수 수 = 자리 − 빈 자리');
@@ -166,16 +167,20 @@ test('외국인 영입 payload: 현재 로스터(state)·먼저 영입된 선수
 });
 
 test('외국인 영입: 한도를 못 맞추는 후보를 고르면(ok=false) 엔진이 무시하고 자동으로 고르며, 후보가 하나도 없으면 가상 외국인으로 채운다', () => {
-  let bad = 0, ignored = 0;
-  walk(100, {
-    onPending: (ctx) => {
-      if (ctx.kind === 'foreign') {
-        const blocked = ctx.payload.candidates.find((c) => !c.ok);
-        if (blocked) { bad++; ignored++; return blocked.player.id; }
+  let bad = 0, ignored = 0, blockedSeed = 100;
+  // 물가 반영 뒤에는 한도와 요구액이 함께 오르므로 한도에 걸리는 후보가 나오는 시드를 찾아 쓴다
+  for (const seed of [100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]) {
+    walk(seed, {
+      onPending: (ctx) => {
+        if (ctx.kind === 'foreign') {
+          const blocked = ctx.payload.candidates.find((c) => !c.ok);
+          if (blocked) { bad++; ignored++; return blocked.player.id; }
+        }
+        return defaults(ctx);
       }
-      return defaults(ctx);
-    }
-  });
+    });
+    if (bad > 0) { blockedSeed = seed; break; }
+  }
   assert.ok(bad > 0, 'ok=false 후보가 없는 시나리오');
   // 끝까지 진행되고 외국인 자리가 채워진다
   const s = walk(100, { onPending: (ctx) => (ctx.kind === 'foreign' ? 'auto' : defaults(ctx)) });

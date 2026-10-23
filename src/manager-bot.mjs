@@ -28,7 +28,7 @@ export function createManagerBot(teamId, rules, { tradeMargin = 1.05 } = {}) {
       const out = {};
       for (const p of [...expiring].sort((a, b) => valueOf(b) - valueOf(a))) {
         const keep = rank.get(p.id) <= 9 || (p.age <= 24 && p.potential >= p.ovr + 6);
-        const salary = round1(demandEok(p) * 1.02);
+        const salary = round1(demandEok(p, rules) * 1.02);
         if (keep && capAllows(payroll, salary, rules)) {
           out[p.id] = { salaryEok: salary, years: p.age <= 26 ? 3 : 2 };
           payroll += salary;

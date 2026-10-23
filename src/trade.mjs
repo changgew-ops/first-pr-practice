@@ -65,7 +65,7 @@ export function teamWorth(p, teamId, league, ctx, rules) {
   else if (strategy === 'contend') w *= p.ovr >= 65 ? 1.15 : p.age <= 22 ? 0.85 : 1;
   if (p.contract.yearsLeft <= 0) {
     const staying = roster.filter((x) => x.contract.yearsLeft > 0 && x.id !== p.id);
-    const canKeep = payrollEok(staying, teamId) + demandEok(p) <= rules.salaryCap.domesticEok;
+    const canKeep = payrollEok(staying, teamId) + demandEok(p, rules) <= rules.salaryCap.domesticEok;
     w *= canKeep ? tr.expiringDiscount + 0.25 : tr.expiringDiscount - 0.25;
   }
   const have = roster.filter((x) => x.position === p.position && x.id !== p.id).length;

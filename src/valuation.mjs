@@ -22,12 +22,13 @@ export function valueOf(p) {
 /** 거래용 가치. 가치 점수를 지수로 바꿔 스타 한 명이 평범한 선수 여러 명보다 훨씬 크게 평가되도록 한다 */
 export const worthOf = (p, rules) => Math.exp((valueOf(p) - 50) / rules.transactions.trade.worthScale);
 
-/** 선수가 시장에서 요구하는 연봉(억 원). 어리고 성장 여지가 크면 높고, 노장은 낮다 */
-export function demandEok(p) {
+/** 선수가 시장에서 요구하는 연봉(억 원). 어리고 성장 여지가 크면 높고, 노장은 낮다. rules를 주면 그 시즌 물가 지수를 곱한다 */
+export function demandEok(p, rules = null) {
   const room = Math.max(0, p.potential - p.ovr);
   const youth = p.age <= 24 ? 0.4 : p.age <= 27 ? 0.2 : 0;
   const ageFactor = p.age <= 31 ? 1 : p.age <= 34 ? 0.9 : 0.8;
-  return Math.max(0.3, Math.floor(rawSalaryEok(p.ovr + room * youth) * ageFactor * 10) / 10);
+  const idx = rules?.econ?.index ?? 1; // 물가 지수(src/economy.mjs): 새로 맺는 계약의 요구 연봉이 그 시즌 수준으로 오른다
+  return Math.max(Math.round(0.3 * idx * 10) / 10, Math.floor(rawSalaryEok(p.ovr + room * youth) * ageFactor * idx * 10) / 10);
 }
 
 /** 소프트캡 초과 기금(억 원): 초과 구간 비율에 따라 초과분의 30/40/50% */

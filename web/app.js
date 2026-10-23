@@ -118,6 +118,11 @@ window.addEventListener('keydown', (e) => {
 (async () => {
   try {
     ctx.data = await loadData();
+    // 화면이 읽는 ctx.data.rules는 늘 "지금 시즌의 규칙"(금액 상수에 물가 지수를 곱한 것)이다. 원본은 data.baseRules.
+    // 세션이 없으면(타이틀·새 게임) 원본 그대로. 이렇게 하면 모든 화면의 캡·연봉·요구액 숫자가 한 곳에서 시즌에 맞춰 바뀐다.
+    const baseRules = ctx.data.rules;
+    ctx.data.baseRules = baseRules;
+    Object.defineProperty(ctx.data, 'rules', { configurable: true, enumerable: true, get: () => ctx.session?.rules ?? baseRules });
     ctx.profiles = profileIndex(ctx.data.profiles);
     render();
   } catch (e) {

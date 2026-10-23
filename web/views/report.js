@@ -3,6 +3,8 @@ import { bracket } from './league.js';
 import { logToHistory, seasonLabel, playerById } from '../lib/game.js';
 import { partsBar, PART_LABEL } from './finance-card.js';
 
+const BT_LABEL = { shooting: '슛', passing: '패스', defense: '수비', rebound: '리바운드', athletic: '운동능력' };
+
 export function render(ctx, [tabParam]) {
   const { game, data } = ctx;
   const my = game.managerId;
@@ -65,6 +67,9 @@ export function render(ctx, [tabParam]) {
         h('div', { class: 'card' }, h('h3', '신인 드래프트'), list(myDraft, '지명 없음', (x) => h('li', ovrChip({ ovr: x.ovr, rarity: x.ovr >= 66 ? 'rare' : 'common' }), h('span', { class: 'grow' }, `${x.name}`), h('span', { class: 'pos' }, x.position), h('span', { class: 'note' }, `${x.pick}순위 · POT ${x.potential}`)))),
         h('div', { class: 'card' }, h('h3', '은퇴'), list(myRet, '우리 팀 은퇴 없음', (x) => h('li', h('span', { class: 'grow' }, x.name), h('span', { class: 'note' }, `${x.age}세 · OVR ${x.ovr}`))), h('p', { class: 'note' }, `리그 전체 ${r.retired.length}명 은퇴`))),
       h('div', { class: 'card' }, h('h3', '트레이드'), list(r.trades, '성사된 트레이드 없음', (t) => h('li', h('span', { class: 'grow' }, h('b', ctx.name(t.with)), h('span', { class: 'note' }, ' 와 트레이드 · '), '받은 선수 ', (t.received ?? []).map(name).join(', '), h('span', { class: 'note' }, ' · '), '보낸 선수 ', (t.sent ?? []).map(name).join(', ')))), h('p', { class: 'note' }, `이번 오프시즌에 받은 제안 ${r.tradeOffers.length}건 (자동 단장이 판단)`)),
+      r.breakthroughs?.length ? h('div', { class: 'card' }, h('h3', `깨달음 (${r.breakthroughs.length}명)`),
+        h('p', { class: 'note' }, '오프시즌에 낮은 확률로 한 능력치가 크게 오른 선수입니다. 우리 팀 선수를 먼저 보여 줍니다.'),
+        h('ul', { class: 'plain' }, [...r.breakthroughs].sort((a, b) => (b.teamId === my) - (a.teamId === my) || (b.to - b.from) - (a.to - a.from)).slice(0, 8).map((x) => h('li', h('span', { class: 'grow' }, link(`#/player/${x.id}`, x.name), x.teamId === my ? '' : h('span', { class: 'note' }, ` · ${ctx.name(x.teamId)}`)), h('span', { class: 'note' }, `${BT_LABEL[x.stat] ?? x.stat} ${x.from} → `), h('b', { class: 'good' }, x.to), h('span', { class: 'good' }, ` (+${x.to - x.from})`))))) : null,
       (r.waived?.length || r.extended?.length || r.extendRefused?.length) ? h('div', { class: 'card' }, h('h3', '방출·연장 계약'),
         h('ul', { class: 'plain' },
           ...(r.waived ?? []).map((x) => h('li', h('span', { class: 'grow' }, `${x.name} 방출`), h('span', { class: 'note' }, `남은 ${x.yearsLeft}년 × ${eok(x.salaryEok)} = 해지 비용 ${eok(x.severance)}`))),

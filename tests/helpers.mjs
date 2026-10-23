@@ -1,13 +1,16 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { calcOvr } from '../src/rating.mjs';
+import { rulesFor } from '../src/economy.mjs';
 
 const read = (f) => JSON.parse(readFileSync(new URL(`../data/${f}`, import.meta.url), 'utf8'));
-const rules = read('league-rules.json');
+const baseRules = read('league-rules.json');
+const rules = baseRules;
 const teamData = read('teams.json');
 
 // 리그 상태가 항상 지켜야 하는 규칙 (로스터 인원, 연봉 캡, 등번호, 포지션, 계약, 중복 없음)
 export function invariants(league, label) {
+  const rules = rulesFor(baseRules, league.season); // 그 시즌의 물가 반영 규칙(src/economy.mjs). 이미 맺은 계약은 예전 수준일 수 있어 하한은 원본 기준
   for (const team of teamData) {
     const roster = league.players.filter((p) => p.teamId === team.id);
     const dom = roster.filter((p) => p.origin === 'domestic');
@@ -16,7 +19,7 @@ export function invariants(league, label) {
     assert.equal(dom.length, rules.roster.domestic, `${label} ${team.name} 국내 ${dom.length}명`);
     assert.equal(foreign.length, rules.roster.foreign, `${label} ${team.name} 외국 ${foreign.length}명`);
     assert.ok(asia.length <= rules.roster.asia, `${label} ${team.name} 아시아쿼터 ${asia.length}명`);
-    for (const p of asia) assert.ok(p.contract.salaryEok >= rules.asiaQuota.salaryEok[0] - 1e-9 && p.contract.salaryEok <= rules.asiaQuota.salaryEok[1] + 1e-9, `${label} ${p.name} 아시아쿼터 연봉 ${p.contract.salaryEok}`);
+    for (const p of asia) assert.ok(p.contract.salaryEok >= baseRules.asiaQuota.salaryEok[0] - 1e-9 && p.contract.salaryEok <= rules.asiaQuota.salaryEok[1] + 1e-9, `${label} ${p.name} 아시아쿼터 연봉 ${p.contract.salaryEok}`);
     // 소프트캡: 캡을 넘길 수 있지만 한도(캡 × 1.2)는 넘지 못한다
     const cap = dom.reduce((s, p) => s + p.contract.salaryEok, 0);
     assert.ok(cap <= rules.salaryCap.domesticEok * (1 + rules.salaryCap.soft.maxOverRatio) + 1e-6, `${label} ${team.name} 국내 연봉 ${cap.toFixed(1)}`);

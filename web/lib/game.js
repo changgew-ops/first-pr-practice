@@ -120,7 +120,8 @@ export function attachOffseason(entry, report, fundsAfter) {
       signings: report.signings, compensations: report.compensations,
       trades: report.trades.filter((t) => t.executed !== false), tradeOffers: report.tradeOffers,
       released: report.released, signed: report.signed, foreignReplaced: report.foreignReplaced, asiaReplaced: report.asiaReplaced,
-      waived: report.waived ?? [], extended: report.extended ?? [], extendRefused: report.extendRefused ?? [] // 방출(계약 해지)·연장 계약 결과
+      waived: report.waived ?? [], extended: report.extended ?? [], extendRefused: report.extendRefused ?? [], // 방출(계약 해지)·연장 계약 결과
+      breakthroughs: report.breakthroughs ?? [] // 깨달음(한 능력치가 크게 오른 선수)
     }
   };
 }

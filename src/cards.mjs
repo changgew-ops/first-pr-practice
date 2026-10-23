@@ -7,6 +7,7 @@ import { calcOvr, calcCost } from './rating.mjs';
 import { rarityOf } from './factory.mjs';
 import { inferPosition } from './position.mjs';
 import { positionFromRegistry, ageOn } from './real-players.mjs';
+import { mulberry32, hashString } from './rng.mjs';
 
 export const CARD_FIELDS = ['kblId', 'season', 'name', 'kind', 'position', 'age', 'teamId', 'gp', 'min', 'shooting', 'passing', 'defense', 'rebound', 'athletic', 'stamina'];
 
@@ -81,16 +82,45 @@ export function buildCards({ official, births, franchiseOf, rules }, { skip = []
 /** 카드 한 줄 → 객체 */
 export const expandCard = (row) => Object.fromEntries(CARD_FIELDS.map((k, i) => [k, row[i]]));
 
+/** 같은 선수(kblId)의 모든 시즌 카드 중 최고 OVR(커리어 하이). cards({ domestic, foreign })마다 한 번만 만든다 */
+const HIGH_CACHE = new WeakMap();
+export function careerHighIndex(cards) {
+  let m = HIGH_CACHE.get(cards);
+  if (!m) {
+    m = new Map();
+    for (const list of [cards.domestic ?? [], cards.foreign ?? []]) for (const c of list) { const o = cardOvr(c); if (o > (m.get(c.kblId) ?? 0)) m.set(c.kblId, o); }
+    HIGH_CACHE.set(cards, m);
+  }
+  return m;
+}
+
+/**
+ * 카드 선수의 잠재력(성장 한도). 새로 만든 신인과 같은 방식으로 나이가 어릴수록 여지를 주고(rules.cards.potential.bonus: [최대 나이, 최소, 최대]),
+ * 그 선수의 커리어 하이(careerHigh)를 기준점으로 삼아 어린 나이에는 그 근처까지 오를 수 있게 한다(highGap: [최대 나이, 커리어 하이에서 깎는 값], 99면 적용 안 함).
+ * 보너스는 카드(kblId·시즌)로 고정된 난수라 같은 카드는 늘 같은 잠재력이다. 27세 이상은 엔진 규칙(withRatings)상 잠재력이 OVR로 수렴해 의미가 없다.
+ */
+export function cardPotential(card, ovr, careerHigh, potRules, age) {
+  const row = potRules.bonus.find(([maxAge]) => age <= maxAge) ?? [99, 0, 0];
+  const rnd = mulberry32(hashString(`pot:${card.kblId}:${card.season}`));
+  const bonus = row[1] + Math.floor(rnd() * (row[2] - row[1] + 1));
+  const gap = (potRules.highGap.find(([maxAge]) => age <= maxAge) ?? [99, 99])[1];
+  const anchor = gap >= 99 ? 0 : careerHigh - gap;
+  return Math.max(ovr, Math.min(99, Math.max(ovr + bonus, anchor)));
+}
+
 /**
  * 카드 → 게임 선수. 선수 id·구단·번호·계약은 호출하는 쪽이 정한다.
- * 카드의 나이를 그대로 쓴다(나이를 모르는 카드는 unknownAge). 잠재력은 그 시즌 OVR이라 성장 여지가 없고, 나이가 들면 일반 노화를 받는다.
+ * 카드의 나이를 그대로 쓴다(나이를 모르는 카드는 unknownAge). potentialRules·careerHigh를 주면 잠재력을 위처럼 풀어 주고,
+ * 주지 않으면 잠재력 = 그 시즌 OVR(성장 여지 없음)이다. 나이가 들면 일반 노화를 받는다.
  */
-export function cardPlayer(card, { id, teamId = null, number = 0, contract = { yearsLeft: 0 }, unknownAge = 27 } = {}) {
+export function cardPlayer(card, { id, teamId = null, number = 0, contract = { yearsLeft: 0 }, unknownAge = 27, potentialRules = null, careerHigh = null } = {}) {
   const stats = { shooting: card.shooting, passing: card.passing, defense: card.defense, rebound: card.rebound, athletic: card.athletic, stamina: card.stamina };
   const ovr = calcOvr(card.position, stats);
+  const age = card.age ?? unknownAge;
+  const potential = potentialRules ? cardPotential(card, ovr, careerHigh ?? ovr, potentialRules, age) : ovr;
   return {
-    id, name: cardName(card.name, card.season), baseName: card.name, real: true, position: card.position, age: card.age ?? unknownAge, number,
-    rarity: rarityOf(ovr, ovr), stats, ovr, cost: calcCost(ovr), potential: ovr, origin: { d: 'domestic', f: 'foreign', a: 'asia' }[card.kind],
+    id, name: cardName(card.name, card.season), baseName: card.name, real: true, position: card.position, age, number: number,
+    rarity: rarityOf(ovr, potential), stats, ovr, cost: calcCost(ovr), potential, origin: { d: 'domestic', f: 'foreign', a: 'asia' }[card.kind],
     kblId: card.kblId, teamId, contract, assets: { portrait: null, model: null },
     card: { season: card.season, label: cardYearLabel(card.season), teamId: card.teamId, gp: card.gp, minutes: card.min }
   };

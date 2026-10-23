@@ -1,5 +1,6 @@
 // 구단 자금 장부: 시즌 수입(입장·중계권·모기업 스폰서·굿즈·플레이오프) − 선수단 연봉 − 소프트캡 기금. FA 보상금도 여기서 오간다.
 // 수입 구성과 관중·입장권 모델은 rules.revenue(게임용 가정, 근거는 그 _note)에 있다. 관중은 경기마다 시드가 같으면 같게 나온다.
+import { inflationIndex } from './economy.mjs';
 import { payrollEok, asiaPayrollEok, foreignPayrollUsd, softCapPenaltyEok } from './valuation.mjs';
 import { hashString, mulberry32 } from './rng.mjs';
 import { capacityOf } from './arenas.mjs';
@@ -57,10 +58,9 @@ export function advanceAttendance(att, { standings, playoffs, teamData, season }
   return { index: Math.round(index * 1000) / 1000, fan };
 }
 
-/** 물가 지수: 시작 시즌(rules.revenue.startYear, 2026-27)이 1.0이고 해마다 inflation만큼 오른다. 시즌 연도에서 바로 계산하므로 결정적이다 */
+/** 물가 지수: 시작 시즌(rules.economy.startYear, 2026-27)이 1.0이고 해마다 rules.economy.inflation만큼 오른다(src/economy.mjs, 지출·캡 쪽과 같은 지수). 시즌 연도에서 바로 계산하므로 결정적이다 */
 export function priceIndex(season, rules) {
-  const rv = rules.revenue;
-  return (1 + rv.inflation) ** Math.max(0, season - rv.startYear);
+  return inflationIndex(season, rules);
 }
 
 /** 구단 인기 지수(그 해의 관중 규모 배수): 팬 기반 × 올해 승률 효과. 구단별 관중 수를 따로 정해 두지 않는다 */
@@ -135,7 +135,7 @@ export function revenueOf(teamId, ctx, rules) {
     broadcast: round2((rv.broadcast.base + rv.broadcast.perWinPct * winPct) * pi),
     sponsor: round2(rv.sponsor.base * (1 + rv.sponsor.prestigeSpread * (score - rv.gate.prestigeCenter)) * pi),
     merch: round2((rv.merch.base * (1 + rv.merch.prestigeSpread * (pop - 1)) + (stage === '우승' ? rv.merch.titleBonus : 0)) * pi),
-    playoffBonus: stage ? f.playoffBonus[stage] : 0
+    playoffBonus: stage ? f.playoffBonus[stage] * pi : 0
   };
   const revenue = round2(Object.values(parts).reduce((s, v) => s + v, 0));
   return {

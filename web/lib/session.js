@@ -12,6 +12,7 @@ import { runOffseasonWith } from '../../src/decisions.mjs';
 import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
 import { initialFunds } from '../../src/funds.mjs';
+import { rulesFor } from '../../src/economy.mjs';
 import { summarizeSeason, attachOffseason, VERSION as GAME_VERSION } from './game.js';
 
 export const VERSION = 2;
@@ -49,6 +50,13 @@ export class Session {
   get day() { return this.state.day; }
   get totalDays() { return this.run?.totalDays ?? this.data.rules.regularSeasonGames; }
   get season() { return this.state.league.season; }
+  /** 원본 규칙(물가 반영 전) */
+  get baseRules() { return this.data.baseRules ?? this.data.rules; }
+  /** 지금 시즌의 규칙: 금액 상수에 물가 지수를 곱한 것(src/economy.mjs). 오프시즌에는 다음 시즌 규칙 */
+  get rules() {
+    const g = this.state;
+    return rulesFor(this.baseRules, g.stage === 'offseason' && g.seasonEnd ? g.seasonEnd.league.season + 1 : g.league.season);
+  }
   get managerId() { return this.state.managerId; }
   get regularDone() { return Boolean(this.run?.regularDone); }
   get playoffs() { return this.run?.playoffs ?? null; }
@@ -262,7 +270,7 @@ export class Session {
     const g = this.state, { rules, teams } = this.data;
     const rng = mulberry32(hashString(`${g.seed}:${g.league.season}:off`));
     const res = runOffseasonWith(g.seasonEnd.league, g.seasonEnd.standings, teams, rules, rng, {
-      manager: g.managerId, decisions: g.decisions, fallback: createManagerBot(g.managerId, rules), cards: this.data.cards ?? null
+      manager: g.managerId, decisions: g.decisions, fallback: createManagerBot(g.managerId, this.rules), cards: this.data.cards ?? null
     });
     this.offseason = res;
     if (res.done) this.completeOffseason(res);

@@ -1,3 +1,4 @@
+import { rulesFor } from '../src/economy.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -108,8 +109,9 @@ test('엔진: 카드가 있으면 신인 후보와 외국인 영입에 과거 �
     for (const t of teams) {
       const f = next.players.filter((p) => p.teamId === t.id && p.origin === 'foreign');
       assert.ok(f.length <= rules.roster.foreign);
-      assert.ok(f.reduce((s, p) => s + p.contract.salaryUsd, 0) <= rules.salaryCap.foreignUsdTotal + 1);
-      for (const p of f) assert.ok(p.contract.salaryUsd <= rules.salaryCap.foreignUsdPerPlayer);
+      const lim = rulesFor(rules, next.season).salaryCap; // 그 시즌의 물가 반영 한도
+      assert.ok(f.reduce((s, p) => s + p.contract.salaryUsd, 0) <= lim.foreignUsdTotal + 1);
+      for (const p of f) assert.ok(p.contract.salaryUsd <= lim.foreignUsdPerPlayer);
     }
     league = next;
   }

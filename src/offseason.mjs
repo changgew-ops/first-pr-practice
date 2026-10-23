@@ -16,8 +16,9 @@ import { generateOffers, validateTrade, executeTrade, proposeTrade } from './tra
 import { initialFunds } from './funds.mjs';
 import { prestigeTable } from './legacy.mjs';
 import { releaseCost, extensionCheck, extendedPlayer } from './contracts.mjs';
-import { cardPlayer, cardOvr, weightedSample, ovrWeight, foreignPriceUsd } from './cards.mjs';
+import { cardPlayer, cardOvr, weightedSample, ovrWeight, foreignPriceUsd, careerHighIndex } from './cards.mjs';
 import { mulberry32 } from './rng.mjs';
+import { rulesFor } from './economy.mjs';
 
 const PHYSICAL = ['athletic', 'stamina'];
 const SKILLS = ['shooting', 'passing', 'defense', 'rebound'];
@@ -49,40 +50,65 @@ function withRatings(p, stats, extra = {}) {
   return { ...p, ...extra, stats, ovr, cost: calcCost(ovr), potential, rarity: rarityOf(ovr, potential) };
 }
 
-/** 나이를 한 살 올리고 성장·노쇠를 적용한 새 선수 객체를 돌려준다 */
+/**
+ * 나이를 한 살 올리고 성장·노쇠를 적용한 새 선수 객체를 돌려준다.
+ *  - 성장: 나이가 어릴수록·잠재력 여유가 클수록 크게(aging.growthFactors, growthGapDivisor, growthMaxStep)
+ *  - 출전 경험: 지난 시즌 경기당 출전 시간(p.lastMin / p.lastGp)이 길수록 어린 선수의 성장이 커진다(aging.playingTime). 기록이 없으면 보너스 없음
+ *  - 깨달음: 낮은 확률로 한 능력치가 크게 오른다(aging.breakthrough). next.breakthrough에 [{ stat, from, to }]를 남기고, runOffseason이 보고서로 옮긴 뒤 지운다
+ */
 export function progressPlayer(p, rules, rng) {
   const a = rules.aging;
   const age = p.age + 1;
   const stats = { ...p.stats };
   const gap = Math.max(0, p.potential - p.ovr);
   const ri = (lo, hi) => lo + Math.floor(rng() * (hi - lo + 1));
+  const pt = a.playingTime;
+  const mpg = p.lastGp > 0 ? p.lastMin / p.lastGp : null;
+  const exp = pt && mpg != null && age <= pt.ageMax ? clamp((mpg - pt.refMpg) * pt.perMpg, pt.min, pt.max) : 0;
+  const ageFactor = (a.growthFactors.find(([maxAge]) => age <= maxAge) ?? [99, 0])[1];
+  const pair = (key, fallback) => a[key] ?? fallback;
+  const [pLo, pHi] = pair('physicalDecline', [1, 2]), [lpLo, lpHi] = pair('latePhysicalDecline', [1, 4]);
+  const [sLo, sHi] = pair('skillDecline', [0, 1]), [lsLo, lsHi] = pair('lateSkillDecline', [0, 2]);
 
   for (const k of STAT_KEYS) {
     let delta = 0;
     if (age <= a.growthMaxAge) {
       if (gap > 0) {
-        const factor = age <= 22 ? 1 : a.lateGrowthFactor;
-        const maxStep = clamp(1 + gap / a.growthGapDivisor, 1, a.growthMaxStep) * factor;
-        delta = Math.round(rng() * maxStep);
+        const maxStep = clamp(1 + gap / a.growthGapDivisor, 1, a.growthMaxStep) * ageFactor * (1 + exp);
+        delta = Math.round(maxStep * (a.growthFloor + (1 - a.growthFloor) * rng()));
       }
     } else if (age < a.physicalDeclineFrom) {
       delta = ri(-a.peakJitter, a.peakJitter);
     } else if (PHYSICAL.includes(k)) {
-      delta = -(age >= a.lateDeclineFrom ? ri(1, 4) : ri(1, 2)); // 신체 능력이 먼저 떨어진다
+      delta = -(age >= a.lateDeclineFrom ? ri(lpLo, lpHi) : ri(pLo, pHi)); // 신체 능력이 먼저 떨어진다
     } else if (age >= a.lateDeclineFrom) {
-      delta = -ri(0, 2);
+      delta = -ri(lsLo, lsHi);
     } else if (age >= a.skillDeclineFrom) {
-      delta = -ri(0, 1);
+      delta = -ri(sLo, sHi);
     } else {
       delta = ri(-a.peakJitter, a.peakJitter);
     }
     stats[k] = clamp(stats[k] + delta, 20, rules.stats.max);
   }
+  // 깨달음: 어린 선수일수록, 경기를 많이 뛴 선수일수록 잘 온다
+  const bt = a.breakthrough;
+  let breakthrough = null;
+  if (bt && age <= bt.maxAge) {
+    const base = age <= bt.youngMaxAge ? bt.young : age <= bt.primeMaxAge ? bt.prime : bt.old;
+    if (rng() < base * (1 + exp)) {
+      const stat = BT_STATS[ri(0, BT_STATS.length - 1)];
+      const from = stats[stat];
+      stats[stat] = clamp(from + ri(bt.gain[0], bt.gain[1]), 20, rules.stats.max);
+      breakthrough = [{ stat, from, to: stats[stat] }];
+    }
+  }
   const next = withRatings({ ...p, age }, stats);
   delete next.xp; // 남은 훈련 경험치는 한 해가 지나면 사라진다
   next.ovrWas = p.ovr; next.statsWas = { ...p.stats }; // 변화 표시의 기준: 노화 직전(지난 시즌 종료 시점) 값
+  if (breakthrough) next.breakthrough = breakthrough;
   return next;
 }
+const BT_STATS = ['shooting', 'passing', 'defense', 'rebound', 'athletic'];
 
 // ---------- 공용 보조 ----------
 const EPS = 1e-9;
@@ -107,11 +133,14 @@ const round1 = (v) => Math.round(v * 10) / 10;
  * 반환: { league: 다음 시즌 상태, report }
  */
 export function runOffseason(league, standings, teamData, rules, rng, options = {}) {
+  rules = rulesFor(rules, league.season + 1); // 오프시즌에 맺는 계약은 다음 시즌 수준(물가 지수, src/economy.mjs)
   const { manager = null, policy = null, cards = null } = options;
   const off = rules.offseason;
   const cardCfg = rules.cards;
   const usedKbl = new Set(league.usedKbl ?? []);
   const cardRng = cards && cardCfg ? mulberry32(Math.floor(rng() * 2 ** 32)) : null;
+  const highs = cards && cardCfg ? careerHighIndex(cards) : null;
+  const cardOpts = (c) => ({ unknownAge: cardCfg.unknownAge, potentialRules: cardCfg.potential ?? null, careerHigh: highs?.get(c.kblId) ?? null });
   const usedNames = new Set(league.usedNames);
   const f = createFactory(rng, rules, usedNames);
   let nextId = league.nextId;
@@ -123,7 +152,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   let funds = league.funds ?? initialFunds(teamData, rules);
   const report = {
     season: league.season, retired: [], progressed: [], renewed: [], expired: [], refused: [], drafted: [], released: [],
-    signed: [], foreignReplaced: [], asiaReplaced: [], trades: [], tradeOffers: [], signings: [], compensations: [], waived: [], extended: [], extendRefused: []
+    signed: [], breakthroughs: [], foreignReplaced: [], asiaReplaced: [], trades: [], tradeOffers: [], signings: [], compensations: [], waived: [], extended: [], extendRefused: []
   };
   const avg = (list, fn) => (list.length ? list.reduce((s, p) => s + fn(p), 0) / list.length : 0);
   report.before = { avgOvr: avg(league.players, (p) => p.ovr), avgAge: avg(league.players, (p) => p.age) };
@@ -141,6 +170,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
         continue;
       }
       report.progressed.push({ id: p.id, name: p.name, teamId: p.teamId, age: p.age, from: old.ovr, to: p.ovr });
+      if (p.breakthrough) { for (const b of p.breakthrough) report.breakthroughs.push({ id: p.id, name: p.name, teamId: p.teamId, ...b }); delete p.breakthrough; }
       out.push(p);
     }
     return out;
@@ -208,7 +238,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
         if (d) offer = { salaryEok: d.salaryEok, years: d.years ?? preferredYears(p) };
       } else {
         const wantProb = clamp(off.renewBase + (p.ovr - 50) * off.renewPerOvr, off.renewMin, off.renewMax);
-        if (rng() < wantProb) offer = { salaryEok: demandEok(p), years: f.randInt(off.contractYears[0], off.contractYears[1]) };
+        if (rng() < wantProb) offer = { salaryEok: demandEok(p, rules), years: f.randInt(off.contractYears[0], off.contractYears[1]) };
       }
       if (!offer) { toPool(p, team.id); continue; }
       if (!capAllows(payroll, offer.salaryEok, rules, { isManager })) { toPool(p, team.id); continue; }
@@ -266,7 +296,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       cards.domestic.filter((c) => !present.has(c.kblId) && !usedKbl.has(c.kblId) && (c.age ?? cardCfg.unknownAge) <= cardCfg.faAgeMax && c.min >= cardCfg.minMinutes),
       (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.faWeightMid, weightScale: cardCfg.faWeightScale }), cardCfg.faPerYear, cardRng, (c) => c.kblId);
     report.faCards = [];
-    for (const c of picked) { usedKbl.add(c.kblId); const cp = cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge }); pool.push(cp); report.faCards.push(cp.id); }
+    for (const c of picked) { usedKbl.add(c.kblId); const cp = cardPlayer(c, { id: newId(), ...cardOpts(c) }); pool.push(cp); report.faCards.push(cp.id); }
   }
 
   // 4) FA 시장
@@ -302,7 +332,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       contract: { yearsLeft: 0 }, assets: { portrait: null, model: null }
     });
   }
-  for (const c of draftCards) { usedKbl.add(c.kblId); prospects.push(cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge })); }
+  for (const c of draftCards) { usedKbl.add(c.kblId); prospects.push(cardPlayer(c, { id: newId(), ...cardOpts(c) })); }
   // 순번 추첨(KBL 2024~ 방식, data/history/drafts의 lottery): 직전 시즌 순위가 낮은 팀부터 공을 받고, 공이 있는 팀끼리 가중 추첨으로 앞 순번을 정한다.
   // 공이 없는 팀(상위 두 팀)은 그 뒤에 순위가 낮은 팀부터 간다. 홀수 라운드는 추첨 순서, 짝수 라운드는 거꾸로(뱀 순서).
   const worstFirst = [...standings].reverse().map((s) => s.id);
@@ -361,7 +391,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   const signOne = (teamId) => {
     const mine = domesticOf(players, teamId);
     const payroll = payrollEok(players, teamId);
-    const price = (p) => round1(demandEok(p));
+    const price = (p) => round1(demandEok(p, rules));
     const options = pool.filter((p) => p.origin === 'domestic' && capAllows(payroll, price(p), rules));
     let chosen;
     let salary;
@@ -399,7 +429,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     const present = presentKbl();
     const eligible = cards.foreign.filter((c) => !present.has(c.kblId) && !usedKbl.has(c.kblId) && c.min >= cardCfg.minMinutes);
     const offered = weightedSample(eligible, (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.foreignWeightMid, weightScale: cardCfg.foreignWeightScale }), cardCfg.foreignPoolSize, cardRng, (c) => c.kblId)
-      .map((c) => cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge }));
+      .map((c) => cardPlayer(c, { id: newId(), ...cardOpts(c) }));
     for (const p of offered) usedKbl.add(p.kblId);
     const order = [...standings].reverse().map((s) => s.id);
     const takenLog = [];
@@ -411,7 +441,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
         const usedUsd = mine.reduce((s, p) => s + p.contract.salaryUsd, 0);
         const left = rules.salaryCap.foreignUsdTotal - usedUsd;
         const slotsAfter = rules.roster.foreign - mine.length - 1;
-        const maxUsd = Math.min(rules.salaryCap.foreignUsdPerPlayer, left - slotsAfter * 200000);
+        const maxUsd = Math.min(rules.salaryCap.foreignUsdPerPlayer, left - slotsAfter * (rules.salaryCap.foreignMinUsd ?? 200000));
         const all = offered.map((p) => {
           const usd = foreignPriceUsd(p.ovr, cardCfg.foreignUsd);
           const ok = usd <= maxUsd;
@@ -447,8 +477,8 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       const mine = foreignOf(players, team.id);
       const left = rules.salaryCap.foreignUsdTotal - mine.reduce((s, p) => s + p.contract.salaryUsd, 0);
       const slotsAfter = rules.roster.foreign - mine.length - 1;
-      const maxHere = Math.min(rules.salaryCap.foreignUsdPerPlayer, left - slotsAfter * 200000);
-      const usd = Math.floor(f.rand(Math.min(250000, maxHere), maxHere) / 10000) * 10000;
+      const maxHere = Math.min(rules.salaryCap.foreignUsdPerPlayer, left - slotsAfter * (rules.salaryCap.foreignMinUsd ?? 200000));
+      const usd = Math.floor(f.rand(Math.min(rules.cards?.foreignUsd?.min ?? 250000, maxHere), maxHere) / 10000) * 10000;
       const position = f.pick(FOREIGN_POSITIONS);
       const stats = f.makeStats(position, foreignMean + f.rand(-4, 6));
       const ovr = calcOvr(position, stats);

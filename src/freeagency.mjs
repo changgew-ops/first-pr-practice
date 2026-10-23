@@ -18,7 +18,7 @@ export const preferredYears = (p) => (p.age <= 26 ? 3 : p.age <= 31 ? 2 : 1);
 /** 선수가 어떤 제안을 얼마나 마음에 들어 하는지 */
 export function offerScore(p, offerEok, teamId, roster, ctx, rules, round = 1) {
   const fa = rules.transactions.freeAgency;
-  const demand = demandEok(p) * (1 - fa.demandDropPerRound * (round - 1));
+  const demand = demandEok(p, rules) * (1 - fa.demandDropPerRound * (round - 1));
   const ratio = offerEok / demand;
   const winPct = ctx.winPct.get(teamId) ?? 0.5;
   const ovrs = roster.filter((x) => x.id !== p.id).map((x) => x.ovr).sort((a, b) => b - a);
@@ -100,7 +100,7 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
   };
 
   for (let round = 1; round <= fa.rounds; round++) {
-    const demandNow = (p) => demandEok(p) * (1 - fa.demandDropPerRound * (round - 1));
+    const demandNow = (p) => demandEok(p, rules) * (1 - fa.demandDropPerRound * (round - 1));
     const offersFor = new Map(); // playerId → [{ teamId, salaryEok, years }]
     const add = (playerId, offer) => { (offersFor.get(playerId) ?? offersFor.set(playerId, []).get(playerId)).push(offer); };
 
