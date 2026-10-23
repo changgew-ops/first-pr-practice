@@ -4,7 +4,7 @@ import { rulesFor } from './economy.mjs';
 import { buildLineup, validateLineup, buildLineupHealthy, substituteInjured } from './lineup.mjs';
 import { rollInjury, foreignGameThresholds } from './injuries.mjs';
 import { proratedEok, freeNumber, faAsking, faSignCheck, signedFa, buildForeignPool, foreignReplaceCheck, signedForeign, aiForeignChoice } from './inseason.mjs';
-import { valueOf, needBonus, foreignOf as foreignOfTeam } from './valuation.mjs';
+import { valueOf, needBonus, domesticOf } from './valuation.mjs';
 import { leagueBaseline } from './game.mjs';
 import { createRegularSeason, createPlayoffs } from './season.mjs';
 import { addBox } from './stats.mjs';
@@ -19,7 +19,7 @@ import { STAT_KEYS } from './rating.mjs';
 import { validateTrade, executeTrade, generateOffers, proposeTrade } from './trade.mjs';
 import { mulberry32, hashString } from './rng.mjs';
 import { eligibility, dleagueSessions, abroadGrowth, programCost, checkpointsPerSeason, PROGRAMS } from './devprogram.mjs';
-import { releaseCheck, releaseCost, extensionCheck, extendedPlayer, extensionAdjust, salaryRanks } from './contracts.mjs';
+import { releaseCheck, releaseCost, extensionCheck, extendedPlayer, extensionAdjust, salaryRanks, minDomestic } from './contracts.mjs';
 
 const round2 = (v) => Math.round(v * 100) / 100;
 
@@ -80,6 +80,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const addAdj = (teamId, eok) => { if (eok) payAdj.set(teamId, round2((payAdj.get(teamId) ?? 0) + eok)); };
   const usedKblNew = []; // 시즌 중 새로 들어온 카드 선수의 kblId(다음 시즌 카드 중복 방지)
   const otherCount = new Map(); // 구단 → 기타 사유 교체 횟수
+  const mgrReleased = new Set(); // 우리 구단이 이번 시즌 방출한 선수 id(AI가 곧바로 데려가지는 않는다)
   const foreignTaken = new Set(); // 시즌 중 외국인 후보 풀에서 이미 영입된 후보 id
   let foreignPoolCache = null;
   const foreignPool = () => (foreignPoolCache ??= buildForeignPool({ players: league.players, freeAgents: league.freeAgents ?? [], usedKbl: league.usedKbl ?? [], cards: options.cards ?? null, rules, season: league.season, seed: injSeed }));
@@ -180,6 +181,157 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   let finished = null;
   const tradeOpen = () => regular.day <= rules.transactions.trade.deadlineDay && !playoffs;
 
+  // ---------- 부상과 시즌 중 선수단 변동 ----------
+  const rebuildTeams = () => { const built = buildTeams(); regular.setTeams(built.teams, built.baseline); };
+  const playerById = (id) => players.find((p) => p.id === id);
+  const lineupHas = (id) => lineup && [...lineup.starters, ...lineup.bench].includes(id);
+  const inactiveForeign = (teamId) => [...injured.values()].filter((i) => i.teamId === teamId && i.temp).map((i) => i.playerId); // 일시교체 선수가 대신 뛰는 부상 선수
+
+  /** 일시교체 선수가 팀을 떠난다: 뛴 기간만큼의 보수를 정산 보정에 넣는다(최종 명단에 없으니 따로 더해 준다) */
+  const dropTemp = (tempId, day) => {
+    const t = playerById(tempId);
+    if (!t) return;
+    addAdj(t.teamId, proratedEok(usdToEok(t.contract.salaryUsd), Math.max(0, day - (t.temp?.day ?? 0)), regular.schedule.length));
+    players = players.filter((p) => p.id !== tempId);
+    focus.delete(tempId);
+    if (lineupHas(tempId)) lineup = null;
+    rosterLog.push({ type: 'foreign', kind: 'tempEnd', day, teamId: t.teamId, playerId: tempId, name: t.name, forId: t.temp?.forId ?? null });
+  };
+  const recover = (inj, day) => {
+    injured.delete(inj.playerId);
+    rosterLog.push({ type: 'return', day, teamId: inj.teamId, playerId: inj.playerId, name: inj.name });
+    if (inj.temp) dropTemp(inj.temp, day);
+  };
+
+  /** 외국선수 교체 실행(판정은 호출하는 쪽이 이미 통과시켰다). 반환: 들어온 선수 */
+  const doForeignReplace = (teamId, outId, kind, cand, day) => {
+    const out = playerById(outId);
+    const inj = injured.get(outId);
+    foreignTaken.add(cand.player.id);
+    if (cand.player.kblId) usedKblNew.push(cand.player.kblId);
+    const number = freeNumber(players, teamId);
+    let p;
+    if (kind === 'temp') {
+      p = signedForeign(cand, { teamId, number, years: 1, temp: outId, day });
+      players = [...players, p];
+      inj.temp = p.id;
+    } else {
+      p = signedForeign(cand, { teamId, number, years: rules.inSeason.foreign.contractYears });
+      players = players.map((x) => (x.id === outId ? p : x));
+      // 떠나는 선수의 이번 시즌 보수는 계속 나가고(정산은 최종 명단 기준이라 더해 준다), 들어온 선수는 합류한 뒤부터만 낸다
+      addAdj(teamId, round2(usdToEok(out.contract.salaryUsd) - proratedEok(usdToEok(cand.usd), day, regular.schedule.length)));
+      injured.delete(outId);
+      focus.delete(outId);
+      if (kind === 'other') otherCount.set(teamId, (otherCount.get(teamId) ?? 0) + 1);
+      if (lineupHas(outId)) { // 직접 편성이면 같은 자리에 새 선수를 넣는다(규칙에 안 맞으면 자동 편성으로)
+        const swap = (ids) => ids.map((id) => (id === outId ? p.id : id));
+        lineup = { starters: swap(lineup.starters), bench: swap(lineup.bench) };
+        if (!checkLineup(players, manager, lineup, rules).ok) lineup = null;
+      }
+    }
+    if (teamId === manager) focus.set(p.id, autoFocus(p));
+    rosterLog.push({ type: 'foreign', kind, day, teamId, outId, outName: out.name, playerId: p.id, name: p.name, ovr: p.ovr, usd: cand.usd });
+    return p;
+  };
+  const foreignCheckFor = (teamId, outId, kind, cand) => foreignReplaceCheck({
+    players, teamId, outId, candidate: cand, kind, injury: injured.get(outId) ?? null, state: { otherCount: otherCount.get(teamId) ?? 0 }, rules, exclude: inactiveForeign(teamId)
+  });
+
+  /** AI 구단: 외국인이 다치면 규정대로 일시교체(2주 이상)·시즌대체(8주 이상). 몸값이 후보 중 가장 좋은 선수를 고른다 */
+  const aiForeign = (inj, day) => {
+    const th = foreignGameThresholds(rules);
+    const kind = inj.total >= th.season ? 'season' : inj.total >= th.temporary ? 'temp' : null;
+    const out = playerById(inj.playerId);
+    if (!kind || !out || out.origin !== 'foreign') return false;
+    const healthy = players.filter((p) => p.teamId === inj.teamId && !injured.has(p.id)).sort((a, b) => b.ovr - a.ovr);
+    const floor = healthy[7]?.ovr ?? 0; // 후보가 로테이션(상위 8명)에 들어올 만해야 교체한다
+    const pool = foreignPool().filter((c) => !foreignTaken.has(c.player.id) && c.player.ovr > floor);
+    const choice = aiForeignChoice(pool, (c) => foreignCheckFor(inj.teamId, out.id, kind, c));
+    if (!choice) return false;
+    doForeignReplace(inj.teamId, out.id, kind, choice, day);
+    return true;
+  };
+
+  /** AI 구단: 건강한 선수가 모자란 채 국내 선수가 중증으로 오래 빠지면 방출하고 시장에서 영입한다 */
+  const aiDomestic = (inj, day) => {
+    const cfg = rules.inSeason.ai;
+    const out = playerById(inj.playerId);
+    if (!out || out.origin !== 'domestic' || inj.left < cfg.replaceInjuredAtGames) return false;
+    const roster = players.filter((p) => p.teamId === inj.teamId);
+    if (roster.filter((p) => !injured.has(p.id)).length >= cfg.healthyBelow) return false;
+    if (domesticOf(players, inj.teamId).length - 1 < minDomestic(players, inj.teamId, rules)) return false;
+    // 영입할 선수가 있을 때만 방출한다(AI는 해지 비용을 내지 않는다: 오프시즌 AI 방출과 같은 단순화)
+    const after = players.filter((p) => p.id !== out.id);
+    const mine = domesticOf(after, inj.teamId);
+    const fa = rules.transactions.freeAgency;
+    let best = null;
+    for (const c of faPool) {
+      if (c.origin !== 'domestic' || c.id === out.id || mgrReleased.has(c.id)) continue;
+      const asking = faAsking(c, rules);
+      if (!faSignCheck({ players: after, pool: faPool, teamId: inj.teamId, playerId: c.id, offer: { salaryEok: asking, years: 1 }, rules }).ok) continue;
+      const u = valueOf(c) + needBonus(mine, c.position) - fa.priceWeight * asking;
+      if (!best || u > best.u) best = { c, asking, u };
+    }
+    if (!best) return false;
+    const { xp, ...rest } = out;
+    players = after;
+    injured.delete(out.id);
+    faPool.push({ ...rest, teamId: null, contract: { yearsLeft: 0 } });
+    addAdj(inj.teamId, proratedEok(out.contract.salaryEok, day, regular.schedule.length)); // 이미 뛴 만큼의 보수는 정산에 더한다
+    rosterLog.push({ type: 'release', day, teamId: inj.teamId, playerId: out.id, name: out.name });
+    const signed = signedFa(best.c, { teamId: inj.teamId, number: freeNumber(players, inj.teamId), salaryEok: best.asking, years: 1 });
+    players = [...players, signed];
+    faPool = faPool.filter((x) => x.id !== best.c.id);
+    addAdj(inj.teamId, -proratedEok(best.asking, day, regular.schedule.length));
+    rosterLog.push({ type: 'fa', day, teamId: inj.teamId, playerId: signed.id, name: signed.name, ovr: signed.ovr, salaryEok: best.asking, years: 1 });
+    return true;
+  };
+
+  /** 하루가 끝난 뒤: 결장 소화·복귀, 새 부상 판정(경기 난수와 따로), AI의 교체·영입. 반환: 선수단이 바뀌었는지 */
+  const afterDay = (r) => {
+    const day = r.day;
+    let changed = false;
+    for (const inj of [...injured.values()]) { // 이 날 결장한 선수는 한 경기를 쉬었다
+      inj.left -= 1;
+      if (inj.left <= 0) { recover(inj, day); changed = true; }
+    }
+    const byId = new Map(players.map((p) => [p.id, p]));
+    const played = new Set();
+    for (const g of r.games) {
+      for (const [side, teamId] of [[g.box.home, g.homeId], [g.box.away, g.awayId]]) {
+        for (const line of side) {
+          if (!line.minutes) continue;
+          const p = byId.get(line.id);
+          if (!p) continue;
+          if (line.minutes >= rules.injuries.fatigue.minutes) played.add(p.id);
+          const hit = rollInjury(p, line.minutes, rules, `${injSeed}:${league.season}:${day}:${p.id}`, streak.get(p.id) ?? 0);
+          if (!hit) continue;
+          const inj = { playerId: p.id, name: p.name, teamId, day, total: hit.games, left: hit.games, kind: hit.kind, part: hit.part, temp: null, handled: false };
+          injured.set(p.id, inj);
+          rosterLog.push({ type: 'injury', day, teamId, playerId: p.id, name: p.name, origin: p.origin, games: hit.games, kind: hit.kind, part: hit.part });
+          changed = true;
+        }
+      }
+    }
+    for (const id of [...streak.keys()]) if (!played.has(id)) streak.delete(id);
+    for (const id of played) streak.set(id, (streak.get(id) ?? 0) + 1);
+    for (const inj of [...injured.values()]) { // 새로 다친 선수: AI 구단은 바로 판단한다(우리 구단은 단장이 정한다)
+      if (inj.handled || inj.teamId === manager) continue;
+      inj.handled = true;
+      const p = playerById(inj.playerId);
+      if (!p) continue;
+      if (p.origin === 'foreign') aiForeign(inj, day); else if (p.origin === 'domestic') aiDomestic(inj, day);
+      changed = true;
+    }
+    return changed;
+  };
+  const playDayFull = () => {
+    const r = regular.playDay();
+    if (injuriesOn && afterDay(r)) rebuildTeams();
+    return r;
+  };
+
+
   const run = {
     get day() { return regular.day; },
     get totalDays() { return regular.schedule.length; },
@@ -192,11 +344,11 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     get splits() { return splits; },
     schedule: regular.schedule,
     standings: () => regular.standings(),
-    playDay: () => regular.playDay(),
+    playDay: () => playDayFull(),
     /** n일(또는 끝까지) 진행. 반환: 날짜별 결과 배열 */
     playDays(n = Infinity) {
       const out = [];
-      while (!regular.done && out.length < n) out.push(regular.playDay());
+      while (!regular.done && out.length < n) out.push(playDayFull());
       return out;
     },
     /** 단장의 직접 편성. 규칙에 어긋나면 적용하지 않고 오류를 돌려준다. null이면 자동 편성으로 돌아간다 */
@@ -285,6 +437,9 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       if (lineup && [...lineup.starters, ...lineup.bench].includes(playerId)) lineup = null;
       const { xp, ...rest } = p; // 남은 훈련 경험치는 사라진다
       released.push({ ...rest, teamId: null, contract: { yearsLeft: 0 } });
+      faPool.push({ ...rest, teamId: null, contract: { yearsLeft: 0 } }); // 시장에 나온다(다른 구단이 영입할 수 있다)
+      injured.delete(playerId);
+      mgrReleased.add(playerId);
       releaseLog.push({ playerId, name: p.name, day: regular.day, salaryEok: p.contract.salaryEok, yearsLeft: p.contract.yearsLeft, ovr: p.ovr, ...c.cost });
       const built = buildTeams();
       regular.setTeams(built.teams, built.baseline);
@@ -316,6 +471,60 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     get contractLog() { return { released: releaseLog.map((r) => ({ ...r })), extended: extendLog.map((r) => ({ ...r, from: { ...r.from }, to: { ...r.to } })) }; },
     /** 방출로 아직 정산 전인 해지 비용 합계(억) — 화면의 "지금 자금"에서 미리 뺀다 */
     get pendingSeverance() { return Math.round(releaseLog.reduce((s2, r) => s2 + r.severance, 0) * 100) / 100; },
+    // ---------- 부상 ----------
+    /** 지금 결장 중인 선수들(전 구단). [{ playerId, name, teamId, day, total, left, kind, part, temp }] */
+    get injuries() { return [...injured.values()].map((i) => ({ ...i })); },
+    injuryOf(playerId) { const i = injured.get(playerId); return i ? { ...i } : null; },
+    /** 우리 구단의 직접 편성에서 부상 선수를 대신해 자동으로 들어간 선수: [{ out, in }] (선수 객체) */
+    get lineupSwaps() { return lineupSwaps.map((x) => ({ ...x })); },
+    /** 이번 시즌 변동 기록(부상·복귀·영입·교체·방출), 오래된 순 */
+    get rosterLog() { return rosterLog.map((x) => ({ ...x })); },
+    // ---------- 시즌 중 FA 영입 (시장에 남은 선수. 정규리그 중에만) ----------
+    /** 시장에 남은 국내 선수와 요구 연봉: [{ player, asking }] (가치 높은 순) */
+    faMarket() { return faPool.filter((p) => p.origin === 'domestic').sort((a, b) => valueOf(b) - valueOf(a) || a.id.localeCompare(b.id)).map((p) => ({ player: p, asking: faAsking(p, rules) })); },
+    /** 영입 판정: { ok, reason, asking, range }. offer: { salaryEok, years(이번 시즌 포함) } */
+    faCheck(playerId, offer) {
+      if (!manager) return { ok: false, reason: '단장 구단이 없습니다', asking: null, range: null };
+      if (playoffs || regular.done) return { ok: false, reason: '정규리그가 끝나 영입할 수 없습니다', asking: null, range: null };
+      return faSignCheck({ players, pool: faPool, teamId: manager, playerId, offer, rules, isManager: true });
+    },
+    /** 영입 실행. 계약이 맺어지면 시즌 정산에서 합류한 뒤의 보수만 낸다. 반환: { ok, errors, player } */
+    signFa(playerId, offer) {
+      const c = run.faCheck(playerId, offer);
+      if (!c.ok) return { ok: false, errors: [c.reason], player: null };
+      const p = faPool.find((x) => x.id === playerId);
+      const signed = signedFa(p, { teamId: manager, number: freeNumber(players, manager), salaryEok: offer.salaryEok, years: offer.years });
+      players = [...players, signed];
+      faPool = faPool.filter((x) => x.id !== playerId);
+      focus.set(signed.id, autoFocus(signed));
+      addAdj(manager, -proratedEok(offer.salaryEok, regular.day, regular.schedule.length));
+      rosterLog.push({ type: 'fa', day: regular.day, teamId: manager, playerId: signed.id, name: signed.name, ovr: signed.ovr, salaryEok: offer.salaryEok, years: offer.years });
+      rebuildTeams();
+      return { ok: true, errors: [], player: signed };
+    },
+    // ---------- 외국선수 교체 (외국선수 관리규정 제8조) ----------
+    /** 교체 후보(시즌 중 외국인 풀에서 아직 영입되지 않은 선수): [{ player, usd }] */
+    foreignMarket() { return foreignPool().filter((c) => !foreignTaken.has(c.player.id)); },
+    /** 교체 판정. kind: 'temp'(일시교체) | 'season'(부상 시즌대체) | 'other'(기타 사유 시즌대체) → { ok, reason } */
+    foreignCheck(outId, kind, candId) {
+      if (!manager) return { ok: false, reason: '단장 구단이 없습니다' };
+      if (playoffs || regular.done) return { ok: false, reason: '정규리그가 끝나 교체할 수 없습니다' };
+      const cand = run.foreignMarket().find((c) => c.player.id === candId);
+      return foreignCheckFor(manager, outId, kind, cand);
+    },
+    /** 교체 실행. 반환: { ok, errors, player } */
+    replaceForeign(outId, kind, candId) {
+      const c = run.foreignCheck(outId, kind, candId);
+      if (!c.ok) return { ok: false, errors: [c.reason], player: null };
+      const cand = run.foreignMarket().find((x) => x.player.id === candId);
+      const p = doForeignReplace(manager, outId, kind, cand, regular.day);
+      rebuildTeams();
+      return { ok: true, errors: [], player: p };
+    },
+    /** 이 시즌 우리 구단의 기타 사유 교체 횟수와 한도 */
+    get otherReplacements() { return { used: otherCount.get(manager) ?? 0, limit: rules.inSeason.foreign.otherReasonLimit }; },
+    /** 외국선수 교체 기준(경기 수) */
+    get foreignThresholds() { return foreignGameThresholds(rules); },
     /** 시즌 중 트레이드가 열려 있는지(마감일 전, 플레이오프 전) */
     get tradeOpen() { return tradeOpen(); },
     get tradeDeadline() { return rules.transactions.trade.deadlineDay; },
@@ -343,6 +552,10 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     startPlayoffs() {
       if (!regular.done) throw new Error('정규리그가 아직 끝나지 않았습니다');
       if (playoffs) return playoffs;
+      if (injuriesOn && injured.size) { // 정규리그 끝과 플레이오프 사이의 휴식 동안 회복한다. 플레이오프에서는 새 부상이 없다
+        for (const inj of [...injured.values()]) { inj.left -= rules.injuries.playoffRecoveryGames; if (inj.left <= 0) recover(inj, regular.day); }
+        rebuildTeams();
+      }
       const reg = regular.finish();
       playoffs = createPlayoffs(reg.standings.map((r) => r.id), new Map(reg.teams.map((t) => [t.id, t])), rules, reg.baseline, rules.simulation, rng);
       return playoffs;
@@ -354,6 +567,8 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       if (!playoffs?.done) throw new Error('플레이오프가 끝나지 않았습니다');
       const reg = regular.finish();
       const po = playoffs.result();
+      for (const inj of [...injured.values()]) if (inj.temp) dropTemp(inj.temp, regular.schedule.length); // 시즌이 끝나면 일시교체 선수는 떠난다
+      injured.clear(); // 남은 결장은 오프시즌에 해소된다
       applyUpdates();
       // 육성 프로그램: D리그는 남은 파견을 마감하고, 유학은 선수별로 시드가 고정된 난수로 성장해 돌아온다
       const report = [...devDone];
@@ -375,7 +590,8 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const contracts = releaseLog.length || extendLog.length ? { teamId: manager, released: released.map((x) => ({ ...x })), releaseLog: releaseLog.map((r) => ({ ...r })), extendLog: extendLog.map((r) => ({ ...r })), severance: sum(releaseLog, 'severance'), earned: sum(releaseLog, 'earned'), adj: sum(extendLog, 'adj') } : null;
       finished = {
         result: { standings: reg.standings, games: reg.games, playoffs: po, championId: po.championId, teams: reg.teams, baseline: reg.baseline },
-        totals, splits, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev, contracts, streaks: Object.fromEntries(worstLosing)
+        totals, splits, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev, contracts, streaks: Object.fromEntries(worstLosing),
+        roster: { pool: faPool, payAdj: Object.fromEntries(payAdj), usedKbl: usedKblNew, log: rosterLog }
       };
       return finished;
     }
@@ -410,8 +626,22 @@ export function settleYear(league, finished, teamData, rules) {
     settled.ledger[t] = { ...l, payroll: round2(l.payroll + contracts.earned + contracts.adj), severance: contracts.severance, net: round2(l.net - extra) };
     freeAgents = [...freeAgents, ...contracts.released];
   }
+  // 시즌 중 선수단 변동: 시장에 남은 선수(영입된 선수는 빠지고 방출된 선수는 들어가 있다), 일할 계산 차이, 새로 들어온 카드 선수
+  const ins = finished.roster;
+  let usedKbl = null;
+  if (ins) {
+    freeAgents = ins.pool;
+    const round2b = (v) => Math.round(v * 100) / 100;
+    for (const [t, adj] of Object.entries(ins.payAdj ?? {})) {
+      const l = settled.ledger[t];
+      if (!l) continue;
+      settled.funds[t] = round2b(settled.funds[t] - adj);
+      settled.ledger[t] = { ...l, payroll: round2b(l.payroll + adj), net: round2b(l.net - adj) };
+    }
+    if (ins.usedKbl?.length) usedKbl = [...new Set([...(league.usedKbl ?? []), ...ins.usedKbl])];
+  }
   // 팬 열기: 이번 시즌 성적·스타·연패로 갱신(관중 상태에 얹어 저장한다, src/fans.mjs). 규칙이 없으면 건드리지 않는다
   const mood = advanceMood(league.att?.mood ?? null, { standings: result.standings, playoffs: result.playoffs, teamData, startPlayers: league.players, endPlayers: seasonPlayers, streaks: finished.streaks ?? {} }, rules);
   const att = mood ? { ...settled.att, mood } : settled.att;
-  return { league: { ...league, players: seasonPlayers, freeAgents, funds: settled.funds, att, ...(legacy ? { legacy } : {}) }, ledger: settled.ledger };
+  return { league: { ...league, players: seasonPlayers, freeAgents, ...(usedKbl ? { usedKbl } : {}), funds: settled.funds, att, ...(legacy ? { legacy } : {}) }, ledger: settled.ledger };
 }

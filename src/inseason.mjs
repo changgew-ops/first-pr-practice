@@ -89,10 +89,11 @@ export function foreignReplaceCheck({ players, teamId, outId, candidate, kind, i
   const f = rules.inSeason.foreign;
   const th = foreignGameThresholds(rules);
   if (!out || out.teamId !== teamId || out.origin !== 'foreign') return { ok: false, reason: '우리 구단의 외국인 선수가 아닙니다' };
+  if (out.temp) return { ok: false, reason: '일시교체로 들어온 선수는 다시 교체할 수 없습니다' };
+  if (injury?.temp) return { ok: false, reason: '일시교체 선수가 뛰는 중입니다. 부상 선수가 돌아와 일시교체 선수가 떠난 뒤에 다시 교체할 수 있습니다' };
   if (!candidate) return { ok: false, reason: '후보 선수를 고르세요' };
   if (kind === 'temp' || kind === 'season') {
     if (!injury || !(injury.left > 0)) return { ok: false, reason: `${KIND_TEXT[kind]}는 부상·질병으로 결장 중인 외국인 선수만 할 수 있습니다` };
-    if (injury.temp) return { ok: false, reason: '이미 일시교체 선수가 뛰고 있습니다' };
     if (kind === 'temp' && injury.total < th.temporary) return { ok: false, reason: `일시교체는 진단 2주(약 ${th.temporary}경기) 이상일 때만 가능합니다(이번 진단 ${injury.total}경기)` };
     if (kind === 'season' && injury.total < th.season) return { ok: false, reason: `부상 시즌대체는 진단 8주(약 ${th.season}경기) 이상일 때만 가능합니다(이번 진단 ${injury.total >= 99 ? '시즌 아웃' : `${injury.total}경기`})` };
   } else if (kind === 'other') {

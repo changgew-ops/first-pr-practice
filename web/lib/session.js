@@ -13,7 +13,11 @@ import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
 import { initialFunds } from '../../src/funds.mjs';
 import { rulesFor } from '../../src/economy.mjs';
-import { summarizeSeason, attachOffseason, pruneGame, VERSION as GAME_VERSION } from './game.js';
+import { summarizeSeason, attachOffseason, pruneGame, seasonGoals, bonusFunds, seasonLabel, VERSION as GAME_VERSION } from './game.js';
+import { trustOf } from '../../src/goals.mjs';
+import { moodOf } from '../../src/fans.mjs';
+import { newCodexKeys } from '../../src/codex.mjs';
+import { newAchievements } from '../../src/achievements.mjs';
 
 export const VERSION = 2;
 
@@ -26,7 +30,9 @@ export class Session {
     this.dayResults = [];
     this.offseason = null;
     this.listeners = new Set();
+    this.fresh = []; // 방금 달성한 업적 id(화면이 토스트로 알리고 비운다)
     this.rebuild();
+    this.syncMeta(false);
   }
 
   static create(data, { managerId, gmName, seed = Date.now() % 1e9 }) {
@@ -42,7 +48,7 @@ export class Session {
 
   /** 상태가 바뀔 때마다 부른다(자동 저장·화면 갱신용). 해제 함수를 돌려준다 */
   onChange(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
-  emit() { for (const fn of this.listeners) fn(this); }
+  emit() { this.syncMeta(true); for (const fn of this.listeners) fn(this); }
 
   // ---------- 조회 ----------
   get game() { return this.state; }
@@ -223,6 +229,44 @@ export class Session {
   /** 이번 시즌 방출·연장 기록 */
   get contractLog() { return this.run?.contractLog ?? { released: [], extended: [] }; }
 
+  // ---------- 부상과 시즌 중 선수단 변동 ----------
+  /** 지금 결장 중인 선수들(전 구단): [{ playerId, name, teamId, day, total, left, kind, part, temp }] */
+  get injuries() { return this.run?.injuries ?? []; }
+  /** 이 선수의 지금 부상(없으면 null) */
+  injuryOf(playerId) { return this.run?.injuryOf(playerId) ?? null; }
+  /** 우리 직접 편성에서 부상 선수를 대신해 자동으로 들어간 선수들 [{ out, in }] */
+  get lineupSwaps() { return this.run?.lineupSwaps ?? []; }
+  /** 이번 시즌의 변동 기록(부상·복귀·FA 영입·외국인 교체·방출) */
+  get rosterLog() { return this.run?.rosterLog ?? []; }
+  /** 시즌 중 FA 시장: [{ player, asking }] */
+  faMarket() { return this.state.stage === 'regular' && this.run ? this.run.faMarket() : []; }
+  faCheck(playerId, offer) {
+    if (this.state.stage !== 'regular' || !this.run) return { ok: false, reason: '지금은 영입할 수 없습니다', asking: null, range: null };
+    return this.run.faCheck(playerId, offer);
+  }
+  /** 시즌 중 FA 영입. offer = { salaryEok, years(이번 시즌 포함) }. 반환 { ok, errors, player } */
+  signFa(playerId, offer) {
+    this.#need('regular');
+    const r = this.run.signFa(playerId, offer);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'fasign', playerId, salaryEok: offer.salaryEok, years: offer.years }); this.emit(); }
+    return r;
+  }
+  /** 외국선수 교체 후보 [{ player, usd }] */
+  foreignMarket() { return this.state.stage === 'regular' && this.run ? this.run.foreignMarket() : []; }
+  /** kind: 'temp'(일시교체) | 'season'(부상 시즌대체) | 'other'(기타 사유 시즌대체) */
+  foreignCheck(outId, kind, candId) {
+    if (this.state.stage !== 'regular' || !this.run) return { ok: false, reason: '지금은 교체할 수 없습니다' };
+    return this.run.foreignCheck(outId, kind, candId);
+  }
+  replaceForeign(outId, kind, candId) {
+    this.#need('regular');
+    const r = this.run.replaceForeign(outId, kind, candId);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'forrep', outId, kind, candId }); this.emit(); }
+    return r;
+  }
+  get otherReplacements() { return this.run?.otherReplacements ?? { used: 0, limit: 2 }; }
+  get foreignThresholds() { return this.run?.foreignThresholds ?? { temporary: 5, season: 18 }; }
+
   // ---------- 시즌 중 트레이드 ----------
   /** 시즌 중 트레이드 창이 열려 있는지(정규리그 마감일 전) */
   get tradeOpen() { return Boolean(this.run?.tradeOpen) && this.state.stage === 'regular'; }
@@ -265,6 +309,50 @@ export class Session {
     this.emit();
   }
 
+  // ---------- 모기업 목표·팬 열기·도감·업적(상태는 game 필드로만 얹는다: codex·achievements) ----------
+  /** 이번 시즌 모기업 목표(시즌 시작 상태에서 정해진다). 오프시즌 중에는 아직 다음 시즌 목표가 없어 null */
+  get goals() {
+    if (this.state.stage === 'offseason' || !this.baseRules.goals) return null;
+    return seasonGoals(this.state, this.data);
+  }
+  /** 단장 신뢰도(지난 시즌 평가까지 반영) */
+  get trust() { return this.baseRules.goals ? (this.lastEval?.trust ?? trustOf(this.state.log, this.baseRules)) : null; }
+  /** 가장 최근에 끝난 시즌의 평가(entry.eval) */
+  get lastEval() { return (this.state.stage === 'offseason' ? this.state.seasonEnd.entry : this.state.log.at(-1))?.eval ?? null; }
+  /** 우리 구단의 팬 열기(0~100, src/fans.mjs). 규칙이 없으면 null */
+  get fans() {
+    const att = (this.state.stage === 'offseason' ? this.state.seasonEnd.league : this.state.league).att;
+    return this.baseRules.fans ? moodOf(att, this.state.managerId, this.baseRules) : null;
+  }
+  /** 도감: 한 번이라도 우리 구단에 있었던 카드 키 목록 */
+  get codex() { return this.state.codex ?? []; }
+  /** 달성한 업적 { id: 시즌 } */
+  get achievements() { return this.state.achievements ?? {}; }
+  /** 방금 달성한 업적 id를 꺼내 간다 */
+  takeFresh() { const out = this.fresh; this.fresh = []; return out; }
+
+  /** (내부) 도감과 업적을 지금 상태에 맞춘다. announce가 true면 새 업적을 fresh에 쌓는다(불러오기 때는 조용히 따라잡는다) */
+  syncMeta(announce) {
+    const g = this.state, my = g.managerId;
+    try {
+      const add = newCodexKeys(g.codex, this.players, my);
+      if (add.length) g.codex = [...(g.codex ?? []), ...add];
+      const rules = this.baseRules;
+      if (!rules.achievements) return;
+      const roster = this.players.filter((p) => p.teamId === my);
+      const first = this.data.history?.seasons?.at(-1)?.teams?.find((t) => t.franchiseId === my)?.rank ?? null;
+      const ids = newAchievements(g.achievements, {
+        log: g.log, my, roster, funds: this.funds[my], codexCount: (g.codex ?? []).length, mood: this.fans, trust: this.trust,
+        startSeason: rules.season, firstPrevRank: first, rules
+      });
+      if (ids.length) {
+        const when = seasonLabel(g.league.season);
+        g.achievements = { ...(g.achievements ?? {}), ...Object.fromEntries(ids.map((id) => [id, when])) };
+        if (announce) this.fresh.push(...ids);
+      }
+    } catch (e) { console.warn('도감·업적 갱신 실패:', e.message); }
+  }
+
   /** (내부) 결정 기록으로 오프시즌을 다시 돌린다 */
   runOffseason() {
     const g = this.state, { rules, teams } = this.data;
@@ -278,9 +366,10 @@ export class Session {
 
   completeOffseason(res) {
     const g = this.state;
-    const entry = attachOffseason(g.seasonEnd.entry, res.report, res.league.funds);
+    const funds = bonusFunds(res.league.funds, g.seasonEnd.entry); // 모기업 목표 보너스(신뢰도가 높을 때)를 다음 시즌 자금에 더한다
+    const entry = attachOffseason(g.seasonEnd.entry, res.report, funds);
     g.log = [...g.log, entry];
-    g.league = res.league;
+    g.league = funds === res.league.funds ? res.league : { ...res.league, funds };
     g.stage = 'regular'; g.day = 0; g.actions = []; g.poRounds = 0; g.seasonEnd = null; g.decisions = {};
     this.offseason = null;
     this.rebuild();
@@ -307,7 +396,7 @@ export class Session {
     this.dayResults = [];
     if (g.stage === 'offseason') { this.run = null; this.runOffseason(); return; }
     const rng = mulberry32(hashString(`${g.seed}:${g.league.season}`));
-    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true });
+    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null });
     this.run = run;
     let ai = 0;
     const due = () => {
@@ -319,6 +408,8 @@ export class Session {
         else if (a.type === 'program') run.setProgram(a.playerId, a.program, a.stat);
         else if (a.type === 'release') run.releasePlayer(a.playerId);
         else if (a.type === 'extend') run.extendContract(a.playerId, { salaryEok: a.salaryEok, years: a.years });
+        else if (a.type === 'fasign') run.signFa(a.playerId, { salaryEok: a.salaryEok, years: a.years });
+        else if (a.type === 'forrep') run.replaceForeign(a.outId, a.kind, a.candId);
       }
     };
     due();

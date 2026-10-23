@@ -54,6 +54,7 @@ export function newsSource(session, data) {
     current: {
       stage: session.stage, day: session.day, totalDays: dayMemo.key === memoKey ? dayMemo.totalDays : data.rules.regularSeasonGames, dayResults,
       playoffSeries: session.stage === 'playoffs' ? (session.playoffs?.series ?? []) : [],
+      rosterLog: session.stage === 'offseason' ? [] : session.rosterLog, // 부상·시즌 중 영입·외국인 교체(src/season-run.mjs)
       offseason: changes ? { retired: changes.retired, progressed: changes.progressed } : null
     }
   };

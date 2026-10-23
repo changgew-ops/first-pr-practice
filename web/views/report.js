@@ -2,6 +2,7 @@ import { h, table, tabs, link, stat, ovrChip, eok, signed, ORIGIN_LABEL } from '
 import { bracket, awardsCard } from './league.js';
 import { logToHistory, seasonLabel, playerById } from '../lib/game.js';
 import { partsBar, PART_LABEL } from './finance-card.js';
+import { evalCard } from './goals-card.js';
 
 const BT_LABEL = { shooting: '슛', passing: '패스', defense: '수비', rebound: '리바운드', athletic: '운동능력' };
 
@@ -26,6 +27,7 @@ export function render(ctx, [tabParam]) {
         stat('플레이오프', stage ?? '진출 실패', e.championId === my ? '챔피언' : `우승 ${ctx.name(e.championId)}`),
         stat('시즌 수입', eok(led.revenue), `선수단 연봉 ${eok(led.payroll)}`),
         stat('순이익', `${led.net >= 0 ? '+' : ''}${led.net.toFixed(1)}억`, `자금 ${eok(e.fundsAfter[my])}${led.penalty ? ` · 기금 ${eok(led.penalty)}` : ''}`)),
+      evalCard(ctx, e),
       led.parts ? h('div', { class: 'card fin-card' }, h('h3', '재정 내역'),
         h('div', { class: 'fin-facts' },
           ...(led.attendance ? [

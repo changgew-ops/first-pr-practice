@@ -30,7 +30,7 @@ export function createLeague(players, rules, { history = null, teamData = null, 
  */
 export function playLeagueYear(league, teamData, rules, rng, options = {}) {
   const { manager = null, inSeasonUpdates = true, policy = null, keepGames = false, cards = null } = options;
-  const run = beginSeason(league, teamData, rules, rng, { manager, inSeasonUpdates, keepGames });
+  const run = beginSeason(league, teamData, rules, rng, { manager, inSeasonUpdates, keepGames, cards });
   run.playDays();
   run.startPlayoffs();
   while (!run.playoffs.done) run.playoffRound();

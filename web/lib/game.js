@@ -143,6 +143,17 @@ function seasonAwards(game, data, finished) {
 }
 
 /** 시즌 결과(순위·플레이오프·리더·우리 팀 경기·장부)만 묶는다. 오프시즌 보고서는 attachOffseason으로 나중에 붙인다 */
+/**
+ * 시즌 중 변동 기록(run.rosterLog)의 저장용 요약(작게): 우리 구단 부상 전부와 리그의 5경기 이상 부상, 우리 구단 FA 영입, 모든 외국인 교체.
+ * inj 행 = [선수 id, 구단, 날짜, 결장 경기, 종류, 부위, 이름], mv 행 = ['fa', null, 날짜, 구단, 이름, 연봉(억), 연수, OVR] | ['foreign', 교체 종류, 날짜, 구단, 이름, 나간 선수, 연봉($), OVR]
+ */
+export function rosterSummary(log, my) {
+  const inj = log.filter((e) => e.type === 'injury' && (e.games >= 5 || e.teamId === my)).map((e) => [e.playerId, e.teamId, e.day, e.games, e.kind, e.part, e.name]);
+  const mv = log.filter((e) => (e.type === 'fa' && e.teamId === my) || (e.type === 'foreign' && ['temp', 'season', 'other'].includes(e.kind)))
+    .map((e) => (e.type === 'fa' ? ['fa', null, e.day, e.teamId, e.name, e.salaryEok, e.years, e.ovr] : ['foreign', e.kind, e.day, e.teamId, e.name, e.outName, e.usd, e.ovr]));
+  return inj.length || mv.length ? { inj, mv } : null;
+}
+
 export function summarizeSeason(game, data, season, finished, ledger) {
   const { result, totals, seasonPlayers, splits } = finished;
   const my = game.managerId;
@@ -169,6 +180,7 @@ export function summarizeSeason(game, data, season, finished, ledger) {
     championId: result.championId,
     stage: Object.fromEntries(data.teams.map((t) => [t.id, stage(t.id)])),
     leaders: keptLeaders, lines, myGames,
+    ...(rosterSummary(finished.roster?.log ?? [], my) ? { roster: rosterSummary(finished.roster.log, my) } : {}), // 부상·시즌 중 영입·외국인 교체 요약(뉴스·선수 상세가 읽는다). 이전 저장에는 없다
     awards: seasonAwards(game, data, finished), // 시즌 어워드(선수 id만, src/awards.mjs). 이전 저장에는 없다
     ...(() => { const ev = seasonEval(game, data, finished, ledger, season); return ev ? { eval: ev } : {}; })(), // 모기업 목표 평가(src/goals.mjs). 이전 저장에는 없다
     // 선수 상세의 팀·승-패·플레이오프 열: 정규리그 승패(wl), 시즌 중 구단을 옮긴 선수의 구단별 줄(split), 플레이오프 줄(po). 이전 저장에는 없다

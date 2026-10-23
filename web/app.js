@@ -29,14 +29,17 @@ import * as leagueView from './views/league.js';
 import * as historyView from './views/history.js';
 import * as reportView from './views/report.js';
 import * as saveView from './views/save.js';
+import * as achievementsView from './views/achievements.js';
+import * as codexView from './views/codex.js';
+import { ACHIEVEMENT_BY_ID } from '../src/achievements.mjs';
 
 const root = document.getElementById('app');
 const FREE = { title: titleView, intro: introView, new: newView, save: saveView }; // 세션 없이도 여는 화면
 const ROUTES = {
   home: homeView, news: newsView, season: seasonView, roster: rosterView, player: playerView, lineup: lineupView, training: trainingView, trades: tradesView,
-  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, save: saveView
+  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, save: saveView
 };
-const NAV = [['home', '홈'], ['news', '뉴스'], ['season', '시즌'], ['roster', '로스터'], ['lineup', '라인업'], ['training', '훈련'], ['trades', '트레이드'], ['offseason', '오프시즌'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산'], ['save', '저장']];
+const NAV = [['home', '홈'], ['news', '뉴스'], ['season', '시즌'], ['roster', '로스터'], ['lineup', '라인업'], ['training', '훈련'], ['trades', '트레이드'], ['offseason', '오프시즌'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산'], ['achievements', '업적'], ['codex', '카드 도감'], ['save', '저장']];
 
 const ctx = { data: null, profiles: null, session: null };
 Object.defineProperty(ctx, 'game', { get: () => ctx.session?.view });
@@ -55,6 +58,9 @@ ctx.toast = (text) => { // 여러 개가 동시에 떠도 겹치지 않게 한 �
 let autosaveTimer = null;
 function attach(session) {
   ctx.session = session;
+  session.onChange(() => { // 새 업적은 토스트로 알린다
+    for (const id of session.takeFresh()) ctx.toast(`업적 달성: ${ACHIEVEMENT_BY_ID[id]?.name ?? id}`);
+  });
   session.onChange(() => { // 상태가 바뀌면 잠깐 뒤 자동 저장 (연속 조작은 한 번으로)
     clearTimeout(autosaveTimer);
     autosaveTimer = setTimeout(() => { if (!writeSlot('auto', session.game)) ctx.toast('저장 공간이 부족해 자동 저장을 못 했습니다. 저장 화면에서 오래된 슬롯을 지워 주세요.'); }, 300);

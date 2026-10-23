@@ -175,6 +175,30 @@ export const TEMPLATES = {
     h: ['{season} 정규리그 MVP에 {mvp}… {mvpTeam} 소속', '{mvp}, {season} 시즌 최고의 선수로 뽑혔다', '{season} 어워드 발표: MVP는 {mvp}', '{mvpTeam}의 {mvp:이/가} MVP를 차지했다', '{season} 시즌 시상: {mvp}가 이끈 한 해'],
     b: ['{season} 시즌 정규리그 MVP는 {mvpTeam}의 {mvp:으로/로} 정해졌다. 기록은 {mvpLine}.', '{mvpTeam}의 {mvp:이/가} {season} 정규리그 MVP에 올랐다. 시즌 기록은 {mvpLine}.', '{season} 시즌 시상 결과가 나왔다. 정규리그 MVP는 {mvpLine:을/를} 기록한 {mvpTeam}의 {mvp}다.', '{mvp:이/가} {season} 시즌 정규리그 MVP를 받았다. {mvpTeam} 소속으로 {mvpLine:을/를} 남겼다.', '올 시즌 최고의 선수는 {mvpTeam}의 {mvp}였다. 시즌 기록은 {mvpLine}, 정규리그 MVP로 선정됐다.']
   },
+  goals_eval: {
+    h: ['모기업 시즌 평가: {team}, 목표 {goalsTotal}개 중 {goalsMet}개 달성', '{season} 모기업 평가 발표… 단장 신뢰도 {trust}점', '{team} 모기업, {season} 시즌 성적표를 공개했다', '{season} 목표 달성도 {goalsMet}/{goalsTotal}, 단장 신뢰도 {trust}점', '모기업이 본 {team}의 {season} 시즌'],
+    b: ['{team}의 모기업이 {season} 시즌 평가를 마쳤다. 시즌 초에 제시한 목표 {goalsTotal}개 가운데 {goalsMet}개를 달성했고, 단장 신뢰도는 {trustMove}.', '{season} 시즌 목표 {goalsTotal}개 중 {goalsMet}개가 달성으로 인정됐다. 이에 따라 단장 신뢰도는 {trustMove}.', '모기업은 {season} 시즌 목표({goalsText}) 달성 여부를 평가했다. 결과는 {goalsMet}/{goalsTotal}이고 단장 신뢰도는 {trustMove}.', '{team:은/는} {season} 시즌 모기업 평가에서 {goalsMet}개 목표를 채웠다. 단장 신뢰도는 {trustMove}.']
+  },
+  injury_my: {
+    h: ['{player}, {part:으로/로} {absence}', '{team} {player} 부상… {absence}', '{team}에 부상 악재, {player}의 {part}', '{player} 부상 이탈, {team:은/는} 대안을 찾아야 한다', '{part} 진단 {player}, 한동안 코트를 떠난다'],
+    b: ['{team}의 {player:이/가} {day}일차 경기에서 {part} 진단을 받았다. 예상 결장 기간은 {gamesText:이다/다}.', '{player:이/가} {part:으로/로} 이탈한다. 진단 결과 결장 기간은 {gamesText:이다/다}.', '{team:은/는} {day}일차 경기 뒤 {player}의 부상({part})을 확인했다. 예상 결장은 {gamesText:이다/다}.', '{part} 진단을 받은 {player:은/는} {gamesText:을/를} 쉬어야 한다. {team}의 선수단 운영에 변수가 생겼다.']
+  },
+  injury_star: {
+    h: ['{team} {player}, {part:으로/로} {absence}', '{player} 부상 소식… {team:은/는} 전력 누수', '{team}의 {player}, {part} 진단', '{part}에 쓰러진 {player}, {team}의 고민'],
+    b: ['{team}의 {player:이/가} {day}일차 경기에서 {part} 진단을 받았다. 결장 기간은 {gamesText:이다/다}.', '{player:이/가} {part:으로/로} 코트를 떠난다. {team:은/는} {gamesText:을/를} 그 없이 치러야 한다.', '{day}일차 경기 뒤 {team} {player}의 {part}가 확인됐다. 결장은 {gamesText:으로/로} 예상된다.', '{team:은/는} {player}의 부상({part})으로 장기 결장이 불가피해졌다. 기간은 {gamesText:이다/다}.']
+  },
+  fa_season: {
+    h: ['{team}, 시장에 남은 {player} 영입', '{player}, 시즌 중 {team}에 합류', '{team:은/는} {day}일차에 {player:을/를} 데려왔다', '시즌 중 보강: {team}의 {player} 영입'],
+    b: ['{team:은/는} {day}일차에 시장에 남아 있던 {player:을/를} 영입했다. 연봉은 {salary}억, 계약은 이번 시즌을 포함해 {years}년이다.', '{player:이/가} 시즌 중 {team}에 합류했다. 계약 조건은 연봉 {salary}억, 이번 시즌 포함 {years}년이다.', '{team:은/는} FA 시장에 남은 {player}와 {day}일차에 계약했다. 연봉 {salary}억에 {years}년 계약이다.', '{day}일차, {team:은/는} {player:을/를} 연봉 {salary}억(이번 시즌 포함 {years}년)에 영입했다.']
+  },
+  foreign_swap_my: {
+    h: ['{team}, 외국인 선수 {kindText}… {player} 합류', '{outName} 대신 {player}, {team}의 {kindText}', '{team:은/는} {day}일차에 외국인 {kindText:을/를} 택했다', '{player:이/가} {team}의 새 외국인 선수로 등록됐다'],
+    b: ['{team:은/는} {day}일차에 외국인 선수 {outName} 대신 {player:을/를} 등록했다. 방식은 {kindText:이다/다}.', '{team}의 {kindText:이/가} 이뤄졌다. {outName} 자리에 {player:이/가} 들어왔고, 요구 연봉은 {usdText:이다/다}.', '{day}일차 {team:은/는} 외국인 선수 교체({kindText})를 마쳤다. 새 선수는 {player}이다.', '{player:이/가} {outName} 대신 {team}에 합류했다. {kindText} 절차로 등록했다.']
+  },
+  foreign_swap_lg: {
+    h: ['{team}, 외국인 선수 {kindText}… {player} 합류', '{outName} 대신 {player}, {team}의 {kindText}', '{team:은/는} {day}일차에 외국인 {kindText:을/를} 했다', '{player:이/가} {team}의 새 외국인 선수로 등록됐다'],
+    b: ['{team:은/는} {day}일차에 외국인 선수 {outName} 대신 {player:을/를} 등록했다. 방식은 {kindText:이다/다}.', '{team:이/가} 외국인 선수를 바꿨다. {outName} 자리에 {player:이/가} 들어왔고, 방식은 {kindText:이다/다}.', '{day}일차 {team:은/는} 외국인 선수 교체({kindText})를 마쳤다. 새 선수는 {player}이다.', '{player:이/가} {outName} 대신 {team}에 합류했다. {kindText} 절차로 등록했다.']
+  },
   retire_my: {
     h: ['{player}, 현역 은퇴', '{team}의 {player}, 코트를 떠난다', '은퇴 선언… {player}({age}세)', '{player}, 은퇴로 마무리한 선수 생활'],
     b: ['{team}의 {player:이/가} 시즌 종료와 함께 은퇴했다. 나이는 {age}세, 마지막 OVR은 {ovr}.', '{age}세의 {player:이/가} 현역에서 물러난다. 마지막 시즌 OVR은 {ovr}이었다.', '{team:은/는} {player:을/를} 떠나보낸다. 은퇴 당시 나이는 {age}세다.', '{player}의 이름이 {team}의 선수단에서 빠진다. 은퇴 시점 OVR {ovr}.']
@@ -264,6 +288,7 @@ export const COMMENTS = {
   detail_good: ['{rank}위면 선방이죠, 이 페이스 유지했으면', '{record}면 나쁘지 않은 출발입니다', '다음 상대가 {nextOpp}인데 이 기세면 기대됩니다', '시즌 평균 득점 {ppgFor}점이면 공격은 믿어도 되겠어요', '{opp}전 승리 값지네요, 올 시즌 상대 전적도 {h2h}입니다', '최근 5경기 {l5}면 흐름이 좋은 편이죠'],
   detail_bad: ['{record:으로/로} {rank}위라 마음이 편치 않네요', '{nextOpp}전이 고비가 되겠어요', '실점 평균 {ppgAgn}점은 줄여야 합니다', '{opp}전 결과는 아쉽지만 남은 경기가 많으니까요', '최근 5경기 {l5}라 반등 포인트가 필요해 보입니다', '{rank}위에서 플레이오프권을 지킬 수 있을지 지켜보겠습니다'],
   preview_detail: ['전력 {powerRank}위면 해볼 만합니다, 개막이 기대되네요', '{core} 조합이 어떨지 궁금합니다', '올해 목표는 {season} 시즌 6강이라고 봅니다', '외국 선수 활약에 시즌이 달렸다고 봐요', '캡에 여유가 있으니 시즌 중 움직임도 기대해 봅니다'],
+  injury: ['부상이 크지 않았으면 좋겠습니다', '빈자리를 누가 메울지가 관건이네요', '벤치 자원들이 기회를 잡길 바랍니다', '회복 잘하고 건강하게 돌아오길', '이럴 때 로스터 관리가 중요하죠', '이탈이 길어지지 않기를 바랄 뿐입니다'],
   move_neutral: ['이번 오프시즌은 지켜볼 게 많네요', '새 시즌 로스터가 기대됩니다', '선수단 구성이 어떻게 될지 궁금합니다', '이 선택이 어떤 결과로 이어질지 봅시다']
 };
 
@@ -308,6 +333,8 @@ function pickIndex(arr, vars, rng, recent) {
   return i;
 }
 
+/** 시즌 평가의 목표 한 줄을 기사 문장 조각으로(src/goals.mjs describeGoal과 같은 뜻) */
+const GOAL_TEXT = (g) => ({ rank: `정규리그 ${g.value}위 이내`, stage: g.value === '우승' ? '우승' : `플레이오프 ${g.value} 이상`, winPct: `승률 ${Math.round(g.value * 100)}% 이상`, profit: g.value > 0 ? `순이익 ${g.value}억 이상` : '흑자', payroll: '국내 연봉 캡 준수', youth: '젊은 선수 출전' }[g.kind] ?? '목표');
 const recordText = (w, l) => `${w}승 ${l}패`;
 const fmt1 = (v) => (Math.round(v * 10) / 10).toFixed(1);
 const money = (v) => fmt1(Math.abs(v));
@@ -317,6 +344,19 @@ const pct3 = (w, l) => (w + l ? (w / (w + l)).toFixed(3) : '0.000');
 // 본문은 문단 여러 개다. 문단은 PLAN이 정한 "문장 칸"을 차례로 채운다. 칸마다 변형이 4개 이상이고,
 // 문장에 쓸 값이 하나라도 없으면 그 변형은 쓰지 않는다(값이 없는 칸은 건너뛴다). 'lead'는 종류별 TEMPLATES.b.
 export const SENT = {
+  inj_status: ['{player:은/는} {part} 진단을 받았고 결장 기간은 {gamesText:으로/로} 알려졌다. 상태는 {kindText:으로/로} 분류된다.', '{part:으로/로} 쓰러진 {player}의 진단명은 {part:이고/고}, 몸 상태는 {kindText}에 해당한다. 결장은 {gamesText:으로/로} 잡혔다.', '진단 결과는 {part}, 결장은 {gamesText:이다/다}. 부상 정도는 {kindText:으로/로} 본다.', '{player:이/가} 받은 진단은 {part:이다/다}. {kindText} 수준이고 {gamesText:을/를} 쉬게 된다.'],
+  inj_info: ['{pAge}세 {pPos} 선수 {player}의 현재 OVR은 {pOvr}이다.', '{player:은/는} 포지션 {pPos}, 나이 {pAge}세, OVR {pOvr}의 선수다.', '{pPos} 자리의 {player}({pAge}세, OVR {pOvr})가 빠지게 됐다.', 'OVR {pOvr}의 {pPos} {player}({pAge}세)가 로테이션에서 빠진다.'],
+  inj_lineup: ['부상 선수는 라인업에서 자동으로 빠지고 건강한 선수가 같은 자리에 선다.', '{team:은/는} 남은 선수들로 로테이션을 다시 짜야 한다. 직접 편성한 라인업이라면 대체 선수가 자동으로 들어간다.', '결장하는 동안 출전 시간과 기록은 쌓이지 않고, 라인업은 건강한 선수들로 채워진다.', '당분간 {team}의 라인업은 건강한 선수만으로 구성된다. 복귀하면 원래 편성으로 돌아간다.'],
+  inj_back: ['{backDay}일차 경기부터 복귀가 가능하다.', '일정대로라면 {backDay}일차 경기부터 다시 코트에 설 수 있다.', '복귀 가능 시점은 {backDay}일차 경기다.', '{backDay}일차부터는 출전이 가능하다는 계산이다.'],
+  inj_kind: ['{kindText} 수준의 부상은 시즌 중 언제든 생길 수 있는 일이다. 이번 일로 선수층의 깊이가 시험대에 올랐다.', '이런 부상은 출전 시간이 길수록 잦아진다. 체력과 나이, 연속 출전이 위험을 조금씩 높인다.', '부상 변수가 생긴 만큼 벤치 자원의 역할이 커졌다. 로스터 관리가 시즌의 변수가 된다.', '시즌이 길어질수록 부상은 순위 싸움의 변수가 된다. 대체 자원을 점검해 둘 시점이다.'],
+  fs_info: ['{pAge}세 {pPos} 선수 {player}의 OVR은 {pOvr}이다.', '{player:은/는} 포지션 {pPos}, 나이 {pAge}세, OVR {pOvr}의 선수다.', '{pPos} 자리를 보강하는 {player}({pAge}세)는 OVR {pOvr}이다.', 'OVR {pOvr}의 {pPos} {player}({pAge}세)가 선수단에 더해졌다.'],
+  fs_contract: ['계약은 연봉 {salary}억에 이번 시즌 포함 {years}년이다. 이미 지난 경기 비율만큼은 보수를 내지 않고 합류한 뒤부터 정산한다.', '연봉 {salary}억은 시즌 정산에서 합류한 뒤의 비율만큼만 지출로 잡힌다. 계약 기간은 이번 시즌을 포함해 {years}년이다.', '조건은 연봉 {salary}억, {years}년(이번 시즌 포함)이다. 보수는 합류한 날부터 계산한다.', '{team}이 낸 연봉 {salary}억은 캡 계산에 바로 들어간다. 지출은 합류 이후의 경기 비율만큼 정산된다.'],
+  fs_why: ['시즌 중 영입은 오프시즌 FA에서 계약하지 못한 선수 가운데에서 고른다. 국내 선수 12명의 자리가 차 있으면 먼저 방출이 필요하다.', '시장에 남은 선수는 오프시즌 요구액보다 낮은 조건으로 계약할 수 있다. 최저 연봉 아래로는 내려가지 않는다.', '{team:은/는} 로스터와 캡 여유를 확인한 뒤 영입했다. 소프트캡 초과분은 시즌 말 기금으로 정산된다.', '선수층을 두껍게 하려는 선택이다. 영입 선수도 훈련과 출전 기록이 일반 선수와 똑같이 쌓인다.'],
+  fs_next: ['시즌은 {remain}경기가 남았다. 새 선수가 얼마나 빨리 자리를 잡는지가 관건이다.', '남은 정규리그는 {remain}경기다. 이 영입이 순위 싸움에 어떤 영향을 줄지 지켜볼 만하다.', '정규리그 {remain}경기가 더 남았다. 영입 효과는 라인업에서 확인할 수 있다.', '앞으로 {remain}경기, 이번 영입이 로테이션에 어떤 변화를 줄지가 관심사다.'],
+  fw_info: ['{player}의 OVR은 {ovr}이고 요구 연봉은 {usdText}이다.', '새 외국인 선수 {player:은/는} OVR {ovr}, 요구 연봉 {usdText}이다.', '{outName}의 자리를 맡는 {player:은/는} OVR {ovr}의 선수로, 연봉은 {usdText}이다.', 'OVR {ovr}의 {player:이/가} 연봉 {usdText}에 등록됐다.'],
+  fw_rule: ['{ruleText}', '참고로 {ruleText}', '관리규정은 이렇다. {ruleText}', '이번 교체의 근거 규정: {ruleText}'],
+  fw_pay: ['{payText}', '정산은 이렇게 처리된다. {payText}', '{payText} 연봉 한도와 외국 선수 연봉 합계도 지켜야 한다.', '금액 처리: {payText}'],
+  fw_next: ['시즌은 {remain}경기가 남았다. 새 외국인 선수의 적응이 변수다.', '남은 정규리그 {remain}경기에서 교체 효과가 드러난다.', '{remain}경기가 더 남았다. 외국인 선수 활약이 순위 싸움을 좌우할 수 있다.', '앞으로 {remain}경기, 교체 선수가 로테이션에 자리를 잡을지가 관심이다.'],
   scoreboard: ['점수 차는 {margin}점, 두 팀이 올린 점수는 모두 {total}점이다.', '{team}의 득점은 {my}점, 실점은 {oppPts}점이었다.', '양 팀 득점 합계는 {total}점이고 점수 차는 {margin}점이었다.', '{venue} 경기였고 {team:은/는} {my}점을 넣고 {oppPts}점을 내줬다.'],
   h2h: ['올 시즌 {opp:과/와}의 맞대결 전적은 이번 경기를 포함해 {h2h:이/가} 됐다.', '{opp:과/와}는 올해 {h2h:으로/로} 맞서 있다.', '이번 경기까지 {opp}전 전적은 {h2h}다.', '시즌 상대 전적으로 보면 {team:은/는} {opp} 상대 {h2h}다.'],
   standing: ['이 결과로 {team:은/는} {record}, 리그 {rank}위에 자리했다. {gapText}', '{day}일차까지의 성적은 {record:으로/로} 순위는 {rank}위다. {gapText}', '순위표에서 {team:은/는} {rank}위({record})에 올라 있다. {gapText}', '{record:이/가} 된 {team}의 현재 순위는 {rank}위다. {gapText}'],
@@ -362,6 +402,12 @@ export const SENT = {
   aw_leaders: ['부문별 1위는 {leadersText}이다.', '기록 부문 1위는 {leadersText}.', '부문 선두는 {leadersText}로 정리됐다.', '경기당 기록 선두는 {leadersText}이다.'],
   aw_finals: ['챔피언결정전 MVP는 우승팀 {champName}의 {fmName:이/가} 차지했다. 챔피언결정전 {fmLine:을/를} 기록했다.', '{champName}의 우승을 이끈 {fmName:이/가} 챔피언결정전 MVP로 뽑혔다({fmLine}).', '챔피언결정전 MVP는 {fmName:이다/다}. 우승팀 {champName}에서 {fmLine:을/를} 남겼다.', '{fmName:이/가} 챔피언결정전 MVP에 올랐다. 우승팀 {champName} 선수 중 챔피언결정전 기록이 가장 좋았다.'],
   aw_my: ['우리 구단에서는 {myAwards} 등이 수상했다.', '{team} 수상자 명단: {myAwards}.', '{myAwards} 등 {team} 선수들이 상을 받았다.', '수상자 가운데 {team} 소속은 {myAwards}.'],
+  gl_missed: ['채우지 못한 목표는 {missedText}이다.', '{missedText} 목표는 달성하지 못했다는 평가다.', '특히 {missedText}에서 모기업의 기대에 못 미쳤다.', '미달성 항목은 {missedText}.'],
+  gl_all: ['{allMet}', '모기업 관계자는 "올해 목표를 모두 채웠다"며 만족감을 나타냈다.', '목표를 전부 채운 시즌이어서 구단 안팎의 평가가 후하다.'],
+  gl_bonus: ['신뢰도가 높아 다음 시즌 예산에 {bonus}억 원이 보너스로 더해졌다.', '모기업은 성과를 인정해 {bonus}억 원의 추가 예산을 약속했다.', '높은 신뢰도 덕분에 {bonus}억 원이 다음 시즌 운영비로 얹어진다.'],
+  gl_warn: ['신뢰도 {warnTrust}점은 낮은 구간이라 모기업이 다음 시즌 성과를 지켜보겠다는 입장이다.', '신뢰도가 {warnTrust}점까지 내려와 모기업이 경고 메시지를 보냈다.', '단장에 대한 모기업의 신뢰가 {warnTrust}점으로 흔들리고 있다는 분석이 나온다.'],
+  gl_risk: ['신뢰도({riskTrust}점)가 위험선 아래에 머문 기간이 길어져 해임설이 거론된다.', '신뢰도 {riskTrust}점에 모기업 내부에서 단장 교체 이야기가 나오고 있다는 소문이 돈다.', '신뢰도 {riskTrust}점이 이어지면 다음 평가에서 책임을 묻겠다는 말이 흘러나온다.'],
+  gl_next: ['다음 {nextSeason} 시즌에도 모기업은 새 목표를 제시할 예정이다.', '모기업은 {nextSeason} 시즌 목표를 시즌 시작 전에 다시 전달한다.', '새 시즌 목표는 개막 전에 발표된다.'],
   // 오프시즌
   of_last: ['{lastSeasonLabel} 시즌 {team:은/는} 정규리그 {rank}위({record})로 마쳤고 플레이오프 성적은 {stage:이었다/였다}.', '지난 {lastSeasonLabel} 시즌 {team}의 성적은 {rank}위({record}), 플레이오프는 {stage}.', '{lastSeasonLabel} 시즌을 {record}, {rank}위로 마친 {team}의 오프시즌이다.', '{lastSeasonLabel} 시즌 결과를 안고 {team:은/는} {nextSeason} 시즌을 준비한다. 정규리그 {rank}위({record}), 플레이오프는 {stage:이었다/였다}.'],
   pl_info: ['{player:은/는} {pAge}세 {pPos} 선수이며 OVR은 {pOvr}이다.', '{pPos} 포지션의 {player:은/는} {pAge}세로 OVR {pOvr}의 선수다.', '{pAge}세 {pPos} {player:은/는} OVR {pOvr:으로/로} 평가된다.', '{player}의 포지션은 {pPos}, 나이는 {pAge}세, OVR은 {pOvr}이다.', '{player:은/는} {pPos} 포지션에서 OVR {pOvr:으로/로} 평가되는 선수다.', '능력치로 보면 {player}의 OVR은 {pOvr}이고 포지션은 {pPos}다.', '{pAge}세의 {player:은/는} 마지막 시즌 OVR {pOvr:을/를} 기록했다.', '{player}의 나이는 {pAge}세, 마지막으로 기록한 OVR은 {pOvr}이다.'],
@@ -369,7 +415,7 @@ export const SENT = {
   pl_contract: ['계약은 연봉 {pSalary}억에 {pYears}년이 남아 있다.', '연봉 {pSalary}억, 남은 계약기간은 {pYears}년이다.', '{pSalary}억의 연봉으로 {pYears}년 더 뛰는 조건이다.', '남은 계약은 {pYears}년이고 연봉은 {pSalary}억이다.'],
   of_team: ['{team}의 현재 핵심 선수는 {coreText}이다.', '{team}에서 능력치가 가장 높은 세 선수는 {coreText}이다.', '로스터의 중심은 {coreText}이다.', '{team}의 주축은 {coreText:으로/로} 꼽힌다.'],
   of_cap: ['국내 선수 연봉은 {payroll}억으로 캡 {cap}억 대비 {capRoom:이다/다}.', '캡 상황은 국내 선수 연봉 {payroll}억, 캡 {cap}억으로 {capRoom:이다/다}.', '연봉 총액 {payroll}억은 캡 {cap}억에 비해 {capRoom:이다/다}.', '{team}의 국내 선수 연봉은 {payroll}억이고 캡 대비 {capRoom:이다/다}.'],
-  of_outlook: ['{nextSeason} 시즌 개막까지 라인업과 훈련을 정비할 시간이 남아 있다.', '다음 시즌인 {nextSeason} 시즌을 앞두고 남은 오프시즌 결정이 전력을 좌우한다.', '{nextSeason} 시즌 개막 전에 해야 할 일은 아직 남아 있다.', '새 시즌 {nextSeason}의 밑그림은 이 오프시즌에 그려진다.'],
+  of_outlook: ['{nextSeason} 시즌 개막까지 라인업과 훈련을 정비할 시간이 남아 있고, 남은 선택이 전력의 윤곽을 정한다.', '다음 시즌인 {nextSeason} 시즌을 앞두고 남은 오프시즌 결정이 전력을 좌우한다. 하나하나가 순위 싸움의 밑천이 된다.', '{nextSeason} 시즌 개막 전에 해야 할 일은 아직 남아 있다. 로스터와 캡 여유를 함께 따져 봐야 한다.', '새 시즌 {nextSeason}의 밑그림은 이 오프시즌에 그려진다. 지금의 선택이 한 시즌을 좌우할 수 있다.'],
   pl_growth: ['한 시즌 사이 OVR은 {from}에서 {to:이/가} 됐다({deltaSign}).', '능력치 변화는 {from}에서 {to:으로/로}, 변화폭은 {deltaSign}이다.', 'OVR {from:이/가} {to:이/가} 됐고 변화폭은 {deltaSign}이다.', '{from}이던 OVR이 {to:으로/로} 바뀌었다({deltaSign}).'],
   spot_career: ['{star}의 KBL 통산 기록은 {starCareer}다.', '통산으로는 {starCareer:을/를} 남긴 선수다.', 'KBL 경력을 보면 {starCareer}이다.', '{star:은/는} KBL에서 {starCareer:을/를} 기록해 왔다.'],
   st_career: ['KBL 통산 기록은 {sCareer}이다.', '{player:은/는} 통산 {sCareer:을/를} 남겼다.', '지금까지의 KBL 경력은 {sCareer}이다.', '통산 성적은 {sCareer}다.'],
@@ -392,13 +438,19 @@ const PLAN_OFF = [['lead', 'pl_info', 'pl_contract', 'pl_rank', 'pl_career'], ['
 const PLAN_PO = [['lead', 'po_games'], ['po_seeds', 'po_my', 'po_avg'], ['po_next', 'po_end']];
 const PLAN_REVIEW = [['lead', 'rv_record'], ['lastSeason', 'rv_top', 'rv_leader'], ['rv_money'], ['rv_outlook']];
 export const PLAN = {
+  injury_my: [['lead', 'inj_status'], ['inj_info', 'inj_lineup'], ['inj_back', 'inj_kind']],
+  injury_star: [['lead', 'inj_status'], ['inj_info', 'inj_lineup'], ['inj_back', 'inj_kind']],
+  fa_season: [['lead', 'fs_info'], ['fs_contract', 'fs_why'], ['fs_next']],
+  foreign_swap_my: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
+  foreign_swap_lg: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
+  goals_eval: [['lead', 'gl_missed', 'gl_all'], ['gl_bonus', 'gl_warn', 'gl_risk'], ['gl_next']],
   awards: [['lead', 'aw_mvp'], ['aw_best5', 'aw_rookie'], ['aw_defense', 'aw_improved', 'aw_leaders'], ['aw_finals', 'aw_my']],
   preview: [['lead', 'pv_core'], ['pv_foreign', 'pv_depth'], ['pv_cap', 'pv_last', 'pv_city'], ['pv_contenders', 'pv_top', 'pv_task']],
   opener_win: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
   opener_loss: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
   result_win: PLAN_GAME, result_loss: PLAN_GAME, thriller_win: PLAN_GAME, thriller_loss: PLAN_GAME, blowout_win: PLAN_GAME, blowout_loss: PLAN_GAME, streak_win: PLAN_GAME, streak_lose: PLAN_GAME,
   star_points: [['lead', 'st_game', 'st_info'], ['st_avg', 'st_contract', 'st_career'], ['st_team']], star_all: [['lead', 'st_game', 'st_info'], ['st_avg', 'st_contract', 'st_career'], ['st_team']],
-  leader_change: [['lead', 'top3'], ['standing', 'form'], ['team_leader', 'lastSeason'], ['next', 'remain']],
+  leader_change: [['lead', 'top3', 'st_gap'], ['standing', 'form'], ['team_leader', 'lastSeason'], ['next', 'remain']],
   rank_first: PLAN_STANDING, rank_out: PLAN_STANDING, rank_in: PLAN_STANDING, clinch: PLAN_STANDING, eliminated: PLAN_STANDING, cycle: PLAN_STANDING, midseason: PLAN_STANDING, regular_end: [['lead', 'top3'], ['standing', 'form'], ['team_leader', 'lastSeason'], ['rv_outlook']],
   po_my_win: PLAN_PO, po_my_out: PLAN_PO, po_league: PLAN_PO, po_title_my: PLAN_PO, po_title: PLAN_PO,
   review_top: PLAN_REVIEW, review_mid: PLAN_REVIEW, review_miss: PLAN_REVIEW,
@@ -727,6 +779,52 @@ export function buildNews(src) {
   const curSeries = cur.playoffSeries ?? [];
   if (curSeries.length) seriesEvents(curSeries, sy, seasonLabel, rank().map((r) => ({ id: r.id })), 'live');
 
+  // ----- 부상·시즌 중 선수단 변동(src/injuries.mjs, src/inseason.mjs) -----
+  // 입력은 진행 중 시즌의 변동 기록(cur.rosterLog)과 끝난 시즌 항목의 요약(entry.roster: inj·mv 배열). 같은 모양으로 맞춰 기사를 만든다.
+  const KIND_WORD = { minor: '경상', moderate: '중상', severe: '장기 부상', season: '시즌 아웃' };
+  const SWAP_WORD = { temp: '일시교체', season: '시즌대체', other: '시즌대체(기타 사유)' };
+  const SWAP_RULE = {
+    temp: '외국선수 관리규정은 외국인 선수가 2주 이상의 진단을 받으면 부상 기간 동안 일시교체를 할 수 있게 한다.',
+    season: '외국선수 관리규정은 8주 이상의 진단이면 시즌대체를 할 수 있고, 부상 사유의 교체는 횟수 제한이 없다고 정한다.',
+    other: '외국선수 관리규정은 기타 사유의 시즌대체를 구단당 2회까지만 허용한다.'
+  };
+  const SWAP_PAY = {
+    temp: '일시교체 선수는 뛴 기간만큼만 보수를 받고, 부상 선수가 돌아오면 팀을 떠난다.',
+    season: '떠나는 선수의 이번 시즌 보수는 계속 나가고, 새 선수는 합류한 뒤부터의 보수를 받는다.',
+    other: '떠나는 선수의 이번 시즌 보수는 계속 나가고, 새 선수는 합류한 뒤부터의 보수를 받는다.'
+  };
+  const fromEntryRoster = (r) => (r ? [
+    ...(r.inj ?? []).map(([playerId, teamId, day, games, kind, part, name]) => ({ type: 'injury', playerId, teamId, day, games, kind, part, name })),
+    ...(r.mv ?? []).map((m) => (m[0] === 'fa' ? { type: 'fa', day: m[2], teamId: m[3], name: m[4], salaryEok: m[5], years: m[6], ovr: m[7] } : { type: 'foreign', kind: m[1], day: m[2], teamId: m[3], name: m[4], outName: m[5], usd: m[6], ovr: m[7] }))
+  ] : []);
+  const rosterEvents = (y, label, rows) => {
+    const tot = y === sy ? totalDays : games;
+    const at = (day, i) => base(y) + day + 0.5 + i * 0.01;
+    const gamesText = (g) => (g >= 99 ? '남은 시즌 전체' : `${g}경기`);
+    const nmOf = (e) => cleanName(e.name ?? '');
+    const injVars = (e) => {
+      const back = e.games < 99 && e.day + e.games + 1 <= tot ? e.day + e.games + 1 : undefined;
+      return {
+        team: nameOf(e.teamId), player: nmOf(e), part: e.part, day: e.day, gamesText: gamesText(e.games), kindText: KIND_WORD[e.kind] ?? '부상', absence: e.games >= 99 ? '시즌 아웃' : `${e.games}경기 결장`,
+        remain: Math.max(0, tot - e.day), ...(back ? { backDay: back } : {}), ...pInfo(e.playerId)
+      };
+    };
+    const inj = rows.filter((e) => e.type === 'injury');
+    inj.filter((e) => e.teamId === my && e.games >= 3).slice(0, 5).forEach((e, i) => add({ key: `${y}:inj:${e.playerId}:${e.day}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 부상`, kind: 'injury_my', scope: 'my', tags: ['우리 팀', '부상'], tone: 'bad', delta: e.games >= 18 ? -2 : -1, comments: 2, vars: injVars(e) }));
+    inj.filter((e) => e.teamId !== my && e.games >= 18).sort((a, b) => b.games - a.games || a.day - b.day).slice(0, 3).forEach((e, i) => add({ key: `${y}:inj:${e.playerId}:${e.day}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 부상`, kind: 'injury_star', scope: 'league', tags: ['리그', '부상'], comments: 1, vars: injVars(e) }));
+    rows.filter((e) => e.type === 'fa' && e.teamId === my).slice(0, 3).forEach((e, i) => add({ key: `${y}:fasn:${e.day}:${i}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 시즌 중 영입`, kind: 'fa_season', scope: 'move', tags: ['우리 팀', 'FA'], tone: 'good', delta: 1, comments: 2, vars: { team: nameOf(my), player: nmOf(e), day: e.day, salary: fmt1(e.salaryEok), years: e.years, remain: Math.max(0, tot - e.day), ...pInfo(e.playerId ?? '') } }));
+    rows.filter((e) => e.type === 'foreign' && SWAP_WORD[e.kind]).slice(0, 6).forEach((e, i) => {
+      const mine = e.teamId === my;
+      if (!mine && i >= 3) return;
+      add({
+        key: `${y}:fw:${e.day}:${e.teamId}:${e.kind}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 외국인 교체`, kind: mine ? 'foreign_swap_my' : 'foreign_swap_lg', scope: mine ? 'move' : 'league', tags: [mine ? '우리 팀' : '리그', '외국인'], tone: mine ? 'neutral' : 'neutral', delta: mine ? 0.5 : 0, comments: mine ? 2 : 1,
+        vars: { team: nameOf(e.teamId), player: nmOf(e), outName: cleanName(e.outName ?? ''), kindText: SWAP_WORD[e.kind], day: e.day, ovr: e.ovr, usdText: `${Math.round(e.usd / 10000)}만 달러`, ruleText: SWAP_RULE[e.kind], payText: SWAP_PAY[e.kind], remain: Math.max(0, tot - e.day) }
+      });
+    });
+  };
+  if (cur.stage !== 'offseason') rosterEvents(sy, seasonLabel, (cur.rosterLog ?? []).filter((e) => e.type !== 'return' && e.type !== 'release'));
+  log.forEach((entry) => { if (entry.roster) rosterEvents(entry.startYear, entry.season, fromEntryRoster(entry.roster)); });
+
   // ----- 끝난 시즌들(로그) -----
   log.forEach((entry, idx) => {
     const y = entry.startYear; const label = entry.season;
@@ -750,6 +848,20 @@ export function buildNews(src) {
       ...(titlesOf(my) != null ? { titles: titlesOf(my) } : {}), ...(myLeader ? { tmName: cleanName(myLeader.name), tmPpg: fmt1(myLeader.ppg) } : {})
     } : null;
     if (row) add({ key: `${y}:review`, t: base(y) + 200, season: label, when: `${label} 시즌 결산`, kind, scope: 'my', tags: ['우리 팀', '결산'], tone: st ? 'good' : 'bad', delta: kind === 'review_top' ? 3 : kind === 'review_mid' ? 0 : -3, comments: 2, vars: reviewVars });
+    const ev = entry.eval;
+    if (ev?.goals?.length && row) {
+      const total = ev.goals.length, met = ev.goals.filter((g) => g.met).length;
+      const missed = ev.goals.filter((g) => !g.met).map((g) => GOAL_TEXT(g));
+      const vars = {
+        team: nameOf(my), season: label, nextSeason, goalsTotal: total, goalsMet: met, trust: ev.trust,
+        goalsText: ev.goals.map((g) => GOAL_TEXT(g)).join(', '),
+        trustMove: ev.delta > 0 ? `${ev.delta}점 올라 ${ev.trust}점` : ev.delta < 0 ? `${-ev.delta}점 내려 ${ev.trust}점` : `${ev.trust}점으로 변동이 없다`,
+        ...(missed.length ? { missedText: missed.join(', ') } : { allMet: '올해 목표를 전부 채웠다는 평가다.' }),
+        ...(ev.bonus ? { bonus: fmt1(ev.bonus) } : {})
+      };
+      if (ev.status === 'warn') vars.warnTrust = ev.trust; else if (ev.status === 'risk') vars.riskTrust = ev.trust;
+      add({ key: `${y}:goals`, t: base(y) + 203, season: label, when: `${label} 모기업 평가`, kind: 'goals_eval', scope: 'my', tags: ['우리 팀', '모기업'], tone: met === total ? 'good' : met === 0 ? 'bad' : 'neutral', delta: ev.delta >= 10 ? 2 : ev.delta <= -8 ? -2 : 0, comments: 2, vars });
+    }
     const aw = entry.awards;
     if (aw?.mvp && entry.lines?.[aw.mvp]) {
       const lineOf2 = (id) => entry.lines[id];
@@ -900,6 +1012,7 @@ function makeComments(ev, label, rng, src, used, recentC) {
       const detail = rng() < 0.35 && ev.scope === 'my' && !offseasonKind;
       if (ev.kind === 'preview') pool = rng() < 0.5 ? COMMENTS.preview : COMMENTS.preview_detail;
       else if (/^(cap_over|funds_)/.test(ev.kind)) pool = COMMENTS.finance;
+      else if (ev.kind === 'injury_my') pool = COMMENTS.injury;
       else if (offseasonKind) pool = ev.playerComment && ev.tone !== 'bad' && rng() < 0.5 ? COMMENTS.player_good : ev.tone === 'good' ? COMMENTS.move_good : ev.tone === 'bad' ? COMMENTS.move_bad : COMMENTS.move_neutral;
       else if (ev.scope === 'league') pool = isStar ? (ev.starTeamId === src.myTeamId ? COMMENTS.player_good : COMMENTS.star_neutral) : COMMENTS.neutral;
       else if (detail) pool = ev.tone === 'bad' ? COMMENTS.detail_bad : COMMENTS.detail_good;
