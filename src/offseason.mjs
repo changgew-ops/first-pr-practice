@@ -20,6 +20,20 @@ const PHYSICAL = ['athletic', 'stamina'];
 const SKILLS = ['shooting', 'passing', 'defense', 'rebound'];
 
 // ---------- 노화·성장 ----------
+/** 신인 보수(억 원): 지명 순번(0부터)이 속한 구간 안에서 from → to로 선형 보간. 구간을 벗어나면 최저 */
+export function rookieSalary(pickIdx, cfg) {
+  const pick = pickIdx + 1;
+  let start = 1;
+  for (const b of cfg.bands) {
+    if (pick <= b.maxPick) {
+      const t = b.maxPick === start ? 0 : (pick - start) / (b.maxPick - start);
+      return Math.max(cfg.min, Math.round((b.from + (b.to - b.from) * t) * 100) / 100);
+    }
+    start = b.maxPick + 1;
+  }
+  return cfg.min;
+}
+
 export function retireProbability(age, ovr, aging) {
   const base = aging.retirement.find(([minAge]) => age >= minAge)[1];
   const lowBoost = 1 + Math.max(0, aging.lowOvrRetireRef - ovr) / aging.lowOvrRetireDivisor;
@@ -240,7 +254,8 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   for (let round = 0; round < dr.rounds; round++) {
     for (const teamId of order) {
       const mine = domesticOf(players, teamId);
-      const salary = Math.max(off.rookieSalaryEok.min, round1(off.rookieSalaryEok.first - pickNo * off.rookieSalaryEok.dropPerPick));
+      const salary = rookieSalary(pickNo, off.rookieSalaryEok);
+      const rookieYears = round < 1 ? dr.rookieYears : dr.rookieYearsRound2;
       pickNo++;
       if (prospects.length === 0 || mine.length >= rules.roster.domestic + 2) continue;
       if (payrollEok(players, teamId) + salary > hardLimitEok(rules) + EPS) continue;
@@ -256,7 +271,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
         });
       }
       const [pick] = prospects.splice(idx, 1);
-      const signed = { ...pick, teamId, number: freeNumber(teamId), contract: { salaryEok: salary, yearsLeft: dr.rookieYears } };
+      const signed = { ...pick, teamId, number: freeNumber(teamId), contract: { salaryEok: salary, yearsLeft: rookieYears } };
       players.push(signed);
       report.drafted.push({ id: signed.id, name: signed.name, teamId, pick: pickNo, ovr: signed.ovr, potential: signed.potential, position: signed.position });
     }

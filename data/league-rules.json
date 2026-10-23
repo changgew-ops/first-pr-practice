@@ -8,7 +8,7 @@
     "foreignUsdTotal": 1000000,
     "foreignUsdPerPlayer": 700000,
     "soft": {
-      "_note": "KBL 소프트캡(2021-22~): 캡을 넘겨도 되지만 초과분의 30%(10% 이하)/40%(10~20%)/50%(20% 초과)를 기금으로 낸다. 최대 초과 비율과 면제 계약은 게임용 값.",
+      "_note": "KBL 소프트캡(2021-22~): 캡을 넘겨도 되지만 초과분의 30%(10% 이하)/40%(10~20%)/50%(20% 초과)를 기금으로 낸다(보수 규정 제4조). 최대 초과 비율은 게임용 값. 면제 계약은 최저 연봉(4,200만원, 보수 규정 제9조) 이하로 맞춘 게임용 값.",
       "penaltyTiers": [
         [
           0.1,
@@ -24,8 +24,9 @@
         ]
       ],
       "maxOverRatio": 0.2,
-      "exemptContractEok": 0.4
-    }
+      "exemptContractEok": 0.42
+    },
+    "minSalaryEok": 0.42
   },
   "roster": {
     "domestic": 12,
@@ -228,15 +229,33 @@
       "potentialBonus": [
         8,
         22
-      ]
+      ],
+      "rookieYearsRound2": 2,
+      "_note": "신인 계약기간(규약 제98조): 1라운드 3~5년, 2라운드 이하 1~3년. 게임은 1라운드 3년, 2라운드 2년으로 고정(범위 안의 게임용 값)."
     },
     "rookieSalaryEok": {
-      "first": 0.9,
-      "dropPerPick": 0.015,
-      "min": 0.4
+      "_note": "국내 신인 보수(규약 제98조·보수 규정 제7조): 1라운드 1~4순위 0.8~1.2억, 5~10순위 0.5~0.8억, 2라운드 0.42~0.5억. 구간 안에서는 순번에 따라 선형으로 내려가는 게임용 보간.",
+      "bands": [
+        {
+          "maxPick": 4,
+          "from": 1.2,
+          "to": 0.8
+        },
+        {
+          "maxPick": 10,
+          "from": 0.8,
+          "to": 0.5
+        },
+        {
+          "maxPick": 20,
+          "from": 0.5,
+          "to": 0.42
+        }
+      ],
+      "min": 0.42
     },
     "freeAgentPoolMax": 40,
-    "emergencySalaryEok": 0.3
+    "emergencySalaryEok": 0.42
   },
   "transactions": {
     "_note": "이적 규칙. 트레이드 세부 규정은 공식 확인 전이라 게임용 단순 규칙이다.",
@@ -271,23 +290,19 @@
       "prestigeWeight": 0.1
     },
     "compensation": {
-      "_note": "2020년 정비 기준(전년 보수 순위별). 2026년 6월 완화 방침의 세부는 확인하지 못했다.",
+      "_note": "FA 보상(자유계약선수 관리 규정 제6조, 2027-28시즌부터 적용): 전년도 보수 서열 30위 이내는 보상선수 1명 + 전 시즌 보수의 25% 또는 보수의 100%, 31~40위는 보수의 50%. 보호선수 4명. 서열 40위 밖은 보상 없음.",
       "tiers": [
         {
           "maxRank": 30,
-          "cashOnlyRatio": 2.0,
-          "withPlayerCashRatio": 0.5
+          "cashOnlyRatio": 1,
+          "withPlayerCashRatio": 0.25
         },
         {
           "maxRank": 40,
-          "cashOnlyRatio": 1.0
-        },
-        {
-          "maxRank": 50,
           "cashOnlyRatio": 0.5
         }
       ],
-      "protectedPlayers": 5
+      "protectedPlayers": 4
     },
     "funds": {
       "start": 20,

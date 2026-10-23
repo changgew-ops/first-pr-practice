@@ -30,7 +30,7 @@ export function render(ctx, pending) {
     host.replaceChildren(
       h('div', { class: 'card' },
         h('h2', `신인 드래프트: 우리 ${n}번째 지명`),
-        h('p', { class: 'note' }, `하위 팀부터 라운드마다 지명합니다(${rookie.draft.rounds}라운드). 신인 계약은 ${rookie.draft.rookieYears}년이고 캡에서 면제됩니다. 순위는 AI와 같은 식(잠재력 60% + 현재 40% + 비어 있는 포지션 보너스)으로 매겼고, 1위가 추천입니다.${stale ? ' 포지션 보너스는 직전 단계까지의 로스터로 계산했습니다.' : ''}`)),
+        h('p', { class: 'note' }, `하위 팀부터 라운드마다 지명합니다(${rookie.draft.rounds}라운드). 신인 계약은 1라운드 ${rookie.draft.rookieYears}년, 2라운드 ${rookie.draft.rookieYearsRound2}년이고 캡에서 면제됩니다. 순위는 AI와 같은 식(잠재력 60% + 현재 40% + 비어 있는 포지션 보너스)으로 매겼고, 1위가 추천입니다.${stale ? ' 포지션 보너스는 직전 단계까지의 로스터로 계산했습니다.' : ''}`)),
       h('div', { class: 'card flush' }, h('div', { class: 'os-draft' }, ranking.map((r) => h('label', { class: `os-draft-row ${pick === r.p.id ? 'picked' : ''}` },
         h('input', { type: 'radio', name: 'draft', 'aria-label': `${r.p.name} 지명`, checked: pick === r.p.id, onchange: () => { pick = r.p.id; draw(); } }),
         h('span', { class: 'os-rank' }, r.rank === 1 ? '추천' : r.rank),

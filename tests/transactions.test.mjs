@@ -8,7 +8,7 @@ import { settleSeason, transferFunds, initialFunds } from '../src/funds.mjs';
 import { asiaOf, asiaPayrollEok } from '../src/valuation.mjs';
 import { validateTrade, executeTrade, aiEvaluate, generateOffers, proposeTrade, teamWorth } from '../src/trade.mjs';
 import { offerScore, capAllows, compensationFor, runFreeAgency } from '../src/freeagency.mjs';
-import { runOffseason } from '../src/offseason.mjs';
+import { runOffseason, rookieSalary } from '../src/offseason.mjs';
 import { createLeague } from '../src/league.mjs';
 import { createManagerBot } from '../src/manager-bot.mjs';
 import { mulberry32 } from '../src/rng.mjs';
@@ -233,15 +233,29 @@ test('capAllows: 캡 안은 허용, 캡 초과는 단장만, 최저 계약은 �
   assert.equal(capAllows(hardLimitEok(rules) - 1, 3, rules, { isManager: true }), false);
 });
 
-test('FA 보상: 전년 보수 순위별 규정(30위 이내 200%, 31~40위 100%, 41~50위 50%, 이후 없음)', () => {
+test('FA 보상: 전년 보수 순위별 규정(30위 이내 100% 또는 보상선수+25%, 31~40위 50%, 이후 없음)', () => {
   const mk = (prevRank, prevSalaryEok = 4) => ({ prevTeamId: 'x', prevRank, prevSalaryEok });
   const a = compensationFor(mk(10), rules);
-  assert.equal(a.cashOnly, 8);
-  assert.equal(a.withPlayerCash, 2);
-  assert.equal(compensationFor(mk(35), rules).cashOnly, 4);
-  assert.equal(compensationFor(mk(45), rules).cashOnly, 2);
-  assert.equal(compensationFor(mk(51), rules), null);
+  assert.equal(a.cashOnly, 4);
+  assert.equal(a.withPlayerCash, 1);
+  assert.equal(compensationFor(mk(35), rules).cashOnly, 2);
+  assert.equal(compensationFor(mk(35), rules).withPlayerCash, null);
+  assert.equal(compensationFor(mk(41), rules), null);
   assert.equal(compensationFor({ prevRank: 5 }, rules), null);
+  assert.equal(rules.transactions.compensation.protectedPlayers, 4);
+});
+
+test('신인 보수: 1~4순위 0.8~1.2억, 5~10순위 0.5~0.8억, 2라운드 0.42~0.5억(보수 규정 제7조)', () => {
+  const cfg = rules.offseason.rookieSalaryEok;
+  const s = (i) => rookieSalary(i, cfg);
+  assert.equal(s(0), 1.2);
+  assert.equal(s(3), 0.8);
+  for (let i = 0; i < 4; i++) assert.ok(s(i) >= 0.8 && s(i) <= 1.2);
+  for (let i = 4; i < 10; i++) assert.ok(s(i) >= 0.5 && s(i) <= 0.8, `pick ${i + 1}: ${s(i)}`);
+  for (let i = 10; i < 20; i++) assert.ok(s(i) >= 0.42 && s(i) <= 0.5, `pick ${i + 1}: ${s(i)}`);
+  for (let i = 1; i < 20; i++) assert.ok(s(i) <= s(i - 1), '순번이 뒤일수록 보수가 같거나 낮다');
+  assert.equal(s(25), 0.42);
+  assert.equal(rules.salaryCap.minSalaryEok, 0.42);
 });
 
 // FA 시장 시험용 상태: 각 구단에서 선수 2명씩 FA로 내보낸다
