@@ -23,7 +23,7 @@ export function render(ctx) {
   const pending = s.pending;
   const snap = snapshotOf(s, pending);
   const step = currentStep(pending, s.game.decisions);
-  const body = h('div', { class: 'stack os' },
+  const body = h('div', { class: 'stack os', 'data-key': pending.key },
     h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '오프시즌'), h('h1', `${seasonLabel(s.season)} 오프시즌 · ${TITLE[pending.kind]}`)), autoButton(ctx)),
     stepBar(step),
     summaryCard(snap.players, snap.funds, s.managerId, ctx.data.rules, { stale: snap.stale }),

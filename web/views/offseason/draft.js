@@ -4,13 +4,24 @@ import { draftRanking } from '../../lib/offseason-view.js';
 import { domesticOf } from '../../../src/valuation.mjs';
 import { playerLine, snapshotOf, decide } from './common.js';
 
+// 엔진은 우리 지명 한 번에 policy.draft를 여러 번(선수 목록을 훑으며) 부른다. 결정 키가 호출마다 늘어나므로,
+// 같은 선수 목록으로 다시 묻는 것은 방금 고른 선수를 그대로 다시 내서 넘긴다(사람이 다시 고르지 않는다).
+const memo = { season: null, sig: null, pick: null, n: 0 };
+
 export function render(ctx, pending) {
   const { available } = pending.payload;
+  const sig = available.map((p) => p.id).join(',');
+  if (pending.key === 'draft:0' || memo.season !== ctx.session.season) { memo.season = ctx.session.season; memo.sig = null; memo.n = 0; }
+  if (memo.sig === sig && memo.pick) {
+    setTimeout(() => decide(ctx, pending.key, memo.pick), 0);
+    return h('div', { class: 'card' }, h('p', { class: 'muted' }, '지명 처리 중…'));
+  }
+  memo.sig = sig; memo.pick = null; memo.n += 1;
   const my = ctx.session.managerId;
   const { players, stale } = snapshotOf(ctx.session, pending);
   const roster = domesticOf(players, my);
   const ranking = draftRanking(available, roster);
-  const n = Number(pending.key.split(':')[1]) + 1;
+  const n = memo.n;
   let pick = ranking[0].p.id;
   const rookie = ctx.data.rules.offseason;
   const host = h('div', { class: 'stack' });
@@ -29,7 +40,7 @@ export function render(ctx, pending) {
         r.need ? h('span', { class: 'tag hot' }, `${r.p.position} 필요 +${r.need}`) : h('span', { class: 'tag' }, `${r.p.position} 충분`),
         h('span', { class: 'note' }, `점수 ${r.score.toFixed(1)}`))))),
       h('div', { class: 'os-submit' }, h('span', { class: 'note' }, `선택: ${available.find((p) => p.id === pick).name}`),
-        h('button', { class: 'btn primary big', type: 'button', onclick: () => decide(ctx, pending.key, pick) }, '지명 확정')));
+        h('button', { class: 'btn primary big', type: 'button', onclick: () => { memo.pick = pick; decide(ctx, pending.key, pick); } }, '지명 확정')));
   }
   draw();
   return host;

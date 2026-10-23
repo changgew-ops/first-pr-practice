@@ -44,7 +44,7 @@ export function render(ctx, pending) {
     }
     const n = [...plan.byId.values()].filter((x) => x.status === 'ok').length;
     const cap = rules.salaryCap.domesticEok;
-    planBox.replaceChildren(`재계약 예상 ${n}명 → 재계약 후 국내 연봉 ${eok(plan.payroll)} / 캡 ${eok(cap, 0)}`, plan.payroll > cap ? h('span', { class: 'warn' }, ` · 캡 초과 기금 ${eok(softCapPenaltyEok(plan.payroll, rules))}`) : null);
+    planBox.replaceChildren(...[`재계약 예상 ${n}명 → 재계약 후 국내 연봉 ${eok(plan.payroll)} / 캡 ${eok(cap, 0)}`, plan.payroll > cap ? h('span', { class: 'warn' }, ` · 캡 초과 기금 ${eok(softCapPenaltyEok(plan.payroll, rules))}`) : null].filter(Boolean));
     footerBtn.textContent = n ? `재계약 ${Object.keys(offers).length}건 제시하고 FA로` : '재계약 없이 FA로';
   }
 

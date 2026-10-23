@@ -76,7 +76,7 @@ export function render(ctx, pending) {
       builder.teamId ? h('div', { class: 'os-cols' }, h('div', { class: 'os-side' }, h('div', { class: 'os-side-title' }, '우리가 보낼 선수'), pickList(mineRoster, builder.mine)), h('div', { class: 'os-side' }, h('div', { class: 'os-side-title' }, `${ctx.name(builder.teamId)}에게 받을 선수`), pickList(theirRoster, builder.theirs))) : null,
       builder.teamId ? h('div', { class: 'row' },
         h('button', { class: 'btn', type: 'button', disabled: !ready, onclick: () => { builder.result = proposeTrade(league, trade, ectx, rules, { window: 'offseason' }); draw(); } }, 'AI 반응 보기'),
-        r ? h('span', { class: r.executed ? 'good' : 'bad' }, r.executed ? `수락합니다 (가치 비율 ${r.verdict.margin.toFixed(2)}배, 필요 ${rules.transactions.trade.acceptMargin}배)` : `거절: ${r.reason}`) : null,
+        r ? h('span', { class: r.executed ? 'good' : 'bad' }, r.executed ? `수락합니다 (가치 비율 ${r.verdict.margin.toFixed(2)}배, 필요 ${rules.transactions.trade.acceptMargin}배)` : `거절: ${r.reason.replaceAll(builder.teamId, ctx.name(builder.teamId))}`) : null,
         r?.executed ? h('button', { class: 'btn primary', type: 'button', onclick: () => { proposals.push(trade); builder.mine = new Set(); builder.theirs = new Set(); builder.result = null; draw(); } }, '제안 목록에 추가') : null) : null,
       proposals.length ? h('div', h('h3', '내가 제안할 트레이드'), h('ul', { class: 'plain' }, proposals.map((t, i) => {
         const find = (id) => league.players.find((p) => p.id === id);

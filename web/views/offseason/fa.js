@@ -20,6 +20,7 @@ export function render(ctx, pending) {
   const filter = { pos: 'all', q: '', sort: 'value', needOnly: false };
   const refs = new Map();
   const summary = h('div', { class: 'card os-fa-sum' });
+  const submitBar = h('div', { class: 'os-submit' });
   const tableHost = h('div', { class: 'os-fa-list' });
 
   const defaultSalary = (p) => round1(demandNow(p) * 1.05);
@@ -45,7 +46,10 @@ export function render(ctx, pending) {
         h('div', { class: 'stat' }, h('div', { class: 'stat-label' }, '이번 라운드 제안'), h('div', { class: 'stat-value' }, `${n}명`), h('div', { class: 'stat-sub' }, `연봉 합 ${eok(total)}`)),
         h('div', { class: 'stat' }, h('div', { class: 'stat-label' }, '모두 영입하면 국내 연봉'), h('div', { class: 'stat-value' }, `${eok(plan.payroll)} / ${eok(cap, 0)}`), h('div', { class: 'stat-sub' }, plan.payroll > cap ? `초과 ${eok(plan.payroll - cap)} · 기금 ${eok(plan.penalty)}` : `여유 ${eok(cap - plan.payroll)}`)),
         h('div', { class: 'stat' }, h('div', { class: 'stat-label' }, '국내 선수 자리'), h('div', { class: 'stat-value' }, `${plan.count} / ${rules.roster.domestic}`), h('div', { class: 'stat-sub' }, `현재 ${roster.length}명, 빈 자리 ${Math.max(0, rules.roster.domestic - roster.length)}`))),
-      h('div', { class: 'row' }, h('button', { class: 'btn primary big', type: 'button', onclick: () => decide(ctx, `fa:${round}`, Object.entries(offers).map(([playerId, o]) => ({ playerId, salaryEok: o.salaryEok, years: o.years }))) }, n ? `${n}명에게 제안하고 ${round}라운드 진행` : `제안 없이 ${round}라운드 건너뛰기`)));
+    );
+    submitBar.replaceChildren(
+      h('span', { class: 'note' }, n ? `제안 ${n}명 · 연봉 합 ${eok(total)}` : '이번 라운드는 제안하지 않습니다'),
+      h('button', { class: 'btn primary big', type: 'button', onclick: () => decide(ctx, `fa:${round}`, Object.entries(offers).map(([playerId, o]) => ({ playerId, salaryEok: o.salaryEok, years: o.years }))) }, n ? `${n}명에게 제안하고 ${round}라운드 진행` : `제안 없이 ${round}라운드 건너뛰기`));
   }
 
   function draw() {
@@ -91,7 +95,7 @@ export function render(ctx, pending) {
   const body = h('div', { class: 'stack' },
     h('div', { class: 'card' }, h('h2', `FA 시장 ${round}라운드 / ${fa.rounds}`),
       h('p', { class: 'note' }, `선수는 가치가 높은 순서로 받은 제안 중 가장 마음에 드는 것을 고릅니다. AI 구단들도 같은 라운드에 제안을 내서, 더 좋은 조건을 낸 구단으로 갈 수 있습니다. 라운드가 지날수록 안 팔린 선수의 요구액이 ${(fa.demandDropPerRound * 100).toFixed(0)}%씩 내려가고 AI 구단도 제안을 조금씩 올립니다. 다른 구단에서 온 FA를 영입하면 원소속 구단에 보상금이 나가고(전년 보수 30위 안은 현금 또는 보호선수 ${rules.transactions.compensation.protectedPlayers}명 밖 보상선수), 영입이 성사되면 다음에 선택 화면이 나올 수 있습니다. 캡을 넘겨 영입하면 초과분의 30~50%를 기금으로 냅니다.`)),
-    summary, bar, tableHost);
+    summary, bar, tableHost, submitBar);
   draw();
   return body;
 }
