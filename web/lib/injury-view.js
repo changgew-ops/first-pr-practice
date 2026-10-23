@@ -1,5 +1,6 @@
 // 부상 화면 부품: 표시 문구·태그·현황 카드·선수별 부상 이력. 규칙은 src/injuries.mjs, 상태는 세션(session.injuries / rosterLog)이 준다.
 import { h, table, POS_ORDER } from './dom.js';
+import { playerLink } from './player-info.js';
 import { KIND_LABEL } from '../../src/injuries.mjs';
 
 /** 선수 id → 지금 부상 */
@@ -31,7 +32,7 @@ export function injuryCard(ctx, { compact = false } = {}) {
   const head = h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, '부상 현황'), h('span', { class: 'note' }, `우리 ${mine.length}명 · 리그 전체 ${all.length}명`));
   const rows = (list, withTeam) => table(list, [
     ...(withTeam ? [{ key: 'team', label: '구단', get: (i) => ctx.name(i.teamId), sort: false }] : []),
-    { key: 'name', label: '선수', get: (i) => i.name, sort: false, render: (i) => h('a', { href: `#/player/${i.playerId}` }, byId.get(i.playerId)?.name ?? i.name) },
+    { key: 'name', label: '선수', get: (i) => i.name, sort: false, render: (i) => playerLink(i.playerId, byId.get(i.playerId)?.name ?? i.name) },
     { key: 'pos', label: '포지션', get: (i) => POS_ORDER.indexOf(byId.get(i.playerId)?.position), sort: false, render: (i) => h('span', { class: 'pos' }, byId.get(i.playerId)?.position ?? '-') },
     { key: 'part', label: '부위', get: (i) => i.part, sort: false },
     { key: 'left', label: '결장', get: (i) => i.left, sort: false, render: (i) => injuryTag(i) },

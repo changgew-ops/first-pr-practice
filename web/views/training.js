@@ -1,5 +1,6 @@
 // 훈련: 선수마다 집중해서 키울 능력치를 정한다. 정규리그 중 일정 간격마다 훈련이 반영된다.
 import { h, ovrChip, link, bar, tabs, STAT_LABELS, STAT_KEYS } from '../lib/dom.js';
+import { playerLink } from '../lib/player-info.js';
 import { autoFocus } from '../../src/training.mjs';
 import { previewGain, projectGain, remainingCheckpoints } from '../lib/training-view.js';
 import { renderProgramPanel } from './training-program.js';
@@ -26,7 +27,7 @@ export function render(ctx) {
       const select = h('select', { 'aria-label': `${p.name} 훈련 집중 능력치`, disabled: !live, onchange: (e) => { s.setFocus(p.id, e.target.value); draw(); } },
         STAT_KEYS.map((k) => h('option', { value: k, selected: k === stat }, `${STAT_LABELS[k]} ${p.stats[k]}${k === rec ? ' · 추천' : ''}`)));
       return h('tr', { class: 'tr-row' },
-        h('td', link(`#/player/${p.id}`, p.name)), h('td', { class: 'tr-hide-sm' }, h('span', { class: 'pos' }, p.position)), h('td', { class: 'r tr-hide-sm' }, p.age),
+        h('td', playerLink(p.id, p.name)), h('td', { class: 'tr-hide-sm' }, h('span', { class: 'pos' }, p.position)), h('td', { class: 'r tr-hide-sm' }, p.age),
         h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r tr-hide-sm' }, p.potential),
         h('td', select, stat === rec ? null : h('div', { class: 'note tr-rec' }, `추천: ${STAT_LABELS[rec]}`)),
         h('td', { class: 'tr-once' }, h('b', fmt(pg.perSession)), h('div', { class: 'tr-prog', title: `다음 +1까지 ${(pg.progress * 100).toFixed(0)}%` }, bar(pg.progress, 1))),

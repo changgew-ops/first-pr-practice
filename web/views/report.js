@@ -1,4 +1,5 @@
 import { h, table, tabs, link, stat, ovrChip, eok, signed, ORIGIN_LABEL } from '../lib/dom.js';
+import { playerLink } from '../lib/player-info.js';
 import { bracket, awardsCard } from './league.js';
 import { logToHistory, seasonLabel, playerById } from '../lib/game.js';
 import { partsBar, PART_LABEL } from './finance-card.js';
@@ -38,8 +39,8 @@ export function render(ctx, [tabParam]) {
         partsBar(led.parts),
         h('p', { class: 'note fin-foot' }, '2023-24 KBL 집계(관중·입장 수입)에 맞춘 추정 모델입니다. 중계권·스폰서·굿즈는 자료가 없어 지은 값이고, 객단가·중계권·스폰서·굿즈는 해마다 물가만큼 오릅니다.')) : null,
       h('div', { class: 'grid g2' },
-        h('div', { class: 'card' }, h('h3', '우리 팀 득점 순위'), h('ul', { class: 'plain' }, mineLeaders.slice(0, 6).map((l) => h('li', h('span', { class: 'grow' }, link(`#/player/${l.id}`, l.name)), h('span', { class: 'note' }, `${l.ppg.toFixed(1)}점 ${l.rpg.toFixed(1)}리 ${l.apg.toFixed(1)}어`))))),
-        h('div', { class: 'card' }, h('h3', '리그 득점 TOP 5'), h('ul', { class: 'plain' }, [...e.leaders].sort((a, b) => b.ppg - a.ppg).slice(0, 5).map((l, i) => h('li', h('span', { class: 'note' }, i + 1), h('span', { class: 'grow' }, link(`#/player/${l.id}`, l.name), ' ', h('span', { class: 'note' }, ctx.name(l.teamId))), h('b', l.ppg.toFixed(1))))))),
+        h('div', { class: 'card' }, h('h3', '우리 팀 득점 순위'), h('ul', { class: 'plain' }, mineLeaders.slice(0, 6).map((l) => h('li', h('span', { class: 'grow' }, playerLink(l.id, l.name)), h('span', { class: 'note' }, `${l.ppg.toFixed(1)}점 ${l.rpg.toFixed(1)}리 ${l.apg.toFixed(1)}어`))))),
+        h('div', { class: 'card' }, h('h3', '리그 득점 TOP 5'), h('ul', { class: 'plain' }, [...e.leaders].sort((a, b) => b.ppg - a.ppg).slice(0, 5).map((l, i) => h('li', h('span', { class: 'note' }, i + 1), h('span', { class: 'grow' }, playerLink(l.id, l.name), ' ', h('span', { class: 'note' }, ctx.name(l.teamId))), h('b', l.ppg.toFixed(1))))))),
       awardsCard(ctx, e, my),
       h('div', { class: 'card' }, h('h3', '플레이오프'), bracket(ctx, logToHistory(e), my)),
       h('p', {}, link(`#/league/${e.season}`, `${e.season} 순위표 보기 →`)));
@@ -60,7 +61,7 @@ export function render(ctx, [tabParam]) {
     return h('div', { class: 'stack' },
       h('div', { class: 'callout' }, `${next} 시즌을 앞둔 오프시즌입니다. 지금은 자동 단장이 트레이드·재계약·FA·드래프트를 처리했습니다. 직접 결정하는 화면은 다음 단계에서 붙입니다.`),
       h('div', { class: 'grid g2' },
-        h('div', { class: 'card' }, h('h3', '성장·노쇠 (우리 팀)'), list(r.progressed.mine, '변화 없음', (x) => h('li', h('span', { class: 'grow' }, link(`#/player/${x.id}`, x.name), playerById(game, x.id)?.teamId === my ? '' : h('span', { class: 'tag', style: { marginLeft: '6px' } }, '오프시즌에 팀을 떠남')), h('span', { class: 'note' }, `${x.from} → ${x.to}`), h('b', { class: x.delta > 0 ? 'good' : x.delta < 0 ? 'bad' : 'muted' }, signed(x.delta))))),
+        h('div', { class: 'card' }, h('h3', '성장·노쇠 (우리 팀)'), list(r.progressed.mine, '변화 없음', (x) => h('li', h('span', { class: 'grow' }, playerLink(x.id, x.name), playerById(game, x.id)?.teamId === my ? '' : h('span', { class: 'tag', style: { marginLeft: '6px' } }, '오프시즌에 팀을 떠남')), h('span', { class: 'note' }, `${x.from} → ${x.to}`), h('b', { class: x.delta > 0 ? 'good' : x.delta < 0 ? 'bad' : 'muted' }, signed(x.delta))))),
         h('div', { class: 'card' }, h('h3', '리그 성장 TOP · 하락 TOP'), h('div', { class: 'grid g2' }, h('ul', { class: 'plain' }, r.progressed.risers.slice(0, 5).map((x) => h('li', h('span', { class: 'grow' }, x.name), h('b', { class: 'good' }, signed(x.delta))))), h('ul', { class: 'plain' }, r.progressed.fallers.slice(0, 5).map((x) => h('li', h('span', { class: 'grow' }, x.name), h('b', { class: 'bad' }, signed(x.delta)))))))),
       h('div', { class: 'grid g2' },
         h('div', { class: 'card' }, h('h3', `재계약 (${r.renewed.filter((x) => x.teamId === my).length})`), list(r.renewed.filter((x) => x.teamId === my), '재계약 없음', (x) => h('li', h('span', { class: 'grow' }, x.name), h('span', { class: 'note' }, `${x.years}년${x.salaryEok != null ? ` · ${eok(x.salaryEok)}` : ''}`))),
@@ -72,7 +73,7 @@ export function render(ctx, [tabParam]) {
       h('div', { class: 'card' }, h('h3', '트레이드'), list(r.trades, '성사된 트레이드 없음', (t) => h('li', h('span', { class: 'grow' }, h('b', ctx.name(t.with)), h('span', { class: 'note' }, ' 와 트레이드 · '), '받은 선수 ', (t.received ?? []).map(name).join(', '), h('span', { class: 'note' }, ' · '), '보낸 선수 ', (t.sent ?? []).map(name).join(', ')))), h('p', { class: 'note' }, `이번 오프시즌에 받은 제안 ${r.tradeOffers.length}건 (자동 단장이 판단)`)),
       r.breakthroughs?.length ? h('div', { class: 'card' }, h('h3', `깨달음 (${r.breakthroughs.length}명)`),
         h('p', { class: 'note' }, '오프시즌에 낮은 확률로 한 능력치가 크게 오른 선수입니다. 우리 팀 선수를 먼저 보여 줍니다.'),
-        h('ul', { class: 'plain' }, [...r.breakthroughs].sort((a, b) => (b.teamId === my) - (a.teamId === my) || (b.to - b.from) - (a.to - a.from)).slice(0, 8).map((x) => h('li', h('span', { class: 'grow' }, link(`#/player/${x.id}`, x.name), x.teamId === my ? '' : h('span', { class: 'note' }, ` · ${ctx.name(x.teamId)}`)), h('span', { class: 'note' }, `${BT_LABEL[x.stat] ?? x.stat} ${x.from} → `), h('b', { class: 'good' }, x.to), h('span', { class: 'good' }, ` (+${x.to - x.from})`))))) : null,
+        h('ul', { class: 'plain' }, [...r.breakthroughs].sort((a, b) => (b.teamId === my) - (a.teamId === my) || (b.to - b.from) - (a.to - a.from)).slice(0, 8).map((x) => h('li', h('span', { class: 'grow' }, playerLink(x.id, x.name), x.teamId === my ? '' : h('span', { class: 'note' }, ` · ${ctx.name(x.teamId)}`)), h('span', { class: 'note' }, `${BT_LABEL[x.stat] ?? x.stat} ${x.from} → `), h('b', { class: 'good' }, x.to), h('span', { class: 'good' }, ` (+${x.to - x.from})`))))) : null,
       (r.waived?.length || r.extended?.length || r.extendRefused?.length) ? h('div', { class: 'card' }, h('h3', '방출·연장 계약'),
         h('ul', { class: 'plain' },
           ...(r.waived ?? []).map((x) => h('li', h('span', { class: 'grow' }, `${x.name} 방출`), h('span', { class: 'note' }, `남은 ${x.yearsLeft}년 × ${eok(x.salaryEok)} = 해지 비용 ${eok(x.severance)}`))),

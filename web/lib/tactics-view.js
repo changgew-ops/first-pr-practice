@@ -1,5 +1,6 @@
 // 전술·컨디션·감독 화면 부품. 규칙은 src/tactics.mjs·condition.mjs·coaching.mjs, 상태는 세션(session.tactics / conditions / rest / staff)이 준다.
 import { h } from './dom.js';
+import { playerLink } from './player-info.js';
 import { recommend, BALANCED, tacticList } from '../../src/tactics.mjs';
 import { condTier } from '../../src/condition.mjs';
 import { ROLE_LABEL } from '../../src/coaching.mjs';
@@ -77,7 +78,7 @@ export function conditionCard(ctx, roster, { onChange = null } = {}) {
     h('p', { class: 'note' }, `뛴 시간만큼 컨디션이 떨어지고 하루가 지나면 조금 회복합니다. ${rules.condition.thr} 아래로 내려간 선수가 많이 뛰면 팀 기대 득점이 깎이고, 컨디션이 낮을수록 부상 확률도 오릅니다. 쉬게 하면 그 경기만 라인업에서 빠지고(건강한 선수가 대신 섭니다) 하루 지나면 지정이 풀립니다.`),
     tired.length ? h('p', { class: 'cond-alert' }, `지친 선수: ${tired.slice(0, 4).map((p) => `${p.name} ${Math.round(condOf(p.id))}`).join(', ')}`) : h('p', { class: 'note' }, '지금은 지친 선수가 없습니다.'),
     h('div', { class: 'cond-grid' }, lowest.map((p) => h('div', { class: `cond-row ${rest.has(p.id) ? 'resting' : ''}` },
-      h('a', { href: `#/player/${p.id}`, class: 'cond-name' }, p.name), h('span', { class: 'pos' }, p.position), condBar(condOf(p.id)),
+      playerLink(p.id, p.name, { cls: 'cond-name' }), h('span', { class: 'pos' }, p.position), condBar(condOf(p.id)),
       h('button', { type: 'button', class: `btn ${rest.has(p.id) ? 'primary' : 'ghost'} cond-rest`, disabled: !live, 'aria-pressed': String(rest.has(p.id)), onclick: () => toggle(p.id) }, rest.has(p.id) ? '쉬는 중' : '이번 경기 쉬기')))),
     h('p', { class: 'note' }, '컨디션이 낮은 순 상위 10명입니다. 전체 선수의 컨디션은 로스터 화면에서 볼 수 있습니다.'));
 }

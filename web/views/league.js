@@ -2,6 +2,7 @@
 // 기록의 출처는 시즌마다 다르다: 진행 중인 시즌은 게임의 박스스코어 집계, 게임에서 끝난 시즌은 저장된 선수 줄,
 // 실제 시즌(1997~2025-26)은 공식 기록(data/history/stats/<시즌>.json, 선택한 시즌만 불러온다).
 import { h, table, tabs, link } from '../lib/dom.js';
+import { playerLink } from '../lib/player-info.js';
 import { fullHistory, liveSeason, logToHistory, playerById } from '../lib/game.js';
 import { awardRows } from '../../src/awards.mjs';
 import { colorOf } from '../lib/team-ui.js';
@@ -82,7 +83,7 @@ function playersPanel(ctx, rec, season, kind, my, nameFor) {
         h('header', {}, h('h3', LEADER_TITLE[key]), h('button', { type: 'button', class: 'lg-more', onclick: () => { cfg.key = key; cfg.dir = -1; ui.shown = PAGE; drawTable(); tableHost.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }, '전체 ▸')),
         h('ol', top.map(({ rec: p, value }, i) => h('li', { class: `${p.teamIds?.includes(my) || p.teamId === my ? 'me' : ''}` },
           h('span', { class: `lg-rank r${i + 1}` }, i + 1),
-          h('span', { class: 'lg-who' }, p.id && ids.has(p.id) ? link(`#/player/${p.id}`, p.name) : h('span', p.name), h('small', {}, dot(p.teamId), nameFor(p.teamId))),
+          h('span', { class: 'lg-who' }, p.id && ids.has(p.id) ? playerLink(p.id, p.name) : h('span', p.name), h('small', {}, dot(p.teamId), nameFor(p.teamId))),
           h('b', { class: 'lg-val' }, formatValue(value, key, mode())),
           h('span', { class: 'lg-meter', 'aria-hidden': 'true' }, h('i', { style: { width: `${Math.max(4, (value / max) * 100)}%`, background: colorOf(p.teamId) } }))))));
     }));
@@ -107,7 +108,7 @@ function playersPanel(ctx, rec, season, kind, my, nameFor) {
       const mine = p.teamIds?.includes(my) || p.teamId === my;
       return h('tr', { class: mine ? 'me' : '' },
         h('td', { class: `lg-c-rank r ${sortedByStat && i < 3 ? `m${i + 1}` : ''}` }, i + 1),
-        h('td', { class: 'lg-c-name' }, p.id && ids.has(p.id) ? link(`#/player/${p.id}`, p.name) : h('span', p.name), p.card ? h('em', { class: 'lg-card' }, p.card) : null),
+        h('td', { class: 'lg-c-name' }, p.id && ids.has(p.id) ? playerLink(p.id, p.name) : h('span', p.name), p.card ? h('em', { class: 'lg-card' }, p.card) : null),
         h('td', { class: 'lg-c-team' }, h('span', { class: 'lg-team' }, dot(p.teamId), nameFor(p.teamId)), (p.teamIds?.length ?? 0) > 1 ? h('em', { class: 'lg-multi', title: p.teamIds.map(nameFor).join(' → ') }, `+${p.teamIds.length - 1}`) : null),
         cols.map((c) => {
           const v = valueOf(p, c.key, mode());
@@ -251,7 +252,7 @@ export function awardsCard(ctx, entry, my, { title = '시즌 어워드' } = {}) 
     const name = (entry.playerNames?.[id] ?? id).replace(/^(?:\d{2}|97초)\s+/u, '');
     const stat = awardStat(entry, key, id);
     return h('li', { class: `aw-who ${teamId === my ? 'aw-mine' : ''}` },
-      playerById(ctx.game, id) ? link(`#/player/${id}`, name) : h('span', name),
+      playerById(ctx.game, id) ? playerLink(id, name) : h('span', name),
       teamId ? h('small', { class: 'note' }, ctx.name(teamId)) : null, stat ? h('small', { class: 'aw-stat' }, stat) : null);
   };
   return h('div', { class: 'card aw-card' }, h('h3', title),

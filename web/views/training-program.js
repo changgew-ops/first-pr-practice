@@ -1,5 +1,6 @@
 // 훈련 화면의 "육성 프로그램" 구역: 유망주를 D리그(교육리그)나 해외 유학에 보낸다. 규칙은 src/devprogram.mjs(수치는 게임용 가정).
 import { h, ovrChip, link, bar, STAT_LABELS, STAT_KEYS, eok } from '../lib/dom.js';
+import { playerLink } from '../lib/player-info.js';
 import { autoFocus } from '../../src/training.mjs';
 import { checkpointsPerSeason, preview, programCost, PROGRAM_LABEL } from '../../src/devprogram.mjs';
 import { remainingCheckpoints } from '../lib/training-view.js';
@@ -55,7 +56,7 @@ function currentCards(ctx, s, redraw) {
         : x.locked ? h('button', { class: 'btn', disabled: true, title: '시즌이 끝나면 돌아옵니다' }, '시즌 끝까지 유학 중')
           : h('button', { class: 'btn', disabled: !live, onclick: () => { const r = s.setProgram(p.id, null); ctx.toast(r.ok ? `${p.name} 선수의 유학을 취소했습니다` : r.errors[0]); redraw(); } }, '유학 취소(시즌 전)');
       return h('div', { class: 'dp-cur' },
-        h('div', { class: 'row between' }, h('div', link(`#/player/${p.id}`, p.name), ' ', h('span', { class: 'pos' }, p.position), ' ', h('span', { class: 'note' }, `${p.age}세`)), h('span', { class: `tag ${x.program === 'abroad' ? 'hot' : ''}` }, PROGRAM_LABEL[x.program])),
+        h('div', { class: 'row between' }, h('div', playerLink(p.id, p.name), ' ', h('span', { class: 'pos' }, p.position), ' ', h('span', { class: 'note' }, `${p.age}세`)), h('span', { class: `tag ${x.program === 'abroad' ? 'hot' : ''}` }, PROGRAM_LABEL[x.program])),
         h('div', { class: 'dp-kv' },
           h('span', '집중'), select,
           h('span', 'OVR'), h('b', x.program === 'dleague' ? `${x.before.ovr} → ${p.ovr}${grown ? ` (${grown > 0 ? '+' : ''}${grown})` : ''}` : `${x.before.ovr} (돌아올 때 확정)`),
@@ -86,7 +87,7 @@ function candidates(ctx, s, redraw) {
         STAT_KEYS.map((k) => h('option', { value: k, selected: k === stat }, `${STAT_LABELS[k]} ${p.stats[k]}${k === autoFocus(p) ? ' · 추천' : ''}`)));
       const send = (program) => () => { const r = s.setProgram(p.id, program, stat); ctx.toast(r.ok ? `${p.name} 선수를 ${PROGRAM_LABEL[program]}에 보냈습니다` : r.errors[0]); redraw(); };
       return h('div', { class: 'dp-cand' },
-        h('div', { class: 'dp-head' }, link(`#/player/${p.id}`, p.name), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`), ovrChip(p),
+        h('div', { class: 'dp-head' }, playerLink(p.id, p.name), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`), ovrChip(p),
           h('span', { class: 'note' }, `POT ${p.potential} (여유 ${p.potential - p.ovr})`), h('span', { class: 'note' }, `계약 ${p.contract.yearsLeft}년 · ${eok(p.contract.salaryEok)}`)),
         h('div', { class: 'dp-pick' }, h('span', { class: 'note' }, '집중'), select),
         h('div', { class: 'dp-opts' },

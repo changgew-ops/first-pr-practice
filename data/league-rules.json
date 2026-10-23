@@ -475,7 +475,7 @@
         "결승": 3,
         "우승": 6
       },
-      "foreignUsdToEok": 1.4e-05,
+      "foreignUsdToEok": 0.000014,
       "prestigeSpread": 0.25
     },
     "asiaTradable": false
@@ -1126,5 +1126,18 @@
     "restBelow": 50,
     "lowCond": 45,
     "minHealthyAfterRest": 9
+  },
+  "preview": {
+    "_note": "시즌 프리뷰(src/preview.mjs, 게임용 가정). 시즌 시작 전력에서 가벼운 몬테카를로로 우승·플레이오프 확률을 구한다. gameTemp: 전력 1점 차이당 한 경기 승리 확률의 로지스틱 기울기(30시즌 시뮬에서 전력→승률 회귀로 맞춘 값), strengthSd: 시즌 중 변수(부상·영입·훈련)를 반영하는 팀 전력 잡음, mcSeasons: 몬테카를로 시즌 수, margin·minOdds: 가상 배당 = 1/(확률×(1+margin)), 하한 minOdds(게임 안의 점수일 뿐 돈을 걸 수 없다), reporters: 가상 기자 수(최대 12), reporterNoise: 기자별 평가 잡음, playoffPicks: 기자가 꼽는 플레이오프 진출 팀 수, costWeight: 예상 베스트 지표에서 코스트 가중, rookieAge: 주목할 신인 나이 상한.",
+    "mcSeasons": 400,
+    "gameTemp": 0.25,
+    "strengthSd": 1.5,
+    "margin": 0.15,
+    "minOdds": 1.2,
+    "reporters": 11,
+    "reporterNoise": 0.6,
+    "playoffPicks": 6,
+    "costWeight": 0.15,
+    "rookieAge": 22
   }
 }

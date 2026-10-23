@@ -24,3 +24,4 @@
 .pi-foot { display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 12px; flex-wrap: wrap; }
 @media (max-width: 480px) { .pi-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pi-stat { grid-template-columns: 4.6em minmax(0, 1fr) 1.8em 2.4em; } }
 @media (max-width: 480px) { .pi-fact { flex-direction: column; gap: 2px; } .pi-fact > span:last-child { text-align: left; } }
+td .pl-name, .lg-who .pl-name, .plain .pl-name, .cond-name.pl-name { font-weight: inherit; }

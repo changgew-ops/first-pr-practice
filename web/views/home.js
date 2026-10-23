@@ -1,4 +1,5 @@
 import { h, stat, bar, ovrChip, rankChart, link, eok, table } from '../lib/dom.js';
+import { playerLink } from '../lib/player-info.js';
 import { seasonLabel, powerRanking, payrollInfo, prestigeOf, fundsOf, rosterOf, fullHistory } from '../lib/game.js';
 import { colorOf } from '../lib/team-ui.js';
 import { getNews } from '../lib/news-view.js';
@@ -94,7 +95,7 @@ export function render(ctx) {
       h('p', { class: 'note', style: { margin: '6px 0 0' } }, capNote(data, pay.cap, game.stage === 'offseason'))),
     h('div', { class: 'grid split' },
       h('div', { class: 'card' }, h('h2', '최근 순위 흐름'), rankChart(recentRanks(hist, my)), h('p', { class: 'note' }, '노란 점은 우승. 2019-20은 코로나로 조기 종료, 이후 시즌은 게임에서 진행한 결과가 이어집니다.')),
-      h('div', { class: 'card' }, h('h2', '핵심 선수'), h('ul', { class: 'plain' }, top.map((p) => h('li', ovrChip(p), h('span', { class: 'grow' }, link(`#/player/${p.id}`, p.name)), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`)))), h('p', {}, link('#/roster', '로스터 전체 보기 →')))),
+      h('div', { class: 'card' }, h('h2', '핵심 선수'), h('ul', { class: 'plain' }, top.map((p) => h('li', ovrChip(p), h('span', { class: 'grow' }, playerLink(p.id, p.name)), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`)))), h('p', {}, link('#/roster', '로스터 전체 보기 →')))),
     h('div', { class: 'card flush' }, h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '리그 전력')),
       table(ranking, [
         { key: 'rank', label: '순위', get: (r) => r.rank, sort: false },

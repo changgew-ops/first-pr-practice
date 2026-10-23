@@ -1,6 +1,7 @@
 // 시즌 허브: 정규리그를 하루씩·한 바퀴씩·끝까지 진행하고, 플레이오프를 라운드씩 진행하고, 시즌을 마무리한다.
 // 세션 단계(stage)에 따라 regular / playoffs / offseason 화면을 보여 준다. 스타일은 css/season.css (sv- 접두).
 import { h, table, stat, link } from '../lib/dom.js';
+import { playerLink } from '../lib/player-info.js';
 import { teamPower, seasonLabel } from '../lib/game.js';
 import { injuryCard } from '../lib/injury-view.js';
 import {
@@ -157,7 +158,7 @@ const BOX_COLS = [['minutes', '분'], ['points', '득점'], ['rebounds', '리바
 function boxTable(ctx, teamId, pts, lines, won) {
   const tot = { ...boxTotals(lines), turnovers: lines.reduce((s, p) => s + (p.turnovers ?? 0), 0), fouls: lines.reduce((s, p) => s + (p.fouls ?? 0), 0) };
   const row = (p, total) => h('tr', { class: total ? 'total' : '' },
-    h('td', total ? h('b', '합계') : p.id ? link(`#/player/${p.id}`, p.name) : p.name),
+    h('td', total ? h('b', '합계') : p.id ? playerLink(p.id, p.name) : p.name),
     ...BOX_COLS.map(([k]) => h('td', { class: 'r' }, k === 'minutes' ? Math.round(p[k]) : p[k] ?? '-')),
     h('td', { class: 'r' }, `${p.fgm}/${p.fga}`), h('td', { class: 'r' }, `${p.tpm}/${p.tpa}`), h('td', { class: 'r' }, `${p.ftm}/${p.fta}`));
   return h('div', { class: 'sv-box-team' },

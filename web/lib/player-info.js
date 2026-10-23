@@ -78,6 +78,13 @@ export function nameButton(p, { ctx = bound, extra = [], cls = '' } = {}) {
   }, p.name);
 }
 
+/** id로 선수 이름 버튼: 지금 리그에 있는 선수면 정보 창 버튼, 아니면(은퇴·리그 밖) 예전처럼 선수 페이지 링크. 기록 표·결산 같은 곳에서 쓴다 */
+export function playerLink(id, name, { ctx = bound, cls = '' } = {}) {
+  const p = ctx?.session?.players?.find((x) => x.id === id);
+  if (!p) return h('a', { href: `#/player/${id}`, class: cls || null }, name);
+  return nameButton({ ...p, name: name ?? p.name }, { ctx, cls });
+}
+
 let open = null;
 
 /** 정보 창 열기. extra: [라벨, 값(문자열 또는 노드)][] — 화면이 덧붙이는 상황 정보 */

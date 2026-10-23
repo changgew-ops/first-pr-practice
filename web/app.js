@@ -11,6 +11,7 @@ import { h } from './lib/dom.js';
 import { loadData, profileIndex } from './lib/data.js';
 import { listSlots, readSlot, writeSlot, latestSlot, configureSave } from './lib/save.js';
 import { Session } from './lib/session.js';
+import { bindInfoCtx } from './lib/player-info.js';
 import { seasonLabel } from './lib/game.js';
 import { colorOf } from './lib/team-ui.js';
 import * as titleView from './views/title.js';
@@ -51,6 +52,7 @@ const SAVE_NAV = ['save', '저장'];
 const NAV = [...NAV_GROUPS.flatMap((g) => g.items), SAVE_NAV];
 
 const ctx = { data: null, profiles: null, session: null };
+bindInfoCtx(ctx); // 어느 화면에서든 선수 이름 버튼(playerLink)이 정보 창을 열 수 있게
 Object.defineProperty(ctx, 'game', { get: () => ctx.session?.view });
 ctx.team = (id) => ctx.data.teams.find((t) => t.id === id);
 ctx.name = (id) => ctx.team(id)?.name ?? id;
