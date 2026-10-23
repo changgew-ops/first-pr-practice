@@ -13,6 +13,7 @@ export function render(ctx, pending) {
   const { rules } = ctx.data;
   const my = ctx.session.managerId;
   const fa = rules.transactions.freeAgency;
+  const pastCard = (p) => p.card && p.card.season !== rules.season; // 시작 로스터의 카드(26)는 과거 카드가 아니다
   const ectx = buildCtx(ctx.session.game.seasonEnd, ctx.data.teams.length, rules, my);
   const roster = domesticOf(state.players, my);
   const pool = fullPool.filter((p) => p.origin === 'domestic');
@@ -70,7 +71,7 @@ export function render(ctx, pending) {
         h('div', { class: 'os-resign-head' }, h('label', { for: `fa-on-${p.id}`, class: 'os-check' }, on, playerLine(p)), badge),
         h('div', { class: 'os-resign-body' },
           h('div', { class: 'os-fact' }, h('span', { class: 'note' }, 'POT'), h('b', p.potential)),
-          h('div', { class: 'os-fact', title: p.card ? '과거 시즌 기록으로 만든 카드: 그 시즌 능력치 그대로이고 원소속 구단이 없어 FA 보상이 없습니다' : null }, h('span', { class: 'note' }, p.card ? '과거 카드' : '이전'), h('b', p.card ? `${p.card.season}${p.card.teamId ? ` ${ctx.name(p.card.teamId)}` : ''}` : p.prevTeamId ? ctx.name(p.prevTeamId) : '-')),
+          h('div', { class: 'os-fact', title: pastCard(p) ? '과거 시즌 기록으로 만든 카드: 그 시즌 능력치 그대로이고 원소속 구단이 없어 FA 보상이 없습니다' : null }, h('span', { class: 'note' }, pastCard(p) ? '과거 카드' : '이전'), h('b', pastCard(p) ? `${p.card.season}${p.card.teamId ? ` ${ctx.name(p.card.teamId)}` : ''}` : p.prevTeamId ? ctx.name(p.prevTeamId) : '-')),
           h('div', { class: 'os-fact' }, h('span', { class: 'note' }, '요구 연봉'), h('b', eok(demandNow(p)))),
           h('div', { class: 'os-fact', title: '다른 구단에서 온 FA를 영입하면 원소속 구단에 내는 보상' }, h('span', { class: 'note' }, 'FA 보상'), h('b', comp && p.prevTeamId !== my ? `${comp.grade ?? ''}등급 ${eok(comp.cashOnly)}${comp.withPlayerCash != null ? ` / 선수+${eok(comp.withPlayerCash)}` : ''}` : '없음')),
           h('label', { class: 'os-input', for: `fa-sal-${p.id}` }, h('span', { class: 'note' }, '제안 연봉(억)'), salary),
