@@ -31,7 +31,7 @@ export function render(ctx) {
   const randomSeed = () => Math.floor(Math.random() * 1e6);
 
   const name = h('input', { type: 'text', id: 'gm-name', maxlength: 10, placeholder: '예: 김가온', autocomplete: 'off', 'aria-describedby': 'gm-hint' });
-  const seed = h('input', { type: 'number', id: 'seed', value: randomSeed(), min: 0, max: 999999999, 'aria-label': '게임 번호(시드)', 'aria-describedby': 'seed-help' });
+  const seed = { value: randomSeed() }; // 게임 번호(시드)는 늘 무작위로 정한다. 화면에는 단장증 번호로만 보인다
   let teamId = null;
 
   // 단장증 미리보기
@@ -60,7 +60,6 @@ export function render(ctx) {
     } else goNote.textContent = '구단 카드를 눌러 선택하세요. 전력이 약한 구단일수록 어렵지만 키울 재미가 큽니다.';
   };
   name.addEventListener('input', sync);
-  seed.addEventListener('input', sync);
   go.addEventListener('click', () => ctx.newGame({ gmName: name.value.trim(), teamId, seed: Number(seed.value) }));
 
   const suggest = h('button', { type: 'button', class: 'btn', onclick: () => {
@@ -84,17 +83,6 @@ export function render(ctx) {
     return card;
   }));
 
-  const seedBox = h('details', { class: 'st-seed' },
-    h('summary', '게임 번호(시드) · 고급'),
-    h('div', { class: 'st-seed-body' },
-      h('p', { id: 'seed-help' }, '이 번호 하나로 시즌의 \'운\'(경기 결과, 신인 후보, 협상 반응)이 정해집니다. 같은 번호에서 같은 선택을 하면 똑같은 결과가 나오므로, 친구와 같은 번호로 시작해 비교하거나 실패한 시즌을 같은 조건으로 다시 해 볼 때 씁니다. 모르면 그대로 두면 됩니다.'),
-      h('div', { class: 'row' }, seed,
-        h('button', { type: 'button', class: 'btn', onclick: () => { seed.value = randomSeed(); sync(); } }, '🎲 새 번호'),
-        h('button', { type: 'button', class: 'btn', onclick: async (e) => {
-          const b = e.currentTarget;
-          try { await navigator.clipboard.writeText(String(seed.value)); b.textContent = '복사했습니다'; setTimeout(() => { b.textContent = '복사'; }, 1400); } catch { /* 복사 권한이 없으면 조용히 넘어간다 */ }
-        } }, '복사'))));
-
   sync();
   return { title: '새 게임', body: h('div', { class: 'intro stack st-wrap' },
     h('button', { class: 'btn ghost', onclick: () => ctx.go('intro') }, '← 소개'),
@@ -106,6 +94,5 @@ export function render(ctx) {
         h('p', { class: 'note', id: 'gm-hint' }, '게임 안에서 "OOO 단장"으로 불립니다. 나중에 바꿀 수 없습니다.')),
       idCard),
     h('div', h('h2', '맡을 구단'), h('p', { class: 'note' }, '전력이 약한 구단일수록 어렵지만 키울 재미가 큽니다. 순서는 지금 로스터의 전력순입니다. 난이도와 성격 태그는 전력 순위·캡 여유·전통 점수에서 자동으로 뽑은 안내입니다.'), list),
-    seedBox,
     h('div', { class: 'card st-go' }, goNote, h('div', { class: 'row' }, go))) };
 }
