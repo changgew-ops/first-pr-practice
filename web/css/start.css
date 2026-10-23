@@ -95,3 +95,8 @@
 @keyframes ts-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(150,205,255,0), 0 0 16px rgba(150,205,255,.25); } 50% { box-shadow: 0 0 0 2px rgba(190,225,255,.55), 0 0 34px rgba(150,205,255,.6); } }
 .ts-note { position: absolute; left: 33.9%; width: 32.7%; top: 95.2%; margin: 0; text-align: center; font-size: clamp(.6rem, 1.5vw, .85rem); line-height: 1.2; color: rgba(244,241,232,.88); text-shadow: 0 1px 4px rgba(0,0,0,.9); }
 @media (prefers-reduced-motion: reduce) { .ts-hot-push { animation: none; } }
+
+/* 소개 화면: 그림 세 장 + 건너뛰기 */
+.ts-stage:focus { outline: none; }
+.ts-skip { position: fixed; right: 12px; bottom: 10px; background: rgba(8,14,32,.6); color: rgba(244,241,232,.8); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; padding: 4px 10px; font: inherit; font-size: .78rem; cursor: pointer; }
+.ts-skip:hover, .ts-skip:focus-visible { background: rgba(255,255,255,.18); color: #fff; }
