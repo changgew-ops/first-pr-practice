@@ -1,33 +1,86 @@
-/* 라인업 편성 화면 */
+/* 라인업 편성 화면: 코트 + 벤치 + 선수 목록 */
 .lineup-view .lu-msg { font-size: .9rem; padding: 8px 12px; border-radius: 8px; background: var(--panel-2); border-left: 3px solid var(--good); }
 .lineup-view .lu-errors { border-left: 3px solid var(--bad); background: var(--panel-2); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: .9rem; }
 .lineup-view .lu-errors ul { margin: 6px 0 0; padding-left: 18px; }
 .lineup-view .lu-cmp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .lineup-view .lu-big { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-.lineup-view .lu-pos { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
-.lineup-view .lu-poschip { font-size: .8rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
-.lineup-view .lu-poschip.has { background: color-mix(in srgb, var(--good) 18%, transparent); border-color: var(--good); }
-.lineup-view .lu-poschip.none { color: var(--muted); }
 .lineup-view .lu-actions { display: flex; flex-direction: column; gap: 10px; }
 .lineup-view .lu-state { display: flex; flex-wrap: wrap; gap: 6px; }
 .lineup-view .tag.warn { color: var(--warn); border-color: var(--warn); }
+
+/* 코트: 가로세로 비율을 고정하고 자리는 % 좌표로 올린다 */
+.lineup-view .lu-courtcard { display: flex; flex-direction: column; gap: 10px; }
+.lineup-view .lu-courthead { flex-wrap: wrap; gap: 8px; }
+.lineup-view .lu-court { position: relative; width: 100%; max-width: 720px; margin: 0 auto; aspect-ratio: 500 / 440; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #c58b4e; }
+.lineup-view .lu-courtsvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lineup-view .lu-floor { fill: #c58b4e; }
+.lineup-view .lu-paint { fill: color-mix(in srgb, var(--team) 40%, #c58b4e); }
+.lineup-view .lu-slot { font: inherit; color: var(--text); text-align: center; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-user-drag: none; touch-action: manipulation; }
+.lineup-view .lu-slot[disabled] { cursor: not-allowed; opacity: .7; }
+.lineup-view .lu-seat { position: absolute; transform: translate(-50%, -50%); width: clamp(76px, 21%, 138px); background: color-mix(in srgb, var(--panel) 94%, transparent); border: 2px solid var(--line); border-radius: 10px; padding: 6px 6px 7px; display: flex; flex-direction: column; align-items: center; gap: 3px; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.lineup-view .lu-seat.empty { background: color-mix(in srgb, var(--panel) 60%, transparent); border-style: dashed; color: var(--muted); }
+.lineup-view .lu-seat.fit-exact { border-color: var(--good); }
+.lineup-view .lu-seat.fit-near { border-color: var(--line); }
+.lineup-view .lu-seat.fit-off { border-color: var(--warn); }
+.lineup-view .lu-slot.selected { outline: 3px solid var(--focus); outline-offset: 2px; }
+.lineup-view .lu-slot:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.lineup-view .lu-slot.dragging { opacity: .4; }
+.lineup-view .lu-slot.drop-hot, .lineup-view .lu-outzone.drop-hot { box-shadow: 0 0 0 3px var(--accent); }
+.lineup-view .lu-seatpos { font-size: .7rem; font-weight: 800; letter-spacing: .04em; color: var(--muted); }
+.lineup-view .lu-seat .lu-seatpos { background: var(--team); color: var(--accent-ink); border-radius: 99px; padding: 0 8px; }
+.lineup-view .lu-name { font-weight: 700; font-size: .88rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lineup-view .lu-line { white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: .78rem; }
+.lineup-view .lu-cost { color: var(--muted); font-variant-numeric: tabular-nums; }
+.lineup-view .lu-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; min-height: 1em; }
+.lineup-view .lu-tag { font-size: .66rem; font-weight: 700; padding: 0 6px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); }
+.lineup-view .lu-tag.foreign { color: var(--focus); border-color: var(--focus); }
+.lineup-view .lu-tag.fit-off { color: var(--warn); border-color: var(--warn); }
+.lineup-view .lu-plus { font-size: 1.4rem; line-height: 1; color: var(--muted); }
+.lineup-view .lu-emptylabel { font-size: .74rem; }
+.lineup-view .lu-hint { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: .88rem; background: var(--panel-2); border-left: 3px solid var(--focus); border-radius: 0 8px 8px 0; padding: 8px 12px; min-height: 2.6em; }
+.lineup-view .lu-hint.quiet { border-left-color: var(--line); color: var(--muted); }
+.lineup-view .lu-hint .btn { padding: 4px 10px; font-size: .82rem; }
+.lineup-view .lu-benchtitle { margin: 6px 0 0; font-size: .95rem; }
+.lineup-view .lu-bench { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+.lineup-view .lu-bslot { background: var(--panel-2); border: 2px solid var(--line); border-radius: 10px; padding: 6px 4px 7px; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
+.lineup-view .lu-bslot.empty { border-style: dashed; color: var(--muted); }
+.lineup-view .lu-bslot .lu-seatpos { font-size: .66rem; }
+.lineup-view .lu-outzone { border: 2px dashed var(--line); border-radius: 8px; padding: 6px 10px; font-size: .78rem; color: var(--muted); text-align: center; }
 .lineup-view .lu-table td, .lineup-view .lu-table th { padding: 7px 10px; }
 .lineup-view .lu-row.starter td { background: color-mix(in srgb, var(--team) 14%, transparent); }
 .lineup-view .lu-row.bench td { background: color-mix(in srgb, var(--muted) 10%, transparent); }
-.lineup-view .lu-segs { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-.lineup-view .lu-seg { background: var(--panel-2); border: 0; border-right: 1px solid var(--line); padding: 5px 11px; font-size: .84rem; font-weight: 600; color: var(--muted); cursor: pointer; }
-.lineup-view .lu-seg:last-child { border-right: 0; }
-.lineup-view .lu-seg:hover:not([disabled]) { color: var(--text); }
-.lineup-view .lu-seg.on.starter { background: var(--team); color: var(--accent-ink); }
-.lineup-view .lu-seg.on.bench { background: var(--text); color: var(--bg); }
-.lineup-view .lu-seg.on.out { background: var(--line); color: var(--text); }
-.lineup-view .lu-seg[disabled] { cursor: not-allowed; opacity: .6; }
-@media (max-width: 560px) {
-  .lineup-view .lu-cmp-grid { grid-template-columns: 1fr; }
-  .lineup-view .lu-seg { padding: 7px 9px; }
+.lineup-view .lu-row.picked td { background: color-mix(in srgb, var(--focus) 22%, transparent); }
+.lineup-view .lu-role { font-size: .82rem; font-weight: 600; }
+.lineup-view .lu-role.out { color: var(--muted); font-weight: 500; }
+.lineup-view .lu-rowbtns { display: flex; gap: 6px; }
+.lineup-view .lu-rowbtns .btn { padding: 5px 10px; font-size: .82rem; }
+.lineup-view .lu-pickbtn.on { background: var(--focus); color: #fff; border-color: transparent; }
+.lineup-view .lu-row .lu-tag { margin-left: 4px; }
+.lu-ghost { position: fixed; z-index: 1000; pointer-events: none; transform: translate(-50%, -50%) !important; opacity: .92; box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.lu-ghost.lu-seat, .lu-ghost.lu-bslot { position: fixed; background: var(--panel); border: 2px solid var(--focus); border-radius: 10px; padding: 6px; display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text); }
+tr.lu-ghost { display: table; background: var(--panel); border: 2px solid var(--focus); width: auto !important; }
+/* 넓은 화면: 코트 옆에 선수 목록을 붙여 끌어 놓기가 한 화면 안에서 되게 한다 */
+@media (min-width: 1180px) {
+  .lineup-view .lu-split { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .lineup-view .lu-listcard { position: sticky; top: 12px; }
+  .lineup-view .lu-listscroll { max-height: calc(100vh - 150px); overflow: auto; }
+  .lineup-view .lu-hide-md { display: none; }
 }
-@media (max-width: 560px) { .lineup-view .lu-hide-sm { display: none; } }
+.lineup-view .lu-split { display: flex; flex-direction: column; gap: 16px; }
+@media (min-width: 1180px) { .lineup-view .lu-split { display: grid; } }
 @media (max-width: 560px) {
-  .lineup-view .lu-table td, .lineup-view .lu-table th { padding: 7px 5px; }
-  .lineup-view .lu-seg { padding: 7px 6px; font-size: .76rem; }
+  .lineup-view .lu-bench { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
+  .lineup-view .lu-cmp-grid { grid-template-columns: 1fr; }
+  .lineup-view .lu-seat { width: clamp(66px, 23%, 96px); padding: 4px 3px 5px; border-width: 2px; }
+  .lineup-view .lu-name { font-size: .72rem; }
+  .lineup-view .lu-line { font-size: .68rem; gap: 3px; }
+  .lineup-view .lu-line .ovr { padding: 0 4px; min-width: 1.9em; }
+  .lineup-view .lu-seatpos { font-size: .62rem; }
+  .lineup-view .lu-tag { font-size: .58rem; padding: 0 4px; }
+  .lineup-view .lu-emptylabel { display: none; }
+  .lineup-view .lu-hide-sm { display: none; }
+  .lineup-view .lu-table td, .lineup-view .lu-table th { padding: 6px 4px; font-size: .84rem; }
+  .lineup-view .lu-rowbtns { flex-direction: column; }
+  .lineup-view .lu-rowbtns .btn { padding: 4px 8px; font-size: .78rem; }
+  .lineup-view .lu-outzone { display: none; }
 }

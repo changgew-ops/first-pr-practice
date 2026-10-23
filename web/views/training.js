@@ -1,8 +1,10 @@
 // 훈련: 선수마다 집중해서 키울 능력치를 정한다. 정규리그 중 일정 간격마다 훈련이 반영된다.
-import { h, ovrChip, link, bar, STAT_LABELS, STAT_KEYS } from '../lib/dom.js';
+import { h, ovrChip, link, bar, tabs, STAT_LABELS, STAT_KEYS } from '../lib/dom.js';
 import { autoFocus } from '../../src/training.mjs';
 import { previewGain, projectGain, remainingCheckpoints } from '../lib/training-view.js';
+import { renderProgramPanel } from './training-program.js';
 
+let tab = 'plan'; // 'plan' | 'program' (화면을 다시 열어도 마지막 탭을 기억한다)
 const fmt = (v) => (v <= 0 ? '+0' : v < 0.1 ? `+${v.toFixed(2)}` : `+${v.toFixed(1)}`);
 
 export function render(ctx) {
@@ -11,10 +13,11 @@ export function render(ctx) {
   const cfg = rules.training;
   const every = rules.ratingModel.checkpointDays;
   const left = s.stage === 'regular' ? remainingCheckpoints(s.day, s.totalDays, every) : 0;
-  const mine = s.players.filter((p) => s.focus.has(p.id)).sort((a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id));
   const host = h('div', { class: 'stack' });
+  const wrap = h('div', { class: 'stack' });
 
   const draw = () => {
+    const mine = s.players.filter((p) => s.focus.has(p.id)).sort((a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id));
     const rows = mine.map((p) => {
       const stat = s.focus.get(p.id);
       const rec = autoFocus(p);
@@ -46,7 +49,14 @@ export function render(ctx) {
           h('tbody', rows)) : h('p', { class: 'muted pad' }, '훈련을 지정할 수 있는 선수가 없습니다.'))),
       h('p', { class: 'note' }, `훈련 1회 예상은 한 번 훈련에서 평균적으로 오르는 능력치(경험치 ÷ 임계값)이고, 아래 막대는 다음 +1까지의 진행입니다. 시즌 끝까지는 남은 ${left}번 훈련을 모두 반영한 예상입니다. 시즌 중 경기 기록에 따른 능력치 갱신은 별도로 반영됩니다.`)].filter(Boolean));
   };
-  draw();
+  const show = () => {
+    const on = s.programs.length;
+    if (tab === 'plan') draw();
+    wrap.replaceChildren(
+      tabs([['plan', '훈련 계획'], ['program', `육성 프로그램${on ? ` (${on})` : ''}`]], tab, (k) => { tab = k; show(); }),
+      tab === 'plan' ? host : renderProgramPanel(ctx, show));
+  };
+  show();
   return { title: '훈련', body: h('div', { class: 'stack training-view' },
-    h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '훈련'), h('h1', '훈련 계획'))), host) };
+    h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '훈련'), h('h1', '훈련 계획'))), wrap) };
 }

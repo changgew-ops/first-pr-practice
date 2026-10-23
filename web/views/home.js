@@ -1,6 +1,8 @@
 import { h, stat, bar, ovrChip, rankChart, link, eok, table } from '../lib/dom.js';
 import { seasonLabel, powerRanking, payrollInfo, prestigeOf, fundsOf, rosterOf, fullHistory } from '../lib/game.js';
 import { colorOf } from '../lib/team-ui.js';
+import { getNews } from '../lib/news-view.js';
+import { moodCard } from './news.js';
 
 export function recentRanks(hist, teamId, n = 16) {
   return hist.seasons.slice(-n).map((s) => {
@@ -9,7 +11,7 @@ export function recentRanks(hist, teamId, n = 16) {
   });
 }
 
-const PENDING = { trade: '트레이드 제안', resign: '재계약 협상', freeAgency: 'FA 영입', compensation: 'FA 보상 선택', draft: '신인 드래프트' };
+const PENDING = { trade: '트레이드 제안', resign: '재계약 협상', freeAgency: 'FA 영입', compensation: 'FA 보상 선택', draft: '신인 드래프트', foreign: '외국인 선수 영입' };
 
 /** 지금 단계에서 할 일을 알려 주는 카드: 시즌 시작 전 / 정규리그 중 / 플레이오프 / 오프시즌 */
 function heroCard(ctx, season, lastSeason, lastRow) {
@@ -20,7 +22,7 @@ function heroCard(ctx, season, lastSeason, lastRow) {
   if (s.stage === 'offseason') {
     const p = s.pending;
     title = `${season} 시즌 종료 · 오프시즌`;
-    text = p ? `지금 결정할 일: ${PENDING[p.kind] ?? p.kind}. 트레이드 → 재계약 → FA 5라운드 → 드래프트 순서로 진행됩니다.` : '오프시즌 정리 중입니다.';
+    text = p ? `지금 결정할 일: ${PENDING[p.kind] ?? p.kind}. 트레이드 → 재계약 → FA 5라운드 → 드래프트 → 외국인 영입 순서로 진행됩니다.` : '오프시즌 정리 중입니다.';
     actions = [go('offseason', '오프시즌 진행')];
   } else if (s.stage === 'playoffs') {
     const st = { alive: '우리 팀이 진출 중입니다', out: '우리 팀은 탈락했습니다', champion: '우리 팀이 우승했습니다', notQualified: '우리 팀은 플레이오프에 오르지 못했습니다' }[s.playoffStatus()];
@@ -38,6 +40,17 @@ function heroCard(ctx, season, lastSeason, lastRow) {
     actions = [go('season', next ? '시즌 계속' : '플레이오프로'), go('lineup', '라인업', false), go('training', '훈련', false)];
   }
   return h('div', { class: 'card hero' }, h('div', { class: 'row between' }, h('div', h('h2', title), h('p', { class: 'muted', style: { margin: 0, maxWidth: '62ch' } }, text)), h('div', { class: 'row' }, actions)));
+}
+
+/** 최근 뉴스 3건과 팬 심리. 뉴스 쪽에 문제가 생겨도 홈은 열리도록 감싼다 */
+function newsCard(ctx) {
+  try {
+    const news = getNews(ctx.session, ctx.data);
+    return h('div', { class: 'card news-home' },
+      h('div', h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, '최근 뉴스'), link('#/news', '뉴스 전체 →')),
+        h('ul', { style: { marginTop: '10px' } }, news.items.slice(0, 3).map((it) => h('li', h('span', { class: 'note' }, it.when), link('#/news', it.headline))))),
+      moodCard(news.mood, { compact: true }));
+  } catch (e) { console.error(e); return null; }
 }
 
 export function render(ctx) {
@@ -59,6 +72,7 @@ export function render(ctx) {
   const body = h('div', { class: 'stack' },
     h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, `${gm} 단장`), h('h1', team.name)))),
     heroCard(ctx, season, lastSeason, lastRow),
+    newsCard(ctx),
     h('div', { class: 'grid g4' },
       stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 전력 ${myPower.power.toFixed(1)}`),
       stat('국내 선수 연봉', eok(pay.domestic), `캡 ${eok(pay.cap, 0)}${pay.over ? ` · ${eok(pay.over)} 초과` : ` · 여유 ${eok(pay.cap - pay.domestic)}`}`),

@@ -6,14 +6,18 @@ const get = async (path) => {
   if (!res.ok) throw new Error(`${path}: ${res.status}`);
   return res;
 };
+import { expandCard } from '../../src/cards.mjs';
 const json = async (path) => (await get(path)).json();
 
 export async function loadData() {
-  const [rules, teams, players, seasons, franchises, profiles, careers] = await Promise.all([
+  const [rules, teams, players, seasons, franchises, profiles, careers, cardsDomestic, cardsForeign] = await Promise.all([
     json('league-rules.json'), json('teams.json'), json('players.json'),
-    json('history/seasons.json'), json('history/franchises.json'), json('players/profiles.json'), json('players/careers.json')
+    json('history/seasons.json'), json('history/franchises.json'), json('players/profiles.json'), json('players/careers.json'),
+    json('cards/domestic.json'), json('cards/foreign.json')
   ]);
-  return { rules, teams, players, history: { seasons, franchises }, profiles, careers };
+  // 시즌 카드(과거 시즌의 선수 시즌 하나 = 카드 한 장): 신인 드래프트와 외국인 영입 후보로 쓴다
+  const cards = { domestic: cardsDomestic.rows.map(expandCard), foreign: cardsForeign.rows.map(expandCard) };
+  return { rules, teams, players, history: { seasons, franchises }, profiles, careers, cards };
 }
 
 /** 선수 이름(또는 별칭)으로 찾는 실제 프로필 (생년월일·키·학교·KBL 경력). 없으면 undefined */

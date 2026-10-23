@@ -57,6 +57,11 @@ export function createManagerBot(teamId, rules, { tradeMargin = 1.05 } = {}) {
 
     compensation: () => ({ type: 'cash' }),
 
+    // 외국인 카드: AI와 같은 기준(OVR − 가격/5만 달러)으로 가장 좋은 후보
+    foreign({ candidates }) {
+      return [...candidates].sort((a, b) => (b.player.ovr - b.usd / 50000) - (a.player.ovr - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0]?.player.id;
+    },
+
     draft({ available, team }) {
       const mine = domesticOf([], team);
       return [...available].sort((a, b) => (b.potential * 0.6 + b.ovr * 0.4 + needBonus(mine, b.position)) - (a.potential * 0.6 + a.ovr * 0.4 + needBonus(mine, a.position)))[0]?.id;

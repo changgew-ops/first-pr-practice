@@ -1,1 +1,34 @@
-/* news 화면 스타일 (담당 에이전트가 채운다) */
+/* 뉴스·커뮤니티 화면(web/views/news.js)과 홈의 뉴스 카드. 색은 style.css의 토큰만 쓴다. */
+.news .news-disclaimer { margin: 0; }
+.news-mood { display: flex; flex-direction: column; gap: 8px; }
+.news-mood-label { font-weight: 800; }
+.news-mood-label.good { color: var(--good); } .news-mood-label.warn { color: var(--warn); } .news-mood-label.bad { color: var(--bad); }
+.news-bar { height: 10px; }
+.news-mood.good .news-bar i { background: var(--good); } .news-mood.warn .news-bar i { background: var(--warn); } .news-mood.bad .news-bar i { background: var(--bad); }
+.news-mood-desc { font-size: .92rem; }
+.news-spark { width: 120px; height: 28px; stroke: var(--muted); flex: none; }
+
+.news-feed { display: flex; flex-direction: column; gap: 8px; }
+.news-item { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.news-item.mine { box-shadow: inset 3px 0 0 var(--team); }
+.news-head { display: flex; flex-direction: column; gap: 4px; width: 100%; text-align: left; background: none; border: 0; padding: 12px 14px; color: var(--text); cursor: pointer; font: inherit; }
+.news-head:hover { background: var(--panel-2); }
+.news-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-size: .78rem; color: var(--muted); }
+.news-meta .dim { opacity: .6; }
+.news-title { font-weight: 700; font-size: 1.02rem; line-height: 1.4; overflow-wrap: anywhere; }
+.news-sub { font-size: .8rem; }
+.news-body { padding: 0 14px 14px; border-top: 1px dashed var(--line); }
+.news-body p { margin: 10px 0; overflow-wrap: anywhere; }
+.news-comments { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.news-comments li, .news-post { background: var(--panel-2); border-radius: 8px; padding: 8px 10px; font-size: .92rem; overflow-wrap: anywhere; }
+.news-c-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: .82rem; margin-bottom: 2px; }
+.news-votes { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+.news-board { display: flex; flex-direction: column; gap: 8px; }
+.news-ref { margin-top: 4px; }
+
+/* 홈 카드 */
+.news-home { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.news-home ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.news-home li a { color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
+.news-home li .note { display: block; }
+@media (max-width: 760px) { .news-home { grid-template-columns: minmax(0, 1fr); } }

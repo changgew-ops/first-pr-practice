@@ -11,6 +11,8 @@ import { initialFunds, settleSeason } from './funds.mjs';
 import { calcOvr, calcCost } from './rating.mjs';
 import { STAT_KEYS } from './rating.mjs';
 import { validateTrade, executeTrade, generateOffers, proposeTrade } from './trade.mjs';
+import { mulberry32, hashString } from './rng.mjs';
+import { eligibility, dleagueSessions, abroadGrowth, programCost, checkpointsPerSeason, PROGRAMS } from './devprogram.mjs';
 
 function withStats(p, stats) {
   const ovr = calcOvr(p.position, stats);
@@ -38,6 +40,9 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const totals = new Map();
   const focus = new Map(manager ? players.filter((p) => p.teamId === manager).map((p) => [p.id, autoFocus(p)]) : []);
   let lineup = null; // 단장의 직접 편성 { starters: [id], bench: [id] } (없으면 자동)
+  // 육성 프로그램(D리그·유학) 중인 선수. 명단(players)에서 빠져 있다가 소환·시즌 종료에 돌아온다 (src/devprogram.mjs)
+  const away = new Map(); // playerId → { program, stat, fromDay, player, before }
+  const devDone = []; // 끝난 D리그 파견 기록
 
   const applyUpdates = () => {
     if (!inSeasonUpdates) return;
@@ -46,6 +51,9 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   };
   const applyTraining = () => {
     if (!manager) return;
+    for (const [id, a] of away) { // D리그: 경험치 배수. 유학은 시즌 종료 때 한꺼번에 반영한다
+      if (a.program === 'dleague') away.set(id, { ...a, player: trainPlayer(a.player, a.stat, dleagueSessions(rules), rules) });
+    }
     players = players.map((p) => {
       if (p.teamId !== manager || !focus.has(p.id)) return p;
       const trained = trainPlayer(p, focus.get(p.id), rules.training.sessionsPerCheckpoint, rules);
@@ -91,6 +99,16 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     regular.setTeams(built.teams, built.baseline);
   };
 
+  // D리그 한 번의 파견을 마감한 기록(보고서 항목). 소환하거나 시즌이 끝날 때 만든다
+  const closeStint = (playerId, a) => {
+    const days = regular.day - a.fromDay;
+    return {
+      playerId, name: a.player.name, teamId: manager, program: 'dleague', stat: a.stat, days,
+      before: a.before, after: { ovr: a.player.ovr, potential: a.player.potential }, outcome: 'normal',
+      costEok: programCost('dleague', a.player, days, regular.schedule.length, rules)
+    };
+  };
+
   const initial = buildTeams();
   const regular = createRegularSeason(initial.teams, initial.baseline, rules.simulation, rng, {
     keepGames,
@@ -132,11 +150,60 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       regular.setTeams(built.teams, built.baseline);
       return { ok: true, errors: [] };
     },
-    /** 선수의 훈련 집중 능력치. 다음 훈련 시점부터 반영된다 */
+    /** 선수의 훈련 집중 능력치. 다음 훈련 시점부터 반영된다 (육성 프로그램 참가 중인 선수도 바꿀 수 있다) */
     setFocus(playerId, stat) {
       if (!STAT_KEYS.includes(stat)) throw new Error(`알 수 없는 능력치: ${stat}`);
+      if (away.has(playerId)) { away.set(playerId, { ...away.get(playerId), stat }); return; }
       if (!focus.has(playerId)) throw new Error('훈련을 지정할 수 있는 우리 구단 선수가 아닙니다');
       focus.set(playerId, stat);
+    },
+    /** 육성 프로그램 참가 중인 선수: [{ playerId, player(지금 상태), program, stat, fromDay, before, locked }] */
+    get programs() {
+      return [...away].map(([playerId, a]) => ({ playerId, player: a.player, program: a.program, stat: a.stat, fromDay: a.fromDay, before: a.before, locked: a.program === 'abroad' && regular.day > 0 }));
+    },
+    /** 이번 시즌 이미 끝난 D리그 파견(소환한 것) 기록 */
+    get programHistory() { return devDone.map((d) => ({ ...d })); },
+    /** 이 선수를 지금 프로그램에 보낼 수 있는지: { ok, reason } */
+    programCheck(playerId, program) {
+      if (!manager) return { ok: false, reason: '단장 구단이 없습니다' };
+      const p = players.find((x) => x.id === playerId && x.teamId === manager);
+      if (regular.done || playoffs) return { ok: false, reason: '정규리그가 끝나 보낼 수 없습니다' };
+      const mine = players.filter((x) => x.teamId === manager);
+      const base = eligibility(p, program, { day: regular.day, remainingRoster: mine.length - 1, activeCount: away.size, alreadyAway: away.has(playerId) }, rules);
+      if (!base.ok) return base;
+      try { buildLineup(mine.filter((x) => x.id !== playerId), rules, rules.simulation.benchWeight); } catch { return { ok: false, reason: '남는 선수로는 코스트 제한 안에서 라인업을 만들 수 없습니다' }; }
+      return base;
+    },
+    /**
+     * 육성 프로그램 파견(program: 'dleague' | 'abroad') 또는 소환(program이 null). 반환: { ok, errors }
+     * D리그는 정규리그 중 언제든 보내고 소환할 수 있다. 유학은 시즌 시작 전(0일차)에만 보내고 취소할 수 있으며, 시즌이 끝나야 돌아온다.
+     */
+    setProgram(playerId, program, stat = null) {
+      if (!manager) throw new Error('단장 구단이 없습니다');
+      if (stat && !STAT_KEYS.includes(stat)) throw new Error(`알 수 없는 능력치: ${stat}`);
+      if (!program) {
+        const a = away.get(playerId);
+        if (!a) return { ok: false, errors: ['육성 프로그램에 참가 중인 선수가 아닙니다'] };
+        if (a.program === 'abroad' && regular.day > 0) return { ok: false, errors: ['유학 중인 선수는 시즌이 끝날 때까지 돌아올 수 없습니다'] };
+        if (a.program === 'dleague') devDone.push(closeStint(playerId, a));
+        away.delete(playerId);
+        players = [...players, a.player];
+        focus.set(playerId, a.stat);
+        const built = buildTeams();
+        regular.setTeams(built.teams, built.baseline);
+        return { ok: true, errors: [] };
+      }
+      if (!PROGRAMS.includes(program)) throw new Error(`알 수 없는 프로그램: ${program}`);
+      const check = run.programCheck(playerId, program);
+      if (!check.ok) return { ok: false, errors: [check.reason] };
+      const p = players.find((x) => x.id === playerId);
+      away.set(playerId, { program, stat: stat ?? focus.get(playerId) ?? autoFocus(p), fromDay: regular.day, player: p, before: { ovr: p.ovr, potential: p.potential } });
+      players = players.filter((x) => x.id !== playerId);
+      focus.delete(playerId);
+      if (lineup && [...lineup.starters, ...lineup.bench].includes(playerId)) lineup = null;
+      const built = buildTeams();
+      regular.setTeams(built.teams, built.baseline);
+      return { ok: true, errors: [] };
     },
     /** 시즌 중 트레이드가 열려 있는지(마감일 전, 플레이오프 전) */
     get tradeOpen() { return tradeOpen(); },
@@ -177,9 +244,25 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const reg = regular.finish();
       const po = playoffs.result();
       applyUpdates();
+      // 육성 프로그램: D리그는 남은 파견을 마감하고, 유학은 선수별로 시드가 고정된 난수로 성장해 돌아온다
+      const report = [...devDone];
+      const returned = [];
+      const abroadIds = [];
+      for (const [id, a] of away) {
+        if (a.program === 'dleague') { report.push(closeStint(id, a)); returned.push(a.player); continue; }
+        const checkpoints = checkpointsPerSeason(regular.schedule.length, rules.ratingModel.checkpointDays);
+        const g = abroadGrowth(a.player, a.stat, checkpoints, rules, mulberry32(hashString(`dev:${league.season}:${id}`)));
+        returned.push(g.player); abroadIds.push(id);
+        report.push({
+          playerId: id, name: a.player.name, teamId: manager, program: 'abroad', stat: a.stat, days: regular.schedule.length,
+          before: a.before, after: { ovr: g.player.ovr, potential: g.player.potential }, outcome: g.outcome,
+          costEok: programCost('abroad', a.player, regular.schedule.length, regular.schedule.length, rules)
+        });
+      }
+      const dev = { teamId: manager, report, totalCost: Math.round(report.reduce((s, r) => s + r.costEok, 0) * 100) / 100, abroadIds };
       finished = {
         result: { standings: reg.standings, games: reg.games, playoffs: po, championId: po.championId, teams: reg.teams, baseline: reg.baseline },
-        totals, seasonPlayers: players, startStats: start
+        totals, seasonPlayers: returned.length ? [...players, ...returned] : players, startStats: start, dev
       };
       return finished;
     }
@@ -192,6 +275,14 @@ export function settleYear(league, finished, teamData, rules) {
   const { result, seasonPlayers } = finished;
   const label = `${league.season}-${String(league.season + 1).slice(2)}`;
   const legacy = league.legacy ? appendSeason(league.legacy, label, result, rules) : undefined;
-  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), seasonPlayers, result.standings, result.playoffs, teamData, rules, prestigeTable(league.legacy, rules)); // 수입은 이번 시즌 이전의 전통으로
+  // 유학 중이던 선수는 등록 명단 밖이라 캡·연봉 지출에서 빠지고, 대신 프로그램 비용(유학비 + 연봉의 일부)을 낸다
+  const { dev } = finished;
+  const payPlayers = dev?.abroadIds?.length ? seasonPlayers.filter((p) => !dev.abroadIds.includes(p.id)) : seasonPlayers;
+  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), payPlayers, result.standings, result.playoffs, teamData, rules, prestigeTable(league.legacy, rules)); // 수입은 이번 시즌 이전의 전통으로
+  if (dev?.totalCost > 0) {
+    const t = dev.teamId, l = settled.ledger[t], round2 = (v) => Math.round(v * 100) / 100;
+    settled.funds[t] = round2(settled.funds[t] - dev.totalCost);
+    settled.ledger[t] = { ...l, program: dev.totalCost, net: round2(l.net - dev.totalCost) };
+  }
   return { league: { ...league, players: seasonPlayers, funds: settled.funds, ...(legacy ? { legacy } : {}) }, ledger: settled.ledger };
 }

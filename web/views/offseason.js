@@ -9,9 +9,10 @@ import * as resign from './offseason/resign.js';
 import * as fa from './offseason/fa.js';
 import * as comp from './offseason/comp.js';
 import * as draft from './offseason/draft.js';
+import * as foreign from './offseason/foreign.js';
 
-const VIEWS = { trade, resign, freeAgency: fa, compensation: comp, draft };
-const TITLE = { trade: '트레이드', resign: '재계약', freeAgency: 'FA', compensation: 'FA 보상', draft: '드래프트' };
+const VIEWS = { trade, resign, freeAgency: fa, compensation: comp, draft, foreign };
+const TITLE = { trade: '트레이드', resign: '재계약', freeAgency: 'FA', compensation: 'FA 보상', draft: '드래프트', foreign: '외국인 영입' };
 
 export function render(ctx) {
   const s = ctx.session;

@@ -1,1 +1,85 @@
-/* start 화면 스타일 (담당 에이전트가 채운다) */
+/* 소개·단장 취임 화면. 색은 style.css의 토큰(--panel, --line, --accent, --team …)을 따른다. */
+.st-wrap { max-width: 1040px; }
+.st-wrap .row { flex-wrap: wrap; }
+
+/* ---------- 소개 ---------- */
+.st-intro { display: flex; flex-direction: column; gap: 18px; padding: 18px; margin-top: 10px; overflow: hidden; }
+.st-top { gap: 10px; }
+.st-tabs { display: flex; gap: 6px; flex-wrap: wrap; min-width: 0; }
+.st-tab { display: inline-flex; align-items: center; gap: 8px; background: none; border: 1px solid var(--line); border-radius: 99px; padding: 6px 12px; color: var(--muted); font-weight: 600; font-size: .85rem; }
+.st-tab i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); flex: none; }
+.st-tab.on { color: var(--text); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.st-tab.on i { background: var(--accent); }
+.st-tab:focus-visible, .st-team:focus-visible, .st-seed summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.st-page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 26px; align-items: center; }
+.st-visual { border-radius: 12px; overflow: hidden; background: color-mix(in srgb, var(--accent) 6%, var(--panel-2)); border: 1px solid var(--line); line-height: 0; }
+.st-art { width: 100%; height: auto; display: block; }
+.st-kicker { color: var(--accent); font-weight: 700; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+.st-title { font-size: 1.9rem; margin: 4px 0 2px; letter-spacing: -.01em; }
+.st-sub { margin: 0 0 12px; color: var(--muted); }
+.st-copy { display: flex; flex-direction: column; gap: 12px; }
+.st-lead { margin: 0; font-size: 1.02rem; line-height: 1.6; }
+.st-chips, .st-duties, .st-flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.st-chip { display: flex; gap: 12px; align-items: flex-start; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; }
+.st-chip-ico { font-size: 1.3rem; line-height: 1.2; flex: none; }
+.st-chip b, .st-duties b, .st-flow b { display: block; font-size: .92rem; }
+.st-chip span:not(.st-chip-ico), .st-duties span, .st-flow span { color: var(--muted); font-size: .84rem; }
+.st-duties { grid-template-columns: 1fr 1fr; }
+.st-duties li { background: var(--panel-2); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; padding: 9px 12px; }
+.st-flow { counter-reset: step; position: relative; padding-left: 34px; gap: 0; }
+.st-flow::before { content: ""; position: absolute; left: 13px; top: 14px; bottom: 14px; width: 2px; background: var(--line); }
+.st-flow li { counter-increment: step; position: relative; padding: 7px 0 7px 4px; }
+.st-flow li::before { content: counter(step); position: absolute; left: -34px; top: 8px; width: 28px; height: 28px; border-radius: 50%; background: var(--panel); border: 2px solid var(--accent); color: var(--accent); font-weight: 800; font-size: .8rem; display: grid; place-items: center; }
+.st-flow li:last-child::before { background: var(--accent); color: var(--accent-ink); }
+
+/* 그림 색 */
+.c-floor { fill: #c58a4b; } .c-line { stroke: #fff8; } .c-card { fill: #1d2639; stroke: #fff4; stroke-width: 1.5; } .c-card.hot { fill: #232d47; stroke: var(--accent); stroke-width: 2.5; }
+.c-card-top { fill: #2c3855; } .c-card-top.hot { fill: var(--accent); } .c-t { fill: #fff; font: 700 8px system-ui, sans-serif; }
+.c-ph { fill: #3a4767; } .c-bar { fill: #7ee2b0; } .c-bar.b { fill: #7cb7ff; } .c-bar.c { fill: #f5c451; }
+.d-wall { fill: #25304a; } .d-frame { fill: #151b2b; } .d-board { fill: #1b2a3f; } .d-dot { fill: #7cb7ff; } .d-dot.b { fill: #ff7a1a; } .d-dot.c { fill: #3ecf8e; } .d-path { fill: none; stroke: #fff6; stroke-width: 1.5; }
+.d-desk { fill: #b88a5a; } .d-edge { fill: #d9b98c; } .d-mon { fill: #10151f; } .d-screen { fill: #16243a; } .d-court { fill: #c58a4b; } .d-row { fill: #2d3d5c; } .d-row.a { fill: #3ecf8e; } .d-row.b { fill: #f5c451; }
+.d-stand { fill: #2a3144; } .d-paper { fill: #f4f1e8; } .d-paper2 { fill: #e6e9f2; } .d-ln { fill: #9aa3b8; } .d-seal { fill: #d94c4c; } .d-mug { fill: #f7f8fb; } .d-mug-h { fill: none; stroke: #f7f8fb; stroke-width: 3; } .d-steam { fill: none; stroke: #fff9; stroke-width: 1.5; stroke-linecap: round; }
+.b-panel { fill: #1a2338; stroke: #fff2; } .b-h { fill: #fff; font: 700 10px system-ui, sans-serif; } .b-row { fill: #3a4767; } .b-row.in { fill: #7cb7ff; } .b-cut { stroke: #ff7a1a; stroke-dasharray: 4 3; } .b-ln { stroke: #fff8; stroke-width: 2; } .b-trophy { fill: #f5c451; }
+
+/* ---------- 단장 취임 ---------- */
+.st-hero h1 { margin: 0 0 4px; }
+.st-name { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 22px; align-items: center; }
+.st-name-form input { width: 100%; max-width: 280px; font-size: 1.1rem; padding: 9px 12px; background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px; }
+.st-name-form .row { gap: 8px; }
+.st-id { --team: var(--muted); border-radius: 12px; border: 1px solid var(--line); background: linear-gradient(160deg, var(--panel-2), var(--panel)); overflow: hidden; box-shadow: 0 6px 18px #0003; transform: rotate(-1.2deg); transition: border-color .2s; border-color: color-mix(in srgb, var(--team) 60%, var(--line)); }
+.st-id-band { display: flex; justify-content: space-between; background: var(--team); color: #fff; font-weight: 800; font-size: .72rem; letter-spacing: .12em; padding: 6px 14px; text-shadow: 0 1px 2px #0006; }
+.st-id-body { display: flex; gap: 14px; padding: 14px; align-items: center; }
+.st-id-photo { width: 64px; height: 76px; border-radius: 8px; background: var(--panel-2); border: 1px dashed var(--line); display: grid; place-items: center; flex: none; }
+.st-id-photo svg { width: 46px; fill: var(--muted); opacity: .6; }
+.st-id-name { font-size: 1.3rem; font-weight: 800; word-break: keep-all; }
+.st-id-name.empty { color: var(--muted); font-weight: 600; font-size: 1.05rem; }
+.st-id-team { color: var(--team); font-weight: 700; margin-top: 2px; }
+.st-id-no { color: var(--muted); font-size: .76rem; margin-top: 10px; font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+.st-teams { gap: 12px; }
+.st-team { cursor: pointer; position: relative; }
+.st-team[aria-pressed="true"] { border-color: var(--team); box-shadow: 0 0 0 2px var(--team); background: color-mix(in srgb, var(--team) 10%, var(--panel)); }
+.st-team[aria-pressed="true"]::after { content: "선택됨"; position: absolute; right: 12px; top: 12px; font-size: .7rem; font-weight: 800; color: #fff; background: var(--team); padding: 2px 8px; border-radius: 99px; }
+.st-team-head { display: flex; gap: 12px; align-items: center; }
+.st-emblem { width: 40px; height: 40px; border-radius: 50%; background: var(--team); color: #fff; font-weight: 800; font-size: 1.1rem; display: grid; place-items: center; flex: none; text-shadow: 0 1px 2px #0006; box-shadow: inset 0 0 0 3px #fff3; }
+.st-level { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--muted); }
+.st-stars { color: var(--warn); letter-spacing: 1px; font-size: .95rem; }
+.st-tags { display: flex; flex-wrap: wrap; gap: 5px; min-height: 22px; }
+.st-seed { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); padding: 12px 16px; }
+.st-seed summary { cursor: pointer; font-weight: 600; color: var(--muted); }
+.st-seed[open] summary { color: var(--text); }
+.st-seed-body { margin-top: 10px; display: grid; gap: 10px; }
+.st-seed-body p { margin: 0; line-height: 1.6; max-width: 70ch; }
+.st-seed input { width: 140px; padding: 8px 10px; background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px; font-variant-numeric: tabular-nums; }
+.st-go { position: sticky; bottom: 10px; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 -4px 18px #0004; }
+.st-go-note { margin: 0; flex: 1 1 280px; }
+
+@media (max-width: 760px) {
+  .st-page, .st-name { grid-template-columns: minmax(0, 1fr); }
+  .st-duties { grid-template-columns: minmax(0, 1fr); }
+  .st-title { font-size: 1.5rem; }
+  .st-id { transform: none; }
+  .st-tab span { display: none; }
+  .st-tab.on span { display: inline; }
+  .st-go .btn.primary { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .st-id { transition: none; } }

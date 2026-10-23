@@ -1,7 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { evalDraft, autoDraft, setRole, roleOf, sameDraft, prune, rosterOfTeam, powerOf } from '../web/lib/lineup-view.js';
+import {
+  evalDraft, autoDraft, setRole, roleOf, sameDraft, prune, rosterOfTeam, powerOf,
+  POSITIONS, seatFit, arrangeSeats, slotsFromDraft, draftFromSlots, sameArrangement, locate, placeInSlot, clearSlot, swapSlots, firstFreeSlot
+} from '../web/lib/lineup-view.js';
 import { remainingCheckpoints, previewGain, projectGain } from '../web/lib/training-view.js';
 import { Session } from '../web/lib/session.js';
 import { autoFocus } from '../src/training.mjs';
@@ -19,7 +22,7 @@ test('라인업: 자동 편성은 규칙에 맞고 평가가 오류 없이 완�
   assert.deepEqual(e.errors, []);
   assert.equal(e.complete, true);
   assert.ok(e.totalCost <= rules.lineup.costCap);
-  assert.equal(e.starters.length, 5); assert.equal(e.bench.length, 5);
+  assert.equal(e.starters.length, 5); assert.equal(e.bench.length, 7); // 엔트리 12명
   assert.ok(e.foreignStarters <= rules.foreignPlayers.onCourt);
   assert.equal(Object.values(e.positions).reduce((a, b) => a + b, 0), 5);
 });
@@ -33,10 +36,10 @@ test('라인업: 역할 바꾸기·되돌리기·중복·부족을 점검한다'
   assert.equal(roleOf(d, first), 'out');
   assert.ok(evalDraft(d, roster, rules).errors.some((m) => /스타팅은 5명/.test(m)));
   d = setRole(d, first, 'bench'); // 벤치로
-  assert.equal(roleOf(d, first), 'bench'); assert.equal(d.bench.length, 6);
-  assert.ok(evalDraft(d, roster, rules).errors.some((m) => /벤치는 5명/.test(m)));
+  assert.equal(roleOf(d, first), 'bench'); assert.equal(d.bench.length, 8);
+  assert.ok(evalDraft(d, roster, rules).errors.some((m) => /벤치는 7명/.test(m)));
   // 같은 선수가 스타팅·벤치 양쪽에 있는 draft는 중복 오류
-  const dup = { starters: d.starters, bench: [...d.bench.slice(0, 4), d.starters[0]] };
+  const dup = { starters: d.starters, bench: [...d.bench.slice(0, 6), d.starters[0]] };
   assert.ok(evalDraft(dup, roster, rules).errors.some((m) => /중복/.test(m)));
   assert.equal(sameDraft(autoDraft(roster, rules), autoDraft(roster, rules)), true);
   assert.deepEqual(prune({ starters: ['없는선수', first], bench: [] }, roster).starters, [first]);
@@ -45,13 +48,13 @@ test('라인업: 역할 바꾸기·되돌리기·중복·부족을 점검한다'
 test('라인업: 코스트 제한을 넘는 편성과 외국 선수 수 초과를 오류로 알린다', () => {
   const roster = rosterOfTeam(data.players, MY);
   const top = [...roster].sort((a, b) => b.cost - a.cost);
-  const d = { starters: top.slice(0, 5).map((p) => p.id), bench: top.slice(5, 10).map((p) => p.id) };
+  const d = { starters: top.slice(0, 5).map((p) => p.id), bench: top.slice(5, 12).map((p) => p.id) };
   const e = evalDraft(d, roster, rules);
   assert.ok(e.totalCost > rules.lineup.costCap || e.errors.length === 0);
   const foreigners = roster.filter((p) => p.origin === 'foreign');
   const others = roster.filter((p) => p.origin !== 'foreign');
   if (foreigners.length >= rules.foreignPlayers.onCourt + 1) return;
-  const many = { starters: [...foreigners.map((p) => p.id), ...others.map((p) => p.id)].slice(0, 5), bench: others.slice(3, 8).map((p) => p.id) };
+  const many = { starters: [...foreigners.map((p) => p.id), ...others.map((p) => p.id)].slice(0, 5), bench: others.slice(3, 10).map((p) => p.id) };
   assert.ok(evalDraft(many, roster, rules).foreignStarters <= foreigners.length);
 });
 
@@ -100,4 +103,68 @@ test('세션: 직접 편성과 훈련 지정이 시즌 진행에 반영된다 (�
   s.advance(20);
   const after = s.players.find((p) => p.id === young.id);
   assert.ok(after.xp?.[stat] !== undefined || after.stats[stat] >= young.stats[stat]);
+});
+
+test('코트: 포지션 자리 어울림과 자리 배치(arrangeSeats)', () => {
+  assert.equal(seatFit({ position: 'PG' }, 'PG'), 'exact');
+  assert.equal(seatFit({ position: 'SG' }, 'PG'), 'near');
+  assert.equal(seatFit({ position: 'C' }, 'PG'), 'off');
+  const mk = (id, position, ovr) => ({ id, position, ovr });
+  const five = [mk('c', 'C', 60), mk('pg', 'PG', 70), mk('sf', 'SF', 65), mk('pf', 'PF', 62), mk('sg', 'SG', 68)];
+  assert.deepEqual(arrangeSeats(five), ['pg', 'sg', 'sf', 'pf', 'c']); // 포지션이 다 맞는 배치
+  const twoGuards = [mk('a', 'PG', 70), mk('b', 'PG', 69), mk('c', 'C', 60), mk('d', 'PF', 62), mk('e', 'SF', 65)];
+  const seats = arrangeSeats(twoGuards);
+  assert.equal(seats.filter(Boolean).length, 5); assert.equal(new Set(seats).size, 5);
+  assert.equal(seats[0], 'a'); // 같은 점수면 OVR 높은 선수가 먼저 자리를 잡는다
+  assert.deepEqual(arrangeSeats([mk('x', 'C', 50)]), [null, null, null, null, 'x']);
+});
+
+test('코트: 자동 편성은 12명을 자리·벤치 칸에 앉히고 draft로 되돌려도 같다', () => {
+  const roster = rosterOfTeam(data.players, MY);
+  const auto = autoDraft(roster, rules);
+  const slots = slotsFromDraft(auto, roster, rules, { arrange: true });
+  assert.equal(slots.seats.length, 5); assert.equal(slots.bench.length, rules.lineup.bench);
+  assert.ok(slots.seats.every(Boolean) && slots.bench.every(Boolean));
+  const back = draftFromSlots(slots);
+  assert.equal(sameDraft(back, auto), true);
+  assert.deepEqual(evalDraft(back, roster, rules).errors, []);
+  // 자리 순서를 바꾸면 구성은 같아도 다른 배치
+  const swapped = swapSlots(slots, { area: 'seat', index: 0 }, { area: 'seat', index: 4 });
+  assert.equal(sameDraft(draftFromSlots(swapped), auto), true);
+  assert.equal(sameArrangement(draftFromSlots(swapped), back), false);
+  assert.equal(sameArrangement(draftFromSlots(slots), back), true);
+});
+
+test('코트: 칸에 넣기·바꾸기·비우기·빈 칸 찾기', () => {
+  const roster = rosterOfTeam(data.players, MY);
+  const slots = slotsFromDraft(autoDraft(roster, rules), roster, rules, { arrange: true });
+  const out = roster.find((p) => !locate(slots, p.id));
+  assert.ok(out, '제외 선수가 있어야 한다');
+  const seat0 = { area: 'seat', index: 0 };
+  const was = slots.seats[0];
+  const a = placeInSlot(slots, out.id, seat0); // 제외 선수를 넣으면 기존 선수가 밀려난다
+  assert.equal(a.seats[0], out.id); assert.equal(locate(a, was), null);
+  const benchId = slots.bench[2];
+  const b = placeInSlot(slots, benchId, seat0); // 벤치 선수를 스타팅 자리에 넣으면 서로 바뀐다
+  assert.equal(b.seats[0], benchId); assert.equal(b.bench[2], was);
+  const c = clearSlot(slots, seat0);
+  assert.equal(c.seats[0], null); assert.equal(draftFromSlots(c).starters.length, 4);
+  assert.ok(evalDraft(draftFromSlots(c), roster, rules).errors.some((m) => /스타팅은 5명/.test(m)));
+  assert.deepEqual(firstFreeSlot(c, roster.find((p) => p.id === was)), seat0); // 비어 있는 자리 중 포지션이 맞는 곳
+  assert.equal(firstFreeSlot(slots, out), null); // 빈 칸이 없으면 null
+  assert.equal(slots.seats[0], was); // 원본은 그대로
+  assert.equal(POSITIONS.length, 5);
+});
+
+test('출전 시간은 자리·목록 순서가 아니라 OVR 순서로 나눈다', async () => {
+  const { lineupMinutes } = await import('../src/game.mjs');
+  const mk = (id, ovr) => ({ id, ovr });
+  const sim = rules.simulation;
+  const l1 = { starters: [mk('a', 60), mk('b', 70), mk('c', 65), mk('d', 62), mk('e', 68)], bench: [1, 2, 3, 4, 5, 6, 7].map((i) => mk(`x${i}`, 50 + i)) };
+  const l2 = { starters: [...l1.starters].reverse(), bench: [...l1.bench].reverse() };
+  assert.deepEqual([...lineupMinutes(l1, sim)].sort(), [...lineupMinutes(l2, sim)].sort());
+  assert.equal(lineupMinutes(l1, sim).get('b'), sim.minutesStarters[0]); // 가장 높은 OVR이 가장 오래 뛴다
+  assert.equal(lineupMinutes(l1, sim).get('x7'), sim.minutesBench[0]);
+  assert.equal([...lineupMinutes(l1, sim).values()].reduce((a, b) => a + b, 0), 200);
+  assert.equal(sim.minutesBench.length, rules.lineup.bench);
 });

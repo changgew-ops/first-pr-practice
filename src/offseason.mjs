@@ -15,6 +15,8 @@ import { offerScore, capAllows, preferredYears, runFreeAgency } from './freeagen
 import { generateOffers, validateTrade, executeTrade, proposeTrade } from './trade.mjs';
 import { initialFunds } from './funds.mjs';
 import { prestigeTable } from './legacy.mjs';
+import { cardPlayer, cardOvr, weightedSample, ovrWeight, foreignPriceUsd } from './cards.mjs';
+import { mulberry32 } from './rng.mjs';
 
 const PHYSICAL = ['athletic', 'stamina'];
 const SKILLS = ['shooting', 'passing', 'defense', 'rebound'];
@@ -95,11 +97,16 @@ const round1 = (v) => Math.round(v * 10) / 10;
  *   policy.freeAgency({ round, pool, state, demandNow })  → [{ playerId, salaryEok, years }]
  *   policy.compensation({ player, options, state })       → { type: 'cash' } | { type: 'player', playerId }
  *   policy.draft({ available, team })                     → 지명할 신인 id
+ *   policy.foreign({ team, candidates, maxUsd })          → 영입할 외국인 카드 선수 id (candidates: [{ player, usd }])
+ * options.cards: { domestic, foreign } 시즌 카드(src/cards.mjs expandCard 객체 배열). 없으면 가상 신인·가상 외국인만 쓴다
  * 반환: { league: 다음 시즌 상태, report }
  */
 export function runOffseason(league, standings, teamData, rules, rng, options = {}) {
-  const { manager = null, policy = null } = options;
+  const { manager = null, policy = null, cards = null } = options;
   const off = rules.offseason;
+  const cardCfg = rules.cards;
+  const usedKbl = new Set(league.usedKbl ?? []);
+  const cardRng = cards && cardCfg ? mulberry32(Math.floor(rng() * 2 ** 32)) : null;
   const usedNames = new Set(league.usedNames);
   const f = createFactory(rng, rules, usedNames);
   let nextId = league.nextId;
@@ -236,7 +243,14 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   };
   const dr = off.draft;
   const prospects = [];
-  for (let i = 0; i < dr.poolSize; i++) {
+  // 시즌 카드: 과거 시즌의 국내 선수가 신인 후보로 섞여 나온다(이미 리그에 있거나 먼저 나온 선수는 제외, OVR이 높을수록 드물게)
+  const presentKbl = () => new Set([...players, ...pool].map((p) => p.kblId).filter(Boolean));
+  const draftCards = cardRng && cards.domestic
+    ? weightedSample(
+      cards.domestic.filter((c) => !presentKbl().has(c.kblId) && !usedKbl.has(c.kblId) && c.age != null && c.age <= cardCfg.draftAgeMax && c.min >= cardCfg.minMinutes),
+      (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.weightMid, weightScale: cardCfg.weightScale }), Math.min(cardCfg.draftPerYear, dr.poolSize), cardRng)
+    : [];
+  for (let i = 0; i < dr.poolSize - draftCards.length; i++) {
     const position = POSITIONS[i % POSITIONS.length];
     const age = f.randInt(dr.ageRange[0], dr.ageRange[1]);
     const target = clamp(dr.topOvr - i * dr.ovrDropPerPick + f.rand(-3, 3), 38, 66);
@@ -249,6 +263,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       contract: { yearsLeft: 0 }, assets: { portrait: null, model: null }
     });
   }
+  for (const c of draftCards) { usedKbl.add(c.kblId); prospects.push(cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge })); }
   const order = [...standings].reverse().map((s) => s.id);
   let pickNo = 0;
   for (let round = 0; round < dr.rounds; round++) {
@@ -273,7 +288,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       const [pick] = prospects.splice(idx, 1);
       const signed = { ...pick, teamId, number: freeNumber(teamId), contract: { salaryEok: salary, yearsLeft: rookieYears } };
       players.push(signed);
-      report.drafted.push({ id: signed.id, name: signed.name, teamId, pick: pickNo, ovr: signed.ovr, potential: signed.potential, position: signed.position });
+      report.drafted.push({ id: signed.id, name: signed.name, teamId, pick: pickNo, ovr: signed.ovr, potential: signed.potential, position: signed.position, ...(signed.card ? { card: signed.card.label } : {}) });
     }
   }
   pool.push(...prospects.map((p) => ({ ...p })));
@@ -323,6 +338,33 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   // 외국 선수: 부족하면 새로 영입 (리그 외국 선수 평균 수준, 샐러리캡 안에서)
   const foreignAll = players.filter((p) => p.origin === 'foreign');
   const foreignMean = foreignAll.length ? avg(foreignAll, (p) => p.ovr) : 70;
+  // 시즌 카드: 과거 시즌의 외국인 선수가 영입 후보로 나온다. 하위 팀부터 빈 자리를 고르고, 단장은 policy.foreign으로 직접 고른다.
+  if (cardRng && cards.foreign) {
+    const present = presentKbl();
+    const eligible = cards.foreign.filter((c) => !present.has(c.kblId) && !usedKbl.has(c.kblId) && c.min >= cardCfg.minMinutes);
+    const offered = weightedSample(eligible, (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.foreignWeightMid, weightScale: cardCfg.foreignWeightScale }), cardCfg.foreignPoolSize, cardRng)
+      .map((c) => cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge }));
+    for (const p of offered) usedKbl.add(p.kblId);
+    for (const teamId of [...standings].reverse().map((s) => s.id)) {
+      while (foreignOf(players, teamId).length < rules.roster.foreign && offered.length) {
+        const mine = foreignOf(players, teamId);
+        const left = rules.salaryCap.foreignUsdTotal - mine.reduce((s, p) => s + p.contract.salaryUsd, 0);
+        const slotsAfter = rules.roster.foreign - mine.length - 1;
+        const maxUsd = Math.min(rules.salaryCap.foreignUsdPerPlayer, left - slotsAfter * 200000);
+        const options = offered.map((p) => ({ player: p, usd: foreignPriceUsd(p.ovr, cardCfg.foreignUsd) })).filter((o) => o.usd <= maxUsd);
+        if (!options.length) break;
+        let chosen = null;
+        if (teamId === manager && policy?.foreign) chosen = options.find((o) => o.player.id === policy.foreign({ team: teamId, candidates: options, maxUsd })) ?? null;
+        chosen ??= [...options].sort((a, b) => (b.player.ovr - b.usd / 50000) - (a.player.ovr - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0];
+        offered.splice(offered.indexOf(chosen.player), 1);
+        const p = { ...chosen.player, teamId, number: freeNumber(teamId), contract: { salaryUsd: chosen.usd, yearsLeft: f.randInt(1, 2) } };
+        players.push(p);
+        report.foreignReplaced.push({ id: p.id, name: p.name, teamId, ovr: p.ovr, card: p.card.label });
+      }
+    }
+    // 고르지 않은 후보는 다시 나올 수 있다
+    for (const p of offered) usedKbl.delete(p.kblId);
+  }
   for (const team of teamData) {
     while (foreignOf(players, team.id).length < rules.roster.foreign) {
       const mine = foreignOf(players, team.id);
@@ -384,5 +426,5 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     .map((p) => { const q = { ...p }; for (const k of ['prevTeamId', 'prevSalaryEok', 'prevRank']) delete q[k]; return q; });
 
   report.after = { avgOvr: avg(players, (p) => p.ovr), avgAge: avg(players, (p) => p.age) };
-  return { league: { ...league, season: league.season + 1, players, freeAgents: pool, nextId, usedNames: [...usedNames], funds }, report };
+  return { league: { ...league, season: league.season + 1, players, freeAgents: pool, nextId, usedNames: [...usedNames], usedKbl: [...usedKbl], funds }, report };
 }

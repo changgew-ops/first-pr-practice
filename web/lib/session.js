@@ -3,7 +3,7 @@
 // 저장하는 상태(game)는 JSON이다:
 //   { version, seed, managerId, gm: { name }, league(시즌 시작 시점), log: [지난 시즌 결과], stage, day, actions, poRounds, seasonEnd, decisions }
 //   stage: 'regular'(day 0 = 시즌 시작 전) → 'playoffs' → 'offseason' → 다음 시즌 'regular'
-//   actions: 시즌 중 단장의 조작 [{ day, type: 'lineup', starters, bench } | { day, type: 'focus', playerId, stat }]
+//   actions: 시즌 중 단장의 조작 [{ day, type: 'lineup', starters, bench } | { day, type: 'focus', playerId, stat } | { day, type: 'trade', trade } | { day, type: 'program', playerId, program('dleague'|'abroad'|null), stat }]
 // 시즌 진행 상태(하루 결과·박스스코어·플레이오프 진행 등)는 저장하지 않는다. 시드와 조작 기록으로 처음부터 다시 돌려 복원한다(결정적이다).
 // 오프시즌도 같다: 지금까지 내린 결정(decisions)으로 같은 시드의 오프시즌을 다시 돌리고, 결정이 필요한 곳에서 멈춘다(pending).
 import { createLeague } from '../../src/league.mjs';
@@ -30,7 +30,7 @@ export class Session {
 
   static create(data, { managerId, gmName, seed = Date.now() % 1e9 }) {
     if (!data.teams.some((t) => t.id === managerId)) throw new Error(`알 수 없는 구단: ${managerId}`);
-    const base = createLeague(data.players, data.rules, { history: data.history, teamData: data.teams });
+    const base = createLeague(data.players, data.rules, { history: data.history, teamData: data.teams, labelStart: true });
     const game = {
       version: VERSION, seed, managerId, gm: { name: gmName?.trim() || '단장' },
       league: { ...base, funds: initialFunds(data.teams, data.rules) }, log: [],
@@ -96,6 +96,13 @@ export class Session {
   get lineup() { return this.run?.lineup ?? null; }
   /** 우리 선수들의 훈련 지정 Map(playerId → 능력치) */
   get focus() { return this.run?.focus ?? new Map(); }
+  /** 육성 프로그램(D리그·유학) 참가 중인 우리 선수: [{ playerId, player, program, stat, fromDay, before, locked }]. 이 선수들은 players(명단)에 없다 */
+  get programs() { return this.run?.programs ?? []; }
+  /** 이번 시즌 소환으로 끝난 D리그 파견 기록(보고서 항목과 같은 모양) */
+  get programHistory() { return this.run?.programHistory ?? []; }
+  /** 지난 시즌 육성 프로그램 결과 [{ playerId, name, program, before, after, … }] (시즌 종료 후·다음 시즌 초) */
+  get lastProgramReport() { return (this.state.stage === 'offseason' ? this.state.seasonEnd.entry : this.state.log.at(-1))?.devProgram ?? []; }
+  programCheck(playerId, program) { return this.run && this.state.stage === 'regular' ? this.run.programCheck(playerId, program) : { ok: false, reason: '지금은 보낼 수 없습니다' }; }
 
   // ---------- 시즌 진행 ----------
   /** 정규리그를 n일 진행(기본 1일). 반환: 날짜별 결과 배열 */
@@ -145,6 +152,7 @@ export class Session {
     const fin = this.run.finish();
     const settled = settleYear(this.state.league, fin, this.data.teams, this.data.rules);
     const entry = summarizeSeason(this.state, this.data, this.state.league.season, fin, settled.ledger);
+    if (fin.dev?.report.length) entry.devProgram = fin.dev.report; // 육성 프로그램 결과(뉴스·결산이 읽는다)
     this.state.seasonEnd = { league: settled.league, standings: fin.result.standings, entry };
     this.state.stage = 'offseason'; this.state.decisions = {};
     this.runOffseason();
@@ -165,6 +173,13 @@ export class Session {
     this.run.setFocus(playerId, stat);
     this.state.actions.push({ day: this.state.day, type: 'focus', playerId, stat });
     this.emit();
+  }
+  /** 육성 프로그램 파견('dleague' | 'abroad') 또는 소환(program이 null). 규칙에 맞지 않으면 { ok: false, errors } */
+  setProgram(playerId, program, stat = null) {
+    this.#need('regular');
+    const r = this.run.setProgram(playerId, program, stat);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'program', playerId, program: program ?? null, stat }); this.emit(); }
+    return r;
   }
 
   // ---------- 시즌 중 트레이드 ----------
@@ -214,7 +229,7 @@ export class Session {
     const g = this.state, { rules, teams } = this.data;
     const rng = mulberry32(hashString(`${g.seed}:${g.league.season}:off`));
     const res = runOffseasonWith(g.seasonEnd.league, g.seasonEnd.standings, teams, rules, rng, {
-      manager: g.managerId, decisions: g.decisions, fallback: createManagerBot(g.managerId, rules)
+      manager: g.managerId, decisions: g.decisions, fallback: createManagerBot(g.managerId, rules), cards: this.data.cards ?? null
     });
     this.offseason = res;
     if (res.done) this.completeOffseason(res);
@@ -260,6 +275,7 @@ export class Session {
         if (a.type === 'lineup') run.setLineup(a.starters ? { starters: a.starters, bench: a.bench } : null);
         else if (a.type === 'focus') run.setFocus(a.playerId, a.stat);
         else if (a.type === 'trade') run.executeTrade(a.trade);
+        else if (a.type === 'program') run.setProgram(a.playerId, a.program, a.stat);
       }
     };
     due();

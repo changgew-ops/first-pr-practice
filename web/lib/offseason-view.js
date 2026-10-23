@@ -13,7 +13,7 @@ export const round1 = (v) => Math.round(v * 10) / 10;
 export const STEPS = [
   { id: 'trade', label: '성장·트레이드' }, { id: 'resign', label: '재계약' },
   ...[1, 2, 3, 4, 5].map((r) => ({ id: `fa:${r}`, label: `FA ${r}라운드` })),
-  { id: 'draft', label: '드래프트' }
+  { id: 'draft', label: '드래프트' }, { id: 'foreign', label: '외국인 영입' }
 ];
 
 /** 지금 결정 키(pending.key·kind)와 지금까지의 결정으로 "현재 단계" id를 정한다. 보상 선택(comp)은 방금 제안한 FA 라운드에 속한다 */
@@ -21,6 +21,7 @@ export function currentStep(pending, decisions = {}) {
   if (pending.kind === 'trade') return 'trade';
   if (pending.kind === 'resign') return 'resign';
   if (pending.kind === 'draft') return 'draft';
+  if (pending.kind === 'foreign') return 'foreign';
   if (pending.kind === 'freeAgency') return pending.key;
   const rounds = Object.keys(decisions).filter((k) => k.startsWith('fa:')).map((k) => Number(k.slice(3)));
   return `fa:${Math.max(1, ...rounds)}`;

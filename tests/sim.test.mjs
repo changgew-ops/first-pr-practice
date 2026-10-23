@@ -26,11 +26,11 @@ function flatTeam(id, level) {
     id: `${id}-${i}`, name: `${id}${i}`, position: 'SF', origin: 'domestic', ovr: level, cost: 1,
     stats: { shooting: level, passing: level, defense: level, rebound: level, athletic: level, stamina: level }
   });
-  const all = Array.from({ length: 10 }, (_, i) => mk(i));
+  const all = Array.from({ length: 12 }, (_, i) => mk(i));
   return { id, lineup: { starters: all.slice(0, 5), bench: all.slice(5) } };
 }
 
-test('buildLineup: 모든 구단이 코스트 제한 안에서 5+5 라인업을 만든다', () => {
+test('buildLineup: 모든 구단이 코스트 제한 안에서 5+7 라인업을 만든다', () => {
   for (const t of teams) {
     const r = validateLineup(t.lineup.starters, t.lineup.bench, rules);
     assert.equal(r.ok, true, `${t.name}: ${r.errors.join(', ')}`);
@@ -45,7 +45,7 @@ test('buildLineup: 코스트 제한 안에서 OVR 상위 순 탐욕 편성보다
     for (const p of roster) {
       const left = rules.lineup.starters + rules.lineup.bench - picked.length - 1;
       const cheapestRest = roster.filter((x) => !picked.includes(x) && x !== p).map((x) => x.cost).sort((a, b) => a - b).slice(0, left).reduce((a, b) => a + b, 0);
-      if (picked.length < 10 && lineupCost(picked) + p.cost + cheapestRest <= rules.lineup.costCap) picked.push(p);
+      if (picked.length < rules.lineup.starters + rules.lineup.bench && lineupCost(picked) + p.cost + cheapestRest <= rules.lineup.costCap) picked.push(p);
     }
     const greedy = { starters: picked.slice(0, 5), bench: picked.slice(5) };
     assert.ok(score(t.lineup) >= score(greedy) - 1e-9, t.name);

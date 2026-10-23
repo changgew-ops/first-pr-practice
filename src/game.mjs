@@ -4,10 +4,13 @@ import { normal } from './rng.mjs';
 const offense = (p) => 0.5 * p.stats.shooting + 0.25 * p.stats.passing + 0.25 * p.stats.athletic;
 const defense = (p) => 0.5 * p.stats.defense + 0.3 * p.stats.rebound + 0.2 * p.stats.athletic;
 
+// 출전 시간: 스타팅·벤치 각각 OVR이 높은 순서로 minutesStarters/minutesBench를 나눠 준다.
+// 화면의 포지션 자리(PG·SG·SF·PF·C)나 목록 순서는 출전 시간에 영향이 없다.
+const byOvr = (players) => players.map((p, i) => [p, i]).sort((a, b) => b[0].ovr - a[0].ovr || a[1] - b[1]).map(([p]) => p);
 export function lineupMinutes(lineup, sim) {
   const minutes = new Map();
-  lineup.starters.forEach((p, i) => minutes.set(p.id, sim.minutesStarters[i] ?? 0));
-  lineup.bench.forEach((p, i) => minutes.set(p.id, sim.minutesBench[i] ?? 0));
+  byOvr(lineup.starters).forEach((p, i) => minutes.set(p.id, sim.minutesStarters[i] ?? 0));
+  byOvr(lineup.bench).forEach((p, i) => minutes.set(p.id, sim.minutesBench[i] ?? 0));
   return minutes;
 }
 

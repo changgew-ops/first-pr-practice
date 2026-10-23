@@ -50,10 +50,10 @@
     "max": 99
   },
   "lineup": {
-    "_note": "프야매식 코스트 제한. 수치는 초기값이며 시즌 카드 도입 후 재조정한다.",
+    "_note": "프야매식 코스트 제한. KBL 경기 엔트리는 12명(스타팅 5 + 벤치 7, 사용자가 알려 준 사실). 코스트 제한은 10명 기준 65였고, 12명으로 늘리며 같은 빡빡함을 유지하도록 75로 다시 정했다: 현재 선수 데이터에서 코스트 무시 최강 편성의 평균 코스트가 10명 62.5(캡 65, 비율 1.04), 12명 72.2(캡 75, 비율 1.04)이고, 캡에 걸리는 구단이 둘 다 2개, 캡 때문에 잃는 점수(스타팅 OVR 합 + 벤치 OVR 합 × benchWeight)의 평균이 0.49 대 0.45로 비슷하다. 수치는 초기값이며 시즌 카드 도입 후 재조정한다.",
     "starters": 5,
-    "bench": 5,
-    "costCap": 65
+    "bench": 7,
+    "costCap": 75
   },
   "simulation": {
     "_note": "경기 시뮬레이션 초기값. tools/run-season.mjs 로 여러 시즌을 돌려 보며 조정한다.",
@@ -70,11 +70,13 @@
       26
     ],
     "minutesBench": [
-      18,
-      16,
-      12,
+      17,
+      15,
+      11,
       8,
-      4
+      4,
+      2,
+      1
     ],
     "benchWeight": 0.45,
     "teamRebounds": 38,
@@ -368,5 +370,46 @@
     },
     "titlesCap": 10,
     "regularTitleWeight": 0.5
+  },
+  "devProgram": {
+    "_note": "유망주 육성 프로그램(D리그·해외 유학). KBL의 실제 D리그·유학 제도 세부는 확인하지 못한 게임용 가정이다. 모든 수치는 게임 균형용이며 공식 값이 아니다. trainingMultiplier는 정규리그 중 훈련 경험치에 곱하는 배수(유학은 시즌 전체를 한 번에 환산). 유학 중에는 KBL 등록 선수 명단(캡·정원·라인업)에서 빠지고 구단은 연봉의 salaryShare만 지출로 부담하며 유학비를 따로 낸다.",
+    "maxAge": 24,
+    "maxPlayers": 2,
+    "dleague": {
+      "trainingMultiplier": 1.3,
+      "costEok": 0.2
+    },
+    "abroad": {
+      "trainingMultiplier": 1.8,
+      "spread": 0.4,
+      "failChance": 0.12,
+      "failMultiplier": 0.3,
+      "potentialChance": 0.35,
+      "potentialGain": [
+        1,
+        3
+      ],
+      "feeEok": 0.8,
+      "salaryShare": 0.5,
+      "minContractYears": 2
+    }
+  },
+  "cards": {
+    "_note": "시즌 카드(공식 기록의 선수 시즌 하나 = 카드 한 장, src/cards.mjs). 게임용 값: 한 해 신인 후보 24명 중 draftPerYear장이 과거 시즌 국내 선수 카드, 외국인 영입 후보는 foreignPoolSize장. OVR이 weightMid를 넘으면 weightScale마다 e배씩 드물게 나온다. 카드의 잠재력은 그 시즌 OVR(성장 여지 없음). 나이를 모르는 카드는 unknownAge.",
+    "draftPerYear": 6,
+    "draftAgeMax": 28,
+    "minMinutes": 600,
+    "weightMid": 64,
+    "weightScale": 7,
+    "foreignPoolSize": 14,
+    "foreignWeightMid": 72,
+    "foreignWeightScale": 6,
+    "unknownAge": 27,
+    "foreignUsd": {
+      "min": 250000,
+      "max": 700000,
+      "ovrLow": 64,
+      "ovrHigh": 80
+    }
   }
 }

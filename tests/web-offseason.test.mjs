@@ -25,7 +25,7 @@ test('currentStep: 결정 종류와 지금까지의 결정으로 단계를 정�
   assert.equal(currentStep({ kind: 'freeAgency', key: 'fa:3' }), 'fa:3');
   assert.equal(currentStep({ kind: 'compensation', key: 'comp:0' }, { trade: {}, 'fa:1': [], 'fa:2': [] }), 'fa:2');
   assert.equal(currentStep({ kind: 'draft', key: 'draft:1' }), 'draft');
-  assert.deepEqual(STEPS.map((x) => x.id), ['trade', 'resign', 'fa:1', 'fa:2', 'fa:3', 'fa:4', 'fa:5', 'draft']);
+  assert.deepEqual(STEPS.map((x) => x.id), ['trade', 'resign', 'fa:1', 'fa:2', 'fa:3', 'fa:4', 'fa:5', 'draft', 'foreign']);
 });
 
 test('buildCtx: 엔진이 오프시즌 시작에 만드는 ctx와 같다', () => {

@@ -55,20 +55,20 @@ test('코스트 제한이 강팀에는 실제로 선택을 요구한다', () => 
 test('validateLineup: 정상, 인원 오류, 코스트 초과, 외국 선수 초과를 구분한다', () => {
   const mk = (id, cost, origin = 'domestic') => ({ id, cost, origin });
   const ok5 = [1, 2, 3, 4, 5].map((i) => mk(`s${i}`, 5));
-  const ok5b = [1, 2, 3, 4, 5].map((i) => mk(`b${i}`, 5));
+  const ok5b = [1, 2, 3, 4, 5, 6, 7].map((i) => mk(`b${i}`, 5));
   assert.equal(validateLineup(ok5, ok5b, rules).ok, true);
 
   assert.equal(validateLineup(ok5.slice(0, 4), ok5b, rules).ok, false);
 
-  // 합계 65는 제한과 같으므로 통과, 66은 초과
+  // 합계 75는 제한과 같으므로 통과, 76은 초과 (스타팅 8×5 + 벤치 5×7)
   const atCap = [1, 2, 3, 4, 5].map((i) => mk(`e${i}`, 8));
   const atCapResult = validateLineup(atCap, ok5b, rules);
-  assert.equal(atCapResult.totalCost, 65);
+  assert.equal(atCapResult.totalCost, rules.lineup.costCap);
   assert.equal(atCapResult.ok, true);
 
   const overCap = [mk('o1', 9), ...atCap.slice(1)];
   const overResult = validateLineup(overCap, ok5b, rules);
-  assert.equal(overResult.totalCost, 66);
+  assert.equal(overResult.totalCost, rules.lineup.costCap + 1);
   assert.equal(overResult.ok, false);
   assert.ok(overResult.errors.some((e) => e.includes('코스트')));
 

@@ -6,7 +6,7 @@ export function render(ctx, [id]) {
   const { game } = ctx;
   const p = playerById(game, id);
   if (!p) return { title: '선수', body: h('div', { class: 'card' }, h('h2', '선수를 찾을 수 없습니다'), h('p', { class: 'muted' }, '은퇴했거나 다른 시즌의 선수일 수 있습니다.'), link('#/roster', '← 로스터')) };
-  const prof = ctx.profiles.get(p.name);
+  const prof = ctx.profiles.get(p.baseName ?? p.name);
   const official = ctx.data.careers[p.kblId]?.profile;
   const career = careerLines(game, p.id);
   const salary = p.origin === 'foreign' ? `$${(p.contract.salaryUsd / 1000).toFixed(0)}k` : eok(p.contract.salaryEok);
