@@ -108,6 +108,13 @@ async function render() {
 }
 
 window.addEventListener('hashchange', render);
+// 백스페이스: 이전 화면으로(입력칸·선택 상자에서는 글자 지우기라 건드리지 않는다)
+window.addEventListener('keydown', (e) => {
+  if (e.key !== 'Backspace' || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+  const t = e.target;
+  if (t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  if (history.length > 1) { e.preventDefault(); history.back(); }
+});
 (async () => {
   try {
     ctx.data = await loadData();

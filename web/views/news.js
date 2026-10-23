@@ -25,22 +25,27 @@ export function moodCard(mood, { compact = false } = {}) {
     h('div', { class: 'row between note' }, h('span', trend), spark));
 }
 
+function commentEl(c) {
+  return h('li', { class: c.replyTo ? 'reply' : '' },
+    h('div', { class: 'news-c-head' }, c.replyTo ? h('span', { class: 'news-reply-mark', 'aria-label': `${c.replyTo}님에게 답글` }, `↳ @${c.replyTo}`) : null, h('b', c.nick), h('span', { class: 'tag' }, c.team), h('span', { class: 'news-votes', title: '추천' }, `▲ ${c.votes}`)),
+    h('div', c.text));
+}
+
 function article(ctx, it, i) {
   const open = ui.open.has(it.id);
   const cmt = it.comments.length;
-  const card = h('article', { class: `news-item ${it.scope === 'my' || it.scope === 'move' ? 'mine' : ''} tone-${it.tone}`, style: { '--team': colorOf(ctx.session.managerId) } },
+  return h('article', { class: `news-item ${it.scope === 'my' || it.scope === 'move' ? 'mine' : ''} tone-${it.tone}`, style: { '--team': colorOf(ctx.session.managerId) } },
     h('button', {
       class: 'news-head', 'aria-expanded': String(open), 'aria-controls': `news-body-${i}`,
       onclick: () => { if (open) ui.open.delete(it.id); else ui.open.add(it.id); ctx.refresh(); }
     },
     h('span', { class: 'news-meta' }, h('span', it.when), h('span', { class: 'dim' }, ' · '), h('span', it.outlet), it.tags.map((t) => h('span', { class: 'tag' }, t))),
     h('span', { class: 'news-title' }, it.headline),
-    h('span', { class: 'news-sub note' }, open ? '접기' : cmt ? `댓글 ${cmt}` : '펼쳐 보기')),
-    open ? h('div', { class: 'news-body', id: `news-body-${i}` }, h('p', it.body),
-      cmt ? h('ul', { class: 'news-comments', 'aria-label': '댓글' }, it.comments.map((c) => h('li',
-        h('div', { class: 'news-c-head' }, h('b', c.nick), h('span', { class: 'tag' }, c.team), h('span', { class: 'news-votes', title: '추천' }, `▲ ${c.votes}`)),
-        h('div', c.text)))) : h('p', { class: 'note' }, '아직 달린 댓글이 없습니다.')) : null);
-  return card;
+    open ? null : h('span', { class: 'news-summary' }, it.summary),
+    h('span', { class: 'news-sub note' }, open ? '접기' : `전문 보기 · 댓글 ${cmt}`)),
+    open ? h('div', { class: 'news-body', id: `news-body-${i}` },
+      it.paragraphs.map((p) => h('p', { class: 'news-p' }, p)),
+      cmt ? h('div', { class: 'news-comments-wrap' }, h('h3', { class: 'news-c-title' }, `댓글 ${cmt}`), h('ul', { class: 'news-comments', 'aria-label': '댓글' }, it.comments.map(commentEl))) : h('p', { class: 'note' }, '아직 달린 댓글이 없습니다.')) : null);
 }
 
 function community(ctx, items) {

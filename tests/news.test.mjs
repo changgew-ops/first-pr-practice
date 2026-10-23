@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { buildNews, josa, fill, TEMPLATES, COMMENTS, allTemplateStrings, moodLabel } from '../src/news.mjs';
+import { buildNews, josa, fill, TEMPLATES, COMMENTS, SENT, PLAN, allTemplateStrings, moodLabel, cleanName } from '../src/news.mjs';
 import { Session } from '../web/lib/session.js';
 import { getNews, filterItems, communityPosts, TABS } from '../web/lib/news-view.js';
 import { loadHistory } from '../src/history.mjs';
@@ -42,7 +42,22 @@ test('템플릿: 사건 종류마다 제목·본문 4개 이상, 댓글 풀도 �
   for (const [pool, list] of Object.entries(COMMENTS)) assert.ok(list.length >= 4, `${pool} 댓글 ${list.length}개`);
   for (const s of allTemplateStrings()) for (const w of BANNED) assert.ok(!s.includes(w), `금지어 '${w}': ${s}`);
   // 선수 이름이 들어가는 댓글은 칭찬 풀에만 있다
-  for (const [pool, list] of Object.entries(COMMENTS)) if (pool !== 'player_good') assert.ok(list.every((t) => !t.includes('{player')), `${pool}에 선수 이름`);
+  for (const [pool, list] of Object.entries(COMMENTS)) if (!['player_good', 'star_neutral', 'star_fan'].includes(pool)) assert.ok(list.every((t) => !t.includes('{player')), `${pool}에 선수 이름`);
+});
+
+test('문장 풀: 본문 문단 계획의 칸마다 변형이 4개 이상이고 모든 종류에 계획이 있다', () => {
+  for (const kind of Object.keys(TEMPLATES)) assert.ok(PLAN[kind], `${kind}의 문단 계획이 없다`);
+  for (const [slot, list] of Object.entries(SENT)) {
+    assert.ok(list.length >= 3, `${slot} 문장 ${list.length}개`);
+    assert.equal(new Set(list).size, list.length, `${slot} 문장 중복`);
+  }
+  for (const [kind, plan] of Object.entries(PLAN)) {
+    assert.ok(plan.length >= 2 && plan.length <= 4, `${kind} 문단 ${plan.length}개`);
+    for (const slot of plan.flat()) assert.ok(slot === 'lead' || SENT[slot], `${kind}: 알 수 없는 칸 ${slot}`);
+  }
+  assert.equal(cleanName('26 허웅'), '허웅');
+  assert.equal(cleanName('97초 정재근'), '정재근');
+  assert.equal(cleanName('이정현(2)'), '이정현(2)');
 });
 
 test('팬 심리 분위기 이름: 높으면 환호, 낮고 내려가면 격앙, 낮고 잠잠하면 체념', () => {
@@ -67,11 +82,12 @@ test('실제 데이터: 한 시즌과 오프시즌을 돌려도 기사에 undefi
       for (const it of n.items) {
         assert.ok(it.headline && it.body, `${it.kind} 비었음`);
         assert.ok(!dirty(text(it)), `${it.kind}: ${text(it)}`);
-        assert.ok(it.comments.length <= 3);
+        assert.ok(it.comments.length >= 2 && it.comments.length <= 5, `댓글 ${it.comments.length}개`);
         assert.equal(new Set(it.comments.map((c) => c.nick)).size, it.comments.length, '댓글 닉네임 중복');
         assert.ok(!ids.has(it.id), `기사 id 중복 ${it.id}`); ids.add(it.id);
         for (const w of BANNED) assert.ok(!text(it).includes(w), `금지어 ${w}`);
         for (const c of it.comments) assert.ok(c.votes >= 3 && c.team && c.nick);
+        for (const c of it.comments.filter((x) => x.replyTo)) assert.ok(it.comments.some((o) => o.nick === c.replyTo && !o.replyTo), '답글은 같은 기사의 댓글에 달린다');
       }
       assert.ok(Number.isFinite(n.mood.score) && n.mood.score >= 5 && n.mood.score <= 95);
     }
@@ -82,6 +98,50 @@ test('실제 데이터: 한 시즌과 오프시즌을 돌려도 기사에 undefi
   const a = JSON.stringify(getNews(s, data));
   const b = JSON.stringify(getNews(new Session(data, JSON.parse(JSON.stringify(s.game))), data));
   assert.equal(a, b);
+});
+
+// 종류별 본문 길이 하한(글자 수). 실제 데이터로 만든 기사의 값이다
+const MIN_LEN = [[/^(opener|result|thriller|blowout|streak)_/, 300], [/^preview$/, 380], [/^(rank_|clinch|eliminated|cycle|midseason|regular_end|leader_change)/, 220], [/^po_/, 200], [/^review_/, 200], [/^star_/, 160], [/./, 160]];
+const minLen = (kind) => MIN_LEN.find(([re]) => re.test(kind))[1];
+
+test('기사다운 길이: 모든 기사가 2~4개 문단이고 종류별 하한 이상, 800자 이하이며 한 줄 요약이 있다', () => {
+  const lens = {};
+  const sentences = [];
+  for (const [seed, team] of [[1, 'busan-kcc'], [2, 'wonju-db']]) {
+    const s = Session.create(data, { managerId: team, gmName: 't', seed });
+    const all = [...getNews(s, data).items];
+    playSeason(s);
+    all.push(...getNews(s, data).items);
+    s.endSeason(); s.autoOffseason();
+    all.push(...getNews(s, data).items);
+    const seen = new Set();
+    for (const it of all) {
+      if (seen.has(it.id)) continue; seen.add(it.id);
+      assert.ok(it.paragraphs.length >= 2 && it.paragraphs.length <= 4, `${it.kind} 문단 ${it.paragraphs.length}개`);
+      assert.equal(it.body, it.paragraphs.join('\n\n'));
+      assert.ok(it.summary && it.summary.length >= 10 && it.summary.length <= 160, `${it.kind} 요약 ${it.summary}`);
+      assert.ok(it.paragraphs[0].startsWith(it.summary), '요약은 첫 문단의 첫 문장이다');
+      assert.ok(it.body.length >= minLen(it.kind), `${it.kind} 본문 ${it.body.length}자 < ${minLen(it.kind)}: ${it.body}`);
+      assert.ok(it.body.length <= 800, `${it.kind} 본문 ${it.body.length}자`);
+      (lens[it.kind] ??= []).push(it.body.length);
+      for (const p of it.paragraphs) for (const sent of p.split(/(?<=[.!?다])\s+/)) sentences.push(sent);
+    }
+  }
+  const dup = 1 - new Set(sentences).size / sentences.length;
+  assert.ok(dup <= 0.35, `같은 문장이 너무 반복된다: 중복 ${(dup * 100).toFixed(0)}%`);
+  const avg = Object.fromEntries(Object.entries(lens).map(([k, v]) => [k, Math.round(v.reduce((a, b) => a + b, 0) / v.length)]));
+  assert.ok(avg.preview >= 400, `개막 전 전망은 평균 400자 이상이어야 한다: ${avg.preview}`);
+  assert.ok(avg.result_win >= 400 && avg.result_loss >= 400, JSON.stringify(avg));
+});
+
+test('선수 이름의 카드 연도("26 허웅")는 기사에 나오지 않는다', () => {
+  const players = new Map([['p1', { name: '26 허웅', baseName: '허웅', age: 31, position: 'SG', ovr: 77, origin: 'domestic', teamId: 't0', salaryEok: 5, yearsLeft: 2 }], ['p2', { name: '97초 정재근', age: 40, position: 'SF', ovr: 60, origin: 'domestic', teamId: 't1', salaryEok: 1, yearsLeft: 1 }]]);
+  const line = (id, name, points) => ({ id, name, minutes: 30, points, rebounds: 5, assists: 4, steals: 1, blocks: 0 });
+  const dayResults = Array.from({ length: 4 }, (_, i) => ({ day: i + 1, games: [{ homeId: 't0', awayId: 't1', homePts: 90, awayPts: 70, winnerId: 't0', overtimes: 0, box: { home: [line('p1', '26 허웅', 34)], away: [line('p2', '97초 정재근', 12)] } }] }));
+  const n = buildNews({ seed: 1, myTeamId: 't0', teams: T, startYear: 2026, season: '2026-27', teamName: (id) => id, games: 54, log: [], players, current: { stage: 'regular', day: 4, totalDays: 54, dayResults } });
+  const texts = n.items.map((it) => [it.headline, it.summary, it.body, ...it.comments.map((c) => c.text)].join(' ')).join(' ');
+  assert.ok(texts.includes('허웅') && texts.includes('정재근'));
+  assert.ok(!/(?:^|\s)(?:26|97초) (?:허웅|정재근)/.test(texts), texts.slice(0, 300));
 });
 
 test('시즌 기사: 개막전·경기 결과·한 바퀴 결산·반환점·정규리그 종료·플레이오프·결산이 나온다', () => {

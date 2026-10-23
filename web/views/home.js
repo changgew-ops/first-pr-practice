@@ -48,7 +48,7 @@ function newsCard(ctx) {
     const news = getNews(ctx.session, ctx.data);
     return h('div', { class: 'card news-home' },
       h('div', h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, '최근 뉴스'), link('#/news', '뉴스 전체 →')),
-        h('ul', { style: { marginTop: '10px' } }, news.items.slice(0, 3).map((it) => h('li', h('span', { class: 'note' }, it.when), link('#/news', it.headline))))),
+        h('ul', { style: { marginTop: '10px' } }, news.items.slice(0, 3).map((it) => h('li', h('span', { class: 'note' }, it.when), link('#/news', it.headline), h('span', { class: 'news-sum' }, it.summary))))),
       moodCard(news.mood, { compact: true }));
   } catch (e) { console.error(e); return null; }
 }

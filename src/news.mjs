@@ -24,7 +24,7 @@ function finalSound(word) {
   if (/[A-Za-z]/.test(ch)) return LATIN_BATCHIM.has(ch.toUpperCase()) ? (/[LR]/i.test(ch) ? 'rieul' : 'yes') : 'none';
   return 'none';
 }
-const PAIRS = { '이/가': ['이', '가'], '은/는': ['은', '는'], '을/를': ['을', '를'], '과/와': ['과', '와'], '으로/로': ['으로', '로'], '이라/라': ['이라', '라'] };
+const PAIRS = { '이/가': ['이', '가'], '은/는': ['은', '는'], '을/를': ['을', '를'], '과/와': ['과', '와'], '으로/로': ['으로', '로'], '이라/라': ['이라', '라'], '이다/다': ['이다', '다'], '이었다/였다': ['이었다', '였다'], '이었/였': ['이었', '였'] };
 export function josa(word, pair) {
   const [withB, noB] = PAIRS[pair] ?? pair.split('/');
   const f = finalSound(word);
@@ -177,7 +177,7 @@ export const TEMPLATES = {
   },
   retire_star: {
     h: ['{player}, 은퇴 발표', '{from}의 {player}, 현역 마감', '{player}({age}세), 코트와 작별', '은퇴 소식: {player}'],
-    b: ['{from}의 {player:이/가} 은퇴한다. {age}세, 마지막 OVR {ovr}로 이번 오프시즌 은퇴 선수 중 가장 높았다.', '{age}세의 {player:이/가} 현역에서 물러난다. 마지막 OVR은 {ovr}이었다.', '{from}에서 뛴 {player:이/가} 시즌을 끝으로 은퇴했다.', '이번 은퇴 선수 중 OVR이 가장 높은 {player}({ovr}). 소속은 {from}이었다.']
+    b: ['{from}의 {player:이/가} 은퇴한다. {age}세, 마지막 OVR {ovr:으로/로} 이번 오프시즌 은퇴 선수 중 가장 높았다.', '{age}세의 {player:이/가} 현역에서 물러난다. 마지막 OVR은 {ovr}이었다.', '{from}에서 뛴 {player:이/가} 시즌을 끝으로 은퇴했다.', '이번 은퇴 선수 중 OVR이 가장 높은 {player}({ovr}). 소속은 {from}이었다.']
   },
   growth_up: {
     h: ['{player}, 한 시즌 만에 OVR {delta} 상승', '성장한 {team}의 {player}', '{player}({age}세), OVR {from}에서 {to:으로/로}', '{team}의 성장주 {player}'],
@@ -217,7 +217,7 @@ export const TEMPLATES = {
   },
   draft_my: {
     h: ['{team}, 신인 {player} 지명({pick}순위)', '{player:이/가} {team}의 새 식구가 됐다', '드래프트: {team}의 선택은 {player}', '{pick}순위로 {team}에 온 {player}'],
-    b: ['{team:은/는} 드래프트 {pick}순위로 {player:을/를} 지명했다. 포지션 {pos}, OVR {ovr}.', '{player}의 첫 소속은 {team}이다. 지명 순위는 {pick}순위, OVR은 {ovr}.', '{team}의 신인 {player}({pos})는 OVR {ovr}, 잠재력 {potential:으로/로} 평가된다.', '드래프트 {pick}순위 {player:이/가} {team}에 합류한다.']
+    b: ['{team:은/는} 드래프트 {pick}순위로 {player:을/를} 지명했다. 포지션 {pos}, OVR {ovr}.', '{player}의 첫 소속은 {team}이다. 지명 순위는 {pick}순위, OVR은 {ovr}.', '{team}의 신인 {player:은/는} OVR {ovr}, 잠재력 {potential:으로/로} 평가된다. 포지션은 {pos}이다.', '드래프트 {pick}순위 {player:이/가} {team}에 합류한다.']
   },
   draft_top: {
     h: ['드래프트 1순위는 {to}의 {player}', '{to:이/가} 1순위로 {player:을/를} 선택했다', '신인 드래프트 1번 {player}, 행선지는 {to}', '{player:이/가} 드래프트 1순위로 {to}에 간다'],
@@ -249,11 +249,17 @@ export const COMMENTS = {
   rival_good: ['{team:은/는} 오늘 인정합니다. 다음에 만나면 달라질 겁니다', '축하드립니다, 다음 맞대결에서 봅시다', '{team} 팬분들 오늘은 즐거우시겠네요', '완패는 아니었는데 아쉽네요', '오늘은 {team}의 날이었습니다'],
   rival_bad: ['{team:은/는} 다음 경기에서 만회할 거라 믿습니다', '이번엔 우리가 웃었지만 시즌은 길죠', '좋은 경기였습니다. 다음에 또 봐요', '{team}도 곧 올라올 팀이라 방심은 못 합니다', '수고하셨습니다, {team} 팬분들'],
   neutral: ['요즘 리그 순위 싸움이 재밌네요', '기록 보면 흥미로운 시즌입니다', '10개 구단이 다 만만치 않아요', '숫자로 보면 꽤 볼만한 날이었네요', '이런 기사 보는 재미가 있어요'],
-  player_good: ['{player}의 기록이 인상적이네요', '{player} 오늘 박스스코어 보면 대단합니다', '{player}의 꾸준함이 팀에 큰 힘입니다', '오늘의 주인공은 {player}였네요'],
+  player_good: ['{player}의 기록이 인상적이네요', '{player} 오늘 박스스코어 보면 대단합니다', '{player}의 꾸준함이 팀에 큰 힘입니다', '오늘의 주인공은 {player:이었/였}네요'],
+  star_neutral: ['{player}의 기록이 인상적이네요', '{player} 오늘 박스스코어 보면 대단합니다', '리그에 이런 선수가 있다는 게 반갑네요', '{player} 상대 팀은 고민이 많겠어요', '{line}면 이날 최고의 활약이죠'],
+  star_fan: ['우리 {player} 오늘 대단했죠', '{player:이/가} 이렇게 해 주면 든든합니다', '{starTeam} 팬으로서 뿌듯하네요', '{line} 기록 보셨나요, 정말 잘했어요', '이런 활약 계속 보고 싶습니다'],
   move_good: ['좋은 선택 같습니다', '이런 소식이 반갑네요', '새 시즌이 기대됩니다', '이 정도면 만족입니다', '보강이 필요했던 자리라 반갑습니다', '기록을 보면 기대해 볼 만하죠'],
   move_bad: ['아쉽지만 팀 사정이 있겠죠', '빈자리가 커 보입니다', '이 공백을 어떻게 메울지가 관건이네요', '응원했던 선수라 서운하네요', '다음 선택을 지켜보겠습니다'],
   finance: ['재정이 탄탄해야 오래 가죠', '곳간 관리도 중요합니다', '숫자로 보니 현실적이네요', '캡 관리가 쉽지 않은 시대입니다'],
   preview: ['시즌이 기다려지네요', '올해는 기대 반 걱정 반입니다', '라인업 고민이 깊어지는 시기네요', '빨리 개막했으면 좋겠습니다'],
+  reply: ['저도 같은 생각입니다', 'ㅇㅈ합니다', '맞아요, 그 부분이 제일 중요하죠', '동의합니다. 다음 경기에서 확인해 봅시다', '반대 의견도 있겠지만 저는 응원합니다', '그렇게 보는 분들이 많더라고요', '말씀 듣고 보니 그렇네요', '공감합니다 ㅎㅎ'],
+  detail_good: ['{rank}위면 선방이죠, 이 페이스 유지했으면', '{record}면 나쁘지 않은 출발입니다', '다음 상대가 {nextOpp}인데 이 기세면 기대됩니다', '시즌 평균 득점 {ppgFor}점이면 공격은 믿어도 되겠어요', '{opp}전 승리 값지네요, 올 시즌 상대 전적도 {h2h}입니다', '최근 5경기 {l5}면 흐름이 좋은 편이죠'],
+  detail_bad: ['{record:으로/로} {rank}위라 마음이 편치 않네요', '{nextOpp}전이 고비가 되겠어요', '실점 평균 {ppgAgn}점은 줄여야 합니다', '{opp}전 결과는 아쉽지만 남은 경기가 많으니까요', '최근 5경기 {l5}라 반등 포인트가 필요해 보입니다', '{rank}위에서 플레이오프권을 지킬 수 있을지 지켜보겠습니다'],
+  preview_detail: ['전력 {powerRank}위면 해볼 만합니다, 개막이 기대되네요', '{core} 조합이 어떨지 궁금합니다', '올해 목표는 {season} 시즌 6강이라고 봅니다', '외국 선수 활약에 시즌이 달렸다고 봐요', '캡에 여유가 있으니 시즌 중 움직임도 기대해 봅니다'],
   move_neutral: ['이번 오프시즌은 지켜볼 게 많네요', '새 시즌 로스터가 기대됩니다', '선수단 구성이 어떻게 될지 궁금합니다', '이 선택이 어떤 결과로 이어질지 봅시다']
 };
 
@@ -281,6 +287,10 @@ const MOOD_DESC = {
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const STAGE_TEXT = { 우승: '우승', 결승: '준우승', '4강': '4강 탈락', '6강': '6강 탈락', '': '진출 실패' };
 const ROUND_ORDER = { '6강': 1, '4강': 2, '결승': 3, '챔피언결정전': 3 };
+const NEXT_ROUND = { '6강': '4강', '4강': '챔피언결정전' };
+const ORIGIN_TEXT = { domestic: '국내', foreign: '외국', asia: '아시아쿼터' };
+/** 카드 연도 표기("26 허웅", "97초 허웅")를 뗀 이름 */
+export const cleanName = (s) => String(s ?? '').replace(/^(?:\d{2}|97초)\s+/u, '');
 
 function pickIndex(arr, vars, rng, recent) {
   const ok = [];
@@ -297,15 +307,127 @@ function pickIndex(arr, vars, rng, recent) {
 const recordText = (w, l) => `${w}승 ${l}패`;
 const fmt1 = (v) => (Math.round(v * 10) / 10).toFixed(1);
 const money = (v) => fmt1(Math.abs(v));
+const pct3 = (w, l) => (w + l ? (w / (w + l)).toFixed(3) : '0.000');
+
+// ---------- 본문 문장 풀 ----------
+// 본문은 문단 여러 개다. 문단은 PLAN이 정한 "문장 칸"을 차례로 채운다. 칸마다 변형이 4개 이상이고,
+// 문장에 쓸 값이 하나라도 없으면 그 변형은 쓰지 않는다(값이 없는 칸은 건너뛴다). 'lead'는 종류별 TEMPLATES.b.
+export const SENT = {
+  scoreboard: ['점수 차는 {margin}점, 두 팀이 올린 점수는 모두 {total}점이다.', '{team}의 득점은 {my}점, 실점은 {oppPts}점이었다.', '양 팀 득점 합계는 {total}점이고 점수 차는 {margin}점이었다.', '{venue} 경기였고 {team:은/는} {my}점을 넣고 {oppPts}점을 내줬다.'],
+  h2h: ['올 시즌 {opp:과/와}의 맞대결 전적은 이번 경기를 포함해 {h2h:이/가} 됐다.', '{opp:과/와}는 올해 {h2h:으로/로} 맞서 있다.', '이번 경기까지 {opp}전 전적은 {h2h}다.', '시즌 상대 전적으로 보면 {team:은/는} {opp} 상대 {h2h}다.'],
+  standing: ['이 결과로 {team:은/는} {record}, 리그 {rank}위에 자리했다. {gapText}', '{day}일차까지의 성적은 {record:으로/로} 순위는 {rank}위다. {gapText}', '순위표에서 {team:은/는} {rank}위({record})에 올라 있다. {gapText}', '{record:이/가} 된 {team}의 현재 순위는 {rank}위다. {gapText}'],
+  form: ['최근 5경기는 {l5:으로/로} 흐름이 {formWord}. 시즌 평균 {ppgFor}점을 넣고 {ppgAgn}점을 내주고 있다.', '{l5:을/를} 기록한 최근 흐름은 {formWord}. 경기당 득점은 {ppgFor}점, 실점은 {ppgAgn}점이다.', '시즌 평균 득점 {ppgFor}점, 평균 실점 {ppgAgn}점이다. 최근 5경기 성적은 {l5:으로/로} 흐름이 {formWord}.', '경기당 {ppgFor}점을 넣고 {ppgAgn}점을 내주는 {team}의 최근 5경기는 {l5}이고, 분위기는 {formWord}.'],
+  lastSeason: ['지난 시즌 {team:은/는} {lastRec:으로/로} {lastRank}위를 기록했고, 통산 우승은 {titles}회다.', '지난 시즌 성적은 {lastRank}위({lastRec}). 올해 {record:과/와} 비교하면 {cmpWord}', '{team}의 지난 시즌 최종 순위는 {lastRank}위, 통산 우승 {titles}회의 전통을 가진 구단이다.', '{opp:은/는} 지난 시즌 {oppLastRank}위로 마쳤고 올해는 {oppRank}위({oppRec})에 있다.', '통산 우승 {titles}회의 {team:은/는} 지난 시즌 {lastRank}위로 마쳤다. 올 시즌 페이스는 {cmpWord}'],
+  spot_star: ['{star:이/가} {starLine:으로/로} 팀 공격을 이끌었다. {starAge}세 {starPos} 선수로 현재 OVR은 {starOvr}이다.', '이날 가장 눈에 띈 선수는 {star}. {starLine:을/를} 기록했고 포지션은 {starPos}, 나이는 {starAge}세다.', '{star}({starAge}세, {starPos}) 선수는 {starLine:으로/로} 경기에 영향을 줬다.', '기록 상위는 {star}. {starLine:을/를} 남겼고 계약은 연봉 {starSalary}억에 {starYears}년이 남았다.', '{star:이/가} {starLine:을/를} 올렸다. {starOrigin} 선수로 연봉 {starSalary}억을 받는다.'],
+  spot_avg: ['{star}의 시즌 평균은 {starAvg}다.', '시즌 기록으로 보면 {star:은/는} {starAvg:을/를} 기록 중이다.', '이번 시즌 {star}의 누적 평균은 {starAvg}.', '{star:은/는} 경기당 평균 {starAvg:을/를} 만들고 있다.'],
+  spot_opp: ['상대 {oppStar:은/는} {oppStarLine:을/를} 올렸다. 시즌 평균은 {oppStarAvg}다.', '{opp}에서는 {oppStar:이/가} {oppStarLine:으로/로} 맞섰다.', '{opp}의 {oppStar:이/가} {oppStarLine:을/를} 기록했고, 시즌 평균 {oppStarAvg}의 선수다.', '맞상대 {oppStar}의 기록은 {oppStarLine:이었다/였다}.'],
+  next: ['다음 경기는 {nextVenue}에서 {nextOpp:과/와} 치른다.', '{team}의 {nextDay}일차 상대는 {nextOpp}({nextVenue})다.', '일정상 다음 상대는 {nextOpp}, {nextVenue} 경기다.', '이어지는 {nextDay}일차에는 {nextVenue}에서 {nextOpp:을/를} 만난다.'],
+  remain: ['정규리그는 {remain}경기가 남아 있다.', '시즌 {games}경기 중 {remain}경기가 남았다.', '남은 경기는 {remain}경기다.', '{games}경기 가운데 {day}경기를 치렀고 {remain}경기가 남았다.', '{day}일차를 마친 지금 {remain}경기가 더 남아 있다.', '앞으로 치를 정규리그 경기는 {remain}경기다.', '{games}경기 일정 가운데 {remain}경기가 남은 시점이다.', '{allPlayed}경기를 모두 치러 정규리그 일정이 끝났다.'],
+  team_leader: ['{team}의 득점 선두는 {tmName:으로/로} 경기당 {tmPpg}점을 올리고 있다.', '팀 내 득점 1위는 경기당 {tmPpg}점의 {tmName}이다.', '{tmName:이/가} 경기당 {tmPpg}점으로 {team}의 공격을 책임지고 있다.', '{team}에서는 {tmName:이/가} 평균 {tmPpg}점으로 득점 선두다.'],
+  top3: ['현재 순위표 상단은 {top3}이다.', '상위 세 팀은 {top3} 순이다.', '순위표를 보면 {top3:이/가} 앞서 있다.', '선두권 구도는 {top3}이다.'],
+  // 개막 전 전망
+  pv_core: ['핵심 전력은 {core}이다.', '로스터에서 능력치가 가장 높은 세 선수는 {core}이다.', '{team}의 간판은 {core:으로/로} 꼽힌다.', '주축 선수는 {core}이다.'],
+  pv_foreign: ['외국 선수는 {foreignText}.', '코트에 서는 외국 선수 진용은 {foreignText}.', '{foreignText}. 아시아쿼터는 {asiaText}.', '외국 선수는 {foreignText}, 아시아쿼터는 {asiaText}.'],
+  pv_cap: ['국내 선수 연봉은 {payroll}억으로 캡 {cap}억 대비 {capRoom:이다/다}. 구단 자금은 {funds}억이다.', '캡 사정을 보면 국내 선수 연봉 {payroll}억, 캡 {cap}억으로 {capRoom:이다/다}. 자금은 {funds}억을 쥐고 있다.', '{team:은/는} 국내 선수 연봉이 {payroll}억이고 캡은 {cap}억이라 {capRoom:이다/다}.', '재정은 국내 선수 연봉 {payroll}억(캡 {cap}억, {capRoom}), 구단 자금 {funds}억이다.'],
+  pv_last: ['지난 시즌 {team:은/는} {lastRec:으로/로} {lastRank}위에 올랐고, 통산 우승 {titles}회에 정규리그 1위 {regTitles}회의 전통이 있다.', '{lastRank}위({lastRec})로 마친 지난 시즌 기록 위에 새 시즌이 시작된다. 통산 우승은 {titles}회다.', '지난 시즌 성적은 {lastRank}위, 전통 점수는 {tradition}점이다.', '통산 우승 {titles}회의 구단이 지난 시즌 {lastRank}위({lastRec})를 딛고 새 시즌을 맞는다.'],
+  pv_city: ['같은 {city:을/를} 연고로 하는 {cityRival:은/는} 지난 시즌 {cityRivalRank}위였다. 연고 라이벌과의 대결이 관심을 모은다.', '{city} 연고 {cityRival}과는 지난 시즌 순위가 {cityRivalRank}위였다. 서로를 의식할 수밖에 없는 사이다.', '{team}의 홈 {arena}에서는 같은 도시의 {cityRival:과/와} 맞대결이 열린다.', '{cityRival:은/는} 같은 {city} 구단으로, 지난 시즌 {cityRivalRank}위를 했다.'],
+  pv_top: ['게임이 계산한 전력 1위는 {topRival}이다. {team}과의 격차를 줄이는 것이 과제다.', '전력 순위 맨 위의 {topRival:은/는} 우승 후보로 꼽힌다.', '가장 높은 평가를 받은 팀은 {topRival}이다.', '전력만 보면 {topRival:이/가} 가장 앞서 있다.'],
+  pv_task: ['올 시즌 {team}의 과제는 분명하다. {taskText}', '{season} 시즌 목표는 {taskText}', '출발선에서 {team:이/가} 안고 있는 숙제는 이것이다. {taskText}'],
+  // 경기·순위 기사 보조
+  st_info: ['{player:은/는} {sAge}세 {sPos} 선수로 {sOrigin} 소속이며 현재 OVR은 {sOvr}이다.', '{sPos} 포지션의 {player:은/는} {sAge}세로 OVR {sOvr}의 선수다.', '{starTeam}의 {player:은/는} {sAge}세, 포지션 {sPos}, 능력치 OVR {sOvr}이다.', '{sAge}세 {sPos} {player:은/는} OVR {sOvr:으로/로} 평가된다.'],
+  st_avg: ['시즌 평균은 {sAvg:이다/다}.', '이번 시즌 {player}의 평균 기록은 {sAvg}.', '{player:은/는} 경기당 평균 {sAvg:을/를} 올리고 있다.', '누적 평균으로 보면 {sAvg:이다/다}.'],
+  st_contract: ['계약은 연봉 {sSalary}억에 {sYears}년이 남았다.', '연봉은 {sSalary}억이고 계약기간은 {sYears}년 남아 있다.', '{sSalary}억의 연봉으로 {sYears}년 더 {starTeam:과/와} 함께한다.', '남은 계약은 {sYears}년, 연봉은 {sSalary}억이다.'],
+  st_team: ['{starTeam:은/는} 이 경기 뒤 {sTeamRec:으로/로} {sTeamRank}위에 올라 있다.', '{starTeam}의 성적은 {sTeamRec}, 순위는 {sTeamRank}위다.', '이날 경기를 마친 {starTeam:은/는} {sTeamRank}위({sTeamRec})다.', '{sTeamRank}위 {starTeam}의 전적은 {sTeamRec}다.'],
+  // 플레이오프
+  po_games: ['시리즈는 {nGames}경기로 끝났다. 경기별 결과는 {gameList}이다.', '경기별 기록은 {gameList}이다. 시리즈는 {nGames}경기였다.', '{nGames}경기 만에 갈린 시리즈의 기록은 {gameList}.', '시리즈 기록: {gameList}. 총 {nGames}경기를 치렀다.'],
+  po_seeds: ['정규리그에서 {winner:은/는} {winnerRank}위, {loser:은/는} {loserRank}위였다. {upsetText}', '{winner}의 정규리그 순위는 {winnerRank}위, {loser:은/는} {loserRank}위였다. {upsetText}', '정규리그 순위로는 {loser:이/가} {loserRank}위, {winner:이/가} {winnerRank}위였다. {upsetText}', '{winner}({winnerRank}위)와 {loser}({loserRank}위)의 맞대결이었다. {upsetText}'],
+  po_my: ['{team}의 이번 포스트시즌 성적은 {myPoText}.', '{team:은/는} 정규리그 {myRank}위로 올라 {myPoText}.', '정규리그 {myRank}위로 시작한 {team}의 포스트시즌은 {myPoText}.', '{team}의 여정은 {myPoText}.'],
+  po_next: ['다음 라운드는 {nextRound}이다.', '이제 {nextRound:이/가} 기다린다.', '{nextRound} 대진이 이어진다.'],
+  po_end: ['{season} 시즌 챔피언이 가려지며 이번 시즌 일정이 모두 끝났다.', '챔피언결정전을 끝으로 {season} 시즌 순위 싸움은 막을 내렸다.', '이로써 {season} 시즌의 주인공이 결정됐다.', '시즌의 마지막 경기가 끝났다. 곧 오프시즌이 시작된다.'],
+  // 시즌 결산
+  rv_record: ['{team:은/는} 정규리그 54경기에서 승률 {winPct:을/를} 기록했다.', '승률은 {winPct}, 최종 순위는 {rank}위다.', '{record}, 승률 {winPct:으로/로} 시즌을 마쳤다.', '정규리그 승률은 {winPct}였다.'],
+  rv_leader: ['팀 내 득점 선두는 경기당 {tmPpg}점의 {tmName}이었다.', '{tmName:은/는} 경기당 {tmPpg}점으로 {team}의 득점 1위였다.', '득점은 {tmName:이/가} 평균 {tmPpg}점으로 가장 많았다.', '{team}의 공격은 경기당 {tmPpg}점을 올린 {tmName:이/가} 이끌었다.'],
+  rv_money: ['시즌 수입은 {revenue}억, 선수단 연봉은 {payroll}억으로 순이익은 {net}억이었다.', '재정으로는 수입 {revenue}억에 연봉 {payroll}억, 순이익 {net}억이다.', '구단 장부는 수입 {revenue}억, 선수단 연봉 {payroll}억, 순이익 {net}억으로 정리됐다.', '수입 {revenue}억, 연봉 {payroll}억을 거쳐 순이익은 {net}억이 됐다.'],
+  rv_outlook: ['이제 오프시즌이다. 트레이드와 재계약, FA, 드래프트가 차례로 이어지며 {nextSeason} 시즌 전력이 결정된다.', '{nextSeason} 시즌을 앞두고 트레이드·재계약·FA·드래프트가 기다리고 있다.', '다음 시즌 {nextSeason:을/를} 위한 정비가 시작된다. 결정할 일이 많은 오프시즌이다.', '오프시즌의 선택이 {nextSeason} 시즌의 성적을 좌우한다.'],
+  // 오프시즌
+  of_last: ['{lastSeasonLabel} 시즌 {team:은/는} 정규리그 {rank}위({record})로 마쳤고 플레이오프 성적은 {stage:이었다/였다}.', '지난 {lastSeasonLabel} 시즌 {team}의 성적은 {rank}위({record}), 플레이오프는 {stage}.', '{lastSeasonLabel} 시즌을 {record}, {rank}위로 마친 {team}의 오프시즌이다.', '{lastSeasonLabel} 시즌 결과를 안고 {team:은/는} {nextSeason} 시즌을 준비한다. 정규리그 {rank}위({record}), 플레이오프는 {stage:이었다/였다}.'],
+  pl_info: ['{player:은/는} {pAge}세 {pPos} 선수이며 OVR은 {pOvr}이다.', '{pPos} 포지션의 {player:은/는} {pAge}세로 OVR {pOvr}의 선수다.', '{pAge}세 {pPos} {player:은/는} OVR {pOvr:으로/로} 평가된다.', '{player}의 포지션은 {pPos}, 나이는 {pAge}세, OVR은 {pOvr}이다.', '{player:은/는} {pPos} 포지션에서 OVR {pOvr:으로/로} 평가되는 선수다.', '능력치로 보면 {player}의 OVR은 {pOvr}이고 포지션은 {pPos}다.', '{pAge}세의 {player:은/는} 마지막 시즌 OVR {pOvr:을/를} 기록했다.', '{player}의 나이는 {pAge}세, 마지막으로 기록한 OVR은 {pOvr}이다.'],
+  rt_gap: ['{player}의 은퇴로 {team}의 로스터에는 빈자리가 생겼다.', '은퇴한 {player}의 자리는 FA와 드래프트로 채워야 한다.', '{team:은/는} {player:이/가} 비운 자리를 어떻게 메울지 고민하게 됐다.', '{player:이/가} 선수단에서 빠지면서 새 시즌 구성이 달라진다.'],
+  pl_contract: ['계약은 연봉 {pSalary}억에 {pYears}년이 남아 있다.', '연봉 {pSalary}억, 남은 계약기간은 {pYears}년이다.', '{pSalary}억의 연봉으로 {pYears}년 더 뛰는 조건이다.', '남은 계약은 {pYears}년이고 연봉은 {pSalary}억이다.'],
+  of_team: ['{team}의 현재 핵심 선수는 {coreText}이다.', '{team}에서 능력치가 가장 높은 세 선수는 {coreText}이다.', '로스터의 중심은 {coreText}이다.', '{team}의 주축은 {coreText:으로/로} 꼽힌다.'],
+  of_cap: ['국내 선수 연봉은 {payroll}억으로 캡 {cap}억 대비 {capRoom:이다/다}.', '캡 상황은 국내 선수 연봉 {payroll}억, 캡 {cap}억으로 {capRoom:이다/다}.', '연봉 총액 {payroll}억은 캡 {cap}억에 비해 {capRoom:이다/다}.', '{team}의 국내 선수 연봉은 {payroll}억이고 캡 대비 {capRoom:이다/다}.'],
+  of_outlook: ['{nextSeason} 시즌 개막까지 라인업과 훈련을 정비할 시간이 남아 있다.', '다음 시즌인 {nextSeason} 시즌을 앞두고 남은 오프시즌 결정이 전력을 좌우한다.', '{nextSeason} 시즌 개막 전에 해야 할 일은 아직 남아 있다.', '새 시즌 {nextSeason}의 밑그림은 이 오프시즌에 그려진다.'],
+  pl_growth: ['한 시즌 사이 OVR은 {from}에서 {to:이/가} 됐다({deltaSign}).', '능력치 변화는 {from}에서 {to:으로/로}, 변화폭은 {deltaSign}이다.', 'OVR {from:이/가} {to:이/가} 됐고 변화폭은 {deltaSign}이다.', '{from}이던 OVR이 {to:으로/로} 바뀌었다({deltaSign}).'],
+  spot_career: ['{star}의 KBL 통산 기록은 {starCareer}다.', '통산으로는 {starCareer:을/를} 남긴 선수다.', 'KBL 경력을 보면 {starCareer}이다.', '{star:은/는} KBL에서 {starCareer:을/를} 기록해 왔다.'],
+  st_career: ['KBL 통산 기록은 {sCareer}이다.', '{player:은/는} 통산 {sCareer:을/를} 남겼다.', '지금까지의 KBL 경력은 {sCareer}이다.', '통산 성적은 {sCareer}다.'],
+  pl_rank: ['{player}의 연봉은 {team} 선수단에서 {pSalRank}번째로 높고, OVR은 {pOvrRank}번째로 높다.', '{team} 선수단 안에서 연봉 {pSalRank}위, OVR {pOvrRank}위에 해당한다.', '팀 내 비교로는 연봉 {pSalRank}위, 능력치(OVR) {pOvrRank}위의 선수다.', '{team}의 연봉 순위로는 {pSalRank}번째, OVR 순위로는 {pOvrRank}번째다.'],
+  pl_career: ['KBL 통산 기록은 {pCareer}이다.', '{player:은/는} 통산 {pCareer:을/를} 기록했다.', 'KBL 경력은 {pCareer}이다.', '그동안의 통산 성적은 {pCareer}다.'],
+  st_game: ['{starTeam:이/가} {opp:과/와} 맞붙어 {score:으로/로} {res}했다.', '경기는 {starTeam}의 {res}였다. 스코어는 {score}.', '{starTeam}의 {opp}전은 {score:으로/로} 끝났고 결과는 {res}였다.', '이 경기에서 {starTeam:은/는} {score:으로/로} {res}했다.'],
+  st_gap: ['{day}일차 기준 순위표 맨 위는 {leader}({leaderRec})다.', '현재 선두는 {leader:으로/로} {leaderRec:을/를} 기록 중이다.', '1위 {leader}의 전적은 {leaderRec}이다.', '리그 선두 {leader}({leaderRec}) 뒤를 쫓는 구도다.'],
+  pv_depth: ['로스터 평균 연령은 {avgAge}세, 평균 OVR은 {avgOvr}이다. 가장 어린 선수는 {youngName}({youngAge}세), 가장 나이가 많은 선수는 {oldName}({oldAge}세)다.', '{team}의 선수단은 평균 {avgAge}세에 평균 OVR {avgOvr}이다. 막내는 {youngName}({youngAge}세), 맏형은 {oldName}({oldAge}세)다.', '평균 연령 {avgAge}세, 평균 OVR {avgOvr}의 로스터다. {oldName}({oldAge}세)이 최고참이고 {youngName}({youngAge}세)이 가장 젊다.', '선수단 평균 OVR은 {avgOvr}, 평균 나이는 {avgAge}세다. {youngName}({youngAge}세)부터 {oldName}({oldAge}세)까지 폭이 넓다.'],
+  pv_contenders: ['전력 상위권은 {powerTop3} 순으로 평가됐다.', '게임이 매긴 전력 순위 상위 세 팀은 {powerTop3}이다.', '{powerTop3:이/가} 우승 경쟁의 중심으로 꼽힌다.', '전력 순위 1~3위는 {powerTop3}이다.'],
+  rv_top: ['정규리그 1위는 {regChamp}({regChampRec}), 챔피언은 {champName}이었다.', '{regChamp:이/가} {regChampRec:으로/로} 정규리그 정상에 섰고, 우승 트로피는 {champName:이/가} 가져갔다.', '시즌 챔피언은 {champName}, 정규리그 1위는 {regChamp}였다.', '정규리그에서는 {regChamp}({regChampRec})가, 플레이오프에서는 {champName:이/가} 웃었다.'],
+  po_avg: ['시리즈 평균 득점은 {winner:이/가} {winAvg}점, {loser:이/가} {loseAvg}점이었다.', '경기당 득점으로 보면 {winner} {winAvg}점, {loser} {loseAvg}점이다.', '{winner:은/는} 시리즈에서 평균 {winAvg}점을 올렸고 {loser:은/는} {loseAvg}점에 그쳤다.', '평균 득점은 {winAvg}점 대 {loseAvg}점으로 {winner} 쪽이 앞섰다.'],
+  rs_names: ['이름이 오른 선수는 {names}이다.', '이번 협상 대상으로 이름이 오른 선수는 {names}이다.', '결과가 나온 선수는 {names}이다.', '해당 선수는 {names}이다.']
+};
+
+SENT.of_last_f = SENT.of_last; SENT.of_team_f = SENT.of_team; SENT.of_cap_f = SENT.of_cap; // 선수가 없는 오프시즌 기사는 이 칸을 항상 채운다
+const G = ['lead', 'scoreboard', 'h2h'];
+const PLAN_GAME = [G, ['standing', 'form', 'lastSeason'], ['spot_star', 'spot_avg', 'spot_career', 'spot_opp'], ['next', 'remain']];
+const PLAN_STANDING = [['lead', 'st_gap'], ['standing', 'top3', 'form'], ['team_leader', 'lastSeason'], ['next', 'remain']];
+const PLAN_OFF = [['lead', 'pl_info', 'pl_contract', 'pl_rank', 'pl_career'], ['of_last', 'of_team', 'of_cap'], ['of_outlook']];
+const PLAN_PO = [['lead', 'po_games'], ['po_seeds', 'po_my', 'po_avg'], ['po_next', 'po_end']];
+const PLAN_REVIEW = [['lead', 'rv_record'], ['lastSeason', 'rv_top', 'rv_leader'], ['rv_money'], ['rv_outlook']];
+export const PLAN = {
+  preview: [['lead', 'pv_core'], ['pv_foreign', 'pv_depth'], ['pv_cap', 'pv_last', 'pv_city'], ['pv_contenders', 'pv_top', 'pv_task']],
+  opener_win: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
+  opener_loss: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
+  result_win: PLAN_GAME, result_loss: PLAN_GAME, thriller_win: PLAN_GAME, thriller_loss: PLAN_GAME, blowout_win: PLAN_GAME, blowout_loss: PLAN_GAME, streak_win: PLAN_GAME, streak_lose: PLAN_GAME,
+  star_points: [['lead', 'st_game', 'st_info'], ['st_avg', 'st_contract', 'st_career'], ['st_team']], star_all: [['lead', 'st_game', 'st_info'], ['st_avg', 'st_contract', 'st_career'], ['st_team']],
+  leader_change: [['lead', 'top3'], ['standing', 'form'], ['team_leader', 'lastSeason'], ['next', 'remain']],
+  rank_first: PLAN_STANDING, rank_out: PLAN_STANDING, rank_in: PLAN_STANDING, clinch: PLAN_STANDING, eliminated: PLAN_STANDING, cycle: PLAN_STANDING, midseason: PLAN_STANDING, regular_end: [['lead', 'top3'], ['standing', 'form'], ['team_leader', 'lastSeason'], ['rv_outlook']],
+  po_my_win: PLAN_PO, po_my_out: PLAN_PO, po_league: PLAN_PO, po_title_my: PLAN_PO, po_title: PLAN_PO,
+  review_top: PLAN_REVIEW, review_mid: PLAN_REVIEW, review_miss: PLAN_REVIEW,
+  retire_my: [['lead', 'pl_info', 'rt_gap'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']], retire_star: PLAN_OFF, growth_up: [['lead', 'pl_info', 'pl_growth', 'pl_career'], ['of_last', 'of_team', 'of_cap'], ['of_outlook']], growth_down: [['lead', 'pl_info', 'pl_growth', 'pl_career'], ['of_last', 'of_team', 'of_cap'], ['of_outlook']],
+  resign_done: [['lead', 'rs_names'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']], resign_fail: [['lead', 'rs_names'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']],
+  fa_in: PLAN_OFF, fa_out: PLAN_OFF, fa_big: PLAN_OFF, comp: PLAN_OFF, trade_done: [['lead'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']],
+  draft_my: PLAN_OFF, draft_top: PLAN_OFF, cap_over: [['lead'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']], funds_plus: [['lead'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']], funds_minus: [['lead'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']]
+};
+
+// 같은 말이 매 기사에 되풀이되지 않게, 일부 칸은 확률적으로만 넣는다(시드로 정해져 같은 입력이면 같다)
+const SLOT_PROB = { of_last: 0.7, of_team: 0.85, of_cap: 0.85, pl_rank: 0.9, lastSeason: 0.35, spot_career: 0.55, h2h: 0.85, spot_opp: 0.7, spot_avg: 0.8, team_leader: 0.75, pl_career: 0.8, st_career: 0.8 };
+
+/** 문단들을 만든다. 첫 문단의 첫 문장(lead)은 접힌 기사의 한 줄 요약이 된다 */
+function compose(kind, vars, rng, recentS) {
+  const paragraphs = [];
+  let summary = '';
+  for (const slots of PLAN[kind]) {
+    const sents = [];
+    for (const slot of slots) {
+      const pool = slot === 'lead' ? TEMPLATES[kind].b : SENT[slot];
+      if (SLOT_PROB[slot] != null && rng() > SLOT_PROB[slot]) continue;
+      const i = pickIndex(pool, vars, rng, (recentS[`${kind}.${slot}`] ??= []));
+      if (i < 0) continue;
+      const s = fill(pool[i], vars);
+      if (slot === 'lead' && !summary) summary = s;
+      sents.push(s);
+    }
+    if (sents.length) paragraphs.push(sents.join(' '));
+  }
+  return { paragraphs, summary };
+}
 
 // ---------- 사건 만들기 ----------
 /**
  * 입력(src):
  *  seed, teams(구단 id 목록), myTeamId, startYear(현재 시즌 시작 연도), season(현재 시즌 표기), teamName(id)→이름, games(정규리그 경기 수),
  *  log: 시즌 결과 목록(마지막 것이 가장 최근. 오프시즌 중이면 방금 끝난 시즌 포함),
- *  current: { stage, day, dayResults, playoffSeries, offseason: { retired, progressed } | null },
- *  names: Map(id → { name }) (트레이드 보고서의 선수 id를 이름으로), power: [{ id, rank }] (선택)
- * 반환: { items(최신순), mood, outlets }
+ *  current: { stage, day, totalDays, dayResults, playoffSeries, offseason: { retired, progressed } | null },
+ *  names: Map(id → { name }) (트레이드 보고서의 선수 id를 이름으로), power: [{ id, rank }] (선택),
+ *  선택 정보(없으면 해당 문장을 건너뛴다): players: Map(id → { name, baseName, age, position, ovr, origin, teamId, salaryEok, yearsLeft }),
+ *  schedule: [[{ homeId, awayId }]](날짜별), prestige: { [id]: { score, titles, regularTitles } }, teamInfo: { [id]: { city, arena } },
+ *  payroll: { domestic, cap, over }, funds: 우리 구단 자금(억), seasonLabelOf(startYear)
+ * 반환: { items(최신순), mood, outlets }. item: { id, t, season, when, kind, scope, tags, tone, outlet, headline, summary, paragraphs, body, comments, mood }
  */
 export function buildNews(src) {
   const my = src.myTeamId;
@@ -313,60 +435,138 @@ export function buildNews(src) {
   const events = [];
   let seq = 0;
   const add = (ev) => { events.push({ seq: seq++, tags: [], tone: 'neutral', delta: 0, comments: 0, ...ev }); };
-  const pname = (id) => src.names?.get?.(id)?.name ?? null;
+  const players = src.players ?? new Map();
+  const pbn = (id, fallback) => { const p = players.get(id); return p?.baseName ?? cleanName(p?.name ?? src.names?.get?.(id)?.name ?? fallback ?? ''); };
+  const pname = (id) => { const n = pbn(id); return n || null; };
+  const labelOf = src.seasonLabelOf ?? ((y) => `${y}-${String(y + 1).slice(2)}`);
 
   const log = (src.log ?? []).slice(-2);
   const cur = src.current ?? { stage: 'regular', day: 0, dayResults: [] };
   const games = src.games ?? 54;
+  const sy = src.startYear;
+  const base = (y) => y * 1000;
+  const seasonLabel = src.season;
+  const dayResults = cur.dayResults ?? [];
+  const totalDays = cur.totalDays ?? games;
+  const prevEntry = (y) => (src.log ?? []).find((e) => e.startYear === y - 1) ?? null;
+  const lastRowOf = (id, y) => {
+    const hs = (src.history ?? []).find((x) => x.startYear === y - 1)?.teams?.find((t) => t.franchiseId === id);
+    if (hs) return { rank: hs.rank, wins: hs.wins, losses: hs.losses };
+    return prevEntry(y)?.standings?.find((s) => s.id === id) ?? null;
+  };
+  const titlesOf = (id) => src.prestige?.[id]?.titles;
+  const cityOf = (id) => src.teamInfo?.[id]?.city;
 
-  // 팬 심리의 시작점: 직전 시즌 결과
+  // 팬 심리의 시작점: 기록이 있는 가장 오래된 시즌의 결과
   let mood0 = 55;
-  if (log.length) { // 기록이 있는 가장 오래된 시즌의 결과가 시작 분위기를 정한다
+  if (log.length) {
     const first = log[0];
     const row = first.standings.find((s) => s.id === my);
     const st = first.stage?.[my];
     mood0 = st === '우승' ? 72 : st === '결승' ? 64 : st ? 58 : row && row.rank >= 8 ? 38 : 46;
   }
 
-  // ----- 현재 시즌 정규리그 -----
-  const sy = src.startYear;
-  const base = (y) => y * 1000;
-  const seasonLabel = src.season;
-  const dayResults = cur.dayResults ?? [];
+  // 우리 팀 핵심·외국 선수 요약
+  const mine = [...players.values()].filter((p) => p.teamId === my).sort((a, b) => b.ovr - a.ovr);
+  const dispName = (p) => p.baseName ?? cleanName(p.name);
+  const coreText = mine.length >= 3 ? mine.slice(0, 3).map((p) => `${dispName(p)}(${p.position}, OVR ${p.ovr})`).join(', ') : undefined;
+  const pInfo = (id, prefix = 'p') => {
+    const p = players.get(id);
+    if (!p) return {};
+    const career = src.careerOf?.(id);
+    const rankInfo = p.teamId === my && p.salaryEok != null ? { [`${prefix}SalRank`]: 1 + mine.filter((q) => q.salaryEok > p.salaryEok).length, [`${prefix}OvrRank`]: 1 + mine.filter((q) => q.ovr > p.ovr).length } : {};
+    return { ...rankInfo, ...(career ? { [`${prefix}Career`]: career } : {}), [`${prefix}Age`]: p.age, [`${prefix}Pos`]: p.position, [`${prefix}Ovr`]: p.ovr, [`${prefix}Origin`]: ORIGIN_TEXT[p.origin] ?? '국내', ...(p.salaryEok != null ? { [`${prefix}Salary`]: fmt1(p.salaryEok), [`${prefix}Years`]: p.yearsLeft } : {}) };
+  };
+  const capVars = src.payroll ? { payroll: fmt1(src.payroll.domestic), cap: fmt1(src.payroll.cap), capRoom: src.payroll.over > 0 ? `초과 ${fmt1(src.payroll.over)}억` : `여유 ${fmt1(src.payroll.cap - src.payroll.domestic)}억` } : {};
+  const ofTeam = () => ({ ...(coreText ? { coreText } : {}), ...capVars });
 
+  // ----- 개막 전 전망 -----
   if (src.power && src.power.length) {
     const r = src.power.find((p) => p.id === my);
-    if (r) add({ key: `${sy}:preview`, t: base(sy), season: seasonLabel, when: `${seasonLabel} 개막 전`, kind: 'preview', scope: 'my', tags: ['우리 팀', '전망'], vars: { team: nameOf(my), season: seasonLabel, powerRank: r.rank, games }, comments: 1 });
+    if (r) {
+      const foreign = mine.filter((p) => p.origin === 'foreign'); const asia = mine.filter((p) => p.origin === 'asia');
+      const lr = lastRowOf(my, sy);
+      const city = cityOf(my);
+      const cityRivalId = src.teams.find((id) => id !== my && city && cityOf(id) === city);
+      const cr = cityRivalId ? lastRowOf(cityRivalId, sy) : null;
+      const top = src.power.find((p) => p.rank === 1 && p.id !== my);
+      const tier = r.rank <= 3 ? 'top' : r.rank <= 6 ? 'mid' : 'low';
+      const taskText = { top: '우승권 전력으로 평가받는 만큼 정규리그 상위권을 지키며 플레이오프에서 정상을 노리는 것이다.', mid: '6강 경쟁에서 안정적으로 살아남아 플레이오프 문턱을 넘는 것이다.', low: '먼저 6위 안에 들어 플레이오프 진출권을 확보하는 것이다.' }[tier];
+      const pr = src.prestige?.[my];
+      const roster = mine.filter((p) => p.origin !== undefined);
+      const youngest = [...roster].sort((a, b) => a.age - b.age)[0]; const oldest = [...roster].sort((a, b) => b.age - a.age)[0];
+      const depth = roster.length >= 5 ? { avgAge: fmt1(roster.reduce((x, p) => x + p.age, 0) / roster.length), avgOvr: fmt1(roster.reduce((x, p) => x + p.ovr, 0) / roster.length), youngName: dispName(youngest), youngAge: youngest.age, oldName: dispName(oldest), oldAge: oldest.age } : {};
+      const top3p = [...src.power].sort((a, b) => a.rank - b.rank).slice(0, 3).map((p) => nameOf(p.id)).join(', ');
+      add({
+        key: `${sy}:preview`, t: base(sy), season: seasonLabel, when: `${seasonLabel} 개막 전`, kind: 'preview', scope: 'my', tags: ['우리 팀', '전망'], comments: 2,
+        vars: {
+          team: nameOf(my), season: seasonLabel, powerRank: r.rank, games, ...depth, powerTop3: top3p, ...(coreText ? { core: coreText } : {}),
+          ...(foreign.length ? { foreignText: foreign.map((p) => `${dispName(p)}(OVR ${p.ovr})`).join(', ') } : {}),
+          asiaText: asia.length ? asia.map((p) => `${dispName(p)}(OVR ${p.ovr})`).join(', ') : '없음',
+          ...capVars, ...(src.funds != null ? { funds: fmt1(src.funds) } : {}),
+          ...(lr ? { lastRank: lr.rank, lastRec: recordText(lr.wins, lr.losses) } : {}), ...(titlesOf(my) != null ? { titles: titlesOf(my), regTitles: pr?.regularTitles ?? 0, tradition: fmt1(pr?.score ?? 0) } : {}),
+          ...(cityRivalId && cr ? { city, cityRival: nameOf(cityRivalId), cityRivalRank: cr.rank } : {}), ...(city ? { arena: src.teamInfo[my].arena ?? undefined } : {}),
+          ...(top ? { topRival: nameOf(top.id) } : {}), taskText
+        }
+      });
+    }
   }
 
+  // ----- 현재 시즌 정규리그 -----
   const rec = new Map(src.teams.map((id) => [id, { id, w: 0, l: 0, pf: 0, pa: 0 }]));
   const rank = () => [...rec.values()].sort((a, b) => b.w - a.w || (b.pf - b.pa) - (a.pf - a.pa) || b.pf - a.pf || a.id.localeCompare(b.id));
-  const scorers = new Map();
-  let streak = 0; // +n 연승, -n 연패
+  const scorers = new Map(); // 선수별 누적: 이름·팀·득점·리바운드·어시스트·경기 수
+  const myResults = []; // 우리 팀 경기 결과(오래된 순)
+  let streak = 0;
   let prevRank = null; let prevLeader = null; let clinched = false; let out = false;
-  const totalDays = cur.totalDays ?? games;
   const TOP = 6;
+  const avgOf = (id) => { const s = scorers.get(id); return s && s.g ? { ppg: s.pts / s.g, rpg: s.reb / s.g, apg: s.ast / s.g } : null; };
+  const avgText = (id) => { const a = avgOf(id); return a ? `${fmt1(a.ppg)}점 ${fmt1(a.rpg)}리바운드 ${fmt1(a.apg)}어시스트` : undefined; };
+  const teamLeader = (teamId) => [...scorers.values()].filter((s) => s.teamId === teamId && s.g >= 3).sort((a, b) => b.pts / b.g - a.pts / a.g)[0];
+  const ofRec = (id) => { const r = rec.get(id); return recordText(r.w, r.l); };
+
   for (const d of dayResults) {
     const dayGames = d.games;
     for (const g of dayGames) {
       const h = rec.get(g.homeId); const a = rec.get(g.awayId);
       h.pf += g.homePts; h.pa += g.awayPts; a.pf += g.awayPts; a.pa += g.homePts;
       if (g.winnerId === g.homeId) { h.w++; a.l++; } else { a.w++; h.l++; }
-      for (const side of [g.box?.home, g.box?.away]) {
+      for (const [side, teamId] of [[g.box?.home, g.homeId], [g.box?.away, g.awayId]]) {
         for (const line of side ?? []) {
           if (!line.minutes) continue;
-          const s = scorers.get(line.id) ?? { name: line.name, pts: 0, g: 0 };
-          s.pts += line.points; s.g++; scorers.set(line.id, s);
+          const s = scorers.get(line.id) ?? { name: pbn(line.id, line.name), teamId, pts: 0, reb: 0, ast: 0, g: 0 };
+          s.pts += line.points; s.reb += line.rebounds; s.ast += line.assists; s.g++; scorers.set(line.id, s);
         }
       }
     }
     const order = rank();
     const myRank = order.findIndex((r) => r.id === my) + 1;
-    const mine = rec.get(my);
-    const myRec = recordText(mine.w, mine.l);
+    const me = rec.get(my);
+    const myRec = recordText(me.w, me.l);
     const leader = order[0];
     const leaderRec = recordText(leader.w, leader.l);
     const t0 = base(sy) + d.day;
+    const sixth = order[TOP - 1]; const seventh = order[TOP];
+    const gapN = myRank <= TOP ? me.w - seventh.w : sixth.w - me.w;
+    const gv = (hashString(`${src.seed}:gap${d.day}`)) % 4;
+    const gapText = myRank <= TOP
+      ? [`플레이오프권 안이고 7위와의 승수 차는 ${gapN}승이다.`, `7위와 ${gapN}승 차로 플레이오프권을 지키고 있다.`, `6위 안에 들어 있으며 바로 아래 7위와는 ${gapN}승 차다.`, `플레이오프 진출선 위에서 7위를 ${gapN}승 앞서 있다.`][gv]
+      : [`플레이오프 진출선인 6위와는 ${gapN}승 차다.`, `6위와의 승수 차는 ${gapN}승으로, 플레이오프권 진입이 과제다.`, `플레이오프권인 6위까지 ${gapN}승이 모자란다.`, `6위를 ${gapN}승 차로 쫓고 있다.`][gv];
+    const top3 = `${order.slice(0, 3).map((r, i) => `${i + 1}위 ${nameOf(r.id)}(${recordText(r.w, r.l)})`).join(', ')}`;
+    const remain = totalDays - d.day;
+    const ldr = teamLeader(my);
+    const common = {
+      team: nameOf(my), rank: myRank, record: myRec, day: d.day, games: totalDays, ...(remain > 0 ? { remain } : { allPlayed: totalDays }), gapText, gapN, top3, leader: nameOf(leader.id), leaderRec,
+      ...(ldr ? { tmName: ldr.name, tmPpg: fmt1(ldr.pts / ldr.g) } : {})
+    };
+    const nextG = src.schedule?.[d.day]?.find((g) => g.homeId === my || g.awayId === my);
+    if (nextG && remain > 0) Object.assign(common, { nextOpp: nameOf(nextG.homeId === my ? nextG.awayId : nextG.homeId), nextVenue: nextG.homeId === my ? '홈' : '원정', nextDay: d.day + 1 });
+    const lr = lastRowOf(my, sy);
+    if (lr) {
+      Object.assign(common, { lastRank: lr.rank, lastRec: recordText(lr.wins, lr.losses) });
+      if (me.w + me.l >= 6) { const diff = me.w / (me.w + me.l) - lr.wins / (lr.wins + lr.losses); common.cmpWord = diff >= 0.08 ? '지난 시즌보다 나아진 흐름이다.' : diff <= -0.08 ? '지난 시즌보다 주춤한 흐름이다.' : '지난 시즌과 비슷한 페이스다.'; }
+    }
+    if (titlesOf(my) != null) common.titles = titlesOf(my);
 
     // 우리 팀 경기
     const mg = dayGames.find((g) => g.homeId === my || g.awayId === my);
@@ -375,15 +575,23 @@ export function buildNews(src) {
       const mp = home ? mg.homePts : mg.awayPts; const op = home ? mg.awayPts : mg.homePts;
       const win = mg.winnerId === my; const oppId = home ? mg.awayId : mg.homeId;
       streak = win ? (streak > 0 ? streak + 1 : 1) : (streak < 0 ? streak - 1 : -1);
+      myResults.push({ win, oppId });
       const margin = Math.abs(mp - op);
-      const top = (side) => (side ?? []).filter((l) => l.minutes).sort((a, b) => b.points - a.points)[0];
-      const myTop = top(home ? mg.box?.home : mg.box?.away); const opTop = top(home ? mg.box?.away : mg.box?.home);
+      const top1 = (side) => (side ?? []).filter((l) => l.minutes).sort((a, b) => b.points - a.points)[0];
+      const myTop = top1(home ? mg.box?.home : mg.box?.away); const opTop = top1(home ? mg.box?.away : mg.box?.home);
       const lineOf = (l) => `${l.points}점 ${l.rebounds}리바운드 ${l.assists}어시스트`;
+      const l5 = myResults.slice(-5); const w5 = l5.filter((x) => x.win).length;
+      const h2 = myResults.filter((x) => x.oppId === oppId); const h2w = h2.filter((x) => x.win).length;
+      const orec = rec.get(oppId); const orow = order.findIndex((r) => r.id === oppId) + 1; const olr = lastRowOf(oppId, sy);
       const vars = {
-        team: nameOf(my), opp: nameOf(oppId), venue: home ? '홈' : '원정', score: `${mp}-${op}`, scoreRev: `${op}-${mp}`, my: mp, oppPts: op, margin,
-        record: myRec, rank: myRank, day: d.day, otText: mg.overtimes ? `${mg.overtimes > 1 ? `${mg.overtimes}차 ` : ''}연장 혈투 끝에 ` : '',
-        ...(myTop ? { star: myTop.name, starLine: lineOf(myTop) } : {}), ...(opTop ? { oppStar: opTop.name, oppStarLine: lineOf(opTop) } : {})
+        ...common, opp: nameOf(oppId), venue: home ? '홈' : '원정', score: `${mp}-${op}`, scoreRev: `${op}-${mp}`, my: mp, oppPts: op, total: mp + op, margin,
+        otText: mg.overtimes ? `${mg.overtimes > 1 ? `${mg.overtimes}차 ` : ''}연장 혈투 끝에 ` : '',
+        h2h: recordText(h2w, h2.length - h2w), l5: recordText(w5, l5.length - w5), formWord: l5.length >= 3 ? (w5 >= 4 || (l5.length < 5 && w5 === l5.length) ? '좋다' : w5 <= 1 ? '무겁다' : '엇갈린다') : undefined,
+        ppgFor: fmt1(me.pf / (me.w + me.l)), ppgAgn: fmt1(me.pa / (me.w + me.l)), oppRank: orow, oppRec: recordText(orec.w, orec.l), ...(olr ? { oppLastRank: olr.rank } : {}),
+        ...(myTop ? { star: pbn(myTop.id, myTop.name), starLine: lineOf(myTop), ...pInfo(myTop.id, 'star'), ...(avgText(myTop.id) ? { starAvg: avgText(myTop.id) } : {}) } : {}),
+        ...(opTop ? { oppStar: pbn(opTop.id, opTop.name), oppStarLine: lineOf(opTop), ...(avgText(opTop.id) ? { oppStarAvg: avgText(opTop.id) } : {}) } : {})
       };
+      if (me.w + me.l < 3) delete vars.formWord;
       let kind; let delta; let comments;
       if (d.day === 1) { kind = win ? 'opener_win' : 'opener_loss'; delta = win ? 2.4 : -2; comments = 2; }
       else if (win && streak >= 3 && [3, 5, 7, 10, 12, 15].includes(streak)) { kind = 'streak_win'; vars.streak = streak; delta = 4.4; comments = 3; }
@@ -391,7 +599,6 @@ export function buildNews(src) {
       else if (mg.overtimes || margin <= 3) { kind = win ? 'thriller_win' : 'thriller_loss'; delta = win ? 3 : -2.2; comments = 2; }
       else if (margin >= 20) { kind = win ? 'blowout_win' : 'blowout_loss'; delta = win ? 3 : -3.5; comments = 2; }
       else { kind = win ? 'result_win' : 'result_loss'; delta = win ? 2.4 : -2.8; comments = 1; }
-      // 위 조건에 들지 않은 연승·연패 숫자도 mood에는 이미 경기 결과로 반영된다
       add({ key: `${sy}:g${d.day}`, t: t0, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind, scope: 'my', tags: ['우리 팀', '경기'], tone: win ? 'good' : 'bad', delta, comments, oppId, vars, refTeam: oppId, win, flag: 'game' });
     }
 
@@ -402,8 +609,7 @@ export function buildNews(src) {
         for (const l of side ?? []) {
           if (!l.minutes) continue;
           const triple = l.points >= 10 && l.rebounds >= 10 && l.assists >= 10;
-          const notable = l.points >= 32 || triple || l.rebounds >= 16 || l.assists >= 13;
-          if (!notable) continue;
+          if (!(l.points >= 32 || triple || l.rebounds >= 16 || l.assists >= 13)) continue;
           const score = l.points + l.rebounds * 1.2 + l.assists * 1.5 + (triple ? 15 : 0);
           if (!star || score > star.score) star = { l, teamId, oppId, g, score, triple };
         }
@@ -413,44 +619,49 @@ export function buildNews(src) {
       const { l, teamId, oppId, g } = star;
       const thisPts = teamId === g.homeId ? g.homePts : g.awayPts; const thatPts = teamId === g.homeId ? g.awayPts : g.homePts;
       const kind = l.points >= 32 && !star.triple ? 'star_points' : 'star_all';
+      const trow = order.findIndex((r) => r.id === teamId) + 1;
       add({
-        key: `${sy}:star${d.day}`, t: t0 + 0.5, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind, scope: 'league', tags: ['리그', '기록'], tone: teamId === my ? 'good' : 'neutral', comments: 2, playerComment: true,
-        vars: { player: l.name, starTeam: nameOf(teamId), opp: nameOf(oppId), pts: l.points, line: `${l.points}점 ${l.rebounds}리바운드 ${l.assists}어시스트`, day: d.day, res: thisPts > thatPts ? '승리' : '패배', score: `${thisPts}-${thatPts}` }
+        key: `${sy}:star${d.day}`, t: t0 + 0.5, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind, scope: 'league', tags: ['리그', '기록'], tone: teamId === my ? 'good' : 'neutral', comments: 2, playerComment: true, starTeamId: teamId, refTeam: teamId === my ? undefined : teamId,
+        vars: {
+          player: pbn(l.id, l.name), starTeam: nameOf(teamId), opp: nameOf(oppId), pts: l.points, line: `${l.points}점 ${l.rebounds}리바운드 ${l.assists}어시스트`, day: d.day, res: thisPts > thatPts ? '승리' : '패배', score: `${thisPts}-${thatPts}`,
+          ...pInfo(l.id, 's'), ...(avgText(l.id) ? { sAvg: avgText(l.id) } : {}), sTeamRank: trow, sTeamRec: ofRec(teamId)
+        }
       });
     }
 
     // 순위 변화
     if (leader.id !== prevLeader && d.day >= 3) {
       if (leader.id === my) {
-        add({ key: `${sy}:first${d.day}`, t: t0 + 0.6, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'rank_first', scope: 'my', tags: ['우리 팀', '순위'], tone: 'good', delta: 3, comments: 3, vars: { team: nameOf(my), record: myRec, day: d.day } });
+        add({ key: `${sy}:first${d.day}`, t: t0 + 0.6, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'rank_first', scope: 'my', tags: ['우리 팀', '순위'], tone: 'good', delta: 3, comments: 3, vars: { ...common } });
       } else if (prevLeader) {
-        add({ key: `${sy}:lead${d.day}`, t: t0 + 0.6, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'leader_change', scope: 'league', tags: ['리그', '순위'], comments: 1, vars: { leader: nameOf(leader.id), prev: nameOf(prevLeader), leaderRec, day: d.day } });
+        add({ key: `${sy}:lead${d.day}`, t: t0 + 0.6, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'leader_change', scope: 'league', tags: ['리그', '순위'], comments: 1, vars: { ...common, leader: nameOf(leader.id), prev: nameOf(prevLeader), leaderRec, day: d.day } });
       }
     }
     if (prevRank != null && d.day >= 18) {
-      if (prevRank <= TOP && myRank > TOP) add({ key: `${sy}:rout${d.day}`, t: t0 + 0.7, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'rank_out', scope: 'my', tags: ['우리 팀', '순위'], tone: 'bad', delta: -3, comments: 2, vars: { team: nameOf(my), rank: myRank, record: myRec, day: d.day } });
-      else if (prevRank > TOP && myRank <= TOP) add({ key: `${sy}:rin${d.day}`, t: t0 + 0.7, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'rank_in', scope: 'my', tags: ['우리 팀', '순위'], tone: 'good', delta: 2.5, comments: 2, vars: { team: nameOf(my), rank: myRank, record: myRec, day: d.day } });
+      if (prevRank <= TOP && myRank > TOP) add({ key: `${sy}:rout${d.day}`, t: t0 + 0.7, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'rank_out', scope: 'my', tags: ['우리 팀', '순위'], tone: 'bad', delta: -3, comments: 2, vars: { ...common } });
+      else if (prevRank > TOP && myRank <= TOP) add({ key: `${sy}:rin${d.day}`, t: t0 + 0.7, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'rank_in', scope: 'my', tags: ['우리 팀', '순위'], tone: 'good', delta: 2.5, comments: 2, vars: { ...common } });
     }
     // 진출 확정·탈락 확정: 남은 경기를 모두 져도(모두 이겨도) 6위 안에 든다(들 수 없다)고 승수만으로 확인되는 순간
     if (!clinched && !out && d.day >= 20) {
-      const remaining = (id) => totalDays - (rec.get(id).w + rec.get(id).l);
+      const left = (id) => totalDays - (rec.get(id).w + rec.get(id).l);
       const others = order.filter((r) => r.id !== my);
-      if (others.filter((r) => r.w + remaining(r.id) >= mine.w).length <= TOP - 1) {
+      if (others.filter((r) => r.w + left(r.id) >= me.w).length <= TOP - 1) {
         clinched = true;
-        add({ key: `${sy}:clinch`, t: t0 + 0.8, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'clinch', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'good', delta: 5, comments: 3, vars: { team: nameOf(my), rank: myRank, record: myRec, day: d.day } });
-      } else if (others.filter((r) => r.w > mine.w + remaining(my)).length >= TOP) {
+        add({ key: `${sy}:clinch`, t: t0 + 0.8, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'clinch', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'good', delta: 5, comments: 3, vars: { ...common } });
+      } else if (others.filter((r) => r.w > me.w + left(my)).length >= TOP) {
         out = true;
-        add({ key: `${sy}:out`, t: t0 + 0.8, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'eliminated', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'bad', delta: -6, comments: 3, vars: { team: nameOf(my), rank: myRank, record: myRec, day: d.day } });
+        add({ key: `${sy}:out`, t: t0 + 0.8, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: 'eliminated', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'bad', delta: -6, comments: 3, vars: { ...common } });
       }
     }
     // 한 바퀴(9일)마다 결산
     const cycle = Math.round(src.teams.length - 1);
     if (d.day % cycle === 0) {
       const best = [...scorers.values()].filter((s) => s.g >= 5).sort((a, b) => b.pts / b.g - a.pts / a.g)[0];
-      const scoreVars = best ? { scorer: best.name, ppg: fmt1(best.pts / best.g) } : {};
-      const vars = { team: nameOf(my), record: myRec, rank: myRank, leader: nameOf(leader.id), leaderRec, day: d.day, cycle: d.day / cycle, games: totalDays, ...scoreVars };
+      const vars = { ...common, cycle: d.day / cycle, ...(best ? { scorer: best.name, ppg: fmt1(best.pts / best.g) } : {}), ppgFor: fmt1(me.pf / (me.w + me.l)), ppgAgn: fmt1(me.pa / (me.w + me.l)) };
+      const l5 = myResults.slice(-5); const w5 = l5.filter((x) => x.win).length;
+      Object.assign(vars, { l5: recordText(w5, l5.length - w5), formWord: w5 >= 4 ? '좋다' : w5 <= 1 ? '무겁다' : '엇갈린다' });
       if (d.day === totalDays) {
-        add({ key: `${sy}:end`, t: t0 + 0.9, season: seasonLabel, when: `${seasonLabel} 정규리그 종료`, kind: 'regular_end', scope: 'my', tags: ['우리 팀', '순위'], tone: myRank <= TOP ? 'good' : 'bad', delta: myRank <= TOP ? 2 : -2, comments: 2, vars: { ...vars, tail: myRank <= TOP ? '플레이오프에 진출했다.' : '플레이오프에는 오르지 못했다.' } });
+        add({ key: `${sy}:end`, t: t0 + 0.9, season: seasonLabel, when: `${seasonLabel} 정규리그 종료`, kind: 'regular_end', scope: 'my', tags: ['우리 팀', '순위'], tone: myRank <= TOP ? 'good' : 'bad', delta: myRank <= TOP ? 2 : -2, comments: 2, vars: { ...vars, nextSeason: labelOf(sy + 1), tail: myRank <= TOP ? '플레이오프에 진출했다.' : '플레이오프에는 오르지 못했다.' } });
       } else {
         add({ key: `${sy}:cycle${d.day}`, t: t0 + 0.9, season: seasonLabel, when: `${seasonLabel} ${d.day}일차`, kind: d.day * 2 === totalDays ? 'midseason' : 'cycle', scope: 'my', tags: ['우리 팀', '순위'], tone: myRank <= TOP ? 'good' : 'bad', comments: 1, vars });
       }
@@ -459,7 +670,15 @@ export function buildNews(src) {
   }
 
   // ----- 플레이오프(현재 시즌이 진행 중이거나, 오프시즌에서 방금 끝난 시즌) -----
-  const seriesEvents = (seriesList, y, label, myRankIn, source) => {
+  const finalRank = (standings, id) => { const i = standings.findIndex((s) => s.id === id); return i >= 0 ? i + 1 : undefined; };
+  const seriesEvents = (seriesList, y, label, standings, source) => {
+    const myRankIn = finalRank(standings, my);
+    const myPo = (list) => { // 우리 팀이 거친 라운드 요약
+      const rounds = list.filter((s) => s.higherId === my || s.lowerId === my);
+      if (!rounds.length) return undefined;
+      const last = rounds.at(-1);
+      return last.winnerId === my ? (last.round === '챔피언결정전' || last.round === '결승' ? '우승으로 마무리됐다' : `${last.round}을 통과해 다음 라운드로 올랐다`) : `${last.round}에서 멈췄다`;
+    };
     seriesList.forEach((s, i) => {
       const round = s.round;
       const ro = ROUND_ORDER[round] ?? 1;
@@ -469,20 +688,30 @@ export function buildNews(src) {
       const key = `${y}:po${i}`; const t = base(y) + 100 + ro * 10 + i;
       const isMy = winner === my || loser === my;
       const final = ro === 3;
+      // 경기별 스코어: 실시간은 경기 결과 배열, 기록은 [높은 시드 득점, 낮은 시드 득점]
+      const pts = (s.games ?? []).map((g) => (Array.isArray(g) ? g : [g.homeId === s.higherId ? g.homePts : g.awayPts, g.homeId === s.higherId ? g.awayPts : g.homePts]));
+      const gameList = pts.map((p, k) => `${k + 1}차전 ${nameOf(p[0] > p[1] ? s.higherId : s.lowerId)} ${Math.max(...p)}-${Math.min(...p)}`).join(', ');
+      const sidePts = (id) => pts.map((p) => (id === s.higherId ? p[0] : p[1]));
+      const avgPts = (arr) => (arr.length ? fmt1(arr.reduce((x, y) => x + y, 0) / arr.length) : undefined);
+      const wr = finalRank(standings, winner); const lr = finalRank(standings, loser);
+      const vp = {
+        round, wins, season: label, winner: nameOf(winner), loser: nameOf(loser), team: nameOf(my), opp: nameOf(winner === my ? loser : winner),
+        ...(pts.length ? { nGames: pts.length, gameList, winAvg: avgPts(sidePts(winner)), loseAvg: avgPts(sidePts(loser)) } : {}), ...(wr && lr ? { winnerRank: wr, loserRank: lr, upsetText: wr > lr ? '정규리그 순위가 낮은 팀이 시리즈를 가져갔다.' : '정규리그 순위가 높은 팀이 순리대로 시리즈를 가져갔다.' } : {}),
+        ...(myRankIn ? { myRank: myRankIn, rank: myRankIn } : {}), ...(myPo(seriesList.slice(0, i + 1)) && isMy ? { myPoText: myPo(seriesList.slice(0, i + 1)) } : {}), ...(NEXT_ROUND[round] ? { nextRound: NEXT_ROUND[round] } : {}), ...(final ? {} : {})
+      };
       if (final) {
-        if (winner === my) add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_title_my', scope: 'my', tags: ['우리 팀', '플레이오프', '우승'], tone: 'good', delta: 12, comments: 3, vars: { team: nameOf(my), opp: nameOf(loser), wins, season: label, rank: myRankIn ?? undefined }, src: source });
-        else add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_title', scope: isMy ? 'my' : 'league', tags: ['플레이오프', '우승'], tone: isMy ? 'bad' : 'neutral', delta: isMy ? -5 : 0, comments: 2, vars: { winner: nameOf(winner), loser: nameOf(loser), wins, season: label } });
+        if (winner === my) add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_title_my', scope: 'my', tags: ['우리 팀', '플레이오프', '우승'], tone: 'good', delta: 12, comments: 3, vars: { ...vp, opp: nameOf(loser) }, src: source });
+        else add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_title', scope: isMy ? 'my' : 'league', tags: ['플레이오프', '우승'], tone: isMy ? 'bad' : 'neutral', delta: isMy ? -5 : 0, comments: 2, vars: vp });
       } else if (isMy) {
-        if (winner === my) add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_my_win', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'good', delta: 5, comments: 3, vars: { team: nameOf(my), opp: nameOf(loser), round, wins } });
-        else add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_my_out', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'bad', delta: -5, comments: 3, vars: { team: nameOf(my), opp: nameOf(winner), round, wins, rank: myRankIn ?? undefined } });
+        if (winner === my) add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_my_win', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'good', delta: 5, comments: 3, vars: { ...vp, opp: nameOf(loser) } });
+        else add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_my_out', scope: 'my', tags: ['우리 팀', '플레이오프'], tone: 'bad', delta: -5, comments: 3, vars: { ...vp, opp: nameOf(winner) } });
       } else {
-        add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_league', scope: 'league', tags: ['리그', '플레이오프'], comments: 1, vars: { winner: nameOf(winner), loser: nameOf(loser), round, wins } });
+        add({ key, t, season: label, when: `${label} 플레이오프 ${round}`, kind: 'po_league', scope: 'league', tags: ['리그', '플레이오프'], comments: 1, vars: vp });
       }
     });
   };
   const curSeries = cur.playoffSeries ?? [];
-  const myRankNow = (() => { const o = rank(); const i = o.findIndex((r) => r.id === my); return dayResults.length && i >= 0 ? i + 1 : null; })();
-  if (curSeries.length) seriesEvents(curSeries, sy, seasonLabel, myRankNow, 'live');
+  if (curSeries.length) seriesEvents(curSeries, sy, seasonLabel, rank().map((r) => ({ id: r.id })), 'live');
 
   // ----- 끝난 시즌들(로그) -----
   log.forEach((entry, idx) => {
@@ -491,35 +720,42 @@ export function buildNews(src) {
     const row = entry.standings.find((s) => s.id === my);
     const recText = row ? recordText(row.wins, row.losses) : '';
     if (entry.series?.length && (cur.stage === 'offseason' || !latest || y !== sy)) {
-      const list = latest ? entry.series : entry.series.filter((s) => s.round === '결승');
-      seriesEvents(list.map((s) => ({ ...s, wins: s.wins })), y, label, row?.rank, 'log');
+      const list = latest ? entry.series : entry.series.filter((s) => s.round === '챔피언결정전' || s.round === '결승');
+      seriesEvents(list, y, label, entry.standings, 'log');
     }
     const st = entry.stage?.[my];
     const led = entry.ledger?.[my];
     const kind = row && row.rank <= 3 && st ? 'review_top' : st ? 'review_mid' : 'review_miss';
-    if (row) {
-      add({ key: `${y}:review`, t: base(y) + 200, season: label, when: `${label} 시즌 결산`, kind, scope: 'my', tags: ['우리 팀', '결산'], tone: st ? 'good' : 'bad', delta: kind === 'review_top' ? 3 : kind === 'review_mid' ? 0 : -3, comments: 2, vars: { team: nameOf(my), season: label, rank: row.rank, record: recText, stage: STAGE_TEXT[st ?? ''] ?? '진출 실패', net: led ? `${led.net >= 0 ? '+' : '-'}${money(led.net)}` : '0.0' } });
-    }
+    const nextSeason = labelOf(y + 1);
+    const lrow = lastRowOf(my, y);
+    const myLeader = (entry.leaders ?? []).filter((l) => l.teamId === my).sort((a, b) => b.ppg - a.ppg)[0];
+    const reviewVars = row ? {
+      team: nameOf(my), season: label, rank: row.rank, record: recText, stage: STAGE_TEXT[st ?? ''] ?? '진출 실패', net: led ? `${led.net >= 0 ? '+' : '-'}${money(led.net)}` : '0.0',
+      winPct: pct3(row.wins, row.losses), nextSeason, regChamp: nameOf(entry.standings[0].id), regChampRec: recordText(entry.standings[0].wins, entry.standings[0].losses), champName: nameOf(entry.championId), ...(led ? { revenue: money(led.revenue), payroll: money(led.payroll) } : {}),
+      ...(lrow ? { lastRank: lrow.rank, lastRec: recordText(lrow.wins, lrow.losses), cmpWord: `이번 시즌은 ${row.rank < lrow.rank ? '순위가 올랐다' : row.rank > lrow.rank ? '순위가 내려갔다' : '순위가 같았다'}.` } : {}),
+      ...(titlesOf(my) != null ? { titles: titlesOf(my) } : {}), ...(myLeader ? { tmName: cleanName(myLeader.name), tmPpg: fmt1(myLeader.ppg) } : {})
+    } : null;
+    if (row) add({ key: `${y}:review`, t: base(y) + 200, season: label, when: `${label} 시즌 결산`, kind, scope: 'my', tags: ['우리 팀', '결산'], tone: st ? 'good' : 'bad', delta: kind === 'review_top' ? 3 : kind === 'review_mid' ? 0 : -3, comments: 2, vars: reviewVars });
     if (!latest) return;
     const wen = (when) => `${label} 오프시즌 · ${when}`;
+    const offBase = row ? { team: nameOf(my), lastSeasonLabel: label, rank: row.rank, record: recText, stage: STAGE_TEXT[st ?? ''] ?? '진출 실패', nextSeason, ...ofTeam() } : { team: nameOf(my), nextSeason, ...ofTeam() };
     // 재정
     if (led) {
-      if (led.penalty > 0) add({ key: `${y}:cap`, t: base(y) + 350, season: label, when: wen('재정'), kind: 'cap_over', scope: 'my', tags: ['우리 팀', '재정'], tone: 'bad', delta: -1.5, comments: 2, vars: { team: nameOf(my), season: label, penalty: money(led.penalty), payroll: money(led.payroll), cap: money(src.capEok ?? 30) } });
+      if (led.penalty > 0) add({ key: `${y}:cap`, t: base(y) + 350, season: label, when: wen('재정'), kind: 'cap_over', scope: 'my', tags: ['우리 팀', '재정'], tone: 'bad', delta: -1.5, comments: 2, vars: { ...offBase, season: label, penalty: money(led.penalty), payroll: money(led.payroll), cap: money(src.capEok ?? 30) } });
       const plus = led.net >= 0;
-      add({ key: `${y}:funds`, t: base(y) + 351, season: label, when: wen('재정'), kind: plus ? 'funds_plus' : 'funds_minus', scope: 'my', tags: ['우리 팀', '재정'], tone: plus ? 'good' : 'bad', delta: plus ? 1 : -1, comments: 1, vars: { team: nameOf(my), season: label, net: `${plus ? '+' : '-'}${money(led.net)}`, profit: money(led.net), loss: money(led.net), revenue: money(led.revenue), payroll: money(led.payroll), ...(entry.fundsAfter?.[my] != null ? { fundsText: `오프시즌을 거친 구단 자금은 ${money(entry.fundsAfter[my])}억이다.` } : { fundsText: '' }) } });
+      add({ key: `${y}:funds`, t: base(y) + 351, season: label, when: wen('재정'), kind: plus ? 'funds_plus' : 'funds_minus', scope: 'my', tags: ['우리 팀', '재정'], tone: plus ? 'good' : 'bad', delta: plus ? 1 : -1, comments: 1, vars: { ...offBase, season: label, net: `${plus ? '+' : '-'}${money(led.net)}`, profit: money(led.net), loss: money(led.net), revenue: money(led.revenue), ...(entry.fundsAfter?.[my] != null ? { fundsText: `오프시즌을 거친 구단 자금은 ${money(entry.fundsAfter[my])}억이다.` } : { fundsText: '' }) } });
     }
     // 오프시즌 보고서(완료된 오프시즌) 또는 진행 중인 오프시즌의 은퇴·성장
     const rep = entry.report;
     const retired = rep ? rep.retired : cur.offseason?.retired ?? [];
     const mineProg = rep ? rep.progressed.mine : (cur.offseason?.progressed ?? []).filter((p) => p.teamId === my);
-    const myRet = retired.filter((p) => p.teamId === my).slice(0, 3);
-    myRet.forEach((p) => add({ key: `${y}:ret:${p.id}`, t: base(y) + 300, season: label, when: wen('은퇴'), kind: 'retire_my', scope: 'my', tags: ['우리 팀', '은퇴'], tone: 'neutral', delta: -1, comments: 2, vars: { team: nameOf(my), player: p.name, age: p.age, ovr: p.ovr } }));
+    retired.filter((p) => p.teamId === my).slice(0, 3).forEach((p) => add({ key: `${y}:ret:${p.id}`, t: base(y) + 300, season: label, when: wen('은퇴'), kind: 'retire_my', scope: 'my', tags: ['우리 팀', '은퇴'], tone: 'neutral', delta: -1, comments: 2, vars: { ...offBase, player: pbn(p.id, p.name), pAge: p.age, pOvr: p.ovr, pPos: players.get(p.id)?.position ?? undefined, pSalary: undefined, age: p.age, ovr: p.ovr } }));
     const star = retired.filter((p) => p.teamId !== my).sort((a, b) => b.ovr - a.ovr)[0];
-    if (star) add({ key: `${y}:ret:${star.id}`, t: base(y) + 300.5, season: label, when: wen('은퇴'), kind: 'retire_star', scope: 'league', tags: ['리그', '은퇴'], comments: 1, vars: { player: star.name, from: nameOf(star.teamId), age: star.age, ovr: star.ovr } });
+    if (star) add({ key: `${y}:ret:${star.id}`, t: base(y) + 300.5, season: label, when: wen('은퇴'), kind: 'retire_star', scope: 'league', tags: ['리그', '은퇴'], comments: 1, vars: { ...offBase, player: pbn(star.id, star.name), from: nameOf(star.teamId), age: star.age, ovr: star.ovr, pAge: star.age, pOvr: star.ovr } });
     const up = [...mineProg].sort((a, b) => b.delta - a.delta)[0];
-    if (up && up.delta >= 2) add({ key: `${y}:up:${up.id}`, t: base(y) + 301, season: label, when: wen('성장'), kind: 'growth_up', scope: 'my', tags: ['우리 팀', '성장'], tone: 'good', delta: 1.5, comments: 2, playerComment: true, vars: { team: nameOf(my), player: up.name, from: up.from, to: up.to, delta: up.delta, age: up.age } });
+    if (up && up.delta >= 2) add({ key: `${y}:up:${up.id}`, t: base(y) + 301, season: label, when: wen('성장'), kind: 'growth_up', scope: 'my', tags: ['우리 팀', '성장'], tone: 'good', delta: 1.5, comments: 2, playerComment: true, vars: { ...offBase, ...pInfo(up.id), player: pbn(up.id, up.name), from: up.from, to: up.to, delta: up.delta, deltaSign: `+${up.delta}`, age: up.age, pAge: up.age } });
     const down = [...mineProg].sort((a, b) => a.delta - b.delta)[0];
-    if (down && down.delta <= -2) add({ key: `${y}:down:${down.id}`, t: base(y) + 302, season: label, when: wen('성장'), kind: 'growth_down', scope: 'my', tags: ['우리 팀', '성장'], tone: 'neutral', delta: -1.5, comments: 1, vars: { team: nameOf(my), player: down.name, from: down.from, to: down.to, delta: Math.abs(down.delta), age: down.age } });
+    if (down && down.delta <= -2) add({ key: `${y}:down:${down.id}`, t: base(y) + 302, season: label, when: wen('성장'), kind: 'growth_down', scope: 'my', tags: ['우리 팀', '성장'], tone: 'neutral', delta: -1.5, comments: 1, vars: { ...offBase, ...pInfo(down.id), player: pbn(down.id, down.name), from: down.from, to: down.to, delta: Math.abs(down.delta), deltaSign: `${down.delta}`, age: down.age, pAge: down.age } });
     if (!rep) return;
     // 트레이드
     for (const [i, t] of rep.trades.entries()) {
@@ -530,27 +766,27 @@ export function buildNews(src) {
         give = (mineIsA ? tr.giveA : tr.giveB).map(pname); get = (mineIsA ? tr.giveB : tr.giveA).map(pname); partner = mineIsA ? tr.teamB : tr.teamA;
       }
       if (give.some((x) => !x) || get.some((x) => !x) || !give.length || !get.length) continue;
-      add({ key: `${y}:trade${i}`, t: base(y) + 305 + i * 0.1, season: label, when: wen('트레이드'), kind: 'trade_done', scope: 'move', tags: ['우리 팀', '트레이드'], tone: 'neutral', delta: 0, comments: 2, vars: { team: nameOf(my), partner: nameOf(partner), give: give.join(', '), get: get.join(', ') } });
+      add({ key: `${y}:trade${i}`, t: base(y) + 305 + i * 0.1, season: label, when: wen('트레이드'), kind: 'trade_done', scope: 'move', tags: ['우리 팀', '트레이드'], tone: 'neutral', delta: 0, comments: 2, vars: { ...offBase, partner: nameOf(partner), give: give.join(', '), get: get.join(', ') } });
     }
     // 재계약
     const renewed = rep.renewed.filter((r) => r.teamId === my);
-    if (renewed.length) add({ key: `${y}:resign`, t: base(y) + 310, season: label, when: wen('재계약'), kind: 'resign_done', scope: 'move', tags: ['우리 팀', '재계약'], tone: 'good', delta: 1.5, comments: 2, vars: { team: nameOf(my), count: renewed.length, names: renewed.slice(0, 3).map((r) => r.name).join(', ') } });
+    if (renewed.length) add({ key: `${y}:resign`, t: base(y) + 310, season: label, when: wen('재계약'), kind: 'resign_done', scope: 'move', tags: ['우리 팀', '재계약'], tone: 'good', delta: 1.5, comments: 2, vars: { ...offBase, count: renewed.length, names: renewed.slice(0, 3).map((r) => pbn(r.id, r.name)).join(', ') } });
     const refused = rep.refused.filter((r) => r.teamId === my);
-    if (refused.length) add({ key: `${y}:refuse`, t: base(y) + 311, season: label, when: wen('재계약'), kind: 'resign_fail', scope: 'move', tags: ['우리 팀', '재계약'], tone: 'bad', delta: -2, comments: 2, vars: { team: nameOf(my), count: refused.length, names: refused.slice(0, 3).map((r) => r.name).join(', ') } });
+    if (refused.length) add({ key: `${y}:refuse`, t: base(y) + 311, season: label, when: wen('재계약'), kind: 'resign_fail', scope: 'move', tags: ['우리 팀', '재계약'], tone: 'bad', delta: -2, comments: 2, vars: { ...offBase, count: refused.length, names: refused.slice(0, 3).map((r) => pbn(r.id, r.name)).join(', ') } });
     // FA
     const sigs = rep.signings;
-    sigs.filter((s) => s.teamId === my).slice(0, 3).forEach((s) => add({ key: `${y}:fain:${s.id}`, t: base(y) + 320 + s.round * 0.1, season: label, when: wen('FA'), kind: 'fa_in', scope: 'move', tags: ['우리 팀', 'FA'], tone: 'good', delta: 2, comments: 2, playerComment: true, vars: { team: nameOf(my), player: s.name, salary: fmt1(s.salaryEok), years: s.years, round: s.round } }));
-    sigs.filter((s) => s.from === my && s.teamId !== my).slice(0, 3).forEach((s) => add({ key: `${y}:faout:${s.id}`, t: base(y) + 321 + s.round * 0.1, season: label, when: wen('FA'), kind: 'fa_out', scope: 'move', tags: ['우리 팀', 'FA'], tone: 'bad', delta: -2, comments: 2, vars: { team: nameOf(my), player: s.name, to: nameOf(s.teamId), salary: fmt1(s.salaryEok), years: s.years } }));
-    sigs.filter((s) => s.teamId !== my && s.from !== my).sort((a, b) => b.salaryEok - a.salaryEok).slice(0, 2).forEach((s) => add({ key: `${y}:fabig:${s.id}`, t: base(y) + 322 + s.round * 0.1, season: label, when: wen('FA'), kind: 'fa_big', scope: 'move', tags: ['리그', 'FA'], comments: 1, vars: { player: s.name, to: nameOf(s.teamId), salary: fmt1(s.salaryEok), years: s.years, round: s.round } }));
+    sigs.filter((s) => s.teamId === my).slice(0, 3).forEach((s) => add({ key: `${y}:fain:${s.id}`, t: base(y) + 320 + s.round * 0.1, season: label, when: wen('FA'), kind: 'fa_in', scope: 'move', tags: ['우리 팀', 'FA'], tone: 'good', delta: 2, comments: 2, playerComment: true, vars: { ...offBase, ...pInfo(s.id), player: pbn(s.id, s.name), salary: fmt1(s.salaryEok), years: s.years, round: s.round } }));
+    sigs.filter((s) => s.from === my && s.teamId !== my).slice(0, 3).forEach((s) => add({ key: `${y}:faout:${s.id}`, t: base(y) + 321 + s.round * 0.1, season: label, when: wen('FA'), kind: 'fa_out', scope: 'move', tags: ['우리 팀', 'FA'], tone: 'bad', delta: -2, comments: 2, vars: { ...offBase, ...pInfo(s.id), player: pbn(s.id, s.name), to: nameOf(s.teamId), salary: fmt1(s.salaryEok), years: s.years } }));
+    sigs.filter((s) => s.teamId !== my && s.from !== my).sort((a, b) => b.salaryEok - a.salaryEok).slice(0, 2).forEach((s) => add({ key: `${y}:fabig:${s.id}`, t: base(y) + 322 + s.round * 0.1, season: label, when: wen('FA'), kind: 'fa_big', scope: 'move', tags: ['리그', 'FA'], comments: 1, vars: { ...offBase, ...pInfo(s.id), player: pbn(s.id, s.name), to: nameOf(s.teamId), salary: fmt1(s.salaryEok), years: s.years, round: s.round } }));
     // 보상
     for (const c of rep.compensations.filter((x) => x.from === my || x.to === my)) {
       const sg = sigs.find((s) => s.id === c.playerId); if (!sg) continue;
-      add({ key: `${y}:comp:${c.playerId}`, t: base(y) + 330, season: label, when: wen('FA 보상'), kind: 'comp', scope: 'move', tags: ['우리 팀', 'FA'], tone: c.to === my ? 'neutral' : 'good', delta: 0, comments: 1, vars: { player: sg.name, from: nameOf(c.from), to: nameOf(c.to), compWhat: c.type === 'player' ? `선수 1명과 현금 ${fmt1(c.cashEok)}억` : `현금 ${fmt1(c.cashEok)}억` } });
+      add({ key: `${y}:comp:${c.playerId}`, t: base(y) + 330, season: label, when: wen('FA 보상'), kind: 'comp', scope: 'move', tags: ['우리 팀', 'FA'], tone: c.to === my ? 'neutral' : 'good', delta: 0, comments: 1, vars: { ...offBase, ...pInfo(sg.id), player: pbn(sg.id, sg.name), from: nameOf(c.from), to: nameOf(c.to), compWhat: c.type === 'player' ? `선수 1명과 현금 ${fmt1(c.cashEok)}억` : `현금 ${fmt1(c.cashEok)}억` } });
     }
     // 드래프트
-    rep.drafted.filter((d) => d.teamId === my).slice(0, 2).forEach((dd) => add({ key: `${y}:draft:${dd.id}`, t: base(y) + 340 + dd.pick * 0.01, season: label, when: wen('드래프트'), kind: 'draft_my', scope: 'move', tags: ['우리 팀', '드래프트'], tone: 'good', delta: 1, comments: 2, playerComment: true, vars: { team: nameOf(my), player: dd.name, pick: dd.pick, pos: dd.position, ovr: dd.ovr, potential: dd.potential } }));
+    rep.drafted.filter((d) => d.teamId === my).slice(0, 2).forEach((dd) => add({ key: `${y}:draft:${dd.id}`, t: base(y) + 340 + dd.pick * 0.01, season: label, when: wen('드래프트'), kind: 'draft_my', scope: 'move', tags: ['우리 팀', '드래프트'], tone: 'good', delta: 1, comments: 2, playerComment: true, vars: { ...offBase, ...pInfo(dd.id), player: pbn(dd.id, dd.name), pick: dd.pick, pos: dd.position, ovr: dd.ovr, potential: dd.potential, pPos: dd.position, pOvr: dd.ovr } }));
     const first = rep.drafted.find((d) => d.pick === 1);
-    if (first && first.teamId !== my) add({ key: `${y}:draft1`, t: base(y) + 341, season: label, when: wen('드래프트'), kind: 'draft_top', scope: 'league', tags: ['리그', '드래프트'], comments: 1, vars: { player: first.name, to: nameOf(first.teamId), pos: first.position, ovr: first.ovr, potential: first.potential } });
+    if (first && first.teamId !== my) add({ key: `${y}:draft1`, t: base(y) + 341, season: label, when: wen('드래프트'), kind: 'draft_top', scope: 'league', tags: ['리그', '드래프트'], comments: 1, vars: { ...offBase, ...pInfo(first.id), player: pbn(first.id, first.name), to: nameOf(first.teamId), pos: first.position, ovr: first.ovr, potential: first.potential, pPos: first.position, pOvr: first.ovr } });
   });
 
   // 정렬: 시간, 같은 시각이면 생성 순
@@ -559,18 +795,16 @@ export function buildNews(src) {
   // ----- 글 만들기: 템플릿 고르기, 팬 심리, 댓글 -----
   let score = mood0;
   const hist = [];
-  const recentH = {}; const recentB = {}; const recentC = {};
+  const recentH = {}; const recentS = {}; const recentC = {};
   const items = [];
   const usedNicks = new Set();
   for (const ev of events) {
     const group = TEMPLATES[ev.kind];
     const rng = mulberry32(hashString(`${src.seed}:${ev.key}`));
     const hi = pickIndex(group.h, ev.vars, rng, (recentH[ev.kind] ??= []));
-    const bi = pickIndex(group.b, ev.vars, rng, (recentB[ev.kind] ??= []));
     const headline = hi >= 0 ? fill(group.h[hi], ev.vars) : '';
-    const body = bi >= 0 ? fill(group.b[bi], ev.vars) : '';
-    // 팬 심리
-    if (ev.delta) { score = clamp(score + ev.delta, 5, 95); }
+    const { paragraphs, summary } = compose(ev.kind, ev.vars, rng, recentS);
+    if (ev.delta) score = clamp(score + ev.delta, 5, 95);
     score += (50 - score) * 0.04;
     if (ev.flag === 'game' || ev.delta) hist.push(score);
     const trend = hist.length > 5 ? score - hist.at(-6) : hist.length ? score - hist[0] : 0;
@@ -578,7 +812,7 @@ export function buildNews(src) {
     const comments = makeComments(ev, label, rng, src, usedNicks, recentC);
     items.push({
       id: ev.key, t: ev.t, season: ev.season, when: ev.when, kind: ev.kind, scope: ev.scope, tags: ev.tags, tone: ev.tone,
-      outlet: OUTLETS[hashString(ev.key) % OUTLETS.length], headline, body, comments, mood: Math.round(score)
+      outlet: OUTLETS[hashString(ev.key) % OUTLETS.length], headline, summary, paragraphs, body: paragraphs.join('\n\n'), comments, mood: Math.round(score)
     });
     usedNicks.clear();
   }
@@ -596,49 +830,63 @@ export function buildNews(src) {
 
 function makeComments(ev, label, rng, src, used, recentC) {
   if (!ev.comments) return [];
-  // 0~max개: 일반 경기 기사는 가끔만 댓글이 달린다
-  let n = ev.comments;
-  if (ev.comments === 1) n = rng() < 0.6 ? 1 : 0;
-  else n = Math.max(1, ev.comments - (rng() < 0.3 ? 1 : 0));
+  // 기사당 2~5개: 중요한 기사일수록 많다
+  const n = clamp(2 + (ev.comments >= 2 ? 1 : 0) + (ev.comments >= 3 ? 1 : 0) + (rng() < 0.4 ? 1 : 0), 2, 5);
   const out = [];
   const myName = src.teamName(src.myTeamId);
+  const offseasonKind = ev.scope === 'move' || /^(growth|retire)_/.test(ev.kind);
   for (let i = 0; i < n; i++) {
     const roll = rng();
     let type = 'mine';
-    if (ev.refTeam && roll > 0.78) type = 'rival'; else if (roll > 0.92) type = 'neutral';
-    let pool; let team;
+    const isStar = ev.kind === 'star_points' || ev.kind === 'star_all';
+    if (i > 0 && roll < 0.25 && out.some((c) => !c.replyTo)) type = 'reply';
+    else if (isStar && ev.refTeam && roll > 0.55) type = 'fan';
+    else if (ev.refTeam && roll > 0.8) type = 'rival';
+    else if (roll > 0.88) type = 'neutral';
+    let pool; let team; let replyTo;
     const vars = { ...ev.vars, team: myName };
-    const offseasonKind = ev.scope === 'move' || /^(growth|retire)_/.test(ev.kind);
-    if (type === 'rival') {
+    if (type === 'reply') {
+      pool = COMMENTS.reply; const roots = out.filter((c) => !c.replyTo); const prev = roots[rng() < 0.7 ? roots.length - 1 : 0]; replyTo = prev.nick; team = prev.team === '중립' || rng() < 0.4 ? '중립' : `${myName} 팬`;
+    } else if (type === 'fan') {
+      pool = COMMENTS.star_fan; team = `${src.teamName(ev.refTeam)} 팬`;
+    } else if (type === 'rival') {
       pool = ev.tone === 'good' ? COMMENTS.rival_good : COMMENTS.rival_bad; team = `${src.teamName(ev.refTeam)} 팬`;
     } else if (type === 'neutral') { pool = offseasonKind ? COMMENTS.move_neutral : COMMENTS.neutral; team = '중립'; }
     else {
-      team = `${myName} 팬`;
-      if (ev.kind === 'preview') pool = COMMENTS.preview;
+      team = isStar && ev.starTeamId !== src.myTeamId ? '중립' : `${myName} 팬`;
+      const detail = rng() < 0.35 && ev.scope === 'my' && !offseasonKind;
+      if (ev.kind === 'preview') pool = rng() < 0.5 ? COMMENTS.preview : COMMENTS.preview_detail;
       else if (/^(cap_over|funds_)/.test(ev.kind)) pool = COMMENTS.finance;
       else if (offseasonKind) pool = ev.playerComment && ev.tone !== 'bad' && rng() < 0.5 ? COMMENTS.player_good : ev.tone === 'good' ? COMMENTS.move_good : ev.tone === 'bad' ? COMMENTS.move_bad : COMMENTS.move_neutral;
-      else if (ev.scope === 'league') pool = ev.playerComment && rng() < 0.6 ? COMMENTS.player_good : COMMENTS.neutral;
+      else if (ev.scope === 'league') pool = isStar ? (ev.starTeamId === src.myTeamId ? COMMENTS.player_good : COMMENTS.star_neutral) : COMMENTS.neutral;
+      else if (detail) pool = ev.tone === 'bad' ? COMMENTS.detail_bad : COMMENTS.detail_good;
       else if (ev.playerComment && ev.tone !== 'bad' && rng() < 0.6) pool = COMMENTS.player_good;
       else if (ev.tone === 'good' && (label === '격앙' || label === '체념' || label === '불안') && rng() < 0.6) pool = COMMENTS.relief;
       else if (ev.tone === 'bad' && (label === '환호' || label === '기대') && rng() < 0.6) pool = COMMENTS.sting;
       else pool = COMMENTS[label];
     }
     const poolName = Object.keys(COMMENTS).find((k) => COMMENTS[k] === pool);
-    const idx = pickIndex(pool, vars, rng, (recentC[poolName] ??= []));
-    if (idx < 0) continue;
+    let idx = pickIndex(pool, vars, rng, (recentC[poolName] ??= []));
+    if (idx < 0) { pool = COMMENTS[label]; idx = pickIndex(pool, vars, rng, (recentC[label] ??= [])); if (idx < 0) continue; }
     let nick = NICKS[Math.floor(rng() * NICKS.length)];
     for (let k = 0; k < 6 && used.has(nick); k++) nick = NICKS[Math.floor(rng() * NICKS.length)];
     used.add(nick);
-    const votes = 3 + Math.floor(rng() * rng() * 320 * (1 + ev.comments * 0.3));
-    out.push({ nick, team, votes, text: fill(pool[idx], vars) });
+    const votes = 3 + Math.floor(rng() * rng() * 320 * (1 + ev.comments * 0.3) * (type === 'reply' ? 0.15 : 1));
+    out.push({ nick, team, votes, text: fill(pool[idx], vars), ...(replyTo ? { replyTo } : {}) });
   }
-  return out.sort((a, b) => b.votes - a.votes);
+  // 답글은 원 댓글 바로 아래에 붙이고, 나머지는 추천 순
+  const roots = out.filter((c) => !c.replyTo).sort((a, b) => b.votes - a.votes);
+  const replies = out.filter((c) => c.replyTo);
+  const ordered = [];
+  for (const r of roots) { ordered.push(r); for (const rp of replies.filter((x) => x.replyTo === r.nick)) ordered.push(rp); }
+  for (const rp of replies) if (!ordered.includes(rp)) ordered.push(rp);
+  return ordered;
 }
 
 /** 템플릿·댓글 전체 문자열(금지어 검사용) */
 export function allTemplateStrings() {
   return [
-    ...Object.values(TEMPLATES).flatMap((g) => [...g.h, ...g.b]),
+    ...Object.values(TEMPLATES).flatMap((g) => [...g.h, ...g.b]), ...Object.values(SENT).flat(),
     ...Object.values(COMMENTS).flat(), ...Object.values(MOOD_DESC).flat(), ...NICKS, ...OUTLETS
   ];
 }

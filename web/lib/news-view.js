@@ -1,32 +1,53 @@
 // 뉴스 화면이 쓰는 계산(브라우저 API 없음). 세션 → 뉴스 생성기 입력 → 기사 목록.
 import { buildNews } from '../../src/news.mjs';
-import { powerRanking, seasonLabel } from './game.js';
+import { powerRanking, seasonLabel, prestigeOf, payrollInfo, fundsOf, fullHistory } from './game.js';
+import { careerRows, careerTotals } from '../../src/career.mjs';
 import { Session } from './session.js';
 
 // 오프시즌에는 세션이 지난 시즌의 일별 결과를 버린다. 기사를 계속 보여 주려고 마지막 시즌의 일별 결과를 기억해 둔다.
-let dayMemo = { key: null, dayResults: [], totalDays: null };
+let dayMemo = { key: null, dayResults: [], totalDays: null, schedule: null };
 // 같은 상태에서 화면 몇 곳이 뉴스를 요청해도 한 번만 만든다.
 let cache = { key: null, news: null };
+
+/** 선수의 KBL 통산 기록 문구(없으면 null): "N시즌 동안 경기당 평균 X점 Y리바운드 Z어시스트" */
+function careerLookup(data, players) {
+  const cache = new Map();
+  return (id) => {
+    if (cache.has(id)) return cache.get(id);
+    let out = null;
+    const kbl = players.get(id)?.kblId;
+    const rows = kbl && data.careers?.[kbl] ? careerRows(data.careers[kbl], ['r']) : [];
+    if (rows.length) { const t = careerTotals(rows); if (t.gp >= 20) out = `${rows.length}시즌 동안 경기당 평균 ${t.ppg.toFixed(1)}점 ${t.rpg.toFixed(1)}리바운드 ${t.apg.toFixed(1)}어시스트`; }
+    cache.set(id, out);
+    return out;
+  };
+}
 
 /** 세션의 지금 상태에서 뉴스 생성기 입력을 만든다 */
 export function newsSource(session, data) {
   const g = session.game;
   const sy = session.season;
   const memoKey = `${g.seed}:${sy}`;
-  if (session.stage !== 'offseason') dayMemo = { key: memoKey, dayResults: session.dayResults, totalDays: session.totalDays };
+  if (session.stage !== 'offseason') dayMemo = { key: memoKey, dayResults: session.dayResults, totalDays: session.totalDays, schedule: session.run?.schedule ?? null };
   if (session.stage === 'offseason' && dayMemo.key !== memoKey) {
     // 오프시즌에서 바로 불러온 저장이라 기억해 둔 일별 결과가 없다: 같은 시드로 시즌을 한 번 다시 돌려 얻는다
     const replay = new Session(data, { ...g, stage: 'playoffs', day: g.day, poRounds: 3, seasonEnd: null, decisions: {} });
-    dayMemo = { key: memoKey, dayResults: replay.dayResults, totalDays: replay.totalDays };
+    dayMemo = { key: memoKey, dayResults: replay.dayResults, totalDays: replay.totalDays, schedule: replay.run?.schedule ?? null };
   }
   const dayResults = session.stage === 'offseason' ? dayMemo.dayResults : session.dayResults;
   const log = [...g.log, ...(g.seasonEnd ? [g.seasonEnd.entry] : [])];
   const names = new Map(session.players.map((p) => [p.id, { name: p.name }]));
+  const players = new Map(session.players.map((p) => [p.id, { name: p.name, baseName: p.baseName, kblId: p.kblId, age: p.age, position: p.position, ovr: p.ovr, origin: p.origin, teamId: p.teamId, salaryEok: p.contract?.salaryEok, yearsLeft: p.contract?.yearsLeft }]));
   for (const e of log) for (const [id, name] of Object.entries(e.playerNames ?? {})) if (!names.has(id)) names.set(id, { name });
   const changes = session.stage === 'offseason' ? session.offseasonChanges() : null;
   const teams = data.teams.map((t) => t.id);
   const name = new Map(data.teams.map((t) => [t.id, t.name]));
   return {
+    history: fullHistory(session.view, data).seasons.map((x) => ({ startYear: x.startYear, teams: x.teams, championId: x.championId })),
+    careerOf: careerLookup(data, players),
+    players, schedule: session.stage === 'offseason' ? dayMemo.schedule : (session.run?.schedule ?? null), seasonLabelOf: seasonLabel,
+    prestige: prestigeOf(session.view, data), teamInfo: Object.fromEntries(data.teams.map((t) => [t.id, { city: t.city, arena: t.arena }])),
+    payroll: payrollInfo(session.view, data, g.managerId), funds: fundsOf(session.view, data, g.managerId),
     seed: g.seed, myTeamId: g.managerId, teams, startYear: sy, season: seasonLabel(sy), games: data.rules.regularSeasonGames,
     capEok: data.rules.salaryCap.domesticEok, teamName: (id) => name.get(id) ?? id, log, names,
     power: session.stage === 'regular' && session.day === 0 ? powerRanking(session.view, data) : null,
