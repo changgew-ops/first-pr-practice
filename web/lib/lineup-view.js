@@ -1,5 +1,5 @@
 // 라인업 편성 화면의 순수 계산(브라우저 API 없음). 편집 중인 편성(draft)은 { starters: [선수 id], bench: [선수 id] }.
-import { validateLineup, buildLineup, lineupCost } from '../../src/lineup.mjs';
+import { validateLineup, buildLineup, buildLineupHealthy, lineupCost } from '../../src/lineup.mjs';
 import { POSITION_TARGET } from '../../src/valuation.mjs';
 
 export const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C'];
@@ -30,8 +30,8 @@ export function evalDraft(draft, roster, rules) {
 }
 
 /** 자동 편성(코스트 제한 안에서 가장 강한 엔트리 12명)을 draft 모양으로 */
-export function autoDraft(roster, rules) {
-  const { starters, bench } = buildLineup(roster, rules, rules.simulation.benchWeight);
+export function autoDraft(roster, rules, injured = null) {
+  const { starters, bench } = injured?.size ? buildLineupHealthy(roster, rules, rules.simulation.benchWeight, injured, rules.injuries?.minHealthy ?? 8) : buildLineup(roster, rules, rules.simulation.benchWeight); // 부상 선수는 뺀다(건강한 선수가 모자라면 벤치가 줄어든다)
   return { starters: starters.map((p) => p.id), bench: bench.map((p) => p.id) };
 }
 

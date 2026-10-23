@@ -19,7 +19,8 @@ export function render(ctx) {
   const catalog = buildCatalog(data.cards, data.players.filter((p) => p.real), data.baseRules?.season ?? data.rules.season);
   const prog = codexProgress(catalog, have);
   const seasons = [...new Set(catalog.map((c) => c.season))].sort().reverse();
-  const rows = filterCatalog(catalog, have, ui);
+  // 수집한 카드를 먼저, 그다음 OVR이 높은 순(같으면 목록 순서 유지)
+  const rows = filterCatalog(catalog, have, ui).map((c, i) => [c, i]).sort((a, b) => (have.has(b[0].key) - have.has(a[0].key)) || (b[0].ovr - a[0].ovr) || (a[1] - b[1])).map((x) => x[0]);
   const pages = Math.max(1, Math.ceil(rows.length / PAGE));
   if (ui.page >= pages) ui.page = pages - 1;
   const slice = rows.slice(ui.page * PAGE, (ui.page + 1) * PAGE);

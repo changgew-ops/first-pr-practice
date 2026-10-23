@@ -41,9 +41,9 @@ export const ACHIEVEMENTS = [
   { id: 'trade1', tier: 'bronze', name: '첫 트레이드', desc: '트레이드를 성사시킨다', check: (c) => c.log.some((e) => (e.report?.trades?.length ?? 0) > 0) },
   { id: 'goalsAll', tier: 'silver', name: '모기업의 흡족', desc: '한 시즌의 모기업 목표를 모두 달성한다', check: (c) => c.log.some((e) => e.eval?.goals?.length && e.eval.goals.every((g) => g.met)) },
   { id: 'trust90', tier: 'gold', name: '전폭적 신뢰', desc: '단장 신뢰도 90 이상', check: (c) => (c.trust ?? 0) >= 90 },
-  { id: 'fans80', tier: 'silver', name: '팬이 열광한다', desc: '팬 열기 80 이상', check: (c) => (c.mood ?? 0) >= c.rules.achievements.fans.high },
-  { id: 'codex100', tier: 'bronze', name: '도감 수집가', desc: '카드 도감 100장 수집', check: (c) => (c.codexCount ?? 0) >= c.rules.achievements.codex.small },
-  { id: 'codex500', tier: 'gold', name: '카드 박물관', desc: '카드 도감 500장 수집', check: (c) => (c.codexCount ?? 0) >= c.rules.achievements.codex.big }
+  { id: 'fans70', tier: 'silver', name: '팬이 열광한다', desc: '팬 열기 70 이상', check: (c) => (c.mood ?? 0) >= c.rules.achievements.fans.high },
+  { id: 'codex50', tier: 'bronze', name: '도감 수집가', desc: '카드 도감 50장 수집', check: (c) => (c.codexCount ?? 0) >= c.rules.achievements.codex.small },
+  { id: 'codex120', tier: 'gold', name: '카드 박물관', desc: '카드 도감 120장 수집', check: (c) => (c.codexCount ?? 0) >= c.rules.achievements.codex.big }
 ];
 
 export const ACHIEVEMENT_BY_ID = Object.fromEntries(ACHIEVEMENTS.map((a) => [a.id, a]));

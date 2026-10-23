@@ -3,6 +3,8 @@ import { rosterOf, payrollInfo, teamPower } from '../lib/game.js';
 import { contractButtons } from '../lib/contract-view.js';
 import { avatarEl } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
+import { injuryMap, injuryTag, tempTag } from '../lib/injury-view.js';
+import { marketPanels } from './market.js';
 
 export function render(ctx, [teamParam]) {
   const { game, data } = ctx;
@@ -12,6 +14,7 @@ export function render(ctx, [teamParam]) {
   const pay = payrollInfo(game, data, teamId);
   const { lineup } = teamPower(game, data, teamId);
   const starters = new Set(lineup.starters.map((p) => p.id)), bench = new Set(lineup.bench.map((p) => p.id));
+  const hurt = injuryMap(ctx.session); // 지금 결장 중인 선수(전 구단)
   const f = { origin: 'all', pos: 'all', q: '' };
   const host = h('div');
   const draw = () => {
@@ -27,7 +30,7 @@ export function render(ctx, [teamParam]) {
       { key: 'sal', label: '연봉', get: (p) => (p.contract.salaryUsd ? p.contract.salaryUsd / 1e5 : p.contract.salaryEok), render: (p) => (p.origin === 'foreign' ? `$${(p.contract.salaryUsd / 1000).toFixed(0)}k` : eok(p.contract.salaryEok)), align: 'r' },
       { key: 'yrs', label: '계약', get: (p) => p.contract.yearsLeft, render: (p) => (p.contract.yearsLeft <= 0 ? h('span', { class: 'warn' }, '만료') : `${p.contract.yearsLeft}년`), align: 'r' },
       { key: 'origin', label: '구분', get: (p) => p.origin, sort: 'str', render: (p) => ORIGIN_LABEL[p.origin] },
-      { key: 'role', label: '편성', get: (p) => (starters.has(p.id) ? 2 : bench.has(p.id) ? 1 : 0), render: (p) => (starters.has(p.id) ? h('span', { class: 'tag hot' }, '스타팅') : bench.has(p.id) ? h('span', { class: 'tag' }, '벤치') : '') },
+      { key: 'role', label: '편성', get: (p) => (starters.has(p.id) ? 2 : bench.has(p.id) ? 1 : 0), render: (p) => h('span', { class: 'row', style: { gap: '4px', flexWrap: 'wrap' } }, hurt.get(p.id) ? injuryTag(hurt.get(p.id)) : starters.has(p.id) ? h('span', { class: 'tag hot' }, '스타팅') : bench.has(p.id) ? h('span', { class: 'tag' }, '벤치') : '', p.temp ? tempTag() : null) },
       ...(mine ? [{ key: 'act', label: '계약', get: () => 0, sort: false, render: (p) => contractButtons(ctx, p) }] : [])
     ], { sort: { key: 'ovr', dir: -1 }, onRow: (p) => ctx.go(`player/${p.id}`), empty: '조건에 맞는 선수가 없습니다' }));
   };
@@ -44,6 +47,7 @@ export function render(ctx, [teamParam]) {
     h('div', { class: 'card flush' },
       h('div', { class: 'pad row' }, ['all', ...POS_ORDER].map((p) => chip('pos', p, p === 'all' ? '모든 포지션' : p)), h('span', { class: 'note' }, '|'), [['all', '전체'], ['domestic', '국내'], ['foreign', '외국'], ['asia', '아시아쿼터']].map(([k, l]) => chip('origin', k, l)),
         h('input', { type: 'search', placeholder: '이름 검색', 'aria-label': '이름 검색', oninput: (e) => { f.q = e.target.value.trim(); draw(); } })),
-      host));
+      host),
+    mine ? marketPanels(ctx) : null);
   return { title: `${ctx.name(teamId)} 로스터`, body };
 }

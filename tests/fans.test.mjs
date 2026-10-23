@@ -113,3 +113,20 @@ test('시뮬레이션 분포: 10시즌 뒤 팬 열기는 구단별로 갈리고 
   assert.ok(moods.every((v) => v >= f.min && v <= f.max));
   assert.ok(last / first > 1.0 && last / first < 1.6, `10시즌 뒤 관중 배율 ${(last / first).toFixed(2)}`);
 });
+
+test('최장 연패: 경기 결과를 보관하지 않아도(keepGames 꺼짐) 센다, 보관한 경기에서 센 값과 같다', async () => {
+  const { beginSeason } = await import('../src/season-run.mjs');
+  const run = (keepGames) => {
+    const league = createLeague(players, rules, { history: loadHistory(), teamData: teams });
+    const r = beginSeason(league, teams, rules, mulberry32(9), { manager: teams[0].id, keepGames });
+    r.playDays(); r.startPlayoffs(); while (!r.playoffs.done) r.playoffRound();
+    return r.finish();
+  };
+  const withGames = run(true), without = run(false);
+  assert.deepEqual(without.streaks, withGames.streaks);
+  const worst = {};
+  const cur = {};
+  for (const g of withGames.result.games) for (const [id, win] of [[g.homeId, g.winnerId === g.homeId], [g.awayId, g.winnerId === g.awayId]]) { cur[id] = win ? 0 : (cur[id] ?? 0) + 1; worst[id] = Math.max(worst[id] ?? 0, cur[id]); }
+  assert.deepEqual(withGames.streaks, worst);
+  assert.ok(Object.values(withGames.streaks).every((n) => n >= 1 && n <= 54));
+});

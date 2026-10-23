@@ -304,6 +304,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
           const p = byId.get(line.id);
           if (!p) continue;
           if (line.minutes >= rules.injuries.fatigue.minutes) played.add(p.id);
+          if (injured.has(p.id)) continue; // 부상을 안고 뛰는 선수(건강한 선수가 모자랄 때)는 새 부상을 입지 않는다
           const hit = rollInjury(p, line.minutes, rules, `${injSeed}:${league.season}:${day}:${p.id}`, streak.get(p.id) ?? 0);
           if (!hit) continue;
           const inj = { playerId: p.id, name: p.name, teamId, day, total: hit.games, left: hit.games, kind: hit.kind, part: hit.part, temp: null, handled: false };

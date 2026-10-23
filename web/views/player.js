@@ -7,6 +7,8 @@ import { contractButtons, contractBlock } from '../lib/contract-view.js';
 import { avatarEl, AVATAR_NOTE } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
 import { playerAwardHistory, awardHistoryText } from '../../src/awards.mjs';
+import { injuryHistory, injuryTag, tempTag } from '../lib/injury-view.js';
+import { KIND_LABEL } from '../../src/injuries.mjs';
 
 export function render(ctx, [id]) {
   const { game } = ctx;
@@ -38,8 +40,23 @@ export function render(ctx, [id]) {
       prof?.career && h('p', { class: 'note' }, 'KBL 경력: ', prof?.career.map((c) => `${ctx.name(c.team)} ${c.years}`).join(' → ')),
       h('p', { class: 'note' }, `출처: ${official ? 'KBL 공식 프로필(2026-10-23 조회; 신체·등번호는 조회 시점 값)' : prof.source}`)),
     awardLine(game, p),
+    injuryLine(ctx, p),
     recordCard(ctx, p));
   return { title: p.name, body };
+}
+
+/** 지금의 부상과 게임에서 겪은 부상 이력(최신순). 둘 다 없으면 그리지 않는다. 이전 저장에는 지난 시즌 기록이 없다 */
+function injuryLine(ctx, p) {
+  const s = ctx.session;
+  const now = s.injuryOf?.(p.id) ?? null;
+  const hist = injuryHistory(s, p.id);
+  if (!now && !hist.length && !p.temp) return null;
+  const label = (seasonStart) => `${seasonStart}-${String(seasonStart + 1).slice(2)}`;
+  return h('div', { class: 'card inj-history' }, h('h3', '부상'),
+    now ? h('p', { style: { margin: '0 0 6px' } }, injuryTag(now, { full: true }), ' ', h('span', { class: 'note' }, `진단 ${now.kind === 'season' ? '시즌 아웃' : `${now.total}경기`}${now.temp ? ' · 일시교체 선수가 대신 뜁니다' : ''}`)) : null,
+    p.temp ? h('p', { style: { margin: '0 0 6px' } }, tempTag(), ' ', h('span', { class: 'note' }, '부상 선수를 대신해 뛰는 일시교체 선수입니다')) : null,
+    hist.length ? h('ul', { class: 'inj-hist-list', style: { margin: 0, paddingLeft: '18px' } }, hist.slice(0, 12).map((e) => h('li', `${label(e.season)} ${e.day}일차 · ${e.part} · ${KIND_LABEL[e.kind] ?? '부상'}(${e.games >= 99 ? '시즌 아웃' : `${e.games}경기 결장`})${e.current ? ' · 지금 결장 중' : ''}`))) : null,
+    h('p', { class: 'note', style: { margin: '6px 0 0' } }, '게임에서 진행한 시즌의 부상입니다(우리 구단 선수는 전부, 다른 구단 선수는 5경기 이상만 지난 시즌 기록에 남습니다).'));
 }
 
 /** 게임에서 받은 수상 이력 한 줄(시즌별). 이전 저장이나 수상이 없으면 그리지 않는다 */

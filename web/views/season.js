@@ -2,6 +2,7 @@
 // 세션 단계(stage)에 따라 regular / playoffs / offseason 화면을 보여 준다. 스타일은 css/season.css (sv- 접두).
 import { h, table, stat, link } from '../lib/dom.js';
 import { teamPower, seasonLabel } from '../lib/game.js';
+import { injuryCard } from '../lib/injury-view.js';
 import {
   standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesGameRows, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText
 } from '../lib/season-view.js';
@@ -67,6 +68,7 @@ function regularView(ctx) {
   const next = s.nextGame();
   if (next) parts.push(nextGameCard(ctx, next, rows));
   parts.push(actionBar(ctx));
+  parts.push(injuryCard(ctx)); // 부상 현황(우리 구단·리그)
 
   const chips = formChips(myGames, ctx.name, 10);
   if (chips.length) parts.push(h('div', { class: 'card sv-form' }, h('h3', '최근 10경기'), h('div', { class: 'timeline' }, chips.map((c) => h('span', { class: `d ${c.win ? 'w' : 'l'}`, title: c.title }, c.label)))));
@@ -184,6 +186,7 @@ function playoffsView(ctx) {
     alive: ['hot', '우리 구단이 플레이오프를 치르고 있습니다.'], out: ['', '우리 구단은 탈락했습니다. 남은 시리즈를 지켜보세요.'],
     champion: ['champ', '우리 구단이 우승했습니다!'], notQualified: ['', '우리 구단은 플레이오프에 진출하지 못했습니다.']
   }[status];
+  if (s.injuries?.some((i) => i.teamId === s.managerId)) parts.push(injuryCard(ctx, { compact: true }));
   if (banner) parts.push(h('div', { class: 'card sv-status' }, h('span', { class: `tag ${banner[0]}` }, { alive: '진행 중', out: '탈락', champion: '우승', notQualified: '미진출' }[status]), ' ', banner[1]));
 
   parts.push(h('div', { class: 'card' }, h('h2', '대진표'),

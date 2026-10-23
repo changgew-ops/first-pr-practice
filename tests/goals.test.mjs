@@ -27,6 +27,7 @@ test('목표 난이도: 약팀은 낮게, 강팀은 높게 주고 항상 3개(�
   assert.equal(strong[2].kind, 'profit');
   // 연봉이 캡에 가까우면 추가 목표가 '캡 준수'로 바뀐다
   assert.equal(chooseGoals({ ...base, expected: 5, payrollRatio: 0.99 }, rules)[2].kind, 'payroll');
+  assert.equal(chooseGoals({ ...base, expected: 5, payrollRatio: 1.05 }, rules)[2].kind, 'profit', '이미 캡을 넘었으면 연봉 목표는 주지 않는다');
   // 젊은 선수가 없으면 신인 출전 목표는 나오지 않는다
   const kinds = new Set(Array.from({ length: 40 }, (_, i) => chooseGoals({ ...base, expected: 5, hasYouth: false, season: 2026 + i }, rules)[2].kind));
   assert.deepEqual([...kinds], ['profit']);
@@ -35,7 +36,7 @@ test('목표 난이도: 약팀은 낮게, 강팀은 높게 주고 항상 3개(�
 });
 
 test('목표 판정: 종류별 달성·초과 달성', () => {
-  const actual = { rank: 3, wins: 30, losses: 24, stage: '4강', net: 1.5, payrollRatio: 0.95, youthMinutes: 700 };
+  const actual = { rank: 3, wins: 30, losses: 24, stage: '4강', net: 1.5, payrollRatio: 0.95, youthMinutes: 1100 };
   assert.deepEqual(evaluateGoal({ kind: 'rank', value: 3 }, actual), { met: true, over: false, shown: 3 });
   assert.equal(evaluateGoal({ kind: 'rank', value: 5 }, actual).over, true);
   assert.equal(evaluateGoal({ kind: 'rank', value: 2 }, actual).met, false);
@@ -46,19 +47,20 @@ test('목표 판정: 종류별 달성·초과 달성', () => {
   assert.equal(evaluateGoal({ kind: 'winPct', value: 0.5 }, actual).met, true);
   assert.equal(evaluateGoal({ kind: 'profit', value: 0 }, { ...actual, net: -0.1 }).met, false);
   assert.equal(evaluateGoal({ kind: 'payroll', value: 1 }, { ...actual, payrollRatio: 1.01 }).met, false);
-  assert.equal(evaluateGoal({ kind: 'youth', value: 600 }, actual).met, true);
-  for (const g of [{ kind: 'rank', value: 4 }, { kind: 'stage', value: '우승' }, { kind: 'winPct', value: 0.4 }, { kind: 'profit', value: 0 }, { kind: 'payroll', value: 1 }, { kind: 'youth', value: 600 }]) assert.ok(describeGoal(g).title.length > 3);
+  assert.equal(evaluateGoal({ kind: 'youth', value: 1000 }, actual).met, true);
+  for (const g of [{ kind: 'rank', value: 4 }, { kind: 'stage', value: '우승' }, { kind: 'winPct', value: 0.4 }, { kind: 'profit', value: 0 }, { kind: 'payroll', value: 1 }, { kind: 'youth', value: 1000 }]) assert.ok(describeGoal(g).title.length > 3);
 });
 
 test('시즌 평가: 신뢰도가 목표 달성에 따라 오르내리고 0~100에서 자른다, 연속 위험은 해임 위험', () => {
   const goals = [{ kind: 'rank', value: 6, role: 'main' }, { kind: 'winPct', value: 0.5, role: 'sub' }, { kind: 'profit', value: 0, role: 'extra' }];
   const good = evaluateSeason({ goals, actual: { rank: 2, wins: 40, losses: 14, stage: '우승', net: 3, payrollRatio: 0.9, youthMinutes: 0 }, before: { trust: 60, low: 0 } }, rules);
   assert.equal(good.goals.every((g) => g.met), true);
-  assert.equal(good.delta, 12 + 5 + 5 + 3); // 주+보조+추가 + 크게 넘은 보너스
-  assert.equal(good.trust, 85); assert.equal(good.reward, true); assert.equal(good.status, 'ok');
+  assert.equal(good.delta, 10 + 4 + 3 + 2); // 주+보조+추가 + 크게 넘은 보너스
+  assert.equal(good.trust, 79); assert.equal(good.reward, false); assert.equal(good.status, 'ok');
+  assert.equal(evaluateSeason({ goals, actual: { rank: 2, wins: 40, losses: 14, stage: '우승', net: 3, payrollRatio: 0.9, youthMinutes: 0 }, before: { trust: 70, low: 0 } }, rules).reward, true, '80 이상이면 보너스');
   assert.equal(evaluateSeason({ goals, actual: { rank: 1, wins: 50, losses: 4, stage: '우승', net: 3 }, before: { trust: 95, low: 0 } }, rules).trust, 100);
   const bad = evaluateSeason({ goals, actual: { rank: 9, wins: 10, losses: 44, stage: null, net: -5 }, before: { trust: 30, low: 0 } }, rules);
-  assert.equal(bad.delta, -10 - 4 - 5); assert.equal(bad.trust, 11); assert.equal(bad.low, 1); assert.equal(bad.status, 'warn');
+  assert.equal(bad.delta, -12 - 5 - 5); assert.equal(bad.trust, 8); assert.equal(bad.low, 1); assert.equal(bad.status, 'warn');
   const worse = evaluateSeason({ goals, actual: { rank: 9, wins: 10, losses: 44, stage: null, net: -5 }, before: { trust: bad.trust, low: bad.low } }, rules);
   assert.equal(worse.status, 'risk'); assert.equal(worse.fired, false, '해임은 기본 꺼짐');
   const on = evaluateSeason({ goals, actual: { rank: 9, wins: 10, losses: 44, stage: null, net: -5 }, before: { trust: bad.trust, low: bad.low } }, { ...rules, goals: { ...rules.goals, firing: true } });

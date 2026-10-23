@@ -15,14 +15,14 @@ export const expectedRank = (prevRank, powerRank, teamCount = 10) => Math.round(
 /**
  * 시즌 목표 3개: [{ kind, value, role('main'|'sub'|'extra') }].
  *  kind: 'rank'(정규리그 value위 이내) | 'stage'(플레이오프 value 단계 이상) | 'winPct'(승률 value 이상) | 'profit'(순이익 value억 이상) | 'payroll'(국내 연봉이 캡의 value배 이하) | 'youth'(젊은 선수 합계 출전 value분 이상)
- * ctx: { expected(기대 순위), payrollRatio(국내 연봉/캡), hasYouth(youthMaxAge 이하 선수가 있나), season, teamId }
+ * ctx: { expected(기대 순위), payrollRatio(국내 연봉/캡, 캡의 payrollRatio~payrollLimit 사이일 때만 연봉 목표), hasYouth(youthMaxAge 이하 선수가 있나), season, teamId }
  */
 export function chooseGoals({ expected, payrollRatio, hasYouth, season, teamId }, rules) {
   const g = rules.goals;
   const tier = g.tiers.find((t) => expected <= t.maxRank) ?? g.tiers.at(-1);
   const x = g.extra;
   let extra;
-  if (payrollRatio >= x.payrollRatio) extra = { kind: 'payroll', value: x.payrollLimit };
+  if (payrollRatio >= x.payrollRatio && payrollRatio <= x.payrollLimit) extra = { kind: 'payroll', value: x.payrollLimit }; // 캡 바로 아래일 때만(이미 넘었으면 달성할 수 없는 목표라 재정 목표로 대신한다)
   else if (hasYouth && hashString(`goal:${season}:${teamId}`) % 2 === 0) extra = { kind: 'youth', value: x.youthMinutes };
   else extra = { kind: 'profit', value: x.profit };
   return [{ ...tier.main, role: 'main' }, { ...tier.sub, role: 'sub' }, { ...extra, role: 'extra' }];
