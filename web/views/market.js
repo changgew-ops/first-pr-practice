@@ -3,11 +3,15 @@
 import { h, ovrChip, eok, POS_ORDER } from '../lib/dom.js';
 import { nameButton } from '../lib/player-info.js';
 import { injuryTag, tempTag, injuryMap } from '../lib/injury-view.js';
-import { KIND_TEXT, faYearsRange } from '../../src/inseason.mjs';
+import { KIND_TEXT, ORIGIN_TEXT, faYearsRange } from '../../src/inseason.mjs';
 import { payrollEok, softCapPenaltyEok, domesticOf } from '../../src/valuation.mjs';
 
 const f1 = (v) => Number(v).toFixed(1);
 const man = (usd) => `${Math.round(usd / 10000)}만 달러`;
+// 외국인은 달러, 아시아쿼터는 억 원 계약(후보는 { usd } | { eok }, 선수 계약은 salaryUsd | salaryEok)
+const candPrice = (c) => (c.eok != null ? eok(c.eok) : man(c.usd));
+const contractPrice = (p) => (p.origin === 'asia' ? eok(p.contract.salaryEok) : man(p.contract.salaryUsd));
+const contractEok = (ctx, p) => (p.origin === 'asia' ? p.contract.salaryEok : p.contract.salaryUsd * ctx.data.rules.transactions.funds.foreignUsdToEok);
 
 let current = null;
 /** 모달 창(방출·연장과 같은 모양: ct-dialog). 바깥 클릭·Esc·닫기로 닫힌다 */
@@ -29,7 +33,7 @@ function openModal(id, title, sub, body, foot) {
 export function marketPanels(ctx) {
   const s = ctx.session;
   if (s.stage !== 'regular' || s.regularDone) return null;
-  return h('div', { class: 'mk-panels' }, ...(ctx.data.rules.waivers?.enabled ? [waiverPanel(ctx)] : []), faPanel(ctx), foreignPanel(ctx));
+  return h('div', { class: 'mk-panels' }, ...(ctx.data.rules.waivers?.enabled ? [waiverPanel(ctx)] : []), faPanel(ctx), foreignPanel(ctx, 'foreign'), foreignPanel(ctx, 'asia'));
 }
 
 // ---------- 웨이버 공시 (규약 제101조, src/waivers.mjs) ----------
@@ -129,12 +133,14 @@ function openSignDialog(ctx, p, asking, onDone) {
 }
 
 // ---------- 외국인 선수 일시교체·시즌대체 ----------
-function foreignPanel(ctx) {
+function foreignPanel(ctx, origin = 'foreign') {
   const s = ctx.session, rules = ctx.data.rules, my = s.managerId;
+  const asia = origin === 'asia';
+  const who = ORIGIN_TEXT[origin];
   const inj = injuryMap(s);
-  const foreigners = s.players.filter((p) => p.teamId === my && p.origin === 'foreign').sort((a, b) => b.ovr - a.ovr);
-  const th = s.foreignThresholds, other = s.otherReplacements;
-  const market = s.foreignMarket();
+  const foreigners = s.players.filter((p) => p.teamId === my && p.origin === origin).sort((a, b) => b.ovr - a.ovr);
+  const th = asia ? s.asiaThresholds : s.foreignThresholds, other = asia ? s.asiaOtherReplacements : s.otherReplacements;
+  const market = asia ? s.asiaMarket() : s.foreignMarket();
   const reasonFor = (p, kind) => {
     if (!market.length) return '교체 후보가 없습니다(카드 시장 후보가 모두 영입되었거나 시즌 카드가 없습니다)';
     let first = null;
@@ -151,22 +157,27 @@ function foreignPanel(ctx) {
       : i ? [injuryTag(i, { full: true }), h('span', { class: 'note' }, ` 진단 ${i.kind === 'season' ? '시즌 아웃' : `${i.total}경기`}${i.temp ? ' · 일시교체 선수가 대신 뜁니다' : ''}`)]
         : h('span', { class: 'note' }, '건강');
     return h('div', { class: 'mk-foreign-row' },
-      h('div', h('div', nameButton(p), ' ', ovrChip(p)), h('div', { class: 'note' }, `${p.position} · ${p.age}세 · 연봉 ${man(p.contract.salaryUsd)}`)),
+      h('div', h('div', nameButton(p), ' ', ovrChip(p)), h('div', { class: 'note' }, `${p.position} · ${p.age}세 · 연봉 ${contractPrice(p)}`)),
       h('div', status),
       p.temp ? h('div') : h('div', { class: 'mk-foreign-actions' }, btn(p, 'temp', '일시교체'), btn(p, 'season', '시즌대체(부상)'), btn(p, 'other', `기타 사유 교체 ${other.used}/${other.limit}`)));
   };
   return h('div', { class: 'card mk-foreign' },
-    h('div', { class: 'mk-head' }, h('h2', { style: { margin: 0 } }, '외국인 선수 교체'), h('span', { class: 'note' }, `외국 선수 연봉 합계 ${man(foreigners.filter((p) => !p.temp && !inj.get(p.id)?.temp).reduce((a, p) => a + p.contract.salaryUsd, 0))} / 한도 ${man(rules.salaryCap.foreignUsdTotal)}`)),
-    h('p', { class: 'note', style: { margin: '4px 0 8px' } }, `외국선수 관리규정(제8조): 2주 이상(약 ${th.temporary}경기) 진단이면 일시교체, 8주 이상(약 ${th.season}경기)이면 시즌대체를 할 수 있고 부상·질병 사유는 횟수 제한이 없습니다. 기타 사유 시즌대체는 구단당 ${other.limit}회까지입니다(3회째부터는 이사회 승인이 필요해 게임에서는 할 수 없습니다). 경기 수 환산은 정규리그 54경기를 약 24주로 본 게임용 값입니다.`),
-    foreigners.length ? foreigners.map(row) : h('p', { class: 'muted' }, '외국인 선수가 없습니다.'));
+    h('div', { class: 'mk-head' }, h('h2', { style: { margin: 0 } }, `${who} 교체`), asia
+      ? h('span', { class: 'note' }, `구단당 ${rules.asiaQuota.max}명 · 1인 연봉 상한 ${eok(rules.asiaQuota.salaryEok[1])}`)
+      : h('span', { class: 'note' }, `외국 선수 연봉 합계 ${man(foreigners.filter((p) => !p.temp && !inj.get(p.id)?.temp).reduce((a, p) => a + p.contract.salaryUsd, 0))} / 한도 ${man(rules.salaryCap.foreignUsdTotal)}`)),
+    asia
+      ? h('p', { class: 'note', style: { margin: '4px 0 8px' } }, `제공된 규정에는 아시아쿼터 선수의 교체 절차가 없어서, 외국선수 관리규정(제8·9조)의 기준을 그대로 옮겨 적용합니다(게임용 가정). 2주 이상(약 ${th.temporary}경기) 진단이면 일시교체, 8주 이상(약 ${th.season}경기)이면 시즌대체를 할 수 있고 부상·질병 사유는 횟수 제한이 없습니다. 기타 사유 교체는 구단당 ${other.limit}회까지이며 외국인 선수와 따로 셉니다. 후보는 시즌 카드의 아시아쿼터 선수입니다.`)
+      : h('p', { class: 'note', style: { margin: '4px 0 8px' } }, `외국선수 관리규정(제8조): 2주 이상(약 ${th.temporary}경기) 진단이면 일시교체, 8주 이상(약 ${th.season}경기)이면 시즌대체를 할 수 있고 부상·질병 사유는 횟수 제한이 없습니다. 기타 사유 시즌대체는 구단당 ${other.limit}회까지입니다(3회째부터는 이사회 승인이 필요해 게임에서는 할 수 없습니다). 경기 수 환산은 정규리그 54경기를 약 24주로 본 게임용 값입니다.`),
+    foreigners.length ? foreigners.map(row) : h('p', { class: 'muted' }, asia ? '아시아쿼터 선수가 없습니다.' : '외국인 선수가 없습니다.'));
 }
 
 function openForeignDialog(ctx, out, kind) {
   const s = ctx.session, rules = ctx.data.rules;
-  const market = [...s.foreignMarket()].sort((a, b) => b.player.ovr - a.player.ovr || a.usd - b.usd);
+  const asia = out.origin === 'asia';
+  const market = [...(asia ? s.asiaMarket() : s.foreignMarket())].sort((a, b) => b.player.ovr - a.player.ovr || (a.usd ?? a.eok) - (b.usd ?? b.eok));
   const checks = new Map(market.map((c) => [c.player.id, s.foreignCheck(out.id, kind, c.player.id)]));
   const st = { pick: market.find((c) => checks.get(c.player.id).ok)?.player.id ?? null };
-  const toEok = (usd) => usd * rules.transactions.funds.foreignUsdToEok;
+  const candEok = (c) => (c.eok ?? c.usd * rules.transactions.funds.foreignUsdToEok);
   const host = h('div', { class: 'stack' });
   const ok = h('button', { class: 'btn primary', type: 'button', onclick: () => {
     const r = s.replaceForeign(out.id, kind, st.pick);
@@ -178,22 +189,22 @@ function openForeignDialog(ctx, out, kind) {
     ok.disabled = !pick;
     const frac = Math.max(0, 1 - s.day / s.totalDays);
     const payLine = kind === 'temp'
-      ? `일시교체 선수는 뛴 기간만큼만 보수를 받고, ${out.name}이(가) 돌아오면 팀을 떠납니다. 외국 선수 연봉 합계는 ${out.name}을(를) 뺀 나머지와 후보의 합이 한도 안이어야 합니다.`
-      : `${out.name}이(가) 팀을 떠나지만 이번 시즌 보수(${eok(toEok(out.contract.salaryUsd))})는 계속 지급합니다. 새 선수는 합류한 뒤 남은 ${Math.round(frac * 100)}%만큼만 보수(${pick ? eok(toEok(pick.usd) * frac) : '-'})를 받습니다.`;
+      ? `일시교체 선수는 뛴 기간만큼만 보수를 받고, ${out.name}이(가) 돌아오면 팀을 떠납니다. ${asia ? `아시아쿼터는 구단당 ${rules.asiaQuota.max}명이라 ${out.name}을(를) 뺀 자리에 후보가 들어옵니다.` : `외국 선수 연봉 합계는 ${out.name}을(를) 뺀 나머지와 후보의 합이 한도 안이어야 합니다.`}`
+      : `${out.name}이(가) 팀을 떠나지만 이번 시즌 보수(${eok(contractEok(ctx, out))})는 계속 지급합니다. 새 선수는 합류한 뒤 남은 ${Math.round(frac * 100)}%만큼만 보수(${pick ? eok(candEok(pick) * frac) : '-'})를 받습니다.`;
     host.replaceChildren(
-      h('p', { class: 'ct-line' }, `${KIND_TEXT[kind]}: ${out.name}(OVR ${out.ovr}, 연봉 ${man(out.contract.salaryUsd)})을(를) 대신할 후보를 고르세요.`),
+      h('p', { class: 'ct-line' }, `${KIND_TEXT[kind]}: ${out.name}(OVR ${out.ovr}, 연봉 ${contractPrice(out)})을(를) 대신할 후보를 고르세요.`),
       market.length ? h('div', { class: 'mk-cands', role: 'radiogroup', 'aria-label': '교체 후보' }, market.map((c) => {
         const chk = checks.get(c.player.id);
         const on = st.pick === c.player.id;
         const el = h('label', { class: `mk-cand ${chk.ok ? '' : 'off'} ${on ? 'picked' : ''}` },
           h('input', { type: 'radio', name: 'mk-cand', checked: on, disabled: !chk.ok, 'aria-label': `${c.player.name} 선택`, onchange: () => { st.pick = c.player.id; draw(); } }),
           h('span', h('b', c.player.name), ' ', ovrChip(c.player), h('span', { class: 'note' }, ` ${c.player.position} · ${c.player.age}세 · POT ${c.player.potential} · 코스트 ${c.player.cost}`)),
-          h('span', { class: 'r' }, man(c.usd)),
+          h('span', { class: 'r' }, candPrice(c)),
           chk.ok ? null : h('span', { class: 'mk-why bad' }, chk.reason));
         return el;
       })) : h('p', { class: 'muted' }, '교체 후보가 없습니다.'),
       h('p', { class: 'note' }, payLine),
-      h('p', { class: 'note' }, '후보는 시즌 시작 때 정해지는 과거 시즌 외국인 카드 몇 장입니다. 등록하면 그 시즌 카드 능력치로 뜁니다. 등록 기한(부상 공시 15일 이내)과 급여지원 삭감은 게임에서 단순화했습니다.'));
+      h('p', { class: 'note' }, asia ? '후보는 시즌 시작 때 정해지는 과거 시즌 아시아쿼터 카드 몇 장입니다(외국인 후보와 따로). 등록하면 그 시즌 카드 능력치로 뜁니다. 규정에 없는 절차를 외국인 선수와 같게 적용한 게임용 가정입니다.' : '후보는 시즌 시작 때 정해지는 과거 시즌 외국인 카드 몇 장입니다. 등록하면 그 시즌 카드 능력치로 뜁니다. 등록 기한(부상 공시 15일 이내)과 급여지원 삭감은 게임에서 단순화했습니다.'));
   };
   const dlg = openModal(`mk-for-${out.id}-${kind}`, `${out.name} ${KIND_TEXT[kind]}`, `${out.position} · ${out.age}세 · OVR ${out.ovr}`, host, (close) => [h('button', { class: 'btn', type: 'button', onclick: close }, '취소'), ok]);
   draw();

@@ -104,6 +104,7 @@ export function print(rows) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const rules = read('league-rules.json'), teamData = read('teams.json'), players = read('players.json');
+  for (const kv of (arg('set', '') || '').split(';').filter(Boolean)) { const [k, v] = kv.split('='); rules.simulation[k] = JSON.parse(v); } // 예: --set "usageExp=3;usageNoise=0.2"
   const official = (arg('official', '2021-22,2022-23,2023-24,2024-25,2025-26')).split(',');
   const offs = official.map(officialSeason);
   const seeds = arg('seeds', '1,2').split(',').map(Number), seasons = Number(arg('seasons', 12));

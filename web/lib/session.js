@@ -289,6 +289,10 @@ export class Session {
   }
   get otherReplacements() { return this.run?.otherReplacements ?? { used: 0, limit: 2 }; }
   get foreignThresholds() { return this.run?.foreignThresholds ?? { temporary: 5, season: 18 }; }
+  /** 아시아쿼터 교체 후보 [{ player, eok }] (외국인 풀과 따로, 규칙은 외국인과 같은 게임용 가정) */
+  asiaMarket() { return this.state.stage === 'regular' && this.run ? this.run.asiaMarket() : []; }
+  get asiaOtherReplacements() { return this.run?.asiaOtherReplacements ?? { used: 0, limit: 2 }; }
+  get asiaThresholds() { return this.run?.asiaThresholds ?? { temporary: 5, season: 18 }; }
 
   // ---------- 감독·코치진, 전술·컨디션 (src/coaching.mjs, tactics.mjs, condition.mjs) ----------
   /** 구단별 스태프 { [구단 id]: { head, off, def, cond } }. 시즌 중에는 진행기의 값, 오프시즌에는 다음 시즌으로 넘어간 값. 기능이 꺼져 있으면 null */

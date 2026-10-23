@@ -41,7 +41,7 @@ export function injuryCard(ctx, { compact = false } = {}) {
       const p = byId.get(i.playerId);
       const bits = [];
       if (sub) bits.push(`${sub.name}이(가) 대신 뜸`); else bits.push('편성에서 제외');
-      if (p?.origin === 'foreign') bits.push(i.temp ? '일시교체 중' : '외국인 교체 가능(로스터 화면)');
+      if (p?.origin === 'foreign' || p?.origin === 'asia') bits.push(i.temp ? '일시교체 중' : `${p.origin === 'asia' ? '아시아쿼터' : '외국인'} 교체 가능(로스터 화면)`);
       return h('span', { class: 'note' }, bits.join(' · '));
     } }
   ], { empty: '부상자가 없습니다' });

@@ -200,12 +200,12 @@ export const TEMPLATES = {
     b: ['{team:은/는} {day}일차에 시장에 남아 있던 {player:을/를} 영입했다. 연봉은 {salary}억, 계약은 이번 시즌을 포함해 {years}년이다.', '{player:이/가} 시즌 중 {team}에 합류했다. 계약 조건은 연봉 {salary}억, 이번 시즌 포함 {years}년이다.', '{team:은/는} FA 시장에 남은 {player}와 {day}일차에 계약했다. 연봉 {salary}억에 {years}년 계약이다.', '{day}일차, {team:은/는} {player:을/를} 연봉 {salary}억(이번 시즌 포함 {years}년)에 영입했다.']
   },
   foreign_swap_my: {
-    h: ['{team}, 외국인 선수 {kindText}… {player} 합류', '{outName} 대신 {player}, {team}의 {kindText}', '{team:은/는} {day}일차에 외국인 {kindText:을/를} 택했다', '{player:이/가} {team}의 새 외국인 선수로 등록됐다'],
-    b: ['{team:은/는} {day}일차에 외국인 선수 {outName} 대신 {player:을/를} 등록했다. 방식은 {kindText:이다/다}.', '{team}의 {kindText:이/가} 이뤄졌다. {outName} 자리에 {player:이/가} 들어왔고, 요구 연봉은 {usdText:이다/다}.', '{day}일차 {team:은/는} 외국인 선수 교체({kindText})를 마쳤다. 새 선수는 {player}이다.', '{player:이/가} {outName} 대신 {team}에 합류했다. {kindText} 절차로 등록했다.']
+    h: ['{team}, {origText} {kindText}… {player} 합류', '{outName} 대신 {player}, {team}의 {kindText}', '{team:은/는} {day}일차에 {origShort} {kindText:을/를} 택했다', '{player:이/가} {team}의 새 {origText}로 등록됐다'],
+    b: ['{team:은/는} {day}일차에 {origText} {outName} 대신 {player:을/를} 등록했다. 방식은 {kindText:이다/다}.', '{team}의 {kindText:이/가} 이뤄졌다. {outName} 자리에 {player:이/가} 들어왔고, 요구 연봉은 {usdText:이다/다}.', '{day}일차 {team:은/는} {origText} 교체({kindText})를 마쳤다. 새 선수는 {player}이다.', '{player:이/가} {outName} 대신 {team}에 합류했다. {kindText} 절차로 등록했다.']
   },
   foreign_swap_lg: {
-    h: ['{team}, 외국인 선수 {kindText}… {player} 합류', '{outName} 대신 {player}, {team}의 {kindText}', '{team:은/는} {day}일차에 외국인 {kindText:을/를} 했다', '{player:이/가} {team}의 새 외국인 선수로 등록됐다'],
-    b: ['{team:은/는} {day}일차에 외국인 선수 {outName} 대신 {player:을/를} 등록했다. 방식은 {kindText:이다/다}.', '{team:이/가} 외국인 선수를 바꿨다. {outName} 자리에 {player:이/가} 들어왔고, 방식은 {kindText:이다/다}.', '{day}일차 {team:은/는} 외국인 선수 교체({kindText})를 마쳤다. 새 선수는 {player}이다.', '{player:이/가} {outName} 대신 {team}에 합류했다. {kindText} 절차로 등록했다.']
+    h: ['{team}, {origText} {kindText}… {player} 합류', '{outName} 대신 {player}, {team}의 {kindText}', '{team:은/는} {day}일차에 {origShort} {kindText:을/를} 했다', '{player:이/가} {team}의 새 {origText}로 등록됐다'],
+    b: ['{team:은/는} {day}일차에 {origText} {outName} 대신 {player:을/를} 등록했다. 방식은 {kindText:이다/다}.', '{team:이/가} {origText:을/를} 바꿨다. {outName} 자리에 {player:이/가} 들어왔고, 방식은 {kindText:이다/다}.', '{day}일차 {team:은/는} {origText} 교체({kindText})를 마쳤다. 새 선수는 {player}이다.', '{player:이/가} {outName} 대신 {team}에 합류했다. {kindText} 절차로 등록했다.']
   },
   retire_my: {
     h: ['{player}, 현역 은퇴', '{team}의 {player}, 코트를 떠난다', '은퇴 선언… {player}({age}세)', '{player}, 은퇴로 마무리한 선수 생활'],
@@ -365,10 +365,10 @@ export const SENT = {
   fs_contract: ['계약은 연봉 {salary}억에 이번 시즌 포함 {years}년이다. 이미 지난 경기 비율만큼은 보수를 내지 않고 합류한 뒤부터 정산한다.', '연봉 {salary}억은 시즌 정산에서 합류한 뒤의 비율만큼만 지출로 잡힌다. 계약 기간은 이번 시즌을 포함해 {years}년이다.', '조건은 연봉 {salary}억, {years}년(이번 시즌 포함)이다. 보수는 합류한 날부터 계산한다.', '{team}이 낸 연봉 {salary}억은 캡 계산에 바로 들어간다. 지출은 합류 이후의 경기 비율만큼 정산된다.'],
   fs_why: ['시즌 중 영입은 오프시즌 FA에서 계약하지 못한 선수 가운데에서 고른다. 국내 선수 12명의 자리가 차 있으면 먼저 방출이 필요하다.', '시장에 남은 선수는 오프시즌 요구액보다 낮은 조건으로 계약할 수 있다. 최저 연봉 아래로는 내려가지 않는다.', '{team:은/는} 로스터와 캡 여유를 확인한 뒤 영입했다. 소프트캡 초과분은 시즌 말 기금으로 정산된다.', '선수층을 두껍게 하려는 선택이다. 영입 선수도 훈련과 출전 기록이 일반 선수와 똑같이 쌓인다.'],
   fs_next: ['시즌은 {remain}경기가 남았다. 새 선수가 얼마나 빨리 자리를 잡는지가 관건이다.', '남은 정규리그는 {remain}경기다. 이 영입이 순위 싸움에 어떤 영향을 줄지 지켜볼 만하다.', '정규리그 {remain}경기가 더 남았다. 영입 효과는 라인업에서 확인할 수 있다.', '앞으로 {remain}경기, 이번 영입이 로테이션에 어떤 변화를 줄지가 관심사다.'],
-  fw_info: ['{player}의 OVR은 {ovr}이고 요구 연봉은 {usdText}이다.', '새 외국인 선수 {player:은/는} OVR {ovr}, 요구 연봉 {usdText}이다.', '{outName}의 자리를 맡는 {player:은/는} OVR {ovr}의 선수로, 연봉은 {usdText}이다.', 'OVR {ovr}의 {player:이/가} 연봉 {usdText}에 등록됐다.'],
+  fw_info: ['{player}의 OVR은 {ovr}이고 요구 연봉은 {usdText}이다.', '새 {origText} {player:은/는} OVR {ovr}, 요구 연봉 {usdText}이다.', '{outName}의 자리를 맡는 {player:은/는} OVR {ovr}의 선수로, 연봉은 {usdText}이다.', 'OVR {ovr}의 {player:이/가} 연봉 {usdText}에 등록됐다.'],
   fw_rule: ['{ruleText}', '참고로 {ruleText}', '관리규정은 이렇다. {ruleText}', '이번 교체의 근거 규정: {ruleText}'],
-  fw_pay: ['{payText}', '정산은 이렇게 처리된다. {payText}', '{payText} 연봉 한도와 외국 선수 연봉 합계도 지켜야 한다.', '금액 처리: {payText}'],
-  fw_next: ['시즌은 {remain}경기가 남았다. 새 외국인 선수의 적응이 변수다.', '남은 정규리그 {remain}경기에서 교체 효과가 드러난다.', '{remain}경기가 더 남았다. 외국인 선수 활약이 순위 싸움을 좌우할 수 있다.', '앞으로 {remain}경기, 교체 선수가 로테이션에 자리를 잡을지가 관심이다.'],
+  fw_pay: ['{payText}', '정산은 이렇게 처리된다. {payText}', '{payText} 연봉 한도도 지켜야 한다.', '금액 처리: {payText}'],
+  fw_next: ['시즌은 {remain}경기가 남았다. 새 {origText}의 적응이 변수다.', '남은 정규리그 {remain}경기에서 교체 효과가 드러난다.', '{remain}경기가 더 남았다. {origText} 활약이 순위 싸움을 좌우할 수 있다.', '앞으로 {remain}경기, 교체 선수가 로테이션에 자리를 잡을지가 관심이다.'],
   scoreboard: ['점수 차는 {margin}점, 두 팀이 올린 점수는 모두 {total}점이다.', '{team}의 득점은 {my}점, 실점은 {oppPts}점이었다.', '양 팀 득점 합계는 {total}점이고 점수 차는 {margin}점이었다.', '{venue} 경기였고 {team:은/는} {my}점을 넣고 {oppPts}점을 내줬다.'],
   h2h: ['올 시즌 {opp:과/와}의 맞대결 전적은 이번 경기를 포함해 {h2h:이/가} 됐다.', '{opp:과/와}는 올해 {h2h:으로/로} 맞서 있다.', '이번 경기까지 {opp}전 전적은 {h2h}다.', '시즌 상대 전적으로 보면 {team:은/는} {opp} 상대 {h2h}다.'],
   standing: ['이 결과로 {team:은/는} {record}, 리그 {rank}위에 자리했다. {gapText}', '{day}일차까지의 성적은 {record:으로/로} 순위는 {rank}위다. {gapText}', '순위표에서 {team:은/는} {rank}위({record})에 올라 있다. {gapText}', '{record:이/가} 된 {team}의 현재 순위는 {rank}위다. {gapText}'],
@@ -807,6 +807,11 @@ export function buildNews(src) {
     season: '외국선수 관리규정은 8주 이상의 진단이면 시즌대체를 할 수 있고, 부상 사유의 교체는 횟수 제한이 없다고 정한다.',
     other: '외국선수 관리규정은 기타 사유의 시즌대체를 구단당 2회까지만 허용한다.'
   };
+  const SWAP_RULE_ASIA = {
+    temp: '아시아쿼터 선수의 교체를 정한 규정은 따로 없어서, 이 게임은 외국선수 관리규정의 기준(2주 이상 진단이면 일시교체)을 아시아쿼터 선수에게도 똑같이 적용한다.',
+    season: '아시아쿼터 선수의 교체를 정한 규정은 따로 없어서, 이 게임은 외국선수 관리규정의 기준(8주 이상 진단이면 시즌대체, 부상 사유는 횟수 제한 없음)을 그대로 적용한다.',
+    other: '아시아쿼터 선수의 교체를 정한 규정은 따로 없어서, 이 게임은 기타 사유 시즌대체를 구단당 2회까지만 허용하는 외국선수 관리규정의 기준을 그대로 적용한다.'
+  };
   const SWAP_PAY = {
     temp: '일시교체 선수는 뛴 기간만큼만 보수를 받고, 부상 선수가 돌아오면 팀을 떠난다.',
     season: '떠나는 선수의 이번 시즌 보수는 계속 나가고, 새 선수는 합류한 뒤부터의 보수를 받는다.',
@@ -814,7 +819,7 @@ export function buildNews(src) {
   };
   const fromEntryRoster = (r) => (r ? [
     ...(r.inj ?? []).map(([playerId, teamId, day, games, kind, part, name]) => ({ type: 'injury', playerId, teamId, day, games, kind, part, name })),
-    ...(r.mv ?? []).map((m) => (m[0] === 'wv' ? { type: m[1], day: m[2], teamId: m[3], name: m[4], fromTeamId: m[5], salaryEok: m[6], ovr: m[7], ...(m[8] ? { reason: m[8] } : {}) } : m[0] === 'fa' ? { type: 'fa', day: m[2], teamId: m[3], name: m[4], salaryEok: m[5], years: m[6], ovr: m[7] } : { type: 'foreign', kind: m[1], day: m[2], teamId: m[3], name: m[4], outName: m[5], usd: m[6], ovr: m[7] }))
+    ...(r.mv ?? []).map((m) => (m[0] === 'wv' ? { type: m[1], day: m[2], teamId: m[3], name: m[4], fromTeamId: m[5], salaryEok: m[6], ovr: m[7], ...(m[8] ? { reason: m[8] } : {}) } : m[0] === 'fa' ? { type: 'fa', day: m[2], teamId: m[3], name: m[4], salaryEok: m[5], years: m[6], ovr: m[7] } : { type: 'foreign', kind: m[1], day: m[2], teamId: m[3], name: m[4], outName: m[5], ...(m[8] ? { asia: true, eok: m[6] } : { usd: m[6] }), ovr: m[7] }))
   ] : []);
   const rosterEvents = (y, label, rows) => {
     const tot = y === sy ? totalDays : games;
@@ -832,12 +837,14 @@ export function buildNews(src) {
     inj.filter((e) => e.teamId === my && e.games >= 3).slice(0, 5).forEach((e, i) => add({ key: `${y}:inj:${e.playerId}:${e.day}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 부상`, kind: 'injury_my', scope: 'my', tags: ['우리 팀', '부상'], tone: 'bad', delta: e.games >= 18 ? -2 : -1, comments: 2, vars: injVars(e) }));
     inj.filter((e) => e.teamId !== my && e.games >= 18).sort((a, b) => b.games - a.games || a.day - b.day).slice(0, 3).forEach((e, i) => add({ key: `${y}:inj:${e.playerId}:${e.day}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 부상`, kind: 'injury_star', scope: 'league', tags: ['리그', '부상'], comments: 1, vars: injVars(e) }));
     rows.filter((e) => e.type === 'fa' && e.teamId === my).slice(0, 3).forEach((e, i) => add({ key: `${y}:fasn:${e.day}:${i}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 시즌 중 영입`, kind: 'fa_season', scope: 'move', tags: ['우리 팀', 'FA'], tone: 'good', delta: 1, comments: 2, vars: { team: nameOf(my), player: nmOf(e), day: e.day, salary: fmt1(e.salaryEok), years: e.years, remain: Math.max(0, tot - e.day), ...pInfo(e.playerId ?? '') } }));
-    rows.filter((e) => e.type === 'foreign' && SWAP_WORD[e.kind]).slice(0, 6).forEach((e, i) => {
+    const swaps = rows.filter((e) => e.type === 'foreign' && SWAP_WORD[e.kind]);
+    // 외국인 교체와 아시아쿼터 교체는 각각 앞쪽 몇 건씩만 기사로 쓴다(한쪽이 많아도 다른 쪽이 밀려나지 않게)
+    [...swaps.filter((e) => !e.asia).slice(0, 6), ...swaps.filter((e) => e.asia).slice(0, 4)].forEach((e, i) => {
       const mine = e.teamId === my;
-      if (!mine && i >= 3) return;
+      if (!mine && (e.asia ? i - Math.min(6, swaps.filter((x) => !x.asia).length) : i) >= 3) return;
       add({
-        key: `${y}:fw:${e.day}:${e.teamId}:${e.kind}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 외국인 교체`, kind: mine ? 'foreign_swap_my' : 'foreign_swap_lg', scope: mine ? 'move' : 'league', tags: [mine ? '우리 팀' : '리그', '외국인'], tone: mine ? 'neutral' : 'neutral', delta: mine ? 0.5 : 0, comments: mine ? 2 : 1,
-        vars: { team: nameOf(e.teamId), player: nmOf(e), outName: cleanName(e.outName ?? ''), kindText: SWAP_WORD[e.kind], day: e.day, ovr: e.ovr, usdText: `${Math.round(e.usd / 10000)}만 달러`, ruleText: SWAP_RULE[e.kind], payText: SWAP_PAY[e.kind], remain: Math.max(0, tot - e.day) }
+        key: `${y}:fw:${e.day}:${e.teamId}:${e.kind}${e.asia ? ':a' : ''}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · ${e.asia ? '아시아쿼터' : '외국인'} 교체`, kind: mine ? 'foreign_swap_my' : 'foreign_swap_lg', scope: mine ? 'move' : 'league', tags: [mine ? '우리 팀' : '리그', e.asia ? '아시아쿼터' : '외국인'], tone: mine ? 'neutral' : 'neutral', delta: mine ? 0.5 : 0, comments: mine ? 2 : 1,
+        vars: { team: nameOf(e.teamId), player: nmOf(e), outName: cleanName(e.outName ?? ''), kindText: SWAP_WORD[e.kind], day: e.day, ovr: e.ovr, usdText: e.asia ? `${fmt1(e.eok)}억 원` : `${Math.round(e.usd / 10000)}만 달러`, origText: e.asia ? '아시아쿼터 선수' : '외국인 선수', origShort: e.asia ? '아시아쿼터' : '외국인', ruleText: (e.asia ? SWAP_RULE_ASIA : SWAP_RULE)[e.kind], payText: SWAP_PAY[e.kind], remain: Math.max(0, tot - e.day) }
       });
     });
   };

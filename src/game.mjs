@@ -47,8 +47,12 @@ function expectedPoints(att, def, baseline, sim, home) {
 }
 
 // 득점을 선수별 출전 시간 × 공격 능력에 비례해 나눈다 (합계가 팀 득점과 정확히 일치)
-function splitPoints(total, players, minutes, rng) {
-  const weights = players.map((p) => Math.max(0.01, minutes.get(p.id) * offense(p) * (0.7 + rng() * 0.6)));
+function splitPoints(total, players, minutes, rng, sim = {}) {
+  // usageExp: 공격 능력이 높을수록 슛을 더 많이 가져가는 정도(1이면 능력에 비례). usageNoise: 경기마다 흔들리는 폭
+  // usageCap: 공격력이 이 값을 넘으면 넘은 만큼은 usageOver배만 쓴다(성장이 쌓인 장기 시즌에 에이스 득점이 끝없이 몰리지 않게)
+  const exp = sim.usageExp ?? 1, noise = sim.usageNoise ?? 0.3, cap = sim.usageCap ?? Infinity, over = sim.usageOver ?? 0.3;
+  const usage = (p) => { const o = offense(p); return exp === 1 ? o : ((o <= cap ? o : cap + over * (o - cap)) / 60) ** exp; };
+  const weights = players.map((p) => Math.max(0.01, minutes.get(p.id) * usage(p) * (1 - noise + rng() * 2 * noise)));
   const sum = weights.reduce((a, b) => a + b, 0);
   const raw = weights.map((w) => (w / sum) * total);
   const floor = raw.map(Math.floor);
@@ -102,11 +106,11 @@ function shotLine(p, pts, sim, rng, threeMul = 1) {
 function boxScore(lineup, pts, sim, rng, mods = null) {
   const players = [...lineup.starters, ...lineup.bench];
   const minutes = lineupMinutes(lineup, sim);
-  const scored = splitPoints(pts, players, minutes, rng);
+  const scored = splitPoints(pts, players, minutes, rng, sim);
   const w = (fn) => players.map((p) => Math.max(0.01, minutes.get(p.id) * fn(p)));
   const tot = (mean, sd) => Math.max(0, Math.round(mean + sd * normal(rng)));
-  const rebs = allocate(tot(sim.teamRebounds * (mods?.reb ?? 1), 4), w((p) => (p.stats.rebound / 50) ** 2.2), rng);
-  const asts = allocate(tot(sim.teamAssists, 3), w((p) => (p.stats.passing / 50) ** 2.2), rng);
+  const rebs = allocate(tot(sim.teamRebounds * (mods?.reb ?? 1), 4), w((p) => (p.stats.rebound / 50) ** (sim.reboundExp ?? 2.2)), rng);
+  const asts = allocate(tot(sim.teamAssists, 3), w((p) => (p.stats.passing / 50) ** (sim.assistExp ?? 2.2)), rng);
   const stls = allocate(tot(sim.teamSteals, 2), w((p) => (p.stats.defense / 50) ** 1.5 * (p.stats.athletic / 50)), rng);
   const blks = allocate(tot(sim.teamBlocks, 1.6), w((p) => (p.stats.rebound / 50) ** 1.5 * (p.stats.defense / 50) ** 1.5), rng);
   const lines = players.map((p, i) => ({

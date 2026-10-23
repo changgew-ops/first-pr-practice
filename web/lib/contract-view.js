@@ -112,7 +112,7 @@ export function openExtendDialog(ctx, player, { onDone = () => ctx.refresh() } =
 /** 선수가 "우리 구단 국내 선수"인지, 아니라면 버튼을 못 쓰는 이유(순수). 반환: null이면 쓸 수 있음 */
 export function contractBlock(session, p) {
   if (p.teamId !== session.managerId) return '우리 구단 선수가 아닙니다';
-  if (p.origin !== 'domestic') return p.origin === 'foreign' ? '외국인 선수는 방출·연장 규정이 따로 있어 아직 할 수 없습니다' : '아시아쿼터 선수의 방출·교체는 제공된 규정에 절차가 없어 게임에서 지원하지 않습니다';
+  if (p.origin !== 'domestic') return p.origin === 'foreign' ? '외국인 선수는 방출·연장 대신 로스터 화면의 교체 패널(일시교체·시즌대체)로 바꿉니다' : '아시아쿼터 선수도 외국인 선수와 같이 방출·연장 대신 로스터 화면의 교체 패널(일시교체·시즌대체)로 바꿉니다(규정에 없는 게임용 가정)';
   if (session.stage === 'offseason') return '오프시즌에는 첫 단계(방출)와 재계약 단계(연장)에서 합니다';
   if (session.stage === 'playoffs') return '플레이오프 중에는 할 수 없습니다';
   return null;

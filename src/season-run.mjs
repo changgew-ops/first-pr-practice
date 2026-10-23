@@ -6,7 +6,7 @@ import { coachingOn, staffOf, staffIds, candidatePool, rotationEdge, tacMult, tr
 import { chooseAuto, tacticMods, leagueRefs, recommend, tacticList, BALANCED } from './tactics.mjs';
 import { conditionOn, startCondition, nextCondition, lineupCondScore, condEdge, fatigueStreak } from './condition.mjs';
 import { rollInjury, foreignGameThresholds } from './injuries.mjs';
-import { proratedEok, freeNumber, faAsking, faSignCheck, signedFa, buildForeignPool, foreignReplaceCheck, signedForeign, aiForeignChoice } from './inseason.mjs';
+import { proratedEok, freeNumber, faAsking, faSignCheck, signedFa, buildForeignPool, buildAsiaPool, foreignReplaceCheck, signedForeign, signedAsia, aiForeignChoice, isOverseas, overseasCfg } from './inseason.mjs';
 import { valueOf, needBonus, domesticOf } from './valuation.mjs';
 import { leagueBaseline } from './game.mjs';
 import { createRegularSeason, createPlayoffs } from './season.mjs';
@@ -83,15 +83,19 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const payAdj = new Map(); // 구단 → 정산 보정(억 원, 양수면 추가 지출): 시즌 중 영입·교체로 생긴 일할 계산 차이
   const addAdj = (teamId, eok) => { if (eok) payAdj.set(teamId, round2((payAdj.get(teamId) ?? 0) + eok)); };
   const usedKblNew = []; // 시즌 중 새로 들어온 카드 선수의 kblId(다음 시즌 카드 중복 방지)
-  const otherCount = new Map(); // 구단 → 기타 사유 교체 횟수
+  const otherCount = new Map(); // 구단 → 기타 사유 교체 횟수(외국인). 아시아쿼터는 'asia:구단' 키로 따로 센다(게임용 가정, inSeason.asia)
+  const otherKey = (teamId, origin) => (origin === 'asia' ? `asia:${teamId}` : teamId);
   const mgrReleased = new Set(); // 우리 구단이 이번 시즌 방출한 선수 id(AI가 곧바로 데려가지는 않는다)
   // 웨이버(src/waivers.mjs): 방출된 국내 선수는 공시기간 동안 다른 구단이 계약을 이어받을 수 있고, 아무도 양수하지 않으면 FA 풀로 간다. rules.waivers.enabled가 꺼져 있으면 쓰이지 않는다
   let waiverPool = []; // 공시 중인 선수들(entry)
   const waiverOrder = () => claimOrder(priorRanks(league.legacy, teamData.map((t) => t.id)));
   const foreignTaken = new Set(); // 시즌 중 외국인 후보 풀에서 이미 영입된 후보 id
-  let foreignPoolCache = null;
+  let foreignPoolCache = null, asiaPoolCache = null;
   const foreignPool = () => (foreignPoolCache ??= buildForeignPool({ players: league.players, freeAgents: league.freeAgents ?? [], usedKbl: league.usedKbl ?? [], cards: options.cards ?? null, rules, season: league.season, seed: injSeed }));
+  const asiaPool = () => (asiaPoolCache ??= buildAsiaPool({ players: league.players, freeAgents: league.freeAgents ?? [], usedKbl: league.usedKbl ?? [], cards: options.cards ?? null, rules, season: league.season, seed: injSeed }));
   const usdToEok = (usd) => usd * rules.transactions.funds.foreignUsdToEok;
+  const contractEok = (p) => (p.origin === 'asia' ? p.contract.salaryEok : usdToEok(p.contract.salaryUsd)); // 외국인은 달러, 아시아쿼터는 억 원 계약
+  const marketOf = (origin) => (origin === 'asia' ? asiaPool() : foreignPool()).filter((c) => !foreignTaken.has(c.player.id));
   let lineupSwaps = []; // 우리 구단의 직접 편성에서 부상 선수를 대신해 자동으로 들어간 선수들
 
   // 감독·코치(src/coaching.mjs)·전술(src/tactics.mjs)·컨디션(src/condition.mjs). 켜져 있지 않으면 경기 계산이 이전과 똑같다.
@@ -121,7 +125,10 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const trained = trainPlayer(p, focus.get(p.id), rules.training.sessionsPerCheckpoint, rules, trainMul(staff?.[manager], focus.get(p.id), rules));
       // 훈련으로 오른 만큼은 시즌 시작 능력치에도 반영해, 시즌 중 갱신이 되돌리지 않게 한다
       const gain = trained.stats[focus.get(p.id)] - p.stats[focus.get(p.id)];
-      if (gain) start.get(p.id)[focus.get(p.id)] += gain;
+      if (gain) { // 시즌 중에 들어온 선수(시즌 중 FA·외국인·아시아쿼터 교체)는 시즌 시작 능력치가 없어서 합류했을 때 능력치를 기준으로 삼는다
+        if (!start.has(p.id)) start.set(p.id, { ...p.stats });
+        start.get(p.id)[focus.get(p.id)] += gain;
+      }
       return trained;
     });
   };
@@ -244,11 +251,11 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const dropTemp = (tempId, day) => {
     const t = playerById(tempId);
     if (!t) return;
-    addAdj(t.teamId, proratedEok(usdToEok(t.contract.salaryUsd), Math.max(0, day - (t.temp?.day ?? 0)), regular.schedule.length));
+    addAdj(t.teamId, proratedEok(contractEok(t), Math.max(0, day - (t.temp?.day ?? 0)), regular.schedule.length));
     players = players.filter((p) => p.id !== tempId);
     focus.delete(tempId);
     if (lineupHas(tempId)) lineup = null;
-    rosterLog.push({ type: 'foreign', kind: 'tempEnd', day, teamId: t.teamId, playerId: tempId, name: t.name, forId: t.temp?.forId ?? null });
+    rosterLog.push({ type: 'foreign', kind: 'tempEnd', day, teamId: t.teamId, playerId: tempId, name: t.name, forId: t.temp?.forId ?? null, ...(t.origin === 'asia' ? { asia: true } : {}) });
   };
   const recover = (inj, day) => {
     injured.delete(inj.playerId);
@@ -256,26 +263,30 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     if (inj.temp) dropTemp(inj.temp, day);
   };
 
-  /** 외국선수 교체 실행(판정은 호출하는 쪽이 이미 통과시켰다). 반환: 들어온 선수 */
+  /** 외국선수·아시아쿼터 교체 실행(판정은 호출하는 쪽이 이미 통과시켰다). 반환: 들어온 선수 */
   const doForeignReplace = (teamId, outId, kind, cand, day) => {
     const out = playerById(outId);
+    const asia = out.origin === 'asia';
+    const years = overseasCfg(rules, out.origin).contractYears;
+    const sign = asia ? signedAsia : signedForeign;
+    const candEok = asia ? cand.eok : usdToEok(cand.usd);
     const inj = injured.get(outId);
     foreignTaken.add(cand.player.id);
     if (cand.player.kblId) usedKblNew.push(cand.player.kblId);
     const number = freeNumber(players, teamId);
     let p;
     if (kind === 'temp') {
-      p = signedForeign(cand, { teamId, number, years: 1, temp: outId, day });
+      p = sign(cand, { teamId, number, years: 1, temp: outId, day });
       players = [...players, p];
       inj.temp = p.id;
     } else {
-      p = signedForeign(cand, { teamId, number, years: rules.inSeason.foreign.contractYears });
+      p = sign(cand, { teamId, number, years });
       players = players.map((x) => (x.id === outId ? p : x));
       // 떠나는 선수의 이번 시즌 보수는 계속 나가고(정산은 최종 명단 기준이라 더해 준다), 들어온 선수는 합류한 뒤부터만 낸다
-      addAdj(teamId, round2(usdToEok(out.contract.salaryUsd) - proratedEok(usdToEok(cand.usd), day, regular.schedule.length)));
+      addAdj(teamId, round2(contractEok(out) - proratedEok(candEok, day, regular.schedule.length)));
       injured.delete(outId);
       focus.delete(outId);
-      if (kind === 'other') otherCount.set(teamId, (otherCount.get(teamId) ?? 0) + 1);
+      if (kind === 'other') otherCount.set(otherKey(teamId, out.origin), (otherCount.get(otherKey(teamId, out.origin)) ?? 0) + 1);
       if (lineupHas(outId)) { // 직접 편성이면 같은 자리에 새 선수를 넣는다(규칙에 안 맞으면 자동 편성으로)
         const swap = (ids) => ids.map((id) => (id === outId ? p.id : id));
         lineup = { starters: swap(lineup.starters), bench: swap(lineup.bench) };
@@ -283,23 +294,24 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       }
     }
     if (teamId === manager) focus.set(p.id, autoFocus(p));
-    rosterLog.push({ type: 'foreign', kind, day, teamId, outId, outName: out.name, playerId: p.id, name: p.name, ovr: p.ovr, usd: cand.usd });
+    rosterLog.push({ type: 'foreign', kind, day, teamId, outId, outName: out.name, playerId: p.id, name: p.name, ovr: p.ovr, ...(asia ? { asia: true, eok: cand.eok } : { usd: cand.usd }) });
     return p;
   };
   const foreignCheckFor = (teamId, outId, kind, cand) => foreignReplaceCheck({
-    players, teamId, outId, candidate: cand, kind, injury: injured.get(outId) ?? null, state: { otherCount: otherCount.get(teamId) ?? 0 }, rules, exclude: inactiveForeign(teamId)
+    players, teamId, outId, candidate: cand, kind, injury: injured.get(outId) ?? null, state: { otherCount: otherCount.get(otherKey(teamId, playerById(outId)?.origin)) ?? 0 }, rules, exclude: inactiveForeign(teamId)
   });
 
-  /** AI 구단: 외국인이 다치면 규정대로 일시교체(2주 이상)·시즌대체(8주 이상). 몸값이 후보 중 가장 좋은 선수를 고른다 */
+  /** AI 구단: 외국인(아시아쿼터도 같은 기준)이 다치면 일시교체(2주 이상)·시즌대체(8주 이상). 몸값이 후보 중 가장 좋은 선수를 고른다 */
   const aiForeign = (inj, day) => {
-    const th = foreignGameThresholds(rules);
-    const kind = inj.total >= th.season ? 'season' : inj.total >= th.temporary ? 'temp' : null;
     const out = playerById(inj.playerId);
-    if (!kind || !out || out.origin !== 'foreign') return false;
+    if (!out || !isOverseas(out)) return false;
+    const th = foreignGameThresholds(rules, out.origin);
+    const kind = inj.total >= th.season ? 'season' : inj.total >= th.temporary ? 'temp' : null;
+    if (!kind) return false;
     const healthy = players.filter((p) => p.teamId === inj.teamId && !injured.has(p.id)).sort((a, b) => b.ovr - a.ovr);
     const floor = healthy[7]?.ovr ?? 0; // 후보가 로테이션(상위 8명)에 들어올 만해야 교체한다
-    const pool = foreignPool().filter((c) => !foreignTaken.has(c.player.id) && c.player.ovr > floor);
-    const choice = aiForeignChoice(pool, (c) => foreignCheckFor(inj.teamId, out.id, kind, c));
+    const pool = marketOf(out.origin).filter((c) => c.player.ovr > floor);
+    const choice = aiForeignChoice(pool, (c) => foreignCheckFor(inj.teamId, out.id, kind, c), rules);
     if (!choice) return false;
     doForeignReplace(inj.teamId, out.id, kind, choice, day);
     return true;
@@ -376,7 +388,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       inj.handled = true;
       const p = playerById(inj.playerId);
       if (!p) continue;
-      if (p.origin === 'foreign') aiForeign(inj, day); else if (p.origin === 'domestic') aiDomestic(inj, day);
+      if (isOverseas(p)) aiForeign(inj, day); else if (p.origin === 'domestic') aiDomestic(inj, day);
       changed = true;
     }
     return changed;
@@ -656,27 +668,32 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     },
     // ---------- 외국선수 교체 (외국선수 관리규정 제8조) ----------
     /** 교체 후보(시즌 중 외국인 풀에서 아직 영입되지 않은 선수): [{ player, usd }] */
-    foreignMarket() { return foreignPool().filter((c) => !foreignTaken.has(c.player.id)); },
+    foreignMarket() { return marketOf('foreign'); },
+    /** 아시아쿼터 교체 후보(시즌 중 아시아쿼터 풀에서 아직 영입되지 않은 선수): [{ player, eok }]. 외국인 풀과 따로다 */
+    asiaMarket() { return marketOf('asia'); },
     /** 교체 판정. kind: 'temp'(일시교체) | 'season'(부상 시즌대체) | 'other'(기타 사유 시즌대체) → { ok, reason } */
     foreignCheck(outId, kind, candId) {
       if (!manager) return { ok: false, reason: '단장 구단이 없습니다' };
       if (playoffs || regular.done) return { ok: false, reason: '정규리그가 끝나 교체할 수 없습니다' };
-      const cand = run.foreignMarket().find((c) => c.player.id === candId);
+      const cand = marketOf(playerById(outId)?.origin).find((c) => c.player.id === candId); // 교체되는 선수의 신분(외국인|아시아쿼터) 시장에서 찾는다
       return foreignCheckFor(manager, outId, kind, cand);
     },
     /** 교체 실행. 반환: { ok, errors, player } */
     replaceForeign(outId, kind, candId) {
       const c = run.foreignCheck(outId, kind, candId);
       if (!c.ok) return { ok: false, errors: [c.reason], player: null };
-      const cand = run.foreignMarket().find((x) => x.player.id === candId);
+      const cand = marketOf(playerById(outId).origin).find((x) => x.player.id === candId);
       const p = doForeignReplace(manager, outId, kind, cand, regular.day);
       rebuildTeams();
       return { ok: true, errors: [], player: p };
     },
     /** 이 시즌 우리 구단의 기타 사유 교체 횟수와 한도 */
     get otherReplacements() { return { used: otherCount.get(manager) ?? 0, limit: rules.inSeason.foreign.otherReasonLimit }; },
+    /** 아시아쿼터의 기타 사유 교체 횟수와 한도(외국인과 따로 센다) */
+    get asiaOtherReplacements() { return { used: otherCount.get(otherKey(manager, 'asia')) ?? 0, limit: rules.inSeason.asia?.otherReasonLimit ?? 0 }; },
     /** 외국선수 교체 기준(경기 수) */
     get foreignThresholds() { return foreignGameThresholds(rules); },
+    get asiaThresholds() { return foreignGameThresholds(rules, 'asia'); },
     /** 시즌 중 트레이드가 열려 있는지(마감일 전, 플레이오프 전) */
     get tradeOpen() { return tradeOpen(); },
     get tradeDeadline() { return rules.transactions.trade.deadlineDay; },

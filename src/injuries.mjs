@@ -22,9 +22,9 @@ export function kindOfGames(games, rules) {
 }
 
 /** 외국선수 관리규정(제8조)의 2주·8주 기준을 경기 수로 바꾼 값: { temporary, season } */
-export function foreignGameThresholds(rules) {
+export function foreignGameThresholds(rules, origin = 'foreign') {
   const gpw = rules.injuries.gamesPerWeek;
-  const f = rules.inSeason.foreign;
+  const f = origin === 'asia' && rules.inSeason.asia ? rules.inSeason.asia : rules.inSeason.foreign; // 아시아쿼터도 같은 기준(게임용 가정, inSeason.asia)
   return { temporary: Math.ceil(f.temporaryMinWeeks * gpw - 1e-9), season: Math.ceil(f.seasonMinWeeks * gpw - 1e-9) };
 }
 
