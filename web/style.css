@@ -33,13 +33,24 @@ h3 { font-size: 1rem; margin-bottom: 8px; }
 .brand { font-weight: 800; letter-spacing: -0.02em; font-size: 1.05rem; padding: 0 8px; }
 .brand small { display: block; color: var(--muted); font-weight: 500; font-size: .75rem; }
 .nav { display: flex; flex-direction: column; gap: 2px; }
-.nav a { padding: 9px 10px; border-radius: 8px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.nav-group { display: flex; flex-direction: column; gap: 1px; }
+.nav-group + .nav-group { margin-top: 6px; }
+.nav-title { padding: 0 10px 3px; font-size: .68rem; font-weight: 700; letter-spacing: .06em; color: var(--muted); opacity: .75; }
+.nav-save { padding-top: 8px; border-top: 1px solid var(--line); }
+.nav a { padding: 4px 10px; font-size: .94rem; border-radius: 8px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
 .nav a:hover { background: var(--panel-2); text-decoration: none; color: var(--text); }
 .nav a.on { background: var(--panel-2); color: var(--text); box-shadow: inset 3px 0 0 var(--team); font-weight: 600; }
 .side .spacer { flex: 1; }
 .side-menu { display: flex; flex-direction: column; gap: 14px; flex: 1; min-height: 0; overflow-y: auto; }
 .side-actions { display: flex; flex-direction: column; gap: 14px; }
 .menu-btn { display: none; }
+@media (min-width: 861px) {
+  /* 데스크톱: 메뉴 목록만 스크롤하고 저장·타이틀로는 아래에 고정 */
+  .side-menu { overflow: hidden; }
+  .side-menu > .nav:first-child { overflow-y: auto; min-height: 0; flex: 0 1 auto; }
+  .side-menu > .spacer, .side-menu > .small, .side-menu > .nav-save, .side-menu > .side-actions { flex: none; }
+  .side-menu > .spacer { flex: 1 1 0; min-height: 0; }
+}
 .side .small { font-size: .8rem; color: var(--muted); padding: 0 8px; }
 .main { padding: 22px 26px 60px; max-width: 1180px; width: 100%; min-width: 0; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
@@ -173,7 +184,7 @@ ul.plain .grow { flex: 1; }
   .menu-btn .dotmark { position: absolute; top: 6px; right: 6px; margin: 0; }
   .side-menu { display: none; flex: none; padding: 4px 10px 12px; max-height: calc(100vh - 56px); max-height: calc(100dvh - 56px); border-top: 1px solid var(--line); }
   .side.open .side-menu { display: flex; }
-  .nav a { padding: 12px 10px; } .side .spacer { display: none; }
+  .nav a { padding: 10px 10px; font-size: 1rem; } .side .spacer { display: none; }
   .side-actions { flex-direction: row; } .side-actions .btn { flex: 1; }
   .main { padding: 16px 16px 60px; }
   .g3, .g4, .split, .bracket { grid-template-columns: 1fr 1fr; }

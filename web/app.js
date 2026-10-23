@@ -40,7 +40,15 @@ const ROUTES = {
   home: homeView, news: newsView, season: seasonView, roster: rosterView, player: playerView, lineup: lineupView, training: trainingView, trades: tradesView,
   offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, staff: staffView, save: saveView
 };
-const NAV = [['home', '홈'], ['news', '뉴스'], ['season', '시즌'], ['roster', '로스터'], ['lineup', '라인업'], ['staff', '감독·코치'], ['training', '훈련'], ['trades', '트레이드'], ['offseason', '오프시즌'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산'], ['achievements', '업적'], ['codex', '카드 도감'], ['save', '저장']];
+// 사이드 메뉴 묶음: 앞쪽이 자주 쓰는 화면. 제목이 null인 묶음은 제목 없이 맨 위에 둔다.
+const NAV_GROUPS = [
+  { title: null, items: [['home', '홈'], ['season', '시즌'], ['lineup', '라인업'], ['roster', '로스터']] },
+  { title: '구단 운영', items: [['training', '훈련'], ['staff', '감독·코치'], ['trades', '트레이드'], ['offseason', '오프시즌']] },
+  { title: '기록·소식', items: [['news', '뉴스'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산']] },
+  { title: '수집', items: [['achievements', '업적'], ['codex', '카드 도감']] }
+];
+const SAVE_NAV = ['save', '저장'];
+const NAV = [...NAV_GROUPS.flatMap((g) => g.items), SAVE_NAV];
 
 const ctx = { data: null, profiles: null, session: null };
 Object.defineProperty(ctx, 'game', { get: () => ctx.session?.view });
@@ -88,6 +96,7 @@ function shell(route, view) {
   const stageLabel = { regular: s.day === 0 ? '시즌 시작 전' : `정규리그 ${s.day}/${s.totalDays}일차`, playoffs: '플레이오프', offseason: '오프시즌' }[s.stage];
   // 폰(≤860px)에서는 사이드바가 얇은 상단 바(브랜드 한 줄 + 햄버거)가 되고 메뉴는 눌러서 연다. 데스크톱 레이아웃은 그대로.
   const side = h('aside', { class: 'side' });
+  const navLink = (key, label) => h('a', { href: `#/${key}`, class: route === key || (route === 'player' && key === 'roster') ? 'on' : '', 'aria-current': route === key ? 'page' : null }, label, key === 'offseason' && s.stage === 'offseason' ? h('span', { class: 'dotmark', 'aria-label': '결정 필요' }) : null);
   const menuBtn = h('button', { class: 'menu-btn', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'side-menu', 'aria-label': '메뉴 열기' },
     h('span', { class: 'bars', 'aria-hidden': 'true' }), s.stage === 'offseason' ? h('span', { class: 'dotmark', 'aria-label': '결정 필요' }) : null);
   const onKey = (e) => { if (e.key === 'Escape') setMenu(false, true); };
@@ -106,9 +115,12 @@ function shell(route, view) {
       h('div', { class: 'brand' }, '프로농구 단장 게임', h('small', `${s.game.gm.name} 단장 · ${ctx.name(my)}`), h('small', `${seasonLabel(s.season)} · ${stageLabel}`)),
       menuBtn),
     h('div', { class: 'side-menu', id: 'side-menu' },
-      h('nav', { class: 'nav', 'aria-label': '주 메뉴' }, NAV.map(([key, label]) => h('a', { href: `#/${key}`, class: route === key || (route === 'player' && key === 'roster') ? 'on' : '', 'aria-current': route === key ? 'page' : null }, label, key === 'offseason' && s.stage === 'offseason' ? h('span', { class: 'dotmark', 'aria-label': '결정 필요' }) : null))),
+      h('nav', { class: 'nav', 'aria-label': '주 메뉴' }, NAV_GROUPS.map((g) => h('div', { class: 'nav-group' },
+        g.title ? h('div', { class: 'nav-title' }, g.title) : null,
+        g.items.map(([key, label]) => navLink(key, label))))),
       h('div', { class: 'spacer' }),
-      h('div', { class: 'small' }, '자동 저장 중 · 저장 화면에서 직접 저장'),
+      h('div', { class: 'small' }, '자동 저장 중'),
+      h('nav', { class: 'nav nav-save', 'aria-label': '저장' }, navLink(...SAVE_NAV)),
       h('div', { class: 'side-actions' },
         h('button', { class: 'btn ghost', onclick: () => { setMenu(false); ctx.save('1'); } }, '빠른 저장'),
         h('button', { class: 'btn ghost', onclick: ctx.toTitle }, '타이틀로'))));
