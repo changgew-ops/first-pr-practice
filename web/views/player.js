@@ -42,6 +42,8 @@ export function render(ctx, [id]) {
 
 const pct = (v) => (v == null ? '-' : `${(v * 100).toFixed(1)}`);
 const f1 = (v) => (v == null ? '-' : v.toFixed(1));
+// 턴오버·파울이 없는 줄: 값이 없거나(이전 저장의 게임 시즌), 공식 기록이 비어 둘 다 0으로 들어 있는 옛 시즌
+const missing = (r) => r.to == null || (r.to === 0 && r.pf === 0 && r.gp > 0);
 
 /**
  * 시즌 기록 한 표: KBL 공식 기록(실제) 줄 바로 아래에 게임에서 진행한 시즌 줄이 같은 열로 이어진다(흐린 줄, "게임" 표지).
@@ -68,6 +70,7 @@ function recordCard(ctx, p) {
       { key: 'mpg', label: '출전(분)', get: (r) => r.mpg, render: (r) => f1(r.mpg), align: 'r' }, { key: 'ppg', label: '득점', get: (r) => r.ppg, render: (r) => f1(r.ppg), align: 'r' },
       { key: 'rpg', label: '리바', get: (r) => r.rpg, render: (r) => f1(r.rpg), align: 'r' }, { key: 'apg', label: '어시', get: (r) => r.apg, render: (r) => f1(r.apg), align: 'r' },
       { key: 'spg', label: '스틸', get: (r) => r.spg, render: (r) => f1(r.spg), align: 'r' }, { key: 'bpg', label: '블록', get: (r) => r.bpg, render: (r) => f1(r.bpg), align: 'r' },
+      { key: 'topg', label: '턴오버', get: (r) => r.topg, render: (r) => f1(missing(r) ? null : r.topg), align: 'r' }, { key: 'pfpg', label: '파울', get: (r) => r.pfpg, render: (r) => f1(missing(r) ? null : r.pfpg ?? (r.pf != null && r.gp > 0 ? r.pf / r.gp : null)), align: 'r' },
       { key: 'fg', label: 'FG%', get: (r) => r.fgPct, render: (r) => pct(r.fgPct), align: 'r' }, { key: 'tp', label: '3P%', get: (r) => r.tpPct, render: (r) => pct(r.tpPct), align: 'r' }, { key: 'ft', label: 'FT%', get: (r) => r.ftPct, render: (r) => pct(r.ftPct), align: 'r' }
     ].map((c) => ({ ...c, sort: false }));
     const realTotal = real.length && game.length ? sumRows(real) : null;

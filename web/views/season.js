@@ -3,7 +3,7 @@
 import { h, table, stat, link } from '../lib/dom.js';
 import { teamPower, seasonLabel } from '../lib/game.js';
 import {
-  standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesGameRows, seriesScore, advanceChoices
+  standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesGameRows, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText
 } from '../lib/season-view.js';
 
 // 화면을 다시 그려도 유지할 보기 상태(보고 있는 경기일, 열어 둔 박스스코어)
@@ -113,6 +113,12 @@ function finalCard(ctx, rows, qualify) {
     h('div', { class: 'sv-seeds' }, qual.map((r) => h('span', { class: `chip ${r.id === my ? 'mine' : ''}` }, h('b', r.rank), ' ', ctx.name(r.id)))));
 }
 
+// 관중 계산기(읽기 전용): 구단 수입 정산과 같은 모델·키를 쓴다(web/lib/season-view.js)
+function attCalc(ctx) {
+  const lg = ctx.game.league;
+  return attendanceCalc({ teamData: ctx.data.teams, standings: ctx.session.standings(), att: lg.att ?? null, season: lg.season, rules: ctx.data.rules });
+}
+
 // 경기일별 결과 + 박스스코어
 function resultsPanel(ctx) {
   const s = ctx.session, my = s.managerId;
@@ -123,6 +129,8 @@ function resultsPanel(ctx) {
   const idx = days.findIndex((d) => d.day === shown);
   const dayRes = days[idx] ?? days.at(-1);
   const to = (day) => { ui.dayView = day; ui.box = null; ctx.refresh(); };
+  const attOf = attCalc(ctx);
+  const gameAtt = (i) => attOf(dayRes.games[i], { key: `r${homeOrdinal(days, dayRes.day, i)}` });
   panel.append(
     h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, `${dayRes.day}일차 결과`),
       h('div', { class: 'row' },
@@ -136,18 +144,19 @@ function resultsPanel(ctx) {
       return h('button', { type: 'button', class: `sv-game ${r.mine ? 'mine' : ''}`, 'aria-pressed': String(Boolean(open)), onclick: () => { ui.box = open ? null : { day: dayRes.day, i }; ctx.refresh(); } },
         h('span', { class: `sv-team ${r.homeWon ? 'won' : ''}` }, ctx.name(r.awayId)),
         h('span', { class: 'sv-score' }, h('b', { class: r.homeWon ? '' : 'won' }, r.awayPts), ' : ', h('b', { class: r.homeWon ? 'won' : '' }, r.homePts), r.ot ? h('small', ` 연장${r.ot > 1 ? r.ot : ''}`) : null),
-        h('span', { class: `sv-team right ${r.homeWon ? 'won' : ''}` }, ctx.name(r.homeId), h('small', ' (홈)')));
+        h('span', { class: `sv-team right ${r.homeWon ? 'won' : ''}` }, ctx.name(r.homeId), h('small', ' (홈)')),
+        h('span', { class: 'sv-att' }, attendanceText(gameAtt(i))));
     })));
-  if (ui.box && ui.box.day === dayRes.day) panel.append(boxScore(ctx, dayRes.games[ui.box.i]));
+  if (ui.box && ui.box.day === dayRes.day) panel.append(boxScore(ctx, dayRes.games[ui.box.i], undefined, gameAtt(ui.box.i)));
   return panel;
 }
 
-const BOX_COLS = [['minutes', '분'], ['points', '득점'], ['rebounds', '리바'], ['assists', '어시'], ['steals', '스틸'], ['blocks', '블록']];
+const BOX_COLS = [['minutes', '분'], ['points', '득점'], ['rebounds', '리바'], ['assists', '어시'], ['steals', '스틸'], ['blocks', '블록'], ['turnovers', 'TO'], ['fouls', 'PF']];
 function boxTable(ctx, teamId, pts, lines, won) {
-  const tot = boxTotals(lines);
+  const tot = { ...boxTotals(lines), turnovers: lines.reduce((s, p) => s + (p.turnovers ?? 0), 0), fouls: lines.reduce((s, p) => s + (p.fouls ?? 0), 0) };
   const row = (p, total) => h('tr', { class: total ? 'total' : '' },
     h('td', total ? h('b', '합계') : p.id ? link(`#/player/${p.id}`, p.name) : p.name),
-    ...BOX_COLS.map(([k]) => h('td', { class: 'r' }, k === 'minutes' ? Math.round(p[k]) : p[k])),
+    ...BOX_COLS.map(([k]) => h('td', { class: 'r' }, k === 'minutes' ? Math.round(p[k]) : p[k] ?? '-')),
     h('td', { class: 'r' }, `${p.fgm}/${p.fga}`), h('td', { class: 'r' }, `${p.tpm}/${p.tpa}`), h('td', { class: 'r' }, `${p.ftm}/${p.fta}`));
   return h('div', { class: 'sv-box-team' },
     h('h3', ctx.name(teamId), ' ', h('span', { class: won ? 'good' : 'muted' }, pts)),
@@ -155,9 +164,10 @@ function boxTable(ctx, teamId, pts, lines, won) {
       h('thead', h('tr', h('th', '선수'), ...BOX_COLS.map(([, l]) => h('th', { class: 'r' }, l)), h('th', { class: 'r' }, 'FG'), h('th', { class: 'r' }, '3P'), h('th', { class: 'r' }, 'FT'))),
       h('tbody', [...lines].sort((a, b) => b.minutes - a.minutes).map((p) => row(p, false)), row(tot, true)))));
 }
-function boxScore(ctx, g, close = () => { ui.box = null; ctx.refresh(); }) {
+function boxScore(ctx, g, close = () => { ui.box = null; ctx.refresh(); }, att = null) {
   return h('div', { class: 'sv-box-wrap' },
     h('div', { class: 'row between' }, h('h3', { style: { margin: 0 } }, '박스스코어'), h('button', { class: 'btn ghost', onclick: close }, '닫기')),
+    att ? h('p', { class: 'note sv-box-att' }, `${ctx.name(g.homeId)} 홈 경기 · ${attendanceText(att)}`) : null,
     boxTable(ctx, g.awayId, g.awayPts, g.box.away, g.winnerId === g.awayId),
     boxTable(ctx, g.homeId, g.homePts, g.box.home, g.winnerId === g.homeId));
 }
@@ -231,6 +241,8 @@ function seriesDetail(ctx, m) {
   const openN = ui.poBox && ui.poBox.startsWith(`${m.round}:${m.a}:${m.b}:`) ? Number(ui.poBox.split(':').pop()) : null;
   const toggle = (n) => { ui.poBox = ui.poBox === key(n) ? null : key(n); ctx.refresh(); };
   const openGame = openN != null ? m.games[openN - 1] : null;
+  const attOf = attCalc(ctx);
+  const poAtt = (g, n) => attOf(g, { key: `p${m.round}:${n - 1}`, round: m.round });
   return h('div', { class: `sv-detail ${mine ? 'mine' : ''} ${openN != null ? 'has-box' : ''}`, id: `po-${m.round}-${m.a}-${m.b}` },
     h('div', { class: 'row between' }, h('b', `${ctx.name(m.a)} ${seriesScore({ wins: m.wins, higherId: m.a, lowerId: m.b })} ${ctx.name(m.b)}`), h('span', { class: 'tag' }, `${ctx.name(m.winnerId)} 승`)),
     h('p', { class: 'note', style: { margin: '4px 0' } }, '경기를 누르면 박스스코어를 봅니다.'),
@@ -241,8 +253,9 @@ function seriesDetail(ctx, m) {
       h('td', `${g.n}차전`),
       h('td', { class: g.winnerId === g.awayId ? 'won' : '' }, ctx.name(g.awayId)),
       h('td', { class: 'r' }, h('b', `${g.awayPts} : ${g.homePts}`), g.ot ? h('small', ' 연장') : null),
-      h('td', { class: `r ${g.winnerId === g.homeId ? 'won' : ''}` }, ctx.name(g.homeId), h('small', ' (홈)'))))))),
-    openGame?.box ? boxScore(ctx, openGame, () => { ui.poBox = null; ctx.refresh(); }) : null);
+      h('td', { class: `r ${g.winnerId === g.homeId ? 'won' : ''}` }, ctx.name(g.homeId), h('small', ' (홈)')),
+      h('td', { class: 'r sv-att' }, attendanceText(poAtt(g, g.n)).replace('관중 ', ''))))))),
+    openGame?.box ? boxScore(ctx, openGame, () => { ui.poBox = null; ctx.refresh(); }, poAtt(openGame, openN)) : null);
 }
 
 // ---------- 오프시즌 ----------

@@ -3,8 +3,8 @@
 import { TOTAL_KEYS } from './stats.mjs';
 import { expandRow } from './career.mjs';
 
-const NUM = TOTAL_KEYS.slice(1); // games 제외: minutes points rebounds assists steals blocks fgm fga tpm tpa ftm fta
-const blank = () => ({ w: 0, l: 0, ...Object.fromEntries(TOTAL_KEYS.map((k) => [k, 0])) });
+const NUM = [...TOTAL_KEYS.slice(1), 'turnovers', 'fouls']; // games 제외: minutes points rebounds assists steals blocks fgm fga tpm tpa ftm fta turnovers fouls
+const blank = () => ({ w: 0, l: 0, ...Object.fromEntries([...TOTAL_KEYS, 'turnovers', 'fouls'].map((k) => [k, 0])) });
 
 /** splits: Map<선수 id, Map<구단 id, 합계+승패>> 에 한 경기(simulateGame 결과)를 더한다 */
 export function addGameToSplits(splits, g) {
@@ -29,7 +29,7 @@ export function playoffSplits(series, finalName = '챔피언결정전') {
   return out;
 }
 
-// 저장용 줄: [구단, 경기, 승, 패, 출전분, 득점, 리바, 어시, 스틸, 블록, 야투성공, 야투시도, 3점성공, 3점시도, 자유투성공, 자유투시도]
+// 저장용 줄: [구단, 경기, 승, 패, 출전분, 득점, 리바, 어시, 스틸, 블록, 야투성공, 야투시도, 3점성공, 3점시도, 자유투성공, 자유투시도, 턴오버, 파울] (턴오버·파울은 이전 저장에 없다)
 const pack = (teamId, t) => [teamId, t.games, t.w, t.l, ...NUM.map((k) => t[k])];
 
 /** 정규리그 splits → { wl: {선수: [승, 패]}, split: {선수: [줄…]} (시즌 중 구단을 옮긴 선수만) } */
@@ -55,11 +55,12 @@ export function compactPlayoffs(series, finalName) {
 }
 
 const FIELDS = ['season', 'type', 'teamId', 'gp', 'w', 'l', 'sec', 'pts', 'reb', 'ast', 'stl', 'blk', 'fgm', 'fga', 'pm3', 'pa3', 'ftm', 'fta', 'to', 'pf'];
-// 저장용 줄 → 실제 기록 줄과 같은 필드 + 경기당 평균·성공률(src/career.mjs expandRow). 턴오버·파울은 시뮬레이션이 만들지 않아 null
+// 저장용 줄 → 실제 기록 줄과 같은 필드 + 경기당 평균·성공률(src/career.mjs expandRow). 턴오버·파울이 없는 이전 저장 줄은 null
 const toRow = (season, type, p) => {
-  // p: [구단, 경기, 승, 패, 분, 득점, 리바, 어시, 스틸, 블록, fgm, fga, tpm, tpa, ftm, fta]
-  const [teamId, gp, w, l, min, pts, reb, ast, stl, blk, fgm, fga, pm3, pa3, ftm, fta] = p;
-  return expandRow([season, type, teamId, gp, w, l, min * 60, pts, reb, ast, stl, blk, fgm, fga, pm3, pa3, ftm, fta, 0, 0]);
+  // p: [구단, 경기, 승, 패, 분, 득점, 리바, 어시, 스틸, 블록, fgm, fga, tpm, tpa, ftm, fta, 턴오버, 파울]
+  const [teamId, gp, w, l, min, pts, reb, ast, stl, blk, fgm, fga, pm3, pa3, ftm, fta, to = null, pf = null] = p;
+  const o = expandRow([season, type, teamId, gp, w, l, min * 60, pts, reb, ast, stl, blk, fgm, fga, pm3, pa3, ftm, fta, to, pf]);
+  return { ...o, topg: to == null || !(gp > 0) ? null : to / gp, pfpg: pf == null || !(gp > 0) ? null : pf / gp };
 };
 
 /**
@@ -71,9 +72,9 @@ export function entryRows(entry, id) {
   const split = entry.split?.[id];
   if (split) for (const p of split) rows.push(toRow(entry.season, 'r', p));
   else if (entry.lines?.[id]) {
-    const [g, min, pts, reb, ast, stl, blk, fgm = 0, fga = 0, tpm = 0, tpa = 0, ftm = 0, fta = 0, teamId = null] = entry.lines[id];
+    const [g, min, pts, reb, ast, stl, blk, fgm = 0, fga = 0, tpm = 0, tpa = 0, ftm = 0, fta = 0, teamId = null, to = null, pf = null] = entry.lines[id];
     const wl = entry.wl?.[id];
-    rows.push(toRow(entry.season, 'r', [teamId, g, wl?.[0] ?? null, wl?.[1] ?? null, min, pts, reb, ast, stl, blk, fgm, fga, tpm, tpa, ftm, fta]));
+    rows.push(toRow(entry.season, 'r', [teamId, g, wl?.[0] ?? null, wl?.[1] ?? null, min, pts, reb, ast, stl, blk, fgm, fga, tpm, tpa, ftm, fta, to, pf]));
   }
   for (const p of entry.po?.[id] ?? []) rows.push(toRow(entry.season, p[0], p.slice(1)));
   return rows.map((r) => ({ ...r, game: true }));
@@ -97,8 +98,9 @@ export function sumRows(rows) {
   const total = { season: '통산', type: rows[0]?.type ?? 'r', teamId: null };
   for (const k of keys) total[k] = rows.reduce((s, r) => s + (r[k] ?? 0), 0);
   if (rows.some((r) => r.w == null || r.l == null)) { total.w = null; total.l = null; }
+  for (const k of ['to', 'pf']) if (rows.some((r) => r.game && r[k] == null)) total[k] = null; // 턴오버·파울 기록이 없는 이전 저장 시즌이 섞이면 합계도 "-"
   const ratio = (a, b) => (b > 0 ? a / b : null);
   const g = total.gp;
-  return { ...total, mpg: ratio(total.sec / 60, g), ppg: ratio(total.pts, g), rpg: ratio(total.reb, g), apg: ratio(total.ast, g), spg: ratio(total.stl, g), bpg: ratio(total.blk, g),
+  return { ...total, mpg: ratio(total.sec / 60, g), ppg: ratio(total.pts, g), rpg: ratio(total.reb, g), apg: ratio(total.ast, g), spg: ratio(total.stl, g), bpg: ratio(total.blk, g), topg: total.to == null ? null : ratio(total.to, g), pfpg: total.pf == null ? null : ratio(total.pf, g),
     fgPct: ratio(total.fgm, total.fga), tpPct: ratio(total.pm3, total.pa3), ftPct: ratio(total.ftm, total.fta) };
 }

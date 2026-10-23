@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesScore, advanceChoices } from '../web/lib/season-view.js';
+import { standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText } from '../web/lib/season-view.js';
+import { attendanceFor, popularity, initialAttendance } from '../src/funds.mjs';
 
 const rules = JSON.parse(readFileSync(new URL('../data/league-rules.json', import.meta.url), 'utf8'));
 
@@ -55,4 +56,35 @@ test('진행 버튼: 남은 날수에 맞게 자른다', () => {
   assert.deepEqual(advanceChoices(50, 54).map((c) => c.days), [1, 4]);
   assert.deepEqual(advanceChoices(53, 54).map((c) => c.days), [1]);
   assert.deepEqual(advanceChoices(54, 54), []);
+});
+
+test('홈 경기 순번: 같은 날 앞 경기와 지난 날의 홈 경기를 센다', () => {
+  const days = [
+    { day: 1, games: [{ homeId: 'a', awayId: 'b' }, { homeId: 'c', awayId: 'd' }] },
+    { day: 2, games: [{ homeId: 'b', awayId: 'a' }, { homeId: 'a', awayId: 'c' }] },
+    { day: 3, games: [{ homeId: 'a', awayId: 'd' }] }
+  ];
+  assert.equal(homeOrdinal(days, 1, 0), 0);
+  assert.equal(homeOrdinal(days, 2, 1), 1);
+  assert.equal(homeOrdinal(days, 3, 0), 2);
+});
+
+test('관중 표시: 수입 계산과 같은 모델·키, 수용 인원이 있으면 점유율·매진', () => {
+  const teamData = [{ id: 'a', venue: { capacity: null } }, { id: 'b', venue: { capacity: 3000 } }];
+  const att = initialAttendance(teamData, rules);
+  const standings = [{ id: 'a', wins: 5, losses: 5 }, { id: 'b', wins: 5, losses: 5 }];
+  const calc = attendanceCalc({ teamData, standings, att, season: '2026-27', rules });
+  const g = { homeId: 'a', awayId: 'b' };
+  const x = calc(g, { key: 'r0' });
+  const direct = attendanceFor({ season: '2026-27', teamId: 'a', key: 'r0', pop: popularity(att.fan.a, 0.5, rules), oppPop: 1, capacity: null, scale: att.index }, rules);
+  assert.equal(x.attendance, direct.attendance);
+  assert.deepEqual(calc(g, { key: 'r0' }), x);
+  assert.equal(x.occupancy, null);
+  assert.match(attendanceText(x), /^관중 [\d,]+명$/);
+  const full = calc({ homeId: 'b', awayId: 'a' }, { key: 'r0' });
+  assert.ok(full.attendance <= 3000);
+  assert.match(attendanceText({ attendance: 3000, sellout: true, occupancy: 1 }), /매진/);
+  assert.match(attendanceText({ attendance: 1500, sellout: false, occupancy: 0.5 }), /점유율 50%/);
+  const po = calc(g, { key: 'p6강:0', round: '6강' });
+  assert.ok(po.attendance > 0);
 });

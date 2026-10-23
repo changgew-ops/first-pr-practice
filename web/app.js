@@ -79,14 +79,33 @@ ctx.toTitle = () => { ctx.session = null; ctx.go('title'); };
 function shell(route, view) {
   const s = ctx.session, my = s.managerId;
   const stageLabel = { regular: s.day === 0 ? '시즌 시작 전' : `정규리그 ${s.day}/${s.totalDays}일차`, playoffs: '플레이오프', offseason: '오프시즌' }[s.stage];
-  return h('div', { class: 'shell', style: { '--team': colorOf(my) } },
-    h('aside', { class: 'side' },
+  // 폰(≤860px)에서는 사이드바가 얇은 상단 바(브랜드 한 줄 + 햄버거)가 되고 메뉴는 눌러서 연다. 데스크톱 레이아웃은 그대로.
+  const side = h('aside', { class: 'side' });
+  const menuBtn = h('button', { class: 'menu-btn', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'side-menu', 'aria-label': '메뉴 열기' },
+    h('span', { class: 'bars', 'aria-hidden': 'true' }), s.stage === 'offseason' ? h('span', { class: 'dotmark', 'aria-label': '결정 필요' }) : null);
+  const onKey = (e) => { if (e.key === 'Escape') setMenu(false, true); };
+  const onOutside = (e) => { if (!side.contains(e.target) || e.target.closest('a')) setMenu(false); };
+  const setMenu = (open, refocus = false) => {
+    side.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+    document.removeEventListener('keydown', onKey); document.removeEventListener('click', onOutside);
+    if (open) { document.addEventListener('keydown', onKey); setTimeout(() => document.addEventListener('click', onOutside), 0); }
+    if (!open && refocus) menuBtn.focus();
+  };
+  menuBtn.addEventListener('click', () => setMenu(!side.classList.contains('open')));
+  side.append(
+    h('div', { class: 'side-top' },
       h('div', { class: 'brand' }, '프로농구 단장 게임', h('small', `${s.game.gm.name} 단장 · ${ctx.name(my)}`), h('small', `${seasonLabel(s.season)} · ${stageLabel}`)),
+      menuBtn),
+    h('div', { class: 'side-menu', id: 'side-menu' },
       h('nav', { class: 'nav', 'aria-label': '주 메뉴' }, NAV.map(([key, label]) => h('a', { href: `#/${key}`, class: route === key || (route === 'player' && key === 'roster') ? 'on' : '', 'aria-current': route === key ? 'page' : null }, label, key === 'offseason' && s.stage === 'offseason' ? h('span', { class: 'dotmark', 'aria-label': '결정 필요' }) : null))),
       h('div', { class: 'spacer' }),
       h('div', { class: 'small' }, '자동 저장 중 · 저장 화면에서 직접 저장'),
-      h('button', { class: 'btn ghost', onclick: () => ctx.save('1') }, '빠른 저장'),
-      h('button', { class: 'btn ghost', onclick: ctx.toTitle }, '타이틀로')),
+      h('div', { class: 'side-actions' },
+        h('button', { class: 'btn ghost', onclick: () => { setMenu(false); ctx.save('1'); } }, '빠른 저장'),
+        h('button', { class: 'btn ghost', onclick: ctx.toTitle }, '타이틀로'))));
+  return h('div', { class: 'shell', style: { '--team': colorOf(my) } }, side,
     h('main', { class: 'main' }, view));
 }
 

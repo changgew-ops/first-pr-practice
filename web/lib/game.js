@@ -64,9 +64,9 @@ export function playYear(game, data) {
   return { ...game, league: out.league, log: [...game.log, summarizeYear(game, data, season, out)] };
 }
 
-// 선수 시즌 기록 한 줄: 앞 7칸은 예전부터(careerLines가 읽는다), 뒤 7칸(야투·3점·자유투 성공/시도와 시즌 끝 소속)은 리그 화면의 전체 기록용. 이전 저장에는 앞 7칸만 있다
-const line = (t, teamId) => [t.games, t.minutes, t.points, t.rebounds, t.assists, t.steals, t.blocks, t.fgm ?? 0, t.fga ?? 0, t.tpm ?? 0, t.tpa ?? 0, t.ftm ?? 0, t.fta ?? 0, teamId ?? null];
-export const LINE_KEYS = ['games', 'minutes', 'points', 'rebounds', 'assists', 'steals', 'blocks', 'fgm', 'fga', 'tpm', 'tpa', 'ftm', 'fta', 'teamId'];
+// 선수 시즌 기록 한 줄: 앞 7칸은 예전부터(careerLines가 읽는다), 다음 7칸(야투·3점·자유투 성공/시도와 시즌 끝 소속)은 리그 화면의 전체 기록용, 마지막 2칸은 턴오버·파울. 이전 저장에는 뒤쪽 칸이 없다
+const line = (t, teamId) => [t.games, t.minutes, t.points, t.rebounds, t.assists, t.steals, t.blocks, t.fgm ?? 0, t.fga ?? 0, t.tpm ?? 0, t.tpa ?? 0, t.ftm ?? 0, t.fta ?? 0, teamId ?? null, t.turnovers ?? null, t.fouls ?? null];
+export const LINE_KEYS = ['games', 'minutes', 'points', 'rebounds', 'assists', 'steals', 'blocks', 'fgm', 'fga', 'tpm', 'tpa', 'ftm', 'fta', 'teamId', 'turnovers', 'fouls'];
 
 function summarizeYear(game, data, season, out) {
   const entry = summarizeSeason(game, data, season, { result: out.result, totals: out.totals, splits: out.splits, seasonPlayers: out.seasonPlayers }, out.report.ledger);

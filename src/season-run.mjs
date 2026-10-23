@@ -17,6 +17,16 @@ import { mulberry32, hashString } from './rng.mjs';
 import { eligibility, dleagueSessions, abroadGrowth, programCost, checkpointsPerSeason, PROGRAMS } from './devprogram.mjs';
 import { releaseCheck, releaseCost, extensionCheck, extendedPlayer, extensionAdjust, salaryRanks } from './contracts.mjs';
 
+// 턴오버·파울은 기록만 하는 열이라 능력치 갱신이 읽는 합계(src/stats.mjs TOTAL_KEYS)와 따로 쌓는다. 옛 박스스코어에는 없다
+function addRecordOnly(totals, box) {
+  for (const line of box) {
+    const t = totals.get(line.id);
+    if (!t || !line.minutes) continue;
+    t.turnovers = (t.turnovers ?? 0) + (line.turnovers ?? 0);
+    t.fouls = (t.fouls ?? 0) + (line.fouls ?? 0);
+  }
+}
+
 function withStats(p, stats) {
   const ovr = calcOvr(p.position, stats);
   // 시즌 중 갱신은 잠재력(POT)을 올리지 않는다. 운 좋은 시즌이 성장 한도를 계속 끌어올리는 것을 막는다.
@@ -121,7 +131,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const initial = buildTeams();
   const regular = createRegularSeason(initial.teams, initial.baseline, rules.simulation, rng, {
     keepGames,
-    onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); addGameToSplits(splits, g); },
+    onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); addRecordOnly(totals, g.box.home); addRecordOnly(totals, g.box.away); addGameToSplits(splits, g); },
     checkpointEvery: rules.ratingModel.checkpointDays,
     onCheckpoint: () => { applyUpdates(); applyTraining(); return buildTeams(); }
   });

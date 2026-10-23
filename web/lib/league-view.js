@@ -1,6 +1,6 @@
 // 리그 화면의 순수 계산(브라우저 API 없음): 선수·팀 기록 집계, 파생 지표, 정렬·필터, 부문별 상위.
 // 기록 모양(totals): { gp, min(분), pts, reb, oreb, dreb, ast, stl, blk, fgm, fga, tpm, tpa, ftm, fta, to, pf }.
-// 값이 없는 항목(게임 시뮬레이션은 턴오버·파울·공격/수비 리바운드를 만들지 않는다)은 null이고 화면에는 "-"로 나온다.
+// 값이 없는 항목(게임 시뮬레이션은 공격/수비 리바운드를 만들지 않고, 턴오버·파울은 이 기능 이전 저장에 없다)은 null이고 화면에는 "-"로 나온다.
 
 export const TOTAL_KEYS = ['gp', 'min', 'pts', 'reb', 'oreb', 'dreb', 'ast', 'stl', 'blk', 'fgm', 'fga', 'tpm', 'tpa', 'ftm', 'fta', 'to', 'pf'];
 const SUM_KEYS = TOTAL_KEYS.filter((k) => k !== 'gp');
@@ -86,6 +86,7 @@ export function aggregateGames(dayResults) {
           p.name = line.name;
           t.min += line.minutes; t.pts += line.points; t.reb += line.rebounds; t.ast += line.assists; t.stl += line.steals; t.blk += line.blocks;
           t.fgm += line.fgm; t.fga += line.fga; t.tpm += line.tpm; t.tpa += line.tpa; t.ftm += line.ftm; t.fta += line.fta;
+          if (line.turnovers != null) { p.to = (p.to ?? 0) + line.turnovers; p.pf = (p.pf ?? 0) + line.fouls; t.to = (t.to ?? 0) + line.turnovers; t.pf = (t.pf ?? 0) + line.fouls; }
         }
       }
     }
@@ -220,7 +221,7 @@ export function formatTeamValue(v, key, mode = 'avg') {
 // ---------- 집계: 게임에서 이미 끝난 시즌(저장된 선수 줄) ----------
 /**
  * 게임 로그의 시즌 결과(entry.lines: 선수별 한 줄, entry.standings: 순위표)에서 기록을 모은다.
- * 줄의 앞 7칸(경기·출전·득점·리바·어시·스틸·블록)은 모든 저장에 있고, 뒤 7칸(야투·3점·자유투 성공/시도, 시즌 끝 소속)은 새 저장에만 있다 — 없으면 null.
+ * 줄의 앞 7칸(경기·출전·득점·리바·어시·스틸·블록)은 모든 저장에 있고, 다음 7칸(야투·3점·자유투 성공/시도, 시즌 끝 소속)과 마지막 2칸(턴오버·파울)은 새 저장에만 있다 — 없으면 null.
  * 구단 기록: 득점·실점·승패는 순위표(정확), 나머지는 선수 줄의 합(시즌 중 이적한 선수는 시즌 끝 소속에 합산되어 조금 어긋날 수 있다).
  */
 export function aggregateLines(entry) {
@@ -232,7 +233,8 @@ export function aggregateLines(entry) {
     return {
       id, name: base, card: label, teamId, teamIds: teamId ? [teamId] : [],
       gp: l[0], min: l[1], pts: l[2], reb: l[3], oreb: null, dreb: null, ast: l[4], stl: l[5], blk: l[6],
-      fgm: full ? l[7] : null, fga: full ? l[8] : null, tpm: full ? l[9] : null, tpa: full ? l[10] : null, ftm: full ? l[11] : null, fta: full ? l[12] : null, to: null, pf: null
+      fgm: full ? l[7] : null, fga: full ? l[8] : null, tpm: full ? l[9] : null, tpa: full ? l[10] : null, ftm: full ? l[11] : null, fta: full ? l[12] : null,
+      to: l[14] ?? null, pf: l[15] ?? null // 턴오버·파울은 이 기능 이후 저장에만 있다
     };
   });
   const teams = (entry.standings ?? []).map((s) => {
@@ -241,7 +243,7 @@ export function aggregateLines(entry) {
     return {
       id: s.id, gp: s.wins + s.losses, w: s.wins, l: s.losses, pts: s.pointsFor ?? sum('pts'), pa: s.pointsAgainst ?? null,
       min: sum('min'), reb: sum('reb'), oreb: null, dreb: null, ast: sum('ast'), stl: sum('stl'), blk: sum('blk'),
-      fgm: sum('fgm'), fga: sum('fga'), tpm: sum('tpm'), tpa: sum('tpa'), ftm: sum('ftm'), fta: sum('fta'), to: null, pf: null
+      fgm: sum('fgm'), fga: sum('fga'), tpm: sum('tpm'), tpa: sum('tpa'), ftm: sum('ftm'), fta: sum('fta'), to: sum('to'), pf: sum('pf')
     };
   });
   return { players, teams, teamsEstimated: false };

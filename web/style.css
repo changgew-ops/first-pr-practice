@@ -37,6 +37,9 @@ h3 { font-size: 1rem; margin-bottom: 8px; }
 .nav a:hover { background: var(--panel-2); text-decoration: none; color: var(--text); }
 .nav a.on { background: var(--panel-2); color: var(--text); box-shadow: inset 3px 0 0 var(--team); font-weight: 600; }
 .side .spacer { flex: 1; }
+.side-menu { display: flex; flex-direction: column; gap: 14px; flex: 1; min-height: 0; overflow-y: auto; }
+.side-actions { display: flex; flex-direction: column; gap: 14px; }
+.menu-btn { display: none; }
 .side .small { font-size: .8rem; color: var(--muted); padding: 0 8px; }
 .main { padding: 22px 26px 60px; max-width: 1180px; width: 100%; min-width: 0; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
@@ -156,8 +159,22 @@ ul.plain .grow { flex: 1; }
 
 @media (max-width: 860px) {
   .shell { grid-template-columns: minmax(0, 1fr); }
-  .side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 10px 12px; }
-  .nav { flex-direction: row; flex-wrap: wrap; } .side .spacer, .side .small { display: none; }
+  /* 폰: 얇은 상단 바(브랜드 + 햄버거). 메뉴는 열면 바 아래로 펼쳐진 세로 목록(바깥 클릭·Esc·메뉴 선택으로 닫힘). 하단 탭바는 메뉴가 12개라 못 담아서 쓰지 않았다. */
+  .side { position: sticky; top: 0; z-index: 30; height: auto; flex-direction: column; gap: 0; padding: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .side-top { display: flex; align-items: center; gap: 8px; padding: 6px 8px 6px 14px; min-height: 48px; }
+  .side-top .brand { flex: 1; min-width: 0; padding: 0; font-size: .95rem; line-height: 1.25; }
+  .side-top .brand small { display: inline; margin-left: 6px; font-size: .72rem; }
+  .side-top .brand small + small { display: block; margin-left: 0; }
+  .menu-btn { display: inline-flex; position: relative; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); color: var(--text); cursor: pointer; flex: none; }
+  .menu-btn .bars, .menu-btn .bars::before, .menu-btn .bars::after { display: block; width: 18px; height: 2px; background: currentColor; border-radius: 1px; transition: transform .15s, opacity .15s; }
+  .menu-btn .bars { position: relative; } .menu-btn .bars::before, .menu-btn .bars::after { content: ''; position: absolute; left: 0; }
+  .menu-btn .bars::before { top: -6px; } .menu-btn .bars::after { top: 6px; }
+  .side.open .menu-btn .bars { background: transparent; } .side.open .menu-btn .bars::before { top: 0; transform: rotate(45deg); } .side.open .menu-btn .bars::after { top: 0; transform: rotate(-45deg); }
+  .menu-btn .dotmark { position: absolute; top: 6px; right: 6px; margin: 0; }
+  .side-menu { display: none; flex: none; padding: 4px 10px 12px; max-height: calc(100vh - 56px); max-height: calc(100dvh - 56px); border-top: 1px solid var(--line); }
+  .side.open .side-menu { display: flex; }
+  .nav a { padding: 12px 10px; } .side .spacer { display: none; }
+  .side-actions { flex-direction: row; } .side-actions .btn { flex: 1; }
   .main { padding: 16px 16px 60px; }
   .g3, .g4, .split, .bracket { grid-template-columns: 1fr 1fr; }
   .court { grid-template-columns: repeat(3, minmax(0, 1fr)); }

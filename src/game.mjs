@@ -1,4 +1,4 @@
-import { normal } from './rng.mjs';
+import { normal, mulberry32, hashString } from './rng.mjs';
 
 // 한 선수의 공격·수비 기여도 (능력치 → 점수)
 const offense = (p) => 0.5 * p.stats.shooting + 0.25 * p.stats.passing + 0.25 * p.stats.athletic;
@@ -108,7 +108,7 @@ function boxScore(lineup, pts, sim, rng) {
   const asts = allocate(tot(sim.teamAssists, 3), w((p) => (p.stats.passing / 50) ** 2.2), rng);
   const stls = allocate(tot(sim.teamSteals, 2), w((p) => (p.stats.defense / 50) ** 1.5 * (p.stats.athletic / 50)), rng);
   const blks = allocate(tot(sim.teamBlocks, 1.6), w((p) => (p.stats.rebound / 50) ** 1.5 * (p.stats.defense / 50) ** 1.5), rng);
-  return players.map((p, i) => ({
+  const lines = players.map((p, i) => ({
     id: p.id,
     name: p.name,
     minutes: minutes.get(p.id),
@@ -119,6 +119,22 @@ function boxScore(lineup, pts, sim, rng) {
     blocks: blks[i],
     ...shotLine(p, scored[i], sim, rng)
   }));
+  return withTurnoversFouls(lines, players, sim);
+}
+
+// 턴오버·파울: 기록만 하는 열이다(득점·출전 시간에 영향 없음). 경기 난수(rng)는 쓰지 않고, 이미 정해진 기록에서 뽑은 시드로 따로 굴려
+// 같은 시드의 경기 결과(점수와 박스스코어의 다른 열)가 이 열을 넣기 전과 똑같다.
+// 턴오버는 공을 많이 만지는 선수(득점·어시스트)에게, 패스 능력이 낮은 선수일수록 더 몰린다. 파울은 수비·리바운드 비중이 큰 선수가 많이 한다.
+function withTurnoversFouls(lines, players, sim) {
+  if (sim.teamTurnovers == null || sim.teamFouls == null) return lines;
+  const rng = mulberry32(hashString(lines.map((l) => `${l.id}:${l.points}:${l.rebounds}:${l.assists}:${l.steals}:${l.blocks}:${l.fga}:${l.fta}`).join('|')));
+  // 선수마다 타고난 버릇(같은 선수는 늘 같은 값): 능력치가 같아도 턴오버·파울이 잦은 선수와 적은 선수가 있다
+  const habit = (kind, id, sd) => Math.exp(sd * normal(mulberry32(hashString(`${kind}:${id}`))));
+  const tot = (mean) => Math.max(0, Math.round(mean + 0.9 * Math.sqrt(mean) * normal(rng)));
+  const w = (fn) => lines.map((l, i) => Math.max(0.01, l.minutes * fn(players[i], l)));
+  const tos = allocate(tot(sim.teamTurnovers), w((p, l) => ((l.points + 1.3 * l.assists + 1) / Math.max(1, l.minutes) / 0.5) ** 1.6 * (60 / (p.stats.passing + 10)) ** 0.8 * habit('to', l.id, 0.35)), rng);
+  const pfs = allocate(tot(sim.teamFouls), w((p, l) => (p.stats.defense / 50) ** 1.3 * (p.stats.rebound / 50) ** 0.9 * habit('pf', l.id, 0.2)), rng);
+  return lines.map((l, i) => ({ ...l, turnovers: tos[i], fouls: pfs[i] }));
 }
 
 /**

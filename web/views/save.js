@@ -33,7 +33,10 @@ function bannerFor({ ok, status }) {
     h('button', { class: 'btn ghost', type: 'button', onclick: () => { dismissed = note.level; bar.remove(); } }, '닫기'));
   document.body.append(bar);
 }
-if (typeof window !== 'undefined') window.addEventListener('kblgm:save', (e) => { try { bannerFor(e.detail); } catch { /* 경고는 덤이다 */ } });
+if (typeof window !== 'undefined') {
+  window.addEventListener('kblgm:save', (e) => { try { bannerFor(e.detail); } catch { /* 경고는 덤이다 */ } });
+  window.addEventListener('hashchange', () => { if (location.hash.startsWith('#/save')) document.getElementById('save-banner')?.remove(); });
+}
 
 export function render(ctx) {
   const host = h('div', { class: 'stack' });
@@ -48,14 +51,14 @@ export function render(ctx) {
     const st = storageStatus();
     const note = capacityNotice({ ok: true, status: st });
     const old = oldestManualSlot(slots);
-    usageHost.replaceChildren(
+    usageHost.replaceChildren(...[
       h('div', { class: 'slt-usage-head' }, h('h3', { style: { margin: 0 } }, '저장 공간'),
         h('span', { class: 'note' }, h('b', fmtSize(st.used)), ` / 약 ${fmtSize(QUOTA)} · ${st.percent}%`)),
       h('div', { class: `slt-meter ${st.level}`, role: 'meter', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-valuenow': Math.min(100, st.percent), 'aria-label': '저장 공간 사용량' }, h('i', { style: { width: `${Math.min(100, st.ratio * 100)}%` } })),
       note ? h('p', { class: `slt-note ${note.level}` }, note.text) : h('p', { class: 'note', style: { margin: 0 } }, '브라우저가 허용하는 크기(보통 5MB)의 추정치입니다. 80%를 넘으면 알려 드립니다.'),
       note && old ? h('div', { class: 'slt-actions' },
         h('button', { class: 'btn danger', type: 'button', onclick: () => { deleteSlot(old); msg = { kind: 'ok', text: `${label(old)}를 지웠습니다` }; draw(); } }, `가장 오래된 ${label(old)} 지우기`),
-        h('span', { class: 'note' }, '지우기 전에 “파일로 내보내기”로 받아 두면 나중에 가져올 수 있습니다.')) : null);
+        h('span', { class: 'note' }, '지우기 전에 “파일로 내보내기”로 받아 두면 나중에 가져올 수 있습니다.')) : null].filter(Boolean));
   }
 
   function exportSlot(slot) {
