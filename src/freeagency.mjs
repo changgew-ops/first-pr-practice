@@ -40,20 +40,37 @@ export function capAllows(payroll, salaryEok, rules, { isManager = false } = {})
   return isManager; // 캡 초과 영입(소프트캡 기금 부담)은 단장이 직접 결정할 때만
 }
 
-/** 원소속 구단 전년 보수 순위 → 보상 규정. 해당 없으면 null */
-export function compensationFor(p, rules) {
+/** 협상하는 해(새 시즌의 시작 연도)에 맞는 보상 규정: { tiers, protectedPlayers, exemptAge }. 기본은 현재 규정 */
+export function compensationRule(rules, year = Infinity) {
+  const c = rules.transactions.compensation;
+  return year < (c.effectiveFromYear ?? 0) && c.legacy ? c.legacy : c;
+}
+
+/** 원소속 구단 전년 보수 순위 → 보상 규정(등급 A/B/C). 해당 없으면 null. year: 새 시즌 시작 연도 */
+export function compensationFor(p, rules, year = Infinity) {
   if (!p.prevTeamId || !p.prevRank) return null;
-  const tier = rules.transactions.compensation.tiers.find((t) => p.prevRank <= t.maxRank);
+  const rule = compensationRule(rules, year);
+  if (rule.exemptAge != null && p.age >= rule.exemptAge) return null;
+  const tier = rule.tiers.find((t) => p.prevRank <= t.maxRank);
   if (!tier) return null;
   const base = p.prevSalaryEok;
   return {
+    grade: tier.grade ?? null,
     tierMaxRank: tier.maxRank,
     cashOnly: round1(base * tier.cashOnlyRatio),
     withPlayerCash: tier.withPlayerCashRatio != null ? round1(base * tier.withPlayerCashRatio) : null
   };
 }
 
-const years = (p, rng) => Math.max(1, preferredYears(p) + (rng() < 0.2 ? 1 : 0));
+/** FA 계약기간 범위 [최소, 최대]: 전년도 보수 30위 이내는 3~5년(만 32세 이상 예외), 나머지는 5년 이하 */
+export function yearsRange(p, rules) {
+  const c = rules.transactions.freeAgency.contract;
+  if (!c) return [1, 4];
+  const top = p.prevRank != null && p.prevRank <= c.topRank && p.age < c.minYearsExemptAge;
+  return [top ? c.topMinYears : 1, c.maxYears];
+}
+
+const years = (p, rng, rules) => { const [lo, hi] = yearsRange(p, rules); return Math.max(lo, Math.min(hi, preferredYears(p) + (rng() < 0.2 ? 1 : 0))); };
 
 /**
  * FA 시장 진행.
@@ -99,21 +116,22 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
         if (p.origin !== 'domestic' || p.prevTeamId === teamId) continue; // 자기가 놓아준 선수는 다시 잡지 않는다
         const salary = round1(demandNow(p) * (1 + premium));
         if (!capAllows(payroll, salary, rules)) continue;
-        const comp = compensationFor(p, rules);
+        const comp = compensationFor(p, rules, ctx.season + 1);
         const cost = comp ? comp.cashOnly : 0;
         const utility = valueOf(p) + needBonus(roster, p.position) - fa.priceWeight * salary - fa.compensationWeight * cost;
         cands.push({ p, salary, utility });
       }
       cands.sort((a, b) => b.utility - a.utility);
-      for (const c of cands.slice(0, fa.offersPerTeamPerRound)) add(c.p.id, { teamId, salaryEok: c.salary, years: years(c.p, rng) });
+      for (const c of cands.slice(0, fa.offersPerTeamPerRound)) add(c.p.id, { teamId, salaryEok: c.salary, years: years(c.p, rng, rules) });
     }
 
     // 단장의 제안
     if (policy?.freeAgency && ctx.managerTeamId) {
       const mine = policy.freeAgency({ round, pool, state: { players, funds }, demandNow }) ?? [];
-      const poolIds = new Set(pool.map((p) => p.id));
+      const poolById = new Map(pool.map((p) => [p.id, p]));
+      const poolIds = new Set(poolById.keys());
       for (const o of mine) {
-        if (poolIds.has(o.playerId)) add(o.playerId, { teamId: ctx.managerTeamId, salaryEok: o.salaryEok, years: o.years ?? 2, manager: true });
+        if (poolIds.has(o.playerId)) add(o.playerId, { teamId: ctx.managerTeamId, salaryEok: o.salaryEok, years: (() => { const [lo, hi] = yearsRange(poolById.get(o.playerId), rules); return Math.max(lo, Math.min(hi, o.years ?? 2)); })(), manager: true });
       }
     }
 
@@ -132,7 +150,7 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
       }
       if (!best) continue;
 
-      const comp = best.teamId !== p.prevTeamId ? compensationFor(p, rules) : null;
+      const comp = best.teamId !== p.prevTeamId ? compensationFor(p, rules, ctx.season + 1) : null;
       const signed = {
         ...p, teamId: best.teamId, number: freeNumber(best.teamId, p.number),
         contract: { salaryEok: best.salaryEok, yearsLeft: best.years }
@@ -149,7 +167,7 @@ export function runFreeAgency(state, teamData, ctx, rules, rng, policy = null) {
           choice = policy.compensation({ player: signed, options: comp, state: { players, funds } }) ?? choice;
         }
         const protectedIds = new Set([...domesticOf(players, best.teamId)].sort((a, b) => valueOf(b) - valueOf(a))
-          .slice(0, rules.transactions.compensation.protectedPlayers).map((x) => x.id));
+          .slice(0, compensationRule(rules, ctx.season + 1).protectedPlayers).map((x) => x.id));
         const target = choice.type === 'player' ? players.find((x) => x.id === choice.playerId) : null;
         if (choice.type === 'player' && target && target.teamId === best.teamId && target.origin === 'domestic'
           && !protectedIds.has(target.id) && target.id !== signed.id) {

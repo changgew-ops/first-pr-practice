@@ -13,6 +13,7 @@
     "check": "npm run build:history && npm test",
     "web": "node tools/serve.mjs",
     "build:ids": "node tools/build-player-ids.mjs",
-    "build:careers": "node tools/build-careers.mjs"
+    "build:careers": "node tools/build-careers.mjs",
+    "build:cards": "node tools/build-cards.mjs"
   }
 }

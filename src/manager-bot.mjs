@@ -62,8 +62,10 @@ export function createManagerBot(teamId, rules, { tradeMargin = 1.05 } = {}) {
       return [...candidates].sort((a, b) => (b.player.ovr - b.usd / 50000) - (a.player.ovr - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0]?.player.id;
     },
 
-    draft({ available, team }) {
-      const mine = domesticOf([], team);
+    // 3라운드부터는 로스터가 이미 찼으면 지명을 포기한다
+    draft({ available, team, round = 1, roster = null }) {
+      const mine = roster ?? domesticOf([], team);
+      if (round >= 3 && mine.length >= rules.roster.domestic) return 'pass';
       return [...available].sort((a, b) => (b.potential * 0.6 + b.ovr * 0.4 + needBonus(mine, b.position)) - (a.potential * 0.6 + a.ovr * 0.4 + needBonus(mine, a.position)))[0]?.id;
     }
   };

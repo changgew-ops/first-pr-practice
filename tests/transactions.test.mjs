@@ -7,7 +7,7 @@ import {
 import { settleSeason, transferFunds, initialFunds } from '../src/funds.mjs';
 import { asiaOf, asiaPayrollEok } from '../src/valuation.mjs';
 import { validateTrade, executeTrade, aiEvaluate, generateOffers, proposeTrade, teamWorth } from '../src/trade.mjs';
-import { offerScore, capAllows, compensationFor, runFreeAgency } from '../src/freeagency.mjs';
+import { offerScore, capAllows, compensationFor, compensationRule, yearsRange, runFreeAgency } from '../src/freeagency.mjs';
 import { runOffseason, rookieSalary } from '../src/offseason.mjs';
 import { createLeague } from '../src/league.mjs';
 import { createManagerBot } from '../src/manager-bot.mjs';
@@ -419,4 +419,43 @@ test('아시아쿼터: 시즌 종료 처리 후에도 구단당 최대 1명, 연
   assert.ok(signedNew >= 3, `8년 동안 새 아시아쿼터 영입 ${signedNew}명`);
   const filled = teamData.filter((t) => asiaOf(l.players, t.id).length === 1).length;
   assert.ok(filled >= 7, `아시아쿼터가 있는 구단 ${filled}개`);
+});
+
+test('FA 보상 등급: 2027-28부터는 A(100% 또는 보상선수+25%)·B(50%), 그 전 규정은 A(200% 또는 +50%)·B(100%)·C(50%)에 만 35세 이상 면제', () => {
+  const mk = (prevRank, age = 28, prevSalaryEok = 4) => ({ prevTeamId: 'x', prevRank, prevSalaryEok, age });
+  // 현재 규정(게임의 모든 오프시즌)
+  assert.equal(rules.transactions.compensation.effectiveFromYear, 2027);
+  const a = compensationFor(mk(10), rules, 2027);
+  assert.deepEqual([a.grade, a.cashOnly, a.withPlayerCash], ['A', 4, 1]);
+  assert.deepEqual([compensationFor(mk(35), rules, 2027).grade, compensationFor(mk(35), rules, 2027).cashOnly], ['B', 2]);
+  assert.equal(compensationFor(mk(45), rules, 2027), null);
+  assert.equal(compensationRule(rules, 2030).protectedPlayers, 4);
+  // 그 이전 규정(나무위키·다음 카페 서술)
+  const old = compensationFor(mk(10), rules, 2026);
+  assert.deepEqual([old.grade, old.cashOnly, old.withPlayerCash], ['A', 8, 2]);
+  assert.deepEqual([compensationFor(mk(35), rules, 2026).grade, compensationFor(mk(35), rules, 2026).cashOnly], ['B', 4]);
+  assert.deepEqual([compensationFor(mk(45), rules, 2026).grade, compensationFor(mk(45), rules, 2026).cashOnly], ['C', 2]);
+  assert.equal(compensationFor(mk(55), rules, 2026), null);
+  assert.equal(compensationFor(mk(5, 35), rules, 2026), null, '만 35세 이상은 보상 없음');
+  assert.ok(compensationFor(mk(5, 34), rules, 2026));
+});
+
+test('FA 계약기간: 전년도 보수 30위 이내는 3~5년(만 32세 이상 예외), 나머지는 5년 이하', () => {
+  const p = (prevRank, age) => ({ prevRank, age });
+  assert.deepEqual(yearsRange(p(10, 27), rules), [3, 5]);
+  assert.deepEqual(yearsRange(p(30, 31), rules), [3, 5]);
+  assert.deepEqual(yearsRange(p(10, 32), rules), [1, 5]);
+  assert.deepEqual(yearsRange(p(31, 25), rules), [1, 5]);
+});
+
+test('FA 시장: 상위 30위 FA와의 계약은 3년 이상이고 모든 FA 계약은 5년 이하', () => {
+  const state = marketState();
+  const res = runFreeAgency(state, teamData, { ...ctx, managerTeamId: null }, rules, mulberry32(3));
+  assert.ok(res.signings.length > 0);
+  const prev = new Map(state.pool.map((p) => [p.id, p]));
+  for (const s of res.signings) {
+    const p = prev.get(s.id);
+    const [lo, hi] = yearsRange(p, rules);
+    assert.ok(s.years >= lo && s.years <= hi, `${s.name} ${s.years}년 (범위 ${lo}~${hi})`);
+  }
 });

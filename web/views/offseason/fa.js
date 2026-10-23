@@ -1,7 +1,7 @@
 // FA 시장 단계(라운드마다): 영입하고 싶은 선수에게 연봉·기간을 제안한다.
 import { h, eok, POS_ORDER } from '../../lib/dom.js';
 import { buildCtx, faPlan, minAcceptSalary, round1, valueOf } from '../../lib/offseason-view.js';
-import { offerScore, compensationFor, preferredYears } from '../../../src/freeagency.mjs';
+import { offerScore, compensationFor, preferredYears, yearsRange } from '../../../src/freeagency.mjs';
 import { domesticOf } from '../../../src/valuation.mjs';
 import { playerLine, decide } from './common.js';
 
@@ -63,7 +63,7 @@ export function render(ctx, pending) {
       const o = offers[p.id];
       const on = h('input', { type: 'checkbox', id: `fa-on-${p.id}`, 'aria-label': `${p.name} 영입 제안`, checked: Boolean(o), onchange: (e) => { if (e.target.checked) offers[p.id] = { salaryEok: Number(salary.value) || defaultSalary(p), years: Number(years.value) }; else delete offers[p.id]; update(); } });
       const salary = h('input', { type: 'number', id: `fa-sal-${p.id}`, step: '0.1', min: '0.3', value: o?.salaryEok ?? defaultSalary(p), 'aria-label': `${p.name} 제안 연봉(억)`, oninput: (e) => { const v = round1(Number(e.target.value) || 0); offers[p.id] = { salaryEok: v, years: Number(years.value) }; on.checked = true; update(); } });
-      const years = h('select', { id: `fa-yr-${p.id}`, 'aria-label': `${p.name} 계약 기간`, onchange: (e) => { if (offers[p.id]) { offers[p.id].years = Number(e.target.value); update(); } } }, [1, 2, 3, 4].map((y) => h('option', { value: y, selected: y === (o?.years ?? preferredYears(p)) }, `${y}년`)));
+      const years = h('select', { id: `fa-yr-${p.id}`, 'aria-label': `${p.name} 계약 기간`, onchange: (e) => { if (offers[p.id]) { offers[p.id].years = Number(e.target.value); update(); } } }, (() => { const [lo, hi] = yearsRange(p, rules); const def = Math.max(lo, Math.min(hi, o?.years ?? preferredYears(p))); return Array.from({ length: hi - lo + 1 }, (_, i) => lo + i).map((y) => h('option', { value: y, selected: y === def }, `${y}년`)); })());
       const badge = h('span', { class: 'os-status' });
       const hint = h('span', { class: 'note' });
       const row = h('div', { class: 'os-fa-row' },
@@ -72,7 +72,7 @@ export function render(ctx, pending) {
           h('div', { class: 'os-fact' }, h('span', { class: 'note' }, 'POT'), h('b', p.potential)),
           h('div', { class: 'os-fact' }, h('span', { class: 'note' }, '이전'), h('b', p.prevTeamId ? ctx.name(p.prevTeamId) : '-')),
           h('div', { class: 'os-fact' }, h('span', { class: 'note' }, '요구 연봉'), h('b', eok(demandNow(p)))),
-          h('div', { class: 'os-fact', title: '다른 구단에서 온 FA를 영입하면 원소속 구단에 내는 보상' }, h('span', { class: 'note' }, 'FA 보상'), h('b', comp && p.prevTeamId !== my ? `${eok(comp.cashOnly)}${comp.withPlayerCash != null ? ` / 선수+${eok(comp.withPlayerCash)}` : ''}` : '없음')),
+          h('div', { class: 'os-fact', title: '다른 구단에서 온 FA를 영입하면 원소속 구단에 내는 보상' }, h('span', { class: 'note' }, 'FA 보상'), h('b', comp && p.prevTeamId !== my ? `${comp.grade ?? ''}등급 ${eok(comp.cashOnly)}${comp.withPlayerCash != null ? ` / 선수+${eok(comp.withPlayerCash)}` : ''}` : '없음')),
           h('label', { class: 'os-input', for: `fa-sal-${p.id}` }, h('span', { class: 'note' }, '제안 연봉(억)'), salary),
           h('label', { class: 'os-input', for: `fa-yr-${p.id}` }, h('span', { class: 'note' }, '기간'), years)),
         hint);

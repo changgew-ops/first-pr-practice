@@ -8,6 +8,7 @@
 | `npm test` | 전체 테스트 (데이터 정합성 + 시뮬레이션 + 이력 검증) |
 | `npm run build:history` | `data/history/{raw,drafts,events,title-sponsors}` 검증 → `seasons.json`, `drafts.json`, `events.json`, `franchises.json` 생성 |
 | `node tools/check-events.mjs <시즌>` | 이벤트 파일 하나만 검증 (병렬 작업 때 쓴다) |
+| `npm run build:cards` | 공식 기록 → 시즌 카드 `data/cards/*.json` (생성물) |
 | `npm run build:real` / `apply:real` / `generate` | 실제 선수 풀 → 로스터·기록 CSV → `data/players.json` |
 | `npm run coverage` | 시즌별 어떤 자료가 있는지 표 (`-- --write docs/DATA_STATUS.md`로 저장) |
 | `npm run check` | build:history + test (커밋 전에) |
@@ -17,7 +18,7 @@
 ## 반드시 지킬 것
 1. **실제 데이터는 추측하지 않는다.** 사용자가 붙여넣은 문서·스크린샷·녹화·xlsx에서만 옮기고, 보이지 않는 값은 `null`이나 `note`로 남긴다. 기억에 의존한 선수·구단 정보를 넣지 않는다.
 2. **옮긴 값은 항상 검증기로 확인한다.** 새 데이터 형식에는 검증을 먼저 만든다(합계·대칭·집합 일치 등). 검증 오류는 데이터를 고치거나, 원본이 틀렸다면 계산 가능한 값으로 바꾸고 `note`에 이유를 적는다. 경고는 원인을 확인하고 note에 남긴다.
-3. **원본(`raw`, `events/*.json`, `drafts/*.json`)만 손으로 고치고, 생성물(`seasons.json`, `events.json`, `drafts.json`, `franchises.json`, `players.json`, `real-pool.json`)은 빌드로만 바꾼다.** 생성물이 원본과 다르면 테스트가 실패한다.
+3. **원본(`raw`, `events/*.json`, `drafts/*.json`)만 손으로 고치고, 생성물(`seasons.json`, `events.json`, `drafts.json`, `franchises.json`, `players.json`, `real-pool.json`, `data/cards/*.json`)은 빌드로만 바꾼다.** 생성물이 원본과 다르면 테스트가 실패한다.
 4. 선수 사진·실제 초상은 가져오지 않는다. KBL 사이트(www.kbl.or.kr)는 이 환경에서 막혀 있다. 사용자가 보내는 화면 녹화로 읽는다.
 5. 사용자가 요청하기 전에는 PR을 만들지 않는다. 개발 브랜치는 `claude/tender-pascal-rqifwe`. 커밋 메시지 끝에 사용자 지정 attribution 줄을 붙인다.
 6. 병렬로 일할 때(포크·서브에이전트)는 **파일 단위로 나눈다**: 각자 자기 시즌 파일 하나만 만들고, `src/`·`tools/`·`tests/`·생성물·다른 시즌 파일은 건드리지 않으며, 커밋과 `npm run build:history`는 맡은 한 사람(조정자)만 한다.

@@ -96,7 +96,7 @@ const round1 = (v) => Math.round(v * 10) / 10;
  *   policy.resign({ expiring, league, ctx })              → { [선수id]: { salaryEok, years } | null(재계약 안 함) }
  *   policy.freeAgency({ round, pool, state, demandNow })  → [{ playerId, salaryEok, years }]
  *   policy.compensation({ player, options, state })       → { type: 'cash' } | { type: 'player', playerId }
- *   policy.draft({ available, team })                     → 지명할 신인 id
+ *   policy.draft({ available, team, round, pickInRound, overall, lottery, roster }) → 지명할 신인 id, 또는 'pass'(지명 포기)
  *   policy.foreign({ team, candidates, maxUsd })          → 영입할 외국인 카드 선수 id (candidates: [{ player, usd }])
  * options.cards: { domestic, foreign } 시즌 카드(src/cards.mjs expandCard 객체 배열). 없으면 가상 신인·가상 외국인만 쓴다
  * 반환: { league: 다음 시즌 상태, report }
@@ -234,7 +234,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   players = market.players; pool = market.pool; funds = market.funds;
   report.signings = market.signings; report.compensations = market.compensations;
 
-  // 5) 신인 드래프트: 하위 팀부터 라운드마다 지명 (신인 계약은 캡 면제, 한도는 캡 × 1.2)
+  // 5) 신인 드래프트: 순번 추첨 → 뱀 순서로 라운드마다 지명, 3라운드부터 포기 가능 (신인 계약은 캡 면제, 한도는 캡 × 1.2)
   const takenNumbers = (teamId) => new Set(players.filter((p) => p.teamId === teamId).map((p) => p.number));
   const freeNumber = (teamId) => {
     const used = takenNumbers(teamId);
@@ -248,7 +248,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   const draftCards = cardRng && cards.domestic
     ? weightedSample(
       cards.domestic.filter((c) => !presentKbl().has(c.kblId) && !usedKbl.has(c.kblId) && c.age != null && c.age <= cardCfg.draftAgeMax && c.min >= cardCfg.minMinutes),
-      (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.weightMid, weightScale: cardCfg.weightScale }), Math.min(cardCfg.draftPerYear, dr.poolSize), cardRng)
+      (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.weightMid, weightScale: cardCfg.weightScale }), Math.min(cardCfg.draftPerYear, dr.poolSize), cardRng, (c) => c.kblId)
     : [];
   for (let i = 0; i < dr.poolSize - draftCards.length; i++) {
     const position = POSITIONS[i % POSITIONS.length];
@@ -264,19 +264,36 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     });
   }
   for (const c of draftCards) { usedKbl.add(c.kblId); prospects.push(cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge })); }
-  const order = [...standings].reverse().map((s) => s.id);
+  // 순번 추첨(KBL 2024~ 방식, data/history/drafts의 lottery): 직전 시즌 순위가 낮은 팀부터 공을 받고, 공이 있는 팀끼리 가중 추첨으로 앞 순번을 정한다.
+  // 공이 없는 팀(상위 두 팀)은 그 뒤에 순위가 낮은 팀부터 간다. 홀수 라운드는 추첨 순서, 짝수 라운드는 거꾸로(뱀 순서).
+  const worstFirst = [...standings].reverse().map((s) => s.id);
+  const ballsOf = new Map(worstFirst.map((id, i) => [id, dr.lottery?.balls?.[i] ?? 0]));
+  let order;
+  if (dr.lottery) {
+    const withBalls = worstFirst.filter((id) => ballsOf.get(id) > 0);
+    order = [...weightedSample(withBalls, (id) => ballsOf.get(id), withBalls.length, rng), ...worstFirst.filter((id) => ballsOf.get(id) === 0)];
+  } else order = worstFirst;
+  const lottery = order.map((teamId, i) => ({ teamId, balls: ballsOf.get(teamId), pick: i + 1 }));
+  report.draftLottery = lottery; report.draftPasses = [];
   let pickNo = 0;
   for (let round = 0; round < dr.rounds; round++) {
-    for (const teamId of order) {
+    const roundOrder = dr.snake !== false && round % 2 === 1 ? [...order].reverse() : order;
+    for (let slot = 0; slot < roundOrder.length; slot++) {
+      const teamId = roundOrder[slot];
       const mine = domesticOf(players, teamId);
       const salary = rookieSalary(pickNo, off.rookieSalaryEok);
       const rookieYears = round < 1 ? dr.rookieYears : dr.rookieYearsRound2;
       pickNo++;
+      // 3라운드부터는 지명을 포기하는 구단이 많다(AI는 라운드별 지명 확률)
+      const aiPass = teamId !== manager && (dr.pickChance?.[round] ?? 1) < 1 && rng() >= dr.pickChance[round];
+      if (aiPass) { report.draftPasses.push({ round: round + 1, teamId }); continue; }
       if (prospects.length === 0 || mine.length >= rules.roster.domestic + 2) continue;
       if (payrollEok(players, teamId) + salary > hardLimitEok(rules) + EPS) continue;
       let idx;
       if (teamId === manager && policy?.draft) {
-        idx = prospects.findIndex((p) => p.id === policy.draft({ available: prospects, team: teamId }));
+        const choice = policy.draft({ available: prospects, team: teamId, round: round + 1, pickInRound: slot + 1, overall: pickNo, lottery, roster: mine });
+        if (choice === 'pass') { report.draftPasses.push({ round: round + 1, teamId }); continue; }
+        idx = prospects.findIndex((p) => p.id === choice);
       }
       if (idx === undefined || idx < 0) {
         let bestScore = -Infinity;
@@ -288,7 +305,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       const [pick] = prospects.splice(idx, 1);
       const signed = { ...pick, teamId, number: freeNumber(teamId), contract: { salaryEok: salary, yearsLeft: rookieYears } };
       players.push(signed);
-      report.drafted.push({ id: signed.id, name: signed.name, teamId, pick: pickNo, ovr: signed.ovr, potential: signed.potential, position: signed.position, ...(signed.card ? { card: signed.card.label } : {}) });
+      report.drafted.push({ id: signed.id, name: signed.name, teamId, pick: pickNo, round: round + 1, pickInRound: slot + 1, ovr: signed.ovr, potential: signed.potential, position: signed.position, ...(signed.card ? { card: signed.card.label } : {}) });
     }
   }
   pool.push(...prospects.map((p) => ({ ...p })));
@@ -342,7 +359,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   if (cardRng && cards.foreign) {
     const present = presentKbl();
     const eligible = cards.foreign.filter((c) => !present.has(c.kblId) && !usedKbl.has(c.kblId) && c.min >= cardCfg.minMinutes);
-    const offered = weightedSample(eligible, (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.foreignWeightMid, weightScale: cardCfg.foreignWeightScale }), cardCfg.foreignPoolSize, cardRng)
+    const offered = weightedSample(eligible, (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.foreignWeightMid, weightScale: cardCfg.foreignWeightScale }), cardCfg.foreignPoolSize, cardRng, (c) => c.kblId)
       .map((c) => cardPlayer(c, { id: newId(), unknownAge: cardCfg.unknownAge }));
     for (const p of offered) usedKbl.add(p.kblId);
     for (const teamId of [...standings].reverse().map((s) => s.id)) {

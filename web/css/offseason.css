@@ -81,3 +81,9 @@
   .os-input input[type="number"] { width: 78px; }
   .os-offer-foot .btn { margin-left: 0; width: 100%; }
 }
+
+/* 드래프트 추첨 결과 */
+.os-lottery { margin: 8px 0 0; padding-left: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 4px 12px; }
+.os-lottery li { padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; }
+.os-lottery li.me { border-color: var(--team, currentColor); font-weight: 600; }
+.os-lottery li b { display: inline-block; min-width: 1.6em; }

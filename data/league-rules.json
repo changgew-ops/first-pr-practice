@@ -219,7 +219,7 @@
       4
     ],
     "draft": {
-      "rounds": 2,
+      "rounds": 4,
       "poolSize": 24,
       "rookieYears": 3,
       "ageRange": [
@@ -233,7 +233,30 @@
         22
       ],
       "rookieYearsRound2": 2,
-      "_note": "신인 계약기간(규약 제98조): 1라운드 3~5년, 2라운드 이하 1~3년. 게임은 1라운드 3년, 2라운드 2년으로 고정(범위 안의 게임용 값)."
+      "_note": "신인 계약기간(규약 제98조): 1라운드 3~5년, 2라운드 이하 1~3년. 게임은 1라운드 3년, 2라운드 2년으로 고정(범위 안의 게임용 값).",
+      "lottery": {
+        "_note": "순번 추첨 공 수(직전 시즌 순위가 낮은 팀부터, 합 200). KBL 2024·2025 드래프트의 lottery(40·40·40·40·14·14·6·6·0·0)와 같다. 2022·2023은 32·32·32·32·24·24·10·10·3·1이었다. 공이 있는 팀끼리 가중 추첨으로 앞 순번을 정하고, 공이 0인 팀은 그 뒤에 순위가 낮은 팀부터 지명한다.",
+        "balls": [
+          40,
+          40,
+          40,
+          40,
+          14,
+          14,
+          6,
+          6,
+          0,
+          0
+        ]
+      },
+      "snake": true,
+      "pickChance": [
+        1,
+        1,
+        0.4,
+        0.15
+      ],
+      "_note2": "라운드: 1·2라운드는 모든 팀이 지명하고 3·4라운드는 포기하는 팀이 많다(2024·2025 드래프트는 4라운드까지 있었고 3라운드 5~8개, 4라운드 1~2개 지명). pickChance는 게임용 AI 지명 확률. 홀수 라운드는 추첨 순서, 짝수 라운드는 거꾸로."
     },
     "rookieSalaryEok": {
       "_note": "국내 신인 보수(규약 제98조·보수 규정 제7조): 1라운드 1~4순위 0.8~1.2억, 5~10순위 0.5~0.8억, 2라운드 0.42~0.5억. 구간 안에서는 순번에 따라 선형으로 내려가는 게임용 보간.",
@@ -289,22 +312,55 @@
       "priceWeight": 1.5,
       "compensationWeight": 0.5,
       "reserveFundsEok": -10,
-      "prestigeWeight": 0.1
+      "prestigeWeight": 0.1,
+      "contract": {
+        "_note": "FA 계약기간(자유계약선수 관리 규정 제4조): 전년도 보수 서열 30위 이내는 3~5년(만 32세 이상은 예외), 31위 이하는 5년 이하.",
+        "maxYears": 5,
+        "topRank": 30,
+        "topMinYears": 3,
+        "minYearsExemptAge": 32
+      }
     },
     "compensation": {
-      "_note": "FA 보상(자유계약선수 관리 규정 제6조, 2027-28시즌부터 적용): 전년도 보수 서열 30위 이내는 보상선수 1명 + 전 시즌 보수의 25% 또는 보수의 100%, 31~40위는 보수의 50%. 보호선수 4명. 서열 40위 밖은 보상 없음.",
+      "_note": "FA 보상. 현재 값(effectiveFromYear 이후)은 자유계약선수 관리 규정 제6조(2027-28시즌부터 적용): 전년도 보수 서열 30위 이내(A등급)는 보상선수 1명 + 전 시즌 보수의 25% 또는 보수의 100%, 31~40위(B등급)는 보수의 50%, 40위 밖은 보상 없음, 보호선수 4명. legacy는 그 이전 규정(2020년 정비, 나무위키·다음 카페 서술): A 1~30위 보상선수 1명(보호 4명 제외) + 보수 50% 또는 200%, B 31~40위 100%, C 41~50위 50%, 51위 이하 또는 만 35세 이상은 보상 없음. 협상 시즌 시작 연도가 effectiveFromYear 미만이면 legacy를 쓴다(게임은 2026-27에서 시작해 첫 오프시즌이 2027이라 항상 현재 값). exemptAge: 이 나이 이상 FA는 보상 없음(새 규정 발췌에는 없는 조건이라 null).",
       "tiers": [
         {
+          "grade": "A",
           "maxRank": 30,
           "cashOnlyRatio": 1,
           "withPlayerCashRatio": 0.25
         },
         {
+          "grade": "B",
           "maxRank": 40,
           "cashOnlyRatio": 0.5
         }
       ],
-      "protectedPlayers": 4
+      "protectedPlayers": 4,
+      "effectiveFromYear": 2027,
+      "exemptAge": null,
+      "legacy": {
+        "tiers": [
+          {
+            "grade": "A",
+            "maxRank": 30,
+            "cashOnlyRatio": 2,
+            "withPlayerCashRatio": 0.5
+          },
+          {
+            "grade": "B",
+            "maxRank": 40,
+            "cashOnlyRatio": 1
+          },
+          {
+            "grade": "C",
+            "maxRank": 50,
+            "cashOnlyRatio": 0.5
+          }
+        ],
+        "exemptAge": 35,
+        "protectedPlayers": 4
+      }
     },
     "funds": {
       "start": 20,

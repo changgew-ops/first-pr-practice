@@ -79,9 +79,9 @@ test('runOffseason: 한 번 돌린 뒤에도 로스터·연봉 캡·번호·포�
   // 은퇴한 선수는 명단에 없다
   const ids = new Set(next.players.map((p) => p.id));
   for (const r of report.retired) assert.ok(!ids.has(r.id), `${r.name} 은퇴했는데 남아 있음`);
-  // 드래프트: 하위 팀부터 지명, 신인은 어리다
-  assert.equal(report.drafted.length, rules.offseason.draft.rounds * 10);
-  assert.equal(report.drafted[0].teamId, standings.at(-1).id);
+  // 드래프트: 추첨 순서로 지명(1라운드 첫 지명이 추첨 1순위), 신인은 어리다. 포기한 칸까지 합치면 라운드 × 10칸 이하다(지명 불가 칸은 기록하지 않는다)
+  assert.ok(report.drafted.length >= 20 && report.drafted.length + report.draftPasses.length <= rules.offseason.draft.rounds * 10);
+  assert.equal(report.drafted[0].teamId, report.draftLottery[0].teamId);
   for (const d of report.drafted) {
     const p = next.players.find((x) => x.id === d.id) ?? next.freeAgents.find((x) => x.id === d.id);
     if (p) assert.ok(p.age <= 24, `${p.name} ${p.age}세`);
@@ -112,4 +112,34 @@ test('runOffseason: 8년 연속 진행해도 규칙이 깨지지 않고 평균 �
   assert.ok(avg >= 56 && avg <= 68, `평균 OVR ${avg.toFixed(1)}`);
   assert.ok(age >= 22 && age <= 30, `평균 나이 ${age.toFixed(1)}`);
   assert.ok(league.freeAgents.length <= rules.offseason.freeAgentPoolMax);
+});
+
+test('드래프트: 순번 추첨은 공 200개(순위가 낮을수록 많이), 공 없는 두 팀은 9·10순위, 뱀 순서, 3라운드부터 포기', () => {
+  const dr = rules.offseason.draft;
+  assert.equal(dr.lottery.balls.reduce((a, b) => a + b, 0), 200);
+  assert.ok(dr.lottery.balls.every((b, i, a) => i === 0 || b <= a[i - 1]), '순위가 높을수록 공이 적다');
+  const league = createLeague(players, rules);
+  let firstPickCount = new Map();
+  for (let seed = 1; seed <= 60; seed++) {
+    const { report } = runOffseason(league, standings, teamData, rules, mulberry32(seed));
+    const lot = report.draftLottery;
+    assert.equal(lot.length, teamData.length);
+    assert.deepEqual(lot.map((l) => l.pick), teamData.map((_, i) => i + 1));
+    // 공이 없는 팀은 맨 뒤 두 순번, 그중 순위가 낮은 팀이 먼저
+    assert.deepEqual(lot.slice(-2).map((l) => l.teamId), [standings[1].id, standings[0].id]);
+    assert.ok(lot.slice(-2).every((l) => l.balls === 0));
+    firstPickCount.set(lot[0].teamId, (firstPickCount.get(lot[0].teamId) ?? 0) + 1);
+    // 뱀 순서: 2라운드는 1라운드의 거꾸로
+    const r1 = report.drafted.filter((d) => d.round === 1).map((d) => d.teamId), r2 = report.drafted.filter((d) => d.round === 2).map((d) => d.teamId);
+    const order = lot.map((l) => l.teamId);
+    assert.deepEqual(r1, order.filter((t) => r1.includes(t)));
+    assert.deepEqual(r2, [...order].reverse().filter((t) => r2.includes(t)));
+    // 1·2라운드는 포기가 없고, 3·4라운드는 포기가 생긴다
+    assert.ok(report.draftPasses.every((x) => x.round >= 3));
+  }
+  // 하위 네 팀 중에서 1순위가 나오고(공 40개씩), 상위 팀은 1순위가 되지 못한다
+  const losers = new Set(standings.slice(-4).map((s) => s.id));
+  assert.ok([...firstPickCount.keys()].every((t) => !standings.slice(0, 2).some((s) => s.id === t)));
+  const loserShare = [...firstPickCount].filter(([t]) => losers.has(t)).reduce((s, [, n]) => s + n, 0) / 60;
+  assert.ok(loserShare > 0.6, `하위 4팀의 1순위 비율 ${loserShare}`);
 });

@@ -96,8 +96,8 @@ export function cardPlayer(card, { id, teamId = null, number = 0, contract = { y
   };
 }
 
-/** 가중치대로 중복 없이 n개를 뽑는다. rng는 0~1 난수 함수 */
-export function weightedSample(items, weightOf, n, rng) {
+/** 가중치대로 중복 없이 n개를 뽑는다. rng는 0~1 난수 함수. keyOf를 주면 같은 키(예: 같은 선수의 다른 시즌 카드)는 하나만 뽑는다 */
+export function weightedSample(items, weightOf, n, rng, keyOf = null) {
   const pool = items.map((it) => ({ it, w: Math.max(0, weightOf(it)) })).filter((x) => x.w > 0);
   const out = [];
   while (out.length < n && pool.length) {
@@ -105,8 +105,10 @@ export function weightedSample(items, weightOf, n, rng) {
     let r = rng() * total;
     let idx = pool.findIndex((x) => (r -= x.w) < 0);
     if (idx < 0) idx = pool.length - 1;
-    out.push(pool[idx].it);
+    const picked = pool[idx].it;
+    out.push(picked);
     pool.splice(idx, 1);
+    if (keyOf) { const k = keyOf(picked); for (let i = pool.length - 1; i >= 0; i--) if (keyOf(pool[i].it) === k) pool.splice(i, 1); }
   }
   return out;
 }

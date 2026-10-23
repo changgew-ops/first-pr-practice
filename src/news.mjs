@@ -33,13 +33,16 @@ export function josa(word, pair) {
 }
 
 const TOKEN = /\{(\w+)(?::([^}]+))?\}/g;
+/** 선수 이름 앞의 카드 연도 표기("26 허웅", "97초 정재근")는 기사 문장에서 뗀다 */
+const plainName = (s) => s.replace(/^\d{2}초? (?=\S)/, '');
+
 /** 템플릿의 {이름}·{이름:조사}를 채운다. 채울 값이 없는 토큰이 있으면 null */
 export function fill(template, vars) {
   let missing = false;
   const out = template.replace(TOKEN, (_, key, pair) => {
     const v = vars[key];
     if (v == null) { missing = true; return ''; }
-    const s = String(v);
+    const s = plainName(String(v));
     return pair ? `${s}${josa(s, pair)}` : s;
   });
   return missing ? null : out.replace(/\s{2,}/g, ' ').trim();
