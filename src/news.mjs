@@ -183,6 +183,10 @@ export const TEMPLATES = {
     h: ['{player}, 웨이버 {outcomeShort}… {team}', '웨이버 시장 소식: {player} {outcomeShort}', '{team} {player} 웨이버, {outcomeShort}', '{player}의 웨이버 결과는 {outcomeShort}', '{day}일차 웨이버: {player} {outcomeShort}'],
     b: ['{statusText}', '{day}일차 웨이버 소식이다. {statusText}', 'KBL 웨이버 절차에 따른 결과다. {statusText}', '{statusText} 규약이 정한 절차를 그대로 밟았다.']
   },
+  coach_change: {
+    h: ['{team}, {oldHead} 감독과 결별… 새 사령탑 {newHead}', '{team:은/는} {newHead} 감독을 선임했다', '{season} 시즌 {rank}위 {team}, 감독 교체 단행', '{newHead} 감독, {team} 지휘봉 잡는다', '{team}의 사령탑이 바뀐다: {oldHead}에서 {newHead}로'],
+    b: ['{team:은/는} {season} 시즌을 {rank}위({record})로 마친 뒤 {oldHead} 감독과 계약을 정리하고 {newHead} 감독을 새 사령탑으로 선임했다.', '{season} 정규리그 {rank}위에 그친 {team:이/가} 감독을 바꿨다. {oldHead} 감독이 물러나고 {newHead} 감독이 {nextSeason} 시즌부터 팀을 이끈다.', '{team}의 {oldHead} 감독이 시즌 종료와 함께 지휘봉을 내려놓았다. 후임은 {newHead} 감독이다.', '{rank}위({record})라는 성적표를 받은 {team:은/는} {newHead} 감독 체제로 {nextSeason} 시즌을 준비한다.']
+  },
   injury_my: {
     h: ['{player}, {part:으로/로} {absence}', '{team} {player} 부상… {absence}', '{team}에 부상 악재, {player}의 {part}', '{player} 부상 이탈, {team:은/는} 대안을 찾아야 한다', '{part} 진단 {player}, 한동안 코트를 떠난다'],
     b: ['{team}의 {player:이/가} {day}일차 경기에서 {part} 진단을 받았다. 예상 결장 기간은 {gamesText:이다/다}.', '{player:이/가} {part:으로/로} 이탈한다. 진단 결과 결장 기간은 {gamesText:이다/다}.', '{team:은/는} {day}일차 경기 뒤 {player}의 부상({part})을 확인했다. 예상 결장은 {gamesText:이다/다}.', '{part} 진단을 받은 {player:은/는} {gamesText:을/를} 쉬어야 한다. {team}의 선수단 운영에 변수가 생겼다.']
@@ -416,6 +420,10 @@ export const SENT = {
   gl_warn: ['신뢰도 {warnTrust}점은 낮은 구간이라 모기업이 다음 시즌 성과를 지켜보겠다는 입장이다.', '신뢰도가 {warnTrust}점까지 내려와 모기업이 경고 메시지를 보냈다.', '단장에 대한 모기업의 신뢰가 {warnTrust}점으로 흔들리고 있다는 분석이 나온다.'],
   gl_risk: ['신뢰도({riskTrust}점)가 위험선 아래에 머문 기간이 길어져 해임설이 거론된다.', '신뢰도 {riskTrust}점에 모기업 내부에서 단장 교체 이야기가 나오고 있다는 소문이 돈다.', '신뢰도 {riskTrust}점이 이어지면 다음 평가에서 책임을 묻겠다는 말이 흘러나온다.'],
   gl_trust: ['이번 평가는 목표 {goalsTotal}개 중 {goalsMet}개 달성이라는 결과로 정리됐고, 이에 따라 단장 신뢰도는 {trustMove}.', '단장에 대한 모기업의 신뢰도는 이번 평가로 {trustMove}. 목표 달성은 {goalsMet}/{goalsTotal}이다.', '평가 결과는 신뢰도에 그대로 반영돼 {trustMove}. 모기업은 달성한 목표 {goalsMet}개를 성과로 인정했다.'],
+  cc_why: ['구단은 성적 부진에 책임을 물어 변화를 택했다고 설명했다. 순위가 하위권에 머문 시즌이 길어지며 코칭스태프 쇄신 요구가 커졌다.', '프런트는 팀 분위기를 바꾸기 위해 사령탑 교체가 필요하다고 판단했다. 시즌 막판까지 순위를 끌어올리지 못한 점이 컸다.', '{rank}위라는 성적이 교체의 가장 큰 이유로 꼽힌다. 구단 안팎에서는 예견된 결정이라는 반응이 나온다.', '성적 책임을 묻는 결정이다. {team} 팬들 사이에서는 일찍부터 사령탑 교체론이 나오던 터였다.'],
+  cc_old: ['떠나는 {oldHead} 감독의 성향은 {oldSpec}으로 알려졌다. 선수 육성과 로테이션 운영에서 아쉬움이 있었다는 평가가 따른다.', '{oldHead} 감독은 {oldSpec}이라는 평을 받았다. 그의 지도 방식이 팀 구성과 잘 맞지 않았다는 지적도 있었다.', '{oldSpec}으로 평가받던 {oldHead} 감독은 이번 시즌 성적에 책임을 지고 물러난다.', '{oldHead} 감독의 지도 스타일은 {oldSpec}이었다. 구단은 후임에게 다른 색깔을 기대하고 있다.'],
+  cc_new: ['새로 부임하는 {newHead} 감독은 {newSpec}으로 평가된다. 구단은 이 점에 기대를 걸고 계약을 맺었다.', '{newHead} 감독의 지도 성향은 {newSpec}이다. 취임 일성으로 "준비된 만큼 보여 주겠다"는 각오를 밝혔다.', '후임 {newHead} 감독은 {newSpec}의 지도자다. 구단은 선수단 구성에 맞는 색깔을 입혀 주길 바란다.', '{newSpec}으로 알려진 {newHead} 감독이 부임했다. 전술과 육성에서 얼마나 변화를 줄지가 관심사다.'],
+  cc_next: ['{nextSeason} 시즌 {team}의 성적이 새 감독 체제의 첫 시험대가 될 전망이다.', '구단은 {nextSeason} 시즌 개막 전까지 코칭스태프 구성을 마무리할 계획이다.', '새 사령탑이 선수단과 어떤 호흡을 보일지는 {nextSeason} 시즌 초반 경기에서 드러날 것이다.', '{team:은/는} 감독 교체 효과가 나타나는 데 시간이 필요하다고 보고 있다.'],
   gl_next: ['다음 {nextSeason} 시즌에도 모기업은 새 목표를 제시할 예정이다.', '모기업은 {nextSeason} 시즌 목표를 시즌 시작 전에 다시 전달한다.', '새 시즌 목표는 개막 전에 발표된다.'],
   // 오프시즌
   of_last: ['{lastSeasonLabel} 시즌 {team:은/는} 정규리그 {rank}위({record})로 마쳤고 플레이오프 성적은 {stage:이었다/였다}.', '지난 {lastSeasonLabel} 시즌 {team}의 성적은 {rank}위({record}), 플레이오프는 {stage}.', '{lastSeasonLabel} 시즌을 {record}, {rank}위로 마친 {team}의 오프시즌이다.', '{lastSeasonLabel} 시즌 결과를 안고 {team:은/는} {nextSeason} 시즌을 준비한다. 정규리그 {rank}위({record}), 플레이오프는 {stage:이었다/였다}.'],
@@ -453,6 +461,7 @@ export const PLAN = {
   fa_season: [['lead', 'fs_info'], ['fs_contract', 'fs_why'], ['fs_next']],
   foreign_swap_my: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
   foreign_swap_lg: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
+  coach_change: [['lead', 'cc_why'], ['cc_old', 'cc_new'], ['cc_next']],
   goals_eval: [['lead', 'gl_missed', 'gl_all'], ['gl_trust'], ['gl_bonus', 'gl_warn', 'gl_risk'], ['gl_next']],
   awards: [['lead', 'aw_mvp'], ['aw_best5', 'aw_rookie'], ['aw_defense', 'aw_improved', 'aw_leaders'], ['aw_finals', 'aw_my']],
   preview: [['lead', 'pv_core'], ['pv_foreign', 'pv_depth'], ['pv_cap', 'pv_last', 'pv_city'], ['pv_contenders', 'pv_top', 'pv_task']],
@@ -904,6 +913,13 @@ export function buildNews(src) {
       if (ev.status === 'warn') vars.warnTrust = ev.trust; else if (ev.status === 'risk') vars.riskTrust = ev.trust;
       add({ key: `${y}:goals`, t: base(y) + 203, season: label, when: `${label} 모기업 평가`, kind: 'goals_eval', scope: 'my', tags: ['우리 팀', '모기업'], tone: met === total ? 'good' : met === 0 ? 'bad' : 'neutral', delta: ev.delta >= 10 ? 2 : ev.delta <= -8 ? -2 : 0, comments: 2, vars });
     }
+    (entry.staffMoves ?? []).slice(0, 3).forEach((m, i) => { // AI 구단의 감독 교체(시즌이 끝날 때 하위권이면 가끔)
+      const spec = (h) => `전술 이해 ${h.tac}·선수 육성 ${h.dev}·로테이션 운영 ${h.rot}`;
+      const rk = entry.standings.findIndex((r) => r.id === m.teamId), r0 = entry.standings[rk];
+      if (!r0) return;
+      add({ key: `${y}:coach:${m.teamId}`, t: base(y) + 204 + i * 0.1, season: label, when: `${label} 시즌 종료 · 감독 교체`, kind: 'coach_change', scope: 'league', tags: ['리그', '감독'], tone: 'neutral', delta: 0, comments: 2, refTeam: m.teamId,
+        vars: { team: nameOf(m.teamId), season: label, nextSeason, rank: rk + 1, record: recordText(r0.wins, r0.losses), oldHead: m.from.name, newHead: m.to.name, oldSpec: spec(m.from), newSpec: spec(m.to) } });
+    });
     const aw = entry.awards;
     if (aw?.mvp && entry.lines?.[aw.mvp]) {
       const lineOf2 = (id) => entry.lines[id];

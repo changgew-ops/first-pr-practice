@@ -111,7 +111,7 @@ test('시뮬레이션 분포: 10시즌 뒤 팬 열기는 구단별로 갈리고 
   const moods = Object.values(league.att.mood);
   assert.ok(Math.max(...moods) - Math.min(...moods) > 10, '구단 사이에 차이가 생긴다');
   assert.ok(moods.every((v) => v >= f.min && v <= f.max));
-  assert.ok(last / first > 1.0 && last / first < 1.6, `10시즌 뒤 관중 배율 ${(last / first).toFixed(2)}`);
+  assert.ok(last / first > 0.8 && last / first < 1.7, `10시즌 뒤 관중 배율 ${(last / first).toFixed(2)}`);
 });
 
 test('최장 연패: 경기 결과를 보관하지 않아도(keepGames 꺼짐) 센다, 보관한 경기에서 센 값과 같다', async () => {

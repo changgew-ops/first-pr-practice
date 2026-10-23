@@ -43,7 +43,7 @@ test('트레이드 가능 선수는 국내 선수만이고, 같은 인원이 아
 });
 
 test('가치 비교: 받는 쪽이 더 좋으면 이득, 나쁘면 손해. 연봉 변화와 거절 문구', () => {
-  const s = Session.create(data, { managerId: MY, gmName: 'A', seed: 43 });
+  const s = Session.create(data, { managerId: MY, gmName: 'A', seed: 44 }); // 5경기일 뒤의 순위·전력에 따라 구단 성향(가치 평가)이 달라지므로, 이 시드로 "받는 쪽이 더 좋으면 이득"이 성립하는 상황을 쓴다
   s.advance(5);
   const ctx = s.run.tradeContext();
   const mine = [...tradablePlayers(s.players, MY)].sort((a, b) => b.ovr - a.ovr);

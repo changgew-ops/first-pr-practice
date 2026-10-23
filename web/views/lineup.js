@@ -9,6 +9,7 @@ import { h, svg, ovrChip, bar, stat, ORIGIN_LABEL } from '../lib/dom.js';
 import { avatarEl } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
 import { injuryMap, injuryTag, injuryCard } from '../lib/injury-view.js';
+import { tacticsCard, conditionCard, condBar, conditionOf } from '../lib/tactics-view.js';
 import {
   evalDraft, autoDraft, rosterOfTeam, POSITIONS, powerOf, seatFit, slotsFromDraft, draftFromSlots, sameArrangement,
   firstFreeSlot, placeInSlot, slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS
@@ -108,6 +109,7 @@ export function render(ctx) {
   const live = s.stage === 'regular' || s.stage === 'playoffs';
   const key = `${s.game.seed}:${s.season}`;
   const hurt = injuryMap(s); // 결장 중인 선수: 자동 편성에서 빠진다
+  const condOf = s.stage === 'regular' ? conditionOf(s, rules) : null; // 컨디션(시즌 중에만)
   const sig = roster.map((p) => `${p.id}:${p.ovr}:${hurt.has(p.id) ? 'x' : ''}`).join(',');
   if (!autoCache || autoCache.key !== key || autoCache.sig !== sig) {
     const raw = autoDraft(roster, rules, hurt);
@@ -256,7 +258,7 @@ export function render(ctx) {
         onclick: (ev) => { if (ev.target.closest('a, [data-nodrag]')) return; press(refOfPlayer(slots, p.id)); },
         onkeydown: (ev) => { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target === tr) { ev.preventDefault(); press(refOfPlayer(slots, p.id)); } }
       },
-      h('td', { class: 'lu-namecell' }, h('span', { class: 'lu-pname' }, p.name), hurt.get(p.id) ? injuryTag(hurt.get(p.id)) : null, h('a', { href: `#/player/${p.id}`, class: 'lu-info', title: `${p.name} 선수 정보`, 'aria-label': `${p.name} 선수 정보`, 'data-nodrag': '1', onclick: (ev) => ev.stopPropagation() }, 'ⓘ')),
+      h('td', { class: 'lu-namecell' }, h('span', { class: 'lu-pname' }, p.name), hurt.get(p.id) ? injuryTag(hurt.get(p.id)) : null, h('a', { href: `#/player/${p.id}`, class: 'lu-info', title: `${p.name} 선수 정보`, 'aria-label': `${p.name} 선수 정보`, 'data-nodrag': '1', onclick: (ev) => ev.stopPropagation() }, 'ⓘ'), condOf ? condBar(condOf(p.id), { compact: true }) : null),
       h('td', h('span', { class: 'pos' }, p.position), selSeat && seatFit(p, selSeat) !== 'exact' ? h('span', { class: `lu-tag fit-${seatFit(p, selSeat)}` }, FIT_LABEL[seatFit(p, selSeat)]) : null),
       h('td', { class: 'r lu-hide-sm lu-hide-md' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.cost),
       h('td', { class: 'lu-hide-sm lu-hide-md' }, p.origin === 'domestic' ? '' : h('span', { class: 'tag' }, ORIGIN_LABEL[p.origin])),
@@ -294,6 +296,8 @@ export function render(ctx) {
         h('p', { class: 'note' }, '채우기와 선수 옮기기는 편집 상태만 바꿉니다. [적용]을 눌러야 다음 경기부터 쓰입니다. 시즌이 끝나면 직접 편성은 초기화되어 새 시즌은 자동 편성으로 시작합니다.')),
       injWarn,
       hurt.size ? injuryCard(ctx, { compact: true }) : null,
+      tacticsCard(ctx, { lineup: e.starters.length === rules.lineup.starters && e.bench.length === nBench ? { starters: e.starters, bench: e.bench } : null, onChange: draw }),
+      live ? conditionCard(ctx, roster, { onChange: draw }) : null,
       posPanel,
       h('div', { class: 'lu-split' },
         h('div', { class: 'card lu-courtcard' },

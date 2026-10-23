@@ -12,6 +12,7 @@ import { runOffseasonWith } from '../../src/decisions.mjs';
 import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
 import { initialFunds } from '../../src/funds.mjs';
+import { staffOf } from '../../src/coaching.mjs';
 import { rulesFor } from '../../src/economy.mjs';
 import { summarizeSeason, attachOffseason, pruneGame, seasonGoals, bonusFunds, seasonLabel, VERSION as GAME_VERSION } from './game.js';
 import { trustOf } from '../../src/goals.mjs';
@@ -171,6 +172,7 @@ export class Session {
     const settled = settleYear(this.state.league, fin, this.data.teams, this.data.rules);
     const entry = summarizeSeason(this.state, this.data, this.state.league.season, fin, settled.ledger);
     if (fin.dev?.report.length) entry.devProgram = fin.dev.report; // 육성 프로그램 결과(뉴스·결산이 읽는다)
+    if (settled.staffMoves?.length) entry.staffMoves = settled.staffMoves; // AI 구단의 감독 교체(뉴스가 읽는다)
     if (fin.contracts) entry.contracts = { released: fin.contracts.releaseLog, extended: fin.contracts.extendLog, severance: fin.contracts.severance }; // 방출·연장 기록
     this.state.seasonEnd = { league: settled.league, standings: fin.result.standings, entry };
     this.state.stage = 'offseason'; this.state.decisions = {};
@@ -287,6 +289,50 @@ export class Session {
   }
   get otherReplacements() { return this.run?.otherReplacements ?? { used: 0, limit: 2 }; }
   get foreignThresholds() { return this.run?.foreignThresholds ?? { temporary: 5, season: 18 }; }
+
+  // ---------- 감독·코치진, 전술·컨디션 (src/coaching.mjs, tactics.mjs, condition.mjs) ----------
+  /** 구단별 스태프 { [구단 id]: { head, off, def, cond } }. 시즌 중에는 진행기의 값, 오프시즌에는 다음 시즌으로 넘어간 값. 기능이 꺼져 있으면 null */
+  get staff() {
+    if (this.run) return this.run.staff;
+    const league = this.state.stage === 'offseason' ? this.state.seasonEnd?.league : this.state.league;
+    return this.baseRules.coaching?.enabled ? staffOf(league ?? {}, this.data.teams, this.rules) : null;
+  }
+  /** 영입 후보 { head, off, def, cond } */
+  get staffPool() { return this.run && this.state.stage === 'regular' ? this.run.staffPool() : null; }
+  /** 해임·영입 미리 보기: { ok, reason, buyout, pay, from, to } */
+  staffCheck(role, candId, years) {
+    if (this.state.stage !== 'regular' || !this.run) return { ok: false, reason: this.state.stage === 'offseason' ? '시즌이 시작되면(오프시즌이 끝난 뒤) 바꿀 수 있습니다' : '지금은 바꿀 수 없습니다' };
+    return this.run.staffCheck(role, candId, years);
+  }
+  /** 해임하고 영입한다(정규리그 중·시즌 시작 전). 반환 { ok, errors, check } */
+  replaceStaff(role, candId, years) {
+    this.#need('regular');
+    const r = this.run.replaceStaff(role, candId, years);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'staff', role, candId, years }); this.emit(); }
+    return r;
+  }
+  /** 우리 구단의 전술 { choice, current, refs, list: [{ id, name, desc, fit }] } (꺼져 있으면 null) */
+  get tactics() { return this.run?.tactics ?? null; }
+  /** 전술을 고른다(null이면 추천 따르기). 정규리그 중에만. 반환 { ok, errors } */
+  setTactic(id) {
+    this.#need('regular');
+    const r = this.run.setTactic(id);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'tactic', id: id ?? null }); this.emit(); }
+    return r;
+  }
+  /** 모든 선수의 컨디션 Map(선수 id → 0~100). 시즌 중이 아니면 빈 Map */
+  get conditions() { return this.run?.conditions ?? new Map(); }
+  /** 다음 경기에서 쉬게 한 우리 선수 id들 */
+  get rest() { return this.run?.rest ?? []; }
+  /** 다음 경기에서 쉴 선수를 지정한다(빈 배열이면 해제). 반환 { ok, errors } */
+  setRest(ids) {
+    this.#need('regular');
+    const r = this.run.setRest(ids);
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'rest', ids: [...ids] }); this.emit(); }
+    return r;
+  }
+  /** 구단별 팀 보정 { [구단 id]: { tactic, fit, edge, parts: { coach, tactic, cond } } } */
+  get teamMods() { return this.run?.teamMods ?? {}; }
 
   // ---------- 시즌 중 트레이드 ----------
   /** 시즌 중 트레이드 창이 열려 있는지(정규리그 마감일 전) */
@@ -433,6 +479,9 @@ export class Session {
         else if (a.type === 'extend') run.extendContract(a.playerId, { salaryEok: a.salaryEok, years: a.years });
         else if (a.type === 'fasign') run.signFa(a.playerId, { salaryEok: a.salaryEok, years: a.years });
         else if (a.type === 'forrep') run.replaceForeign(a.outId, a.kind, a.candId);
+        else if (a.type === 'tactic') run.setTactic(a.id);
+        else if (a.type === 'rest') run.setRest(a.ids);
+        else if (a.type === 'staff') run.replaceStaff(a.role, a.candId, a.years);
       }
     };
     due();

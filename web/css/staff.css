@@ -1,0 +1,12 @@
+/* 감독·코치 화면 (stf- 접두) */
+.stf-grid { gap: 12px; }
+.stf-slot { border: 1px solid var(--line, rgba(128,128,128,.28)); border-radius: 10px; padding: 10px; }
+.stf-slot.sel { border-color: var(--team, #2f7fd1); }
+.stf-person { display: grid; gap: 6px; }
+.stf-person.cur { height: 100%; align-content: start; }
+.stf-skill { display: grid; grid-template-columns: minmax(70px, 120px) minmax(0, 1fr) 28px; gap: 8px; align-items: center; font-size: 13px; }
+.stf-skill b { text-align: right; font-variant-numeric: tabular-nums; }
+.stf-cands { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 10px; }
+.stf-cands .stf-person { border: 1px solid var(--line, rgba(128,128,128,.28)); border-radius: 10px; padding: 10px; }
+.stf-cands .note.good { color: #1a8a4a; font-weight: 600; }
+@media (max-width: 720px) { .stf-skill { grid-template-columns: minmax(60px, 96px) minmax(0, 1fr) 26px; } }

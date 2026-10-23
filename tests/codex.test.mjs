@@ -79,5 +79,6 @@ test('세션: 시작 로스터가 도감에 들어가고, 시즌·오프시즌�
   assert.deepEqual(back.achievements, s.achievements);
   // 이전 저장(도감 필드 없음)은 현재 로스터에서 다시 채운다
   const game = JSON.parse(serialize(s)); delete game.codex;
-  assert.ok(new Session(data, game).codex.length >= mine.length - 1);
+  const refilled = new Session(data, game).codex.length;
+  assert.ok(refilled >= Math.floor(mine.length / 2), `이전 저장에서 다시 채운 도감 ${refilled}장`); // 한 시즌 뒤에는 로스터가 일부 바뀌어 카드 선수 수가 시작 로스터보다 적을 수 있다
 });

@@ -1,0 +1,46 @@
+/* 전술·컨디션 (tac- / cond- / fit 접두) */
+.tac-list { display: grid; gap: 8px; margin-top: 8px; }
+.tac-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px 12px; align-items: center; padding: 8px 10px; border: 1px solid var(--line, rgba(128,128,128,.28)); border-radius: 8px; cursor: pointer; }
+.tac-row.picked { border-color: var(--team, #2f7fd1); background: color-mix(in srgb, var(--team, #2f7fd1) 8%, transparent); }
+.tac-row.rec:not(.picked) { border-style: dashed; }
+.tac-main { display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
+.tac-main .note { flex-basis: 100%; }
+.tac-fit { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; min-width: 150px; }
+.tac-edge.good { color: #1a8a4a; }
+.tac-edge.bad { color: #c0392b; }
+.fit { display: inline-flex; align-items: center; gap: 6px; }
+.fit-track { position: relative; display: inline-block; width: 90px; height: 8px; border-radius: 4px; background: color-mix(in srgb, currentColor 14%, transparent); }
+.fit-track::after { content: ''; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: color-mix(in srgb, currentColor 45%, transparent); }
+.fit-track i { position: absolute; top: 0; bottom: 0; border-radius: 4px; }
+.fit.pos .fit-track i { background: #1a8a4a; }
+.fit.neg .fit-track i { background: #c0392b; }
+.fit b { font-size: 12px; min-width: 38px; text-align: right; }
+.cond { display: inline-flex; align-items: center; gap: 6px; }
+.cond-track { display: inline-block; width: 70px; height: 8px; border-radius: 4px; background: color-mix(in srgb, currentColor 14%, transparent); overflow: hidden; }
+.cond.compact .cond-track { width: 44px; }
+.cond-track i { display: block; height: 100%; border-radius: 4px; }
+.cond b { font-size: 12px; min-width: 22px; text-align: right; font-variant-numeric: tabular-nums; }
+.cond-good .cond-track i { background: #1a8a4a; }
+.cond-ok .cond-track i { background: #5aa469; }
+.cond-tired .cond-track i { background: #e0961a; }
+.cond-bad .cond-track i { background: #d63b3b; }
+.cond-alert { margin: 6px 0; color: #b45309; font-weight: 600; }
+.cond-grid { display: grid; gap: 6px; }
+.cond-row { display: grid; grid-template-columns: minmax(80px, 1fr) 34px auto auto; gap: 8px; align-items: center; padding: 4px 0; border-top: 1px solid var(--line, rgba(128,128,128,.2)); }
+.cond-row.resting { background: color-mix(in srgb, var(--team, #2f7fd1) 8%, transparent); }
+.cond-rest { padding: 2px 10px; font-size: 13px; white-space: nowrap; }
+.staff-line .row { gap: 12px; }
+@media (max-width: 720px) {
+  .tac-row { grid-template-columns: auto minmax(0, 1fr); }
+  .tac-fit { grid-column: 1 / -1; align-items: flex-start; flex-direction: row; gap: 10px; flex-wrap: wrap; }
+  .cond-row { grid-template-columns: minmax(70px, 1fr) 30px auto; }
+  .cond-row .cond-rest { grid-column: 1 / -1; justify-self: start; }
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tac-edge.good { color: #6fd59a; }
+  :root:not([data-theme="light"]) .tac-edge.bad { color: #ff9a8a; }
+  :root:not([data-theme="light"]) .cond-alert { color: #f5b068; }
+}
+:root[data-theme="dark"] .tac-edge.good { color: #6fd59a; }
+:root[data-theme="dark"] .tac-edge.bad { color: #ff9a8a; }
+:root[data-theme="dark"] .cond-alert { color: #f5b068; }

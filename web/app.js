@@ -31,15 +31,16 @@ import * as reportView from './views/report.js';
 import * as saveView from './views/save.js';
 import * as achievementsView from './views/achievements.js';
 import * as codexView from './views/codex.js';
+import * as staffView from './views/staff.js';
 import { ACHIEVEMENT_BY_ID } from '../src/achievements.mjs';
 
 const root = document.getElementById('app');
 const FREE = { title: titleView, intro: introView, new: newView, save: saveView }; // 세션 없이도 여는 화면
 const ROUTES = {
   home: homeView, news: newsView, season: seasonView, roster: rosterView, player: playerView, lineup: lineupView, training: trainingView, trades: tradesView,
-  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, save: saveView
+  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, staff: staffView, save: saveView
 };
-const NAV = [['home', '홈'], ['news', '뉴스'], ['season', '시즌'], ['roster', '로스터'], ['lineup', '라인업'], ['training', '훈련'], ['trades', '트레이드'], ['offseason', '오프시즌'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산'], ['achievements', '업적'], ['codex', '카드 도감'], ['save', '저장']];
+const NAV = [['home', '홈'], ['news', '뉴스'], ['season', '시즌'], ['roster', '로스터'], ['lineup', '라인업'], ['staff', '감독·코치'], ['training', '훈련'], ['trades', '트레이드'], ['offseason', '오프시즌'], ['league', '리그'], ['history', '구단 역사'], ['report', '시즌 결산'], ['achievements', '업적'], ['codex', '카드 도감'], ['save', '저장']];
 
 const ctx = { data: null, profiles: null, session: null };
 Object.defineProperty(ctx, 'game', { get: () => ctx.session?.view });
