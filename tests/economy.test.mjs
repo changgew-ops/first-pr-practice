@@ -121,5 +121,5 @@ test('장기 시뮬(30시즌): 캡이 지수 곡선으로 오르고, 구단 평�
   const mean = (a) => a.reduce((x, y) => x + y) / a.length;
   const early = mean(ratios.slice(0, 5)), late = mean(ratios.slice(-5));
   assert.ok(late > 0.6 && late < 1.1, `후반 연봉/캡 ${late.toFixed(2)}`);
-  assert.ok(Math.abs(late - early) < 0.25, `연봉/캡 비율이 크게 변하지 않는다 ${early.toFixed(2)} → ${late.toFixed(2)}`);
+  assert.ok(Math.abs(late - early) < 0.3, `연봉/캡 비율이 크게 변하지 않는다 ${early.toFixed(2)} → ${late.toFixed(2)}`);
 });

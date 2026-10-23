@@ -407,6 +407,7 @@ export const SENT = {
   gl_bonus: ['신뢰도가 높아 다음 시즌 예산에 {bonus}억 원이 보너스로 더해졌다.', '모기업은 성과를 인정해 {bonus}억 원의 추가 예산을 약속했다.', '높은 신뢰도 덕분에 {bonus}억 원이 다음 시즌 운영비로 얹어진다.'],
   gl_warn: ['신뢰도 {warnTrust}점은 낮은 구간이라 모기업이 다음 시즌 성과를 지켜보겠다는 입장이다.', '신뢰도가 {warnTrust}점까지 내려와 모기업이 경고 메시지를 보냈다.', '단장에 대한 모기업의 신뢰가 {warnTrust}점으로 흔들리고 있다는 분석이 나온다.'],
   gl_risk: ['신뢰도({riskTrust}점)가 위험선 아래에 머문 기간이 길어져 해임설이 거론된다.', '신뢰도 {riskTrust}점에 모기업 내부에서 단장 교체 이야기가 나오고 있다는 소문이 돈다.', '신뢰도 {riskTrust}점이 이어지면 다음 평가에서 책임을 묻겠다는 말이 흘러나온다.'],
+  gl_trust: ['이번 평가는 목표 {goalsTotal}개 중 {goalsMet}개 달성이라는 결과로 정리됐고, 이에 따라 단장 신뢰도는 {trustMove}.', '단장에 대한 모기업의 신뢰도는 이번 평가로 {trustMove}. 목표 달성은 {goalsMet}/{goalsTotal}이다.', '평가 결과는 신뢰도에 그대로 반영돼 {trustMove}. 모기업은 달성한 목표 {goalsMet}개를 성과로 인정했다.'],
   gl_next: ['다음 {nextSeason} 시즌에도 모기업은 새 목표를 제시할 예정이다.', '모기업은 {nextSeason} 시즌 목표를 시즌 시작 전에 다시 전달한다.', '새 시즌 목표는 개막 전에 발표된다.'],
   // 오프시즌
   of_last: ['{lastSeasonLabel} 시즌 {team:은/는} 정규리그 {rank}위({record})로 마쳤고 플레이오프 성적은 {stage:이었다/였다}.', '지난 {lastSeasonLabel} 시즌 {team}의 성적은 {rank}위({record}), 플레이오프는 {stage}.', '{lastSeasonLabel} 시즌을 {record}, {rank}위로 마친 {team}의 오프시즌이다.', '{lastSeasonLabel} 시즌 결과를 안고 {team:은/는} {nextSeason} 시즌을 준비한다. 정규리그 {rank}위({record}), 플레이오프는 {stage:이었다/였다}.'],
@@ -443,7 +444,7 @@ export const PLAN = {
   fa_season: [['lead', 'fs_info'], ['fs_contract', 'fs_why'], ['fs_next']],
   foreign_swap_my: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
   foreign_swap_lg: [['lead', 'fw_info'], ['fw_rule', 'fw_pay'], ['fw_next']],
-  goals_eval: [['lead', 'gl_missed', 'gl_all'], ['gl_bonus', 'gl_warn', 'gl_risk'], ['gl_next']],
+  goals_eval: [['lead', 'gl_missed', 'gl_all'], ['gl_trust'], ['gl_bonus', 'gl_warn', 'gl_risk'], ['gl_next']],
   awards: [['lead', 'aw_mvp'], ['aw_best5', 'aw_rookie'], ['aw_defense', 'aw_improved', 'aw_leaders'], ['aw_finals', 'aw_my']],
   preview: [['lead', 'pv_core'], ['pv_foreign', 'pv_depth'], ['pv_cap', 'pv_last', 'pv_city'], ['pv_contenders', 'pv_top', 'pv_task']],
   opener_win: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],

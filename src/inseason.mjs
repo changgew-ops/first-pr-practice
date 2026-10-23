@@ -110,7 +110,8 @@ export function foreignReplaceCheck({ players, teamId, outId, candidate, kind, i
 
 /** 영입한 외국인 선수 객체. temp면 일시교체 표시(교체되는 선수 id) */
 export function signedForeign(cand, { teamId, number, years, temp = null, day = 0 }) {
-  return { ...cand.player, teamId, number, contract: { salaryUsd: cand.usd, yearsLeft: years }, ...(temp ? { temp: { forId: temp, day } } : {}) };
+  const pl = cand.player;
+  return { ...pl, ovrWas: pl.ovrWas ?? pl.ovr, statsWas: pl.statsWas ?? { ...pl.stats }, teamId, number, contract: { salaryUsd: cand.usd, yearsLeft: years }, ...(temp ? { temp: { forId: temp, day } } : {}) };
 }
 
 /** AI가 고르는 후보: 교체 판정을 통과한 후보 중 OVR − 가격(5만 달러당 1)이 가장 높은 선수(오프시즌 AI와 같은 기준) */
