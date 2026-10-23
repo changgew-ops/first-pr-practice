@@ -839,9 +839,9 @@ export function buildNews(src) {
     rows.filter((e) => e.type === 'fa' && e.teamId === my).slice(0, 3).forEach((e, i) => add({ key: `${y}:fasn:${e.day}:${i}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · 시즌 중 영입`, kind: 'fa_season', scope: 'move', tags: ['우리 팀', 'FA'], tone: 'good', delta: 1, comments: 2, vars: { team: nameOf(my), player: nmOf(e), day: e.day, salary: fmt1(e.salaryEok), years: e.years, remain: Math.max(0, tot - e.day), ...pInfo(e.playerId ?? '') } }));
     const swaps = rows.filter((e) => e.type === 'foreign' && SWAP_WORD[e.kind]);
     // 외국인 교체와 아시아쿼터 교체는 각각 앞쪽 몇 건씩만 기사로 쓴다(한쪽이 많아도 다른 쪽이 밀려나지 않게)
-    [...swaps.filter((e) => !e.asia).slice(0, 6), ...swaps.filter((e) => e.asia).slice(0, 4)].forEach((e, i) => {
+    const pickSwaps = (list, cap) => list.slice(0, cap).filter((e, i) => e.teamId === my || i < 3); // 리그 소식은 앞의 3건까지만
+    [...pickSwaps(swaps.filter((e) => !e.asia), 6), ...pickSwaps(swaps.filter((e) => e.asia), 4)].forEach((e, i) => {
       const mine = e.teamId === my;
-      if (!mine && (e.asia ? i - Math.min(6, swaps.filter((x) => !x.asia).length) : i) >= 3) return;
       add({
         key: `${y}:fw:${e.day}:${e.teamId}:${e.kind}${e.asia ? ':a' : ''}`, t: at(e.day, i), season: label, when: `${label} ${e.day}일차 · ${e.asia ? '아시아쿼터' : '외국인'} 교체`, kind: mine ? 'foreign_swap_my' : 'foreign_swap_lg', scope: mine ? 'move' : 'league', tags: [mine ? '우리 팀' : '리그', e.asia ? '아시아쿼터' : '외국인'], tone: mine ? 'neutral' : 'neutral', delta: mine ? 0.5 : 0, comments: mine ? 2 : 1,
         vars: { team: nameOf(e.teamId), player: nmOf(e), outName: cleanName(e.outName ?? ''), kindText: SWAP_WORD[e.kind], day: e.day, ovr: e.ovr, usdText: e.asia ? `${fmt1(e.eok)}억 원` : `${Math.round(e.usd / 10000)}만 달러`, origText: e.asia ? '아시아쿼터 선수' : '외국인 선수', origShort: e.asia ? '아시아쿼터' : '외국인', ruleText: (e.asia ? SWAP_RULE_ASIA : SWAP_RULE)[e.kind], payText: SWAP_PAY[e.kind], remain: Math.max(0, tot - e.day) }
