@@ -427,7 +427,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   // 시즌 카드: 과거 시즌의 외국인 선수가 영입 후보로 나온다. 하위 팀부터 빈 자리를 고르고, 단장은 policy.foreign으로 직접 고른다.
   if (cardRng && cards.foreign) {
     const present = presentKbl();
-    const eligible = cards.foreign.filter((c) => !present.has(c.kblId) && !usedKbl.has(c.kblId) && c.min >= cardCfg.minMinutes);
+    const eligible = cards.foreign.filter((c) => c.kind === 'f' && !present.has(c.kblId) && !usedKbl.has(c.kblId) && c.min >= cardCfg.minMinutes);
     const offered = weightedSample(eligible, (c) => ovrWeight(cardOvr(c), { weightMid: cardCfg.foreignWeightMid, weightScale: cardCfg.foreignWeightScale }), cardCfg.foreignPoolSize, cardRng, (c) => c.kblId)
       .map((c) => cardPlayer(c, { id: newId(), ...cardOpts(c) }));
     for (const p of offered) usedKbl.add(p.kblId);
