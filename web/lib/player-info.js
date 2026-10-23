@@ -25,7 +25,7 @@ export function statRows(p, avgs) {
 
 export function contractLabel(p) {
   const c = p.contract ?? {};
-  const years = c.yearsLeft > 0 ? `${c.yearsLeft}년` : '계약 없음/만료';
+  const years = c.yearsLeft > 0 ? `${c.yearsLeft}년` : (c.salaryEok != null || c.salaryUsd != null ? '계약 만료' : '계약 없음');
   if (c.salaryUsd != null) return `연봉 $${Math.round(c.salaryUsd / 1000)}k · ${years}`;
   if (c.salaryEok != null) return `연봉 ${eok(c.salaryEok)} · ${years}`;
   return years;
