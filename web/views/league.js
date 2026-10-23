@@ -2,7 +2,8 @@
 // 기록의 출처는 시즌마다 다르다: 진행 중인 시즌은 게임의 박스스코어 집계, 게임에서 끝난 시즌은 저장된 선수 줄,
 // 실제 시즌(1997~2025-26)은 공식 기록(data/history/stats/<시즌>.json, 선택한 시즌만 불러온다).
 import { h, table, tabs, link } from '../lib/dom.js';
-import { fullHistory, liveSeason, logToHistory } from '../lib/game.js';
+import { fullHistory, liveSeason, logToHistory, playerById } from '../lib/game.js';
+import { awardRows } from '../../src/awards.mjs';
 import { colorOf } from '../lib/team-ui.js';
 import { loadSeasonStats } from '../lib/season-stats.js';
 import {
@@ -226,6 +227,39 @@ function recordsTab(ctx, which, season, entry, my) {
   return host;
 }
 
+// ---------- 시즌 어워드(게임에서 진행한 시즌) ----------
+const f1 = (v) => (Math.round(v * 10) / 10).toFixed(1);
+/** 수상 줄에 붙는 기록: 부문 1위는 그 부문 값, 수비상은 스틸·블록, 나머지는 득점·리바·어시. 기록이 없으면 '' */
+function awardStat(entry, key, id) {
+  const l = entry.lines?.[id];
+  if (!l || !l[0]) return '';
+  const pg = (i) => f1(l[i] / l[0]);
+  if (key === 'pts') return `${pg(2)}점`; if (key === 'reb') return `${pg(3)}리바`; if (key === 'ast') return `${pg(4)}어시`;
+  if (key === 'stl') return `${pg(5)}스틸`; if (key === 'blk') return `${pg(6)}블록`;
+  if (key === 'defense') return `스틸 ${pg(5)} · 블록 ${pg(6)}`;
+  if (key === 'improved') return '';
+  if (key === 'finalsMvp') { const f = (entry.po?.[id] ?? []).find((r) => r[0] === 'f'); return f ? `챔프전 ${f1(f[6] / f[2])}점 ${f1(f[7] / f[2])}리바 ${f1(f[8] / f[2])}어시` : ''; }
+  return `${pg(2)}점 ${pg(3)}리바 ${pg(4)}어시`;
+}
+
+/** 시즌 어워드 카드: 항목마다 수상자(우리 구단 선수는 강조). entry는 게임에서 끝난 시즌 결과(awards가 있어야 한다) */
+export function awardsCard(ctx, entry, my, { title = '시즌 어워드' } = {}) {
+  const rows = awardRows(entry);
+  if (!rows) return null;
+  const who = (key, id) => {
+    const teamId = entry.lines?.[id]?.[13] ?? null;
+    const name = (entry.playerNames?.[id] ?? id).replace(/^(?:\d{2}|97초)\s+/u, '');
+    const stat = awardStat(entry, key, id);
+    return h('li', { class: `aw-who ${teamId === my ? 'aw-mine' : ''}` },
+      playerById(ctx.game, id) ? link(`#/player/${id}`, name) : h('span', name),
+      teamId ? h('small', { class: 'note' }, ctx.name(teamId)) : null, stat ? h('small', { class: 'aw-stat' }, stat) : null);
+  };
+  return h('div', { class: 'card aw-card' }, h('h3', title),
+    h('div', { class: 'aw-grid' }, rows.map((r) => h('div', { class: `aw-item aw-${r.key}` }, h('span', { class: 'aw-label' }, r.label),
+      r.ids.length ? h('ul', { class: 'aw-list' }, r.ids.map((id) => who(r.key, id))) : h('span', { class: 'note' }, '해당자 없음')))),
+    h('p', { class: 'note aw-foot' }, '게임 가정: 공식 기자단 투표가 아니라 기록과 팀 성적으로 정합니다(MVP는 개인 기록 × 팀 승률, 신인상은 직전 드래프트 지명자 중 기록 1위 등). 항목 이름은 KBL 공식 수상 항목을 따랐습니다.'));
+}
+
 export function render(ctx, [seasonParam, tabParam]) {
   const { game, data } = ctx;
   const my = game.managerId;
@@ -237,7 +271,7 @@ export function render(ctx, [seasonParam, tabParam]) {
   const season = seasons.find((s) => s.season === seasonParam) ?? seasons[0];
   const entry = (ended?.season === season.season ? ended : null) ?? game.log.find((e) => e.season === season.season) ?? null;
   if (ui.season !== season.season) { ui.season = season.season; ui.team = 'all'; ui.q = ''; ui.shown = PAGE; } // 시즌을 바꾸면 검색·구단 필터는 처음으로
-  const tabList = [['standings', '순위'], ['playoffs', '플레이오프'], ['players', '선수 기록'], ['teams', '팀 기록'], ...(season.awards ? [['awards', '수상']] : [])];
+  const tabList = [['standings', '순위'], ['playoffs', '플레이오프'], ['players', '선수 기록'], ['teams', '팀 기록'], ...(season.awards || entry?.awards ? [['awards', '수상']] : [])];
   const wanted = tabParam === 'leaders' ? 'players' : tabParam;
   const tab = tabList.some(([k]) => k === wanted) ? wanted : 'standings';
   const top = season.teams[0];
@@ -263,7 +297,7 @@ export function render(ctx, [seasonParam, tabParam]) {
     content = recordsTab(ctx, tab, season, entry ?? (season.live ? {} : null), my);
   } else {
     const a = season.awards;
-    content = h('div', { class: 'card' }, h('h3', '시즌 수상'), h('ul', { class: 'plain' }, Object.entries(a).map(([k, v]) => h('li', h('span', { class: 'grow note' }, k), h('b', Array.isArray(v) ? v.join(', ') : v)))));
+    content = !a ? awardsCard(ctx, entry, my, { title: '시즌 수상' }) : h('div', { class: 'card' }, h('h3', '시즌 수상'), h('ul', { class: 'plain' }, Object.entries(a).map(([k, v]) => h('li', h('span', { class: 'grow note' }, k), h('b', Array.isArray(v) ? v.join(', ') : v)))));
   }
 
   const body = h('div', { class: 'stack lg' },

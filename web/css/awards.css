@@ -1,0 +1,18 @@
+/* 시즌 어워드(web/views/league.js awardsCard, player.js 수상 이력). 색은 style.css의 토큰만 쓴다. */
+.aw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px; }
+.aw-item { background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.aw-item.aw-mvp, .aw-item.aw-finalsMvp { border-color: color-mix(in srgb, var(--legend) 60%, var(--line)); }
+.aw-item.aw-best5 { grid-column: 1 / -1; }
+.aw-label { font-size: .78rem; font-weight: 800; color: var(--muted); letter-spacing: .02em; }
+.aw-mvp .aw-label, .aw-finalsMvp .aw-label { color: var(--legend); }
+.aw-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.aw-best5 .aw-list { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
+.aw-who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0; }
+.aw-who a, .aw-who > span:first-child { font-weight: 700; }
+.aw-who small { font-size: .78rem; }
+.aw-stat { color: var(--muted); font-variant-numeric: tabular-nums; }
+.aw-who.aw-mine { background: color-mix(in srgb, var(--team) 14%, transparent); border-radius: 6px; padding: 1px 6px; margin: 0 -6px; }
+.aw-who.aw-mine a, .aw-who.aw-mine > span:first-child { color: var(--team); }
+.aw-foot { margin: 10px 0 0; line-height: 1.5; }
+.aw-hist-line { margin: 0 0 6px; font-weight: 700; line-height: 1.6; }
+@media (max-width: 480px) { .aw-grid { grid-template-columns: 1fr; } }

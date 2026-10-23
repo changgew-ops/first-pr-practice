@@ -6,6 +6,7 @@ import { sumRows } from '../../src/player-record.mjs';
 import { contractButtons, contractBlock } from '../lib/contract-view.js';
 import { avatarEl, AVATAR_NOTE } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
+import { playerAwardHistory, awardHistoryText } from '../../src/awards.mjs';
 
 export function render(ctx, [id]) {
   const { game } = ctx;
@@ -36,8 +37,17 @@ export function render(ctx, [id]) {
       prof?.nationality && h('p', { class: 'note' }, `국적: ${prof?.nationality.join(' · ')}`),
       prof?.career && h('p', { class: 'note' }, 'KBL 경력: ', prof?.career.map((c) => `${ctx.name(c.team)} ${c.years}`).join(' → ')),
       h('p', { class: 'note' }, `출처: ${official ? 'KBL 공식 프로필(2026-10-23 조회; 신체·등번호는 조회 시점 값)' : prof.source}`)),
+    awardLine(game, p),
     recordCard(ctx, p));
   return { title: p.name, body };
+}
+
+/** 게임에서 받은 수상 이력 한 줄(시즌별). 이전 저장이나 수상이 없으면 그리지 않는다 */
+function awardLine(game, p) {
+  const hist = playerAwardHistory(game.log, p.id);
+  if (!hist.length) return null;
+  return h('div', { class: 'card aw-history' }, h('h3', '수상 이력'), h('p', { class: 'aw-hist-line' }, awardHistoryText(hist)),
+    h('p', { class: 'note' }, '게임에서 진행한 시즌의 수상입니다(MVP·신인상·베스트5·수비상·기량발전상·부문 1위·챔피언결정전 MVP).'));
 }
 
 const pct = (v) => (v == null ? '-' : `${(v * 100).toFixed(1)}`);

@@ -171,6 +171,10 @@ export const TEMPLATES = {
     h: ['{season} 결산: {team} {rank}위, 플레이오프 불발', '{team}의 {season} 시즌, 6강 문턱에서', '{season} 시즌 성적표: {team} {rank}위({record})', '{team} {season} 시즌 결산, 다음을 기약하며'],
     b: ['{team:은/는} {season} 정규리그를 {record}, {rank}위로 마쳤다. 플레이오프에는 오르지 못했다.', '{rank}위({record})에 그친 {team:은/는} 플레이오프에 진출하지 못했다.', '이번 시즌 {team}의 결과는 정규리그 {rank}위. 시즌 순이익은 {net}억이었다.', '{season} 시즌을 {record:으로/로} 마친 {team}. 오프시즌이 중요해졌다.']
   },
+  awards: {
+    h: ['{season} 정규리그 MVP에 {mvp}… {mvpTeam} 소속', '{mvp}, {season} 시즌 최고의 선수로 뽑혔다', '{season} 어워드 발표: MVP는 {mvp}', '{mvpTeam}의 {mvp:이/가} MVP를 차지했다', '{season} 시즌 시상: {mvp}가 이끈 한 해'],
+    b: ['{season} 시즌 정규리그 MVP는 {mvpTeam}의 {mvp:으로/로} 정해졌다. 기록은 {mvpLine}.', '{mvpTeam}의 {mvp:이/가} {season} 정규리그 MVP에 올랐다. 시즌 기록은 {mvpLine}.', '{season} 시즌 시상 결과가 나왔다. 정규리그 MVP는 {mvpLine:을/를} 기록한 {mvpTeam}의 {mvp}다.', '{mvp:이/가} {season} 시즌 정규리그 MVP를 받았다. {mvpTeam} 소속으로 {mvpLine:을/를} 남겼다.', '올 시즌 최고의 선수는 {mvpTeam}의 {mvp}였다. 시즌 기록은 {mvpLine}, 정규리그 MVP로 선정됐다.']
+  },
   retire_my: {
     h: ['{player}, 현역 은퇴', '{team}의 {player}, 코트를 떠난다', '은퇴 선언… {player}({age}세)', '{player}, 은퇴로 마무리한 선수 생활'],
     b: ['{team}의 {player:이/가} 시즌 종료와 함께 은퇴했다. 나이는 {age}세, 마지막 OVR은 {ovr}.', '{age}세의 {player:이/가} 현역에서 물러난다. 마지막 시즌 OVR은 {ovr}이었다.', '{team:은/는} {player:을/를} 떠나보낸다. 은퇴 당시 나이는 {age}세다.', '{player}의 이름이 {team}의 선수단에서 빠진다. 은퇴 시점 OVR {ovr}.']
@@ -349,6 +353,15 @@ export const SENT = {
   rv_leader: ['팀 내 득점 선두는 경기당 {tmPpg}점의 {tmName}이었다.', '{tmName:은/는} 경기당 {tmPpg}점으로 {team}의 득점 1위였다.', '득점은 {tmName:이/가} 평균 {tmPpg}점으로 가장 많았다.', '{team}의 공격은 경기당 {tmPpg}점을 올린 {tmName:이/가} 이끌었다.'],
   rv_money: ['시즌 수입은 {revenue}억, 선수단 연봉은 {payroll}억으로 순이익은 {net}억이었다.', '재정으로는 수입 {revenue}억에 연봉 {payroll}억, 순이익 {net}억이다.', '구단 장부는 수입 {revenue}억, 선수단 연봉 {payroll}억, 순이익 {net}억으로 정리됐다.', '수입 {revenue}억, 연봉 {payroll}억을 거쳐 순이익은 {net}억이 됐다.'],
   rv_outlook: ['이제 오프시즌이다. 트레이드와 재계약, FA, 드래프트가 차례로 이어지며 {nextSeason} 시즌 전력이 결정된다.', '{nextSeason} 시즌을 앞두고 트레이드·재계약·FA·드래프트가 기다리고 있다.', '다음 시즌 {nextSeason:을/를} 위한 정비가 시작된다. 결정할 일이 많은 오프시즌이다.', '오프시즌의 선택이 {nextSeason} 시즌의 성적을 좌우한다.'],
+  // 시즌 어워드(게임이 기록과 팀 성적으로 정한다)
+  aw_mvp: ['{mvpTeam:은/는} 정규리그 {mvpRank}위({mvpRec})였다. MVP 점수는 개인 기록에 팀 성적을 더해 계산했다.', '{mvp}의 소속팀 {mvpTeam}의 정규리그 성적은 {mvpRank}위, {mvpRec}이다.', '{mvpTeam}은 {mvpRank}위({mvpRec})로 시즌을 마쳤다. 게임의 MVP 점수는 개인 기록과 팀 승률을 함께 본다.', '개인 기록뿐 아니라 {mvpTeam}의 {mvpRank}위({mvpRec}) 성적이 점수에 반영됐다.'],
+  aw_best5: ['베스트5는 {best5}이다. 가드 2명, 포워드 2명, 센터 1명 구성이 원칙이다.', '이번 시즌 베스트5에는 {best5:이/가} 이름을 올렸다. 포지션별로 가드 2·포워드 2·센터 1명을 뽑는다.', '{best5}가 {season} 시즌 베스트5로 뽑혔다. 포지션 칸마다 점수가 가장 높은 선수다.', '베스트5 명단은 {best5}. 포지션 균형을 맞춰 가드 2, 포워드 2, 센터 1명이다.'],
+  aw_rookie: ['신인상은 {rookieTeam}의 {rookie:이/가} 받았다. 기록은 {rookieLine}.', '새로 들어온 선수 가운데서는 {rookieTeam}의 {rookie:이/가} 신인상을 차지했다({rookieLine}).', '{rookie:은/는} {rookieTeam} 소속으로 {rookieLine:을/를} 남겨 신인상에 올랐다.', '신인상 수상자는 {rookie}. {rookieTeam}에서 {rookieLine:을/를} 기록했다.'],
+  aw_defense: ['최우수 수비상은 {dfTeam}의 {dfName:이/가} 받았다. 경기당 스틸 {dfStl}개, 블록 {dfBlk}개를 기록했다.', '{dfTeam}의 {dfName:이/가} 최우수 수비상을 가져갔다(스틸 {dfStl}·블록 {dfBlk}).', '수비에서는 {dfName}이 돋보였다. 경기당 스틸 {dfStl}개와 블록 {dfBlk}개로 {dfTeam}의 수비를 이끌었다.', '최우수 수비상 수상자는 {dfName}({dfTeam}). 스틸 {dfStl}개, 블록 {dfBlk}개를 경기당 기록했다.'],
+  aw_improved: ['기량발전상은 지난 시즌 종료 때보다 OVR이 가장 많이 오른 {imTeam}의 {imName:이/가} 받았다.', '{imTeam}의 {imName:은/는} 지난 시즌보다 능력치(OVR)가 가장 크게 올라 기량발전상을 차지했다.', '가장 크게 성장한 선수는 {imTeam}의 {imName}이다. 기량발전상에 선정됐다.', '기량발전상 수상자는 {imTeam}의 {imName}. OVR 상승폭이 리그에서 가장 컸다.'],
+  aw_leaders: ['부문별 1위는 {leadersText}이다.', '기록 부문 1위는 {leadersText}.', '부문 선두는 {leadersText}로 정리됐다.', '경기당 기록 선두는 {leadersText}이다.'],
+  aw_finals: ['챔피언결정전 MVP는 우승팀 {champName}의 {fmName:이/가} 차지했다. 챔피언결정전 {fmLine:을/를} 기록했다.', '{champName}의 우승을 이끈 {fmName:이/가} 챔피언결정전 MVP로 뽑혔다({fmLine}).', '챔피언결정전 MVP는 {fmName:이다/다}. 우승팀 {champName}에서 {fmLine:을/를} 남겼다.', '{fmName:이/가} 챔피언결정전 MVP에 올랐다. 우승팀 {champName} 선수 중 챔피언결정전 기록이 가장 좋았다.'],
+  aw_my: ['우리 구단에서는 {myAwards} 등이 수상했다.', '{team} 수상자 명단: {myAwards}.', '{myAwards} 등 {team} 선수들이 상을 받았다.', '수상자 가운데 {team} 소속은 {myAwards}.'],
   // 오프시즌
   of_last: ['{lastSeasonLabel} 시즌 {team:은/는} 정규리그 {rank}위({record})로 마쳤고 플레이오프 성적은 {stage:이었다/였다}.', '지난 {lastSeasonLabel} 시즌 {team}의 성적은 {rank}위({record}), 플레이오프는 {stage}.', '{lastSeasonLabel} 시즌을 {record}, {rank}위로 마친 {team}의 오프시즌이다.', '{lastSeasonLabel} 시즌 결과를 안고 {team:은/는} {nextSeason} 시즌을 준비한다. 정규리그 {rank}위({record}), 플레이오프는 {stage:이었다/였다}.'],
   pl_info: ['{player:은/는} {pAge}세 {pPos} 선수이며 OVR은 {pOvr}이다.', '{pPos} 포지션의 {player:은/는} {pAge}세로 OVR {pOvr}의 선수다.', '{pAge}세 {pPos} {player:은/는} OVR {pOvr:으로/로} 평가된다.', '{player}의 포지션은 {pPos}, 나이는 {pAge}세, OVR은 {pOvr}이다.', '{player:은/는} {pPos} 포지션에서 OVR {pOvr:으로/로} 평가되는 선수다.', '능력치로 보면 {player}의 OVR은 {pOvr}이고 포지션은 {pPos}다.', '{pAge}세의 {player:은/는} 마지막 시즌 OVR {pOvr:을/를} 기록했다.', '{player}의 나이는 {pAge}세, 마지막으로 기록한 OVR은 {pOvr}이다.'],
@@ -379,6 +392,7 @@ const PLAN_OFF = [['lead', 'pl_info', 'pl_contract', 'pl_rank', 'pl_career'], ['
 const PLAN_PO = [['lead', 'po_games'], ['po_seeds', 'po_my', 'po_avg'], ['po_next', 'po_end']];
 const PLAN_REVIEW = [['lead', 'rv_record'], ['lastSeason', 'rv_top', 'rv_leader'], ['rv_money'], ['rv_outlook']];
 export const PLAN = {
+  awards: [['lead', 'aw_mvp'], ['aw_best5', 'aw_rookie'], ['aw_defense', 'aw_improved', 'aw_leaders'], ['aw_finals', 'aw_my']],
   preview: [['lead', 'pv_core'], ['pv_foreign', 'pv_depth'], ['pv_cap', 'pv_last', 'pv_city'], ['pv_contenders', 'pv_top', 'pv_task']],
   opener_win: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
   opener_loss: [['lead', 'scoreboard'], ['standing', 'lastSeason'], ['spot_star', 'spot_career', 'spot_opp'], ['next', 'remain']],
@@ -736,6 +750,35 @@ export function buildNews(src) {
       ...(titlesOf(my) != null ? { titles: titlesOf(my) } : {}), ...(myLeader ? { tmName: cleanName(myLeader.name), tmPpg: fmt1(myLeader.ppg) } : {})
     } : null;
     if (row) add({ key: `${y}:review`, t: base(y) + 200, season: label, when: `${label} 시즌 결산`, kind, scope: 'my', tags: ['우리 팀', '결산'], tone: st ? 'good' : 'bad', delta: kind === 'review_top' ? 3 : kind === 'review_mid' ? 0 : -3, comments: 2, vars: reviewVars });
+    const aw = entry.awards;
+    if (aw?.mvp && entry.lines?.[aw.mvp]) {
+      const lineOf2 = (id) => entry.lines[id];
+      const nm = (id) => cleanName(entry.playerNames?.[id] ?? pbn(id) ?? '');
+      const teamOf2 = (id) => nameOf(lineOf2(id)?.[13] ?? entry.myTeamId);
+      const avg = (id, i) => (lineOf2(id) && lineOf2(id)[0] ? lineOf2(id)[i] / lineOf2(id)[0] : null);
+      const stat3 = (id) => (avg(id, 2) == null ? null : `경기당 ${fmt1(avg(id, 2))}점 ${fmt1(avg(id, 3))}리바 ${fmt1(avg(id, 4))}어시`);
+      const mvpRow = entry.standings.find((r) => r.id === lineOf2(aw.mvp)[13]);
+      const finalsRow = aw.finalsMvp ? (entry.po?.[aw.finalsMvp] ?? []).find((r) => r[0] === 'f') : null;
+      const leaders = [['pts', '득점', 2], ['reb', '리바운드', 3], ['ast', '어시스트', 4], ['stl', '스틸', 5], ['blk', '블록', 6]].filter(([k]) => aw[k] && entry.lines?.[aw[k]])
+        .map(([k, word, i]) => `${word} ${nm(aw[k])}(${fmt1(avg(aw[k], i))})`);
+      const mineWon = [...(aw.best5 ?? []).map((id) => [id, '베스트5']), ...['mvp', 'finalsMvp', 'rookie', 'defense', 'improved', 'pts', 'reb', 'ast', 'stl', 'blk'].filter((k) => aw[k]).map((k) => [aw[k], k === 'mvp' ? 'MVP' : k === 'finalsMvp' ? '챔피언결정전 MVP' : { rookie: '신인상', defense: '최우수 수비상', improved: '기량발전상', pts: '득점상', reb: '리바운드상', ast: '어시스트상', stl: '스틸상', blk: '블록상' }[k]])]
+        .filter(([id]) => lineOf2(id)?.[13] === my);
+      const byPlayer = new Map();
+      for (const [id, what] of mineWon) byPlayer.set(id, [...(byPlayer.get(id) ?? []), what]);
+      const myAwards = [...byPlayer].slice(0, 4).map(([id, list]) => `${nm(id)}(${list.join('·')})`).join(', ');
+      const vars = {
+        team: nameOf(my), season: label, champName: nameOf(entry.championId),
+        mvp: nm(aw.mvp), mvpTeam: teamOf2(aw.mvp), mvpLine: stat3(aw.mvp), ...(mvpRow ? { mvpRank: mvpRow.rank, mvpRec: recordText(mvpRow.wins, mvpRow.losses) } : {}),
+        ...(aw.best5?.length ? { best5: aw.best5.map(nm).join(', ') } : {}),
+        ...(aw.rookie && lineOf2(aw.rookie) ? { rookie: nm(aw.rookie), rookieTeam: teamOf2(aw.rookie), rookieLine: stat3(aw.rookie) } : {}),
+        ...(aw.defense && lineOf2(aw.defense) ? { dfName: nm(aw.defense), dfTeam: teamOf2(aw.defense), dfStl: fmt1(avg(aw.defense, 5)), dfBlk: fmt1(avg(aw.defense, 6)) } : {}),
+        ...(aw.improved && lineOf2(aw.improved) ? { imName: nm(aw.improved), imTeam: teamOf2(aw.improved) } : {}),
+        ...(leaders.length ? { leadersText: leaders.join(', ') } : {}),
+        ...(finalsRow ? { fmName: nm(aw.finalsMvp), fmLine: `경기당 ${fmt1(finalsRow[6] / finalsRow[2])}점 ${fmt1(finalsRow[7] / finalsRow[2])}리바 ${fmt1(finalsRow[8] / finalsRow[2])}어시` } : {}),
+        ...(myAwards ? { myAwards, player: nm(mineWon[0][0]) } : {})
+      };
+      add({ key: `${y}:awards`, t: base(y) + 205, season: label, when: `${label} 시즌 어워드`, kind: 'awards', scope: myAwards ? 'my' : 'league', tags: myAwards ? ['우리 팀', '어워드'] : ['리그', '어워드'], tone: myAwards ? 'good' : 'neutral', delta: myAwards ? 1 : 0, comments: 2, playerComment: !!myAwards, vars });
+    }
     if (!latest) return;
     const wen = (when) => `${label} 오프시즌 · ${when}`;
     const offBase = row ? { team: nameOf(my), lastSeasonLabel: label, rank: row.rank, record: recText, stage: STAGE_TEXT[st ?? ''] ?? '진출 실패', nextSeason, ...ofTeam() } : { team: nameOf(my), nextSeason, ...ofTeam() };

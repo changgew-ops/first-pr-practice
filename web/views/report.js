@@ -1,5 +1,5 @@
 import { h, table, tabs, link, stat, ovrChip, eok, signed, ORIGIN_LABEL } from '../lib/dom.js';
-import { bracket } from './league.js';
+import { bracket, awardsCard } from './league.js';
 import { logToHistory, seasonLabel, playerById } from '../lib/game.js';
 import { partsBar, PART_LABEL } from './finance-card.js';
 
@@ -38,6 +38,7 @@ export function render(ctx, [tabParam]) {
       h('div', { class: 'grid g2' },
         h('div', { class: 'card' }, h('h3', '우리 팀 득점 순위'), h('ul', { class: 'plain' }, mineLeaders.slice(0, 6).map((l) => h('li', h('span', { class: 'grow' }, link(`#/player/${l.id}`, l.name)), h('span', { class: 'note' }, `${l.ppg.toFixed(1)}점 ${l.rpg.toFixed(1)}리 ${l.apg.toFixed(1)}어`))))),
         h('div', { class: 'card' }, h('h3', '리그 득점 TOP 5'), h('ul', { class: 'plain' }, [...e.leaders].sort((a, b) => b.ppg - a.ppg).slice(0, 5).map((l, i) => h('li', h('span', { class: 'note' }, i + 1), h('span', { class: 'grow' }, link(`#/player/${l.id}`, l.name), ' ', h('span', { class: 'note' }, ctx.name(l.teamId))), h('b', l.ppg.toFixed(1))))))),
+      awardsCard(ctx, e, my),
       h('div', { class: 'card' }, h('h3', '플레이오프'), bracket(ctx, logToHistory(e), my)),
       h('p', {}, link(`#/league/${e.season}`, `${e.season} 순위표 보기 →`)));
   };

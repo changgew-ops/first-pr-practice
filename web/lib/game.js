@@ -9,6 +9,7 @@ import { buildLineup, lineupCost } from '../../src/lineup.mjs';
 import { initialFunds } from '../../src/funds.mjs';
 import { domesticOf, foreignOf, asiaOf, payrollEok, hardLimitEok } from '../../src/valuation.mjs';
 import { franchiseSummary } from '../../src/history-summary.mjs';
+import { computeAwards } from '../../src/awards.mjs';
 
 export const VERSION = 1;
 export const seasonLabel = (startYear) => `${startYear}-${String(startYear + 1).slice(2)}`;
@@ -73,6 +74,20 @@ function summarizeYear(game, data, season, out) {
   return attachOffseason(entry, out.report, out.league.funds);
 }
 
+/** 이번 시즌 신인: 직전 오프시즌 드래프트 지명자(바로 앞 시즌 결과의 report.drafted). 기록이 없는 첫 시즌은 null(규칙의 나이 기준을 쓴다) */
+function rookieIdsOf(game) {
+  const drafted = game.log?.at(-1)?.report?.drafted;
+  return drafted ? new Set(drafted.map((d) => d.id)) : null;
+}
+
+function seasonAwards(game, data, finished) {
+  const { result, totals, seasonPlayers } = finished;
+  return computeAwards({
+    players: seasonPlayers, totals, standings: result.standings, playoffs: { series: result.playoffs.series, championId: result.championId },
+    finalName: data.rules.playoffs.rounds.at(-1).name, rookieIds: rookieIdsOf(game), rules: data.rules
+  });
+}
+
 /** 시즌 결과(순위·플레이오프·리더·우리 팀 경기·장부)만 묶는다. 오프시즌 보고서는 attachOffseason으로 나중에 붙인다 */
 export function summarizeSeason(game, data, season, finished, ledger) {
   const { result, totals, seasonPlayers, splits } = finished;
@@ -100,6 +115,7 @@ export function summarizeSeason(game, data, season, finished, ledger) {
     championId: result.championId,
     stage: Object.fromEntries(data.teams.map((t) => [t.id, stage(t.id)])),
     leaders: keptLeaders, lines, myGames,
+    awards: seasonAwards(game, data, finished), // 시즌 어워드(선수 id만, src/awards.mjs). 이전 저장에는 없다
     // 선수 상세의 팀·승-패·플레이오프 열: 정규리그 승패(wl), 시즌 중 구단을 옮긴 선수의 구단별 줄(split), 플레이오프 줄(po). 이전 저장에는 없다
     ...(splits ? { ...compactRegular(splits), po: compactPlayoffs(result.playoffs.series, data.rules.playoffs.rounds.at(-1).name) } : {}),
     ledger,
