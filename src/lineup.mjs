@@ -1,10 +1,6 @@
-// 라인업 검증: 인원 구성과 코스트 합계 제한을 확인한다.
-export function lineupCost(players) {
-  return players.reduce((sum, p) => sum + p.cost, 0);
-}
-
+// 라인업 검증: 엔트리 인원 구성과 외국 선수 동시 출전 수를 확인한다. 코스트 합계 제한은 없다(연봉은 샐러리캡이 제어한다).
 export function validateLineup(starters, bench, rules) {
-  const { starters: nStart, bench: nBench, costCap } = rules.lineup;
+  const { starters: nStart, bench: nBench } = rules.lineup;
   const errors = [];
   if (starters.length !== nStart) errors.push(`스타팅은 ${nStart}명이어야 합니다 (현재 ${starters.length}명)`);
   if (bench.length !== nBench) errors.push(`벤치는 ${nBench}명이어야 합니다 (현재 ${bench.length}명)`);
@@ -16,50 +12,25 @@ export function validateLineup(starters, bench, rules) {
   if (foreignCount > rules.foreignPlayers.onCourt) {
     errors.push(`외국 선수는 동시에 ${rules.foreignPlayers.onCourt}명까지만 출전할 수 있습니다`);
   }
-
-  const totalCost = lineupCost(all);
-  if (totalCost > costCap) errors.push(`코스트 합계 ${totalCost}가 제한 ${costCap}을 넘습니다`);
-  return { ok: errors.length === 0, errors, totalCost };
+  return { ok: errors.length === 0, errors };
 }
 
-// AI 구단용 자동 편성: 코스트 제한 안에서 점수가 가장 높은 10명을 고른다.
-// 점수 = 스타팅 OVR 합 + 벤치 OVR 합 × benchWeight (스타팅 = 고른 10명 중 OVR 상위 5명)
-export function buildLineup(roster, rules, benchWeight = 0.45) {
-  const { starters: nStart, bench: nBench, costCap } = rules.lineup;
-  const size = nStart + nBench;
+// AI 구단용 자동 편성: 스타팅은 OVR이 높은 순서로 5명(외국 선수 동시 출전 제한을 지킨다), 벤치는 남은 선수 중 OVR 상위 7명.
+// 점수(스타팅 OVR 합 + 벤치 OVR 합 × benchWeight)를 가장 크게 하는 편성이다: 스타팅의 가중치가 더 크므로 스타팅을 먼저 최대로 채우고 벤치를 남은 선수로 채우는 것이 최적이다.
+export function buildLineup(roster, rules) {
+  const { starters: nStart, bench: nBench } = rules.lineup;
+  if (roster.length < nStart + nBench) throw new Error('라인업을 만들 선수가 모자랍니다');
   const sorted = [...roster].sort((a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id));
-  let best = null;
-
-  function visit(start, chosen, cost) {
-    if (cost > costCap) return;
-    if (chosen.length === size) {
-      const top = chosen.slice(0, nStart);
-      if (top.filter((p) => p.origin === 'foreign').length > rules.foreignPlayers.onCourt) return;
-      const score = top.reduce((s, p) => s + p.ovr, 0)
-        + chosen.slice(nStart).reduce((s, p) => s + p.ovr, 0) * benchWeight;
-      if (!best || score > best.score) best = { score, chosen: [...chosen] };
-      return;
-    }
-    for (let i = start; i < sorted.length; i++) {
-      if (sorted.length - i < size - chosen.length) break;
-      chosen.push(sorted[i]);
-      visit(i + 1, chosen, cost + sorted[i].cost);
-      chosen.pop();
-    }
+  const starters = [];
+  for (const p of sorted) {
+    if (starters.length === nStart) break;
+    if (p.origin === 'foreign' && starters.filter((x) => x.origin === 'foreign').length >= rules.foreignPlayers.onCourt) continue;
+    starters.push(p);
   }
-  visit(0, [], 0);
-  if (!best) {
-    // 코스트 제한을 지키는 편성이 없으면(고액 카드를 많이 모은 구단) 코스트가 가장 낮은 선수들로 편성한다. 제한 초과는 감수하고 경기는 계속한다.
-    if (roster.length < size) throw new Error('라인업을 만들 선수가 모자랍니다');
-    const cheap = [...roster].sort((a, b) => a.cost - b.cost || b.ovr - a.ovr || a.id.localeCompare(b.id)).slice(0, size).sort((a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id));
-    const starters = [], bench = [];
-    for (const p of cheap) {
-      const foreign = starters.filter((x) => x.origin === 'foreign').length;
-      if (starters.length < nStart && !(p.origin === 'foreign' && foreign >= rules.foreignPlayers.onCourt)) starters.push(p); else bench.push(p);
-    }
-    return { starters, bench, overCost: true };
-  }
-  return { starters: best.chosen.slice(0, nStart), bench: best.chosen.slice(nStart) };
+  if (starters.length < nStart) throw new Error('라인업을 만들 선수가 모자랍니다'); // 외국 선수 제한 때문에 스타팅을 채울 수 없다
+  const taken = new Set(starters.map((p) => p.id));
+  const bench = sorted.filter((p) => !taken.has(p.id)).slice(0, nBench);
+  return { starters, bench };
 }
 
 // ---------- 부상 반영 (src/injuries.mjs) ----------
@@ -86,7 +57,7 @@ export function buildLineupHealthy(roster, rules, benchWeight, injured = null, m
 
 /**
  * 직접 편성(선수 객체)에 부상 선수가 있으면 건강한 선수로 같은 자리(스타팅·벤치)를 메운다.
- * 후보는 OVR 높은 순이고 코스트 제한·외국 선수 동시 출전 제한을 지키는 첫 선수다.
+ * 후보는 OVR 높은 순이고 외국 선수 동시 출전 제한을 지키는 첫 선수다.
  * 반환: { starters, bench, swaps: [{ out, in }] } 또는 (메울 수 없으면) null — 그때는 자동 편성을 쓴다
  */
 export function substituteInjured(lineup, roster, injured, rules) {

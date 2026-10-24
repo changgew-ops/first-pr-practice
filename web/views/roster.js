@@ -28,7 +28,6 @@ export function render(ctx, [teamParam]) {
       { key: 'age', label: '나이', get: (p) => p.age, align: 'r' },
       { key: 'ovr', label: 'OVR', get: (p) => p.ovr, render: ovrChip, align: 'r' },
       { key: 'pot', label: 'POT', get: (p) => p.potential, align: 'r', title: '성장 한도' },
-      { key: 'cost', label: '코스트', get: (p) => p.cost, align: 'r', title: '라인업 코스트 합 제한 65' },
       { key: 'sal', label: '연봉', get: (p) => (p.contract.salaryUsd ? p.contract.salaryUsd / 1e5 : p.contract.salaryEok), render: (p) => (p.origin === 'foreign' ? `$${(p.contract.salaryUsd / 1000).toFixed(0)}k` : eok(p.contract.salaryEok)), align: 'r' },
       { key: 'yrs', label: '계약', get: (p) => p.contract.yearsLeft, render: (p) => (p.contract.yearsLeft <= 0 ? h('span', { class: 'warn' }, '만료') : `${p.contract.yearsLeft}년`), align: 'r' },
       { key: 'origin', label: '구분', get: (p) => p.origin, sort: 'str', render: (p) => ORIGIN_LABEL[p.origin] },

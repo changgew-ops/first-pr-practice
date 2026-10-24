@@ -5,7 +5,7 @@ import { compactRegular, compactPlayoffs, entryRows, liveRows } from '../../src/
 import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
 import { prestigeTable } from '../../src/legacy.mjs';
-import { buildLineup, lineupCost } from '../../src/lineup.mjs';
+import { buildLineup } from '../../src/lineup.mjs';
 import { initialFunds } from '../../src/funds.mjs';
 import { domesticOf, foreignOf, asiaOf, payrollEok, hardLimitEok } from '../../src/valuation.mjs';
 import { franchiseSummary } from '../../src/history-summary.mjs';
@@ -31,7 +31,7 @@ export function teamPower(game, data, teamId) {
   const roster = rosterOf(game, teamId);
   const lineup = buildLineup(roster, data.rules, data.rules.simulation.benchWeight);
   const sum = (l) => l.reduce((s, p) => s + p.ovr, 0);
-  return { lineup, power: sum(lineup.starters) / lineup.starters.length * 0.7 + sum(lineup.bench) / lineup.bench.length * 0.3, cost: lineupCost([...lineup.starters, ...lineup.bench]) };
+  return { lineup, power: sum(lineup.starters) / lineup.starters.length * 0.7 + sum(lineup.bench) / lineup.bench.length * 0.3 };
 }
 
 /** 10개 구단 전력 순위: [{ id, power, rank }] */

@@ -1,5 +1,5 @@
 // 라인업 편성 화면의 순수 계산(브라우저 API 없음). 편집 중인 편성(draft)은 { starters: [선수 id], bench: [선수 id] }.
-import { validateLineup, buildLineup, buildLineupHealthy, lineupCost } from '../../src/lineup.mjs';
+import { validateLineup, buildLineup, buildLineupHealthy } from '../../src/lineup.mjs';
 import { POSITION_TARGET } from '../../src/valuation.mjs';
 
 export const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C'];
@@ -14,7 +14,7 @@ export function powerOf(starters, bench) {
   return avg(starters, (p) => p.ovr) * 0.7 + avg(bench, (p) => p.ovr) * 0.3;
 }
 
-/** 편집 중인 편성을 점검한다. 반환: { starters, bench (선수 객체), errors, totalCost, foreignStarters, power, positions, complete } */
+/** 편집 중인 편성을 점검한다. 반환: { starters, bench (선수 객체), errors, foreignStarters, power, positions, complete } */
 export function evalDraft(draft, roster, rules) {
   const byId = new Map(roster.map((p) => [p.id, p]));
   const starters = draft.starters.map((id) => byId.get(id)).filter(Boolean);
@@ -22,14 +22,14 @@ export function evalDraft(draft, roster, rules) {
   const check = validateLineup(starters, bench, rules);
   const positions = Object.fromEntries(POSITIONS.map((pos) => [pos, starters.filter((p) => p.position === pos).length]));
   return {
-    starters, bench, errors: check.errors, totalCost: check.totalCost,
+    starters, bench, errors: check.errors,
     foreignStarters: starters.filter((p) => p.origin === 'foreign').length,
     power: powerOf(starters, bench), positions,
     complete: starters.length === rules.lineup.starters && bench.length === rules.lineup.bench
   };
 }
 
-/** 자동 편성(코스트 제한 안에서 가장 강한 엔트리 12명)을 draft 모양으로 */
+/** 자동 편성(스타팅은 OVR 상위, 외국 선수 제한을 지킨 가장 강한 엔트리 12명)을 draft 모양으로 */
 export function autoDraft(roster, rules, injured = null) {
   const { starters, bench } = injured?.size ? buildLineupHealthy(roster, rules, rules.simulation.benchWeight, injured, rules.injuries?.minHealthy ?? 8) : buildLineup(roster, rules, rules.simulation.benchWeight); // 부상 선수는 뺀다(건강한 선수가 모자라면 벤치가 줄어든다)
   return { starters: starters.map((p) => p.id), bench: bench.map((p) => p.id) };
@@ -203,4 +203,3 @@ export function poolList(roster, { pos = null, sort = 'ovr' } = {}) {
   return roster.filter((p) => !pos || p.position === pos).sort((POOL_SORTS[sort] ?? POOL_SORTS.ovr)[1]);
 }
 
-export { lineupCost };

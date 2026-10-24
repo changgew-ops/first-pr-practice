@@ -106,7 +106,7 @@ export function openPlayerInfo(ctx, p, extra = []) {
       h('button', { class: 'btn ghost pi-close', type: 'button', 'aria-label': '닫기', onclick: () => dlg.close() }, '✕')),
     h('div', { class: 'pi-nums' },
       h('div', h('span', { class: 'note' }, 'OVR'), h('b', p.ovr)), h('div', h('span', { class: 'note' }, 'POT'), h('b', p.potential ?? '-')),
-      h('div', h('span', { class: 'note' }, '코스트'), h('b', p.cost ?? '-')), h('div', h('span', { class: 'note' }, '계약'), h('b', contractLabel(p)))),
+      h('div', h('span', { class: 'note' }, '계약'), h('b', contractLabel(p)))),
     h('div', { class: 'pi-stats', role: 'list', 'aria-label': '능력치 (같은 포지션 리그 평균과 비교)' },
       rows.map((r) => h('div', { class: 'pi-stat', role: 'listitem' },
         h('span', { class: 'pi-stat-label' }, r.label),

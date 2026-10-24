@@ -30,7 +30,6 @@ export function render(ctx, pending) {
         h('span', { class: 'os-rank' }, r.rank === 1 ? '추천' : r.rank),
         playerLine(r.p),
         h('span', { class: 'os-fact' }, h('span', { class: 'note' }, 'POT'), h('b', r.p.potential)),
-        h('span', { class: 'os-fact' }, h('span', { class: 'note' }, '코스트'), h('b', r.p.cost)),
         r.need ? h('span', { class: 'tag hot' }, `${r.p.position} 필요 +${r.need}`) : h('span', { class: 'tag' }, `${r.p.position} 충분`),
         h('span', { class: 'note' }, `점수 ${r.score.toFixed(1)}`))))),
       h('div', { class: 'os-submit' }, h('span', { class: 'note' }, `선택: ${available.find((p) => p.id === pick).name}`),

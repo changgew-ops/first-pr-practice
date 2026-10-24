@@ -80,7 +80,7 @@ function faPanel(ctx) {
     const shown = market.filter((m) => faUi.pos === 'all' || m.player.position === faUi.pos).slice(0, 15);
     const chip = (val, label) => h('button', { type: 'button', class: `btn ${faUi.pos === val ? 'primary' : ''}`, onclick: () => { faUi.pos = val; draw(); } }, label);
     const rows = shown.map(({ player: p, asking }) => h('tr', { class: 'mk-row' },
-      h('td', nameButton(p)), h('td', h('span', { class: 'pos' }, p.position)), h('td', { class: 'r' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.potential), h('td', { class: 'r' }, p.cost), h('td', { class: 'r' }, eok(asking)),
+      h('td', nameButton(p)), h('td', h('span', { class: 'pos' }, p.position)), h('td', { class: 'r' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.potential), h('td', { class: 'r' }, eok(asking)),
       h('td', { class: 'r' }, h('button', { class: 'btn mk-btn primary', type: 'button', disabled: full, title: full ? `국내 선수가 이미 ${rules.roster.domestic}명입니다. 로스터 표에서 한 명을 먼저 방출하세요` : `${p.name} 영입 협상`, 'aria-label': `${p.name} 영입`, onclick: () => openSignDialog(ctx, p, asking, draw) }, '영입'))));
     host.replaceChildren(...[
       h('div', { class: 'mk-head' }, h('h2', { style: { margin: 0 } }, '시즌 중 FA 시장'),
@@ -88,7 +88,7 @@ function faPanel(ctx) {
       h('p', { class: 'note', style: { margin: '4px 0 0' } }, `오프시즌 FA에서 계약하지 못한 선수와 시즌 중 방출된 선수가 남아 있습니다(실제 규정은 이런 선수의 시즌 중 계약을 막지만 게임은 확장했습니다). 요구 연봉은 오프시즌 요구액의 ${Math.round(rules.inSeason.fa.askingFactor * 100)}%이고 최저 연봉(${rules.salaryCap.minSalaryEok}억) 아래로는 내려가지 않습니다. 계약은 이번 시즌 포함 ${faYearsRange(rules).join('~')}년이며, 보수는 합류한 날부터 경기 비율만큼만 정산합니다.${full ? ' 국내 선수 자리가 모두 찼습니다. 영입하려면 먼저 방출하세요.' : ''}`),
       h('div', { class: 'mk-filters' }, chip('all', '모든 포지션'), POS_ORDER.map((p) => chip(p, p))),
       shown.length
-        ? h('div', { class: 'table-wrap' }, h('table', h('thead', h('tr', ['선수', '포지션', '나이', 'OVR', 'POT', '코스트', '요구 연봉', ''].map((t, i) => h('th', { class: i >= 2 && i < 7 ? 'r' : '' }, t)))), h('tbody', rows)))
+        ? h('div', { class: 'table-wrap' }, h('table', h('thead', h('tr', ['선수', '포지션', '나이', 'OVR', 'POT', '요구 연봉', ''].map((t, i) => h('th', { class: i >= 2 && i < 6 ? 'r' : '' }, t)))), h('tbody', rows)))
         : h('p', { class: 'muted' }, market.length ? '조건에 맞는 선수가 없습니다.' : '시장에 남은 선수가 없습니다.'),
       market.length > shown.length ? h('p', { class: 'note' }, `가치가 높은 순으로 ${shown.length}명만 보입니다(포지션 필터로 좁혀 보세요).`) : null].filter(Boolean)); // replaceChildren은 null을 글자로 바꾸므로 걸러 낸다
   };
@@ -118,7 +118,7 @@ function openSignDialog(ctx, p, asking, onDone) {
     const frac = Math.max(0, 1 - s.day / s.totalDays);
     info.textContent = `영입 후 국내 연봉 ${eok(payroll)} / 캡 ${eok(rules.salaryCap.domesticEok, 0)}${payroll > rules.salaryCap.domesticEok ? ` · 초과 기금 ${eok(softCapPenaltyEok(payroll, rules))}` : ''} · 이번 시즌 남은 ${Math.round(frac * 100)}%만큼의 보수(${eok(st.salaryEok * frac)})를 정산합니다.`;
   }
-  const dlg = openModal(`mk-sign-${p.id}`, `${p.name} 영입`, `${p.position} · ${p.age}세 · OVR ${p.ovr} · POT ${p.potential} · 코스트 ${p.cost}`,
+  const dlg = openModal(`mk-sign-${p.id}`, `${p.name} 영입`, `${p.position} · ${p.age}세 · OVR ${p.ovr} · POT ${p.potential}`,
     h('div', { class: 'stack' },
       h('div', { class: 'ct-grid' },
         h('div', h('span', { class: 'note' }, '요구 연봉'), h('b', eok(asking))),
@@ -198,7 +198,7 @@ function openForeignDialog(ctx, out, kind) {
         const on = st.pick === c.player.id;
         const el = h('label', { class: `mk-cand ${chk.ok ? '' : 'off'} ${on ? 'picked' : ''}` },
           h('input', { type: 'radio', name: 'mk-cand', checked: on, disabled: !chk.ok, 'aria-label': `${c.player.name} 선택`, onchange: () => { st.pick = c.player.id; draw(); } }),
-          h('span', h('b', c.player.name), ' ', ovrChip(c.player), h('span', { class: 'note' }, ` ${c.player.position} · ${c.player.age}세 · POT ${c.player.potential} · 코스트 ${c.player.cost}`)),
+          h('span', h('b', c.player.name), ' ', ovrChip(c.player), h('span', { class: 'note' }, ` ${c.player.position} · ${c.player.age}세 · POT ${c.player.potential}`)),
           h('span', { class: 'r' }, candPrice(c)),
           chk.ok ? null : h('span', { class: 'mk-why bad' }, chk.reason));
         return el;

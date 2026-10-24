@@ -45,7 +45,7 @@ export function render(ctx) {
 
   const bestCard = h('div', { class: 'card' },
     h('h2', '예상 베스트5'),
-    h('p', { class: 'note' }, '기록이 아니라 능력치(OVR)와 코스트로 매긴 시즌 전 지표입니다. 가드 2·포워드 2·센터 1.'),
+    h('p', { class: 'note' }, '기록이 아니라 능력치(OVR)로 매긴 시즌 전 지표입니다. 가드 2·포워드 2·센터 1.'),
     h('ul', { class: 'pv-best' }, pv.expectedBest.map((p) => h('li', h('span', { class: 'tag' }, GROUP_LABEL[p.group]), pName(p.id, p.name), h('span', { class: 'note' }, ` ${p.position} · ${teamName(p.teamId)} · OVR ${p.ovr}`)))),
     h('div', { class: 'pv-spot' },
       h('h3', '주목할 선수'),

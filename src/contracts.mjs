@@ -42,7 +42,7 @@ export function releaseCheck({ players, teamId, playerId, phase = 'season', rule
   const need = minDomestic(players, teamId, rules);
   if (phase === 'season') {
     if (dom - 1 < need) return { ok: false, reason: `방출하면 국내 선수가 ${dom - 1}명이 되어 라인업 엔트리 ${rules.lineup.starters + rules.lineup.bench}명을 채울 수 없습니다(국내 선수 최소 ${need}명)`, warning: null };
-    try { buildLineup(mine.filter((x) => x.id !== playerId), rules, rules.simulation.benchWeight); } catch { return { ok: false, reason: '남는 선수로는 코스트 제한 안에서 라인업을 만들 수 없습니다', warning: null }; }
+    try { buildLineup(mine.filter((x) => x.id !== playerId), rules, rules.simulation.benchWeight); } catch { return { ok: false, reason: '남는 선수로는 라인업을 만들 수 없습니다', warning: null }; }
     return { ok: true, reason: null, warning: null };
   }
   const warning = dom - 1 < rules.roster.domestic ? `국내 선수가 ${dom - 1}명이 됩니다. 오프시즌 마지막 로스터 확정 단계에서 FA 시장에서 남은 선수나 신인급으로 ${rules.roster.domestic}명까지 채웁니다.` : null;

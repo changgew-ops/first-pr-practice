@@ -23,7 +23,7 @@ export function render(ctx, [id]) {
       h('div', { class: `pcard r-${p.rarity}` },
         h('div', { class: 'num' }, p.number),
         avatarEl(p, { size: 112, teamColor: colorOf(p.teamId), number: p.number, decorative: false, cls: 'avatar-pcard' }),
-        h('div', { class: 'row' }, h('div', { class: 'big-ovr' }, p.ovr, ovrDelta(p) ? h('span', { class: `big-ovr-d ${ovrDelta(p) > 0 ? 'up' : 'down'}`, title: '지난 시즌 종료 시점 대비' }, ` (${ovrDelta(p) > 0 ? '+' : '-'}${Math.abs(ovrDelta(p))})`) : null), h('div', h('div', { class: 'note' }, RARITY_LABEL[p.rarity]), h('div', { class: 'note' }, `코스트 ${p.cost}`))),
+        h('div', { class: 'row' }, h('div', { class: 'big-ovr' }, p.ovr, ovrDelta(p) ? h('span', { class: `big-ovr-d ${ovrDelta(p) > 0 ? 'up' : 'down'}`, title: '지난 시즌 종료 시점 대비' }, ` (${ovrDelta(p) > 0 ? '+' : '-'}${Math.abs(ovrDelta(p))})`) : null), h('div', h('div', { class: 'note' }, RARITY_LABEL[p.rarity]))),
         h('h1', { style: { margin: '10px 0 2px' } }, p.name),
         h('div', { class: 'row' }, h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세 · ${ORIGIN_LABEL[p.origin]}${p.nationality ? ` · ${p.nationality}` : ''}`), h('span', { class: 'tag' }, p.real ? '실제 선수' : '가상 선수')),
         h('div', { style: { marginTop: '14px' } }, radar(p.stats)),

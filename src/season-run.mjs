@@ -43,11 +43,11 @@ function withStats(p, stats) {
   return { ...p, stats, ovr, cost: calcCost(ovr) };
 }
 
-/** 단장 구단의 직접 편성이 규칙에 맞는지. 반환: { ok, errors, totalCost } */
+/** 단장 구단의 직접 편성이 규칙에 맞는지. 반환: { ok, errors } */
 export function checkLineup(players, managerId, lineup, rules) {
   const byId = new Map(players.filter((p) => p.teamId === managerId).map((p) => [p.id, p]));
   const pick = (ids) => ids.map((id) => byId.get(id));
-  if ([...lineup.starters, ...lineup.bench].some((id) => !byId.has(id))) return { ok: false, errors: ['우리 구단 선수가 아닌 선수가 있습니다'], totalCost: 0 };
+  if ([...lineup.starters, ...lineup.bench].some((id) => !byId.has(id))) return { ok: false, errors: ['우리 구단 선수가 아닌 선수가 있습니다'] };
   return validateLineup(pick(lineup.starters), pick(lineup.bench), rules);
 }
 
@@ -511,7 +511,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const mine = players.filter((x) => x.teamId === manager);
       const base = eligibility(p, program, { day: regular.day, remainingRoster: mine.length - 1, activeCount: away.size, alreadyAway: away.has(playerId) }, rules);
       if (!base.ok) return base;
-      try { buildLineup(mine.filter((x) => x.id !== playerId), rules, rules.simulation.benchWeight); } catch { return { ok: false, reason: '남는 선수로는 코스트 제한 안에서 라인업을 만들 수 없습니다' }; }
+      try { buildLineup(mine.filter((x) => x.id !== playerId), rules, rules.simulation.benchWeight); } catch { return { ok: false, reason: '남는 선수로는 라인업을 만들 수 없습니다' }; }
       return base;
     },
     /**

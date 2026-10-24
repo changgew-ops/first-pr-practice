@@ -179,7 +179,7 @@ const POS_GROUP = { PG: 'G', SG: 'G', SF: 'F', PF: 'F', C: 'C' };
 export const GROUP_LABEL = { G: '가드', F: '포워드', C: '센터' };
 const SLOTS = [['G', 2], ['F', 2], ['C', 1]];
 
-/** 기록이 아니라 능력치 기준 지표: OVR + 코스트 가중. 가드 2·포워드 2·센터 1, 그 외 포지션 표기는 건너뛴다 */
+/** 기록이 아니라 능력치 기준 지표: OVR 기준(costWeight가 0이 아니면 코스트 가중). 가드 2·포워드 2·센터 1, 그 외 포지션 표기는 건너뛴다 */
 export function expectedBest(players, cfg) {
   const index = (p) => p.ovr + cfg.costWeight * (p.cost ?? 0);
   const sorted = [...players].filter((p) => POS_GROUP[p.position]).sort((a, b) => index(b) - index(a) || b.ovr - a.ovr || a.id.localeCompare(b.id));

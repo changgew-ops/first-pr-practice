@@ -46,7 +46,7 @@ function openDialog(titleId, title, sub, body, foot) {
   return dlg;
 }
 
-const subOf = (ctx, p) => `${p.position} · ${p.age}세 · ${ORIGIN_LABEL[p.origin] ?? p.origin} · OVR ${p.ovr} · POT ${p.potential} · 코스트 ${p.cost} · ${ctx.name(p.teamId)}`;
+const subOf = (ctx, p) => `${p.position} · ${p.age}세 · ${ORIGIN_LABEL[p.origin] ?? p.origin} · OVR ${p.ovr} · POT ${p.potential} · ${ctx.name(p.teamId)}`;
 
 /** 방출 확인 창. onDone: 방출이 끝난 뒤(화면 갱신) */
 export function openReleaseDialog(ctx, player, { onDone = () => ctx.refresh() } = {}) {

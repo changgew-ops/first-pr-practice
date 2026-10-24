@@ -35,7 +35,6 @@ export function render(ctx, pending) {
         h('input', { type: 'radio', name: 'foreign', 'aria-label': `${p.name} 영입`, disabled: !ok, checked: pick === p.id, onchange: () => { pick = p.id; draw(); } }),
         playerLine(p),
         h('span', { class: 'os-fact' }, h('span', { class: 'note' }, '요구'), h('b', usdText(usd))),
-        h('span', { class: 'os-fact' }, h('span', { class: 'note' }, '코스트'), h('b', p.cost)),
         h('span', { class: 'note' }, STAT_LABEL.map(([k, l]) => `${l} ${p.stats[k]}`).join(' · ')),
         p.card?.minutes ? h('span', { class: 'note' }, `${p.card.gp}경기 ${Math.round(p.card.minutes / Math.max(1, p.card.gp))}분`) : null,
         ok ? null : h('span', { class: 'os-why bad' }, `영입 불가: ${why}`))))),
