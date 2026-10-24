@@ -1,23 +1,26 @@
-// 라인업 편성: 코트 위 포지션 자리(PG·SG·SF·PF·C)와 벤치 칸에 우리 구단 선수를 넣고, 코스트 제한·외국 선수 수를 확인해 적용한다.
+// 라인업 편성: 코트 위 포지션 자리(PG·SG·SF·PF·C)와 벤치 칸에 우리 구단 선수를 넣고, 외국 선수 수를 확인해 적용한다.
+// 능력치 보기: 코트·벤치 카드의 미니 막대와 강점 칩, 선수 목록의 능력치 열(색 단계 + 숫자, 같은 포지션 평균과의 차이), 선택한 선수의 레이더 상세, 스타팅 평균 능력치 막대.
 // 선수 옮기기(셋 다 같은 규칙):
 //   · 누르기: 코트 카드·벤치 칸·목록 행 어디든 한 번 누르면 선택, 이어서 다른 선수나 빈 칸을 누르면 서로 바뀐다(목록 선수는 그 자리로 들어가고 원래 선수는 빠진다).
 //     선택한 선수는 [빼기]나 위쪽 "빼기" 칸을 눌러 한 번에 뺀다. Esc나 같은 칸을 다시 누르면 선택 해제.
 //   · 끌기: 마우스는 바로, 터치는 길게 눌렀다가 끌면 FM처럼 고스트 카드가 따라오고 놓을 수 있는 칸이 강조된다.
 //   · 키보드: 칸·행에서 Enter/Space로 누르기와 같다.
 // 적용한 편성은 시즌이 끝날 때까지 쓰이고(선수가 팀을 떠나면 자동으로 돌아간다), 새 시즌에는 자동 편성으로 초기화된다.
-import { h, svg, ovrChip, bar, stat, ORIGIN_LABEL } from '../lib/dom.js';
+import { h, svg, ovrChip, stat, radar, signed, STAT_KEYS, ORIGIN_LABEL } from '../lib/dom.js';
+import { openPlayerInfo, positionAverages, statRows } from '../lib/player-info.js';
 import { avatarEl } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
 import { injuryMap, injuryTag, injuryCard } from '../lib/injury-view.js';
 import { tacticsCard, conditionCard, condBar, conditionOf } from '../lib/tactics-view.js';
 import {
   evalDraft, autoDraft, rosterOfTeam, POSITIONS, powerOf, seatFit, slotsFromDraft, draftFromSlots, sameArrangement,
-  firstFreeSlot, placeInSlot, slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS
+  firstFreeSlot, placeInSlot, slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS,
+  STAT_SHORT, statHeat, topStats, leagueAverages, teamProfile, positionBalance
 } from '../lib/lineup-view.js';
 
 let edit = null; // { key, slots } — 화면을 다시 그려도(다른 화면에 갔다 와도) 편집 중인 편성을 유지한다
 let autoCache = null;
-let ui = { key: null, sel: null, pos: null, sort: 'ovr', unusedOnly: false }; // sel: 선택한 ref
+let ui = { key: null, sel: null, pos: null, sort: 'ovr', unusedOnly: false, showStats: null }; // sel: 선택한 ref, showStats: 목록의 능력치 열(null이면 화면 폭으로 정함)
 let justDragged = false;
 let escHandler = null;
 window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && escHandler) escHandler(); });
@@ -117,7 +120,9 @@ export function render(ctx) {
   }
   const auto = autoCache.draft;
   const appliedNow = () => s.lineup ?? auto; // 지금 경기에 쓰이는 편성(적용할 때마다 바뀐다)
-  if (ui.key !== key) ui = { key, sel: null, pos: null, sort: 'ovr', unusedOnly: false };
+  if (ui.key !== key) ui = { key, sel: null, pos: null, sort: 'ovr', unusedOnly: false, showStats: ui.showStats };
+  if (ui.showStats == null) ui.showStats = window.innerWidth > 560;
+  const posAvgs = positionAverages(s.players), leagueAvg = leagueAverages(s.players);
   if (!edit || edit.key !== key) edit = { key, slots: slotsFromDraft(appliedNow(), roster, rules, { arrange: !s.lineup }), sig, auto };
   else if (!s.lineup && edit.sig !== sig && sameArrangement(draftFromSlots(edit.slots), edit.auto)) edit = { key, slots: slotsFromDraft(auto, roster, rules, { arrange: true }), sig, auto }; // 자동 편성을 쓰는 중이고 편집을 안 했다면, 부상·복귀로 달라진 자동 편성을 따라간다
   else if (edit.sig !== sig) { edit.sig = sig; edit.auto = auto; }
@@ -136,7 +141,6 @@ export function render(ctx) {
     const applied = appliedNow();
     const dirty = !sameArrangement(draft, applied);
     const customApplied = Boolean(s.lineup);
-    const cap = rules.lineup.costCap;
     const onCourt = rules.foreignPlayers.onCourt;
     const diff = e.power - autoEval.power;
     const nBench = rules.lineup.bench;
@@ -197,16 +201,22 @@ export function render(ctx) {
       p.origin !== 'domestic' ? h('span', { class: 'lu-tag foreign', title: ORIGIN_LABEL[p.origin] }, p.origin === 'foreign' ? '외국' : '아쿼') : null,
       seatPos && seatFit(p, seatPos) !== 'exact' ? h('span', { class: `lu-tag fit-${seatFit(p, seatPos)}`, title: `${p.position} 선수를 ${seatPos} 자리에 두었습니다` }, `${p.position} ${FIT_LABEL[seatFit(p, seatPos)]}`) : null
     ];
+    // 능력치 요약: 6칸 미니 막대(높이=값, 색 단계) + 강점 칩. 값은 칩·title·aria-label에도 숫자로 적는다.
+    const miniBars = (p) => h('span', { class: 'lu-mini', role: 'img', 'aria-label': STAT_KEYS.map((k) => `${STAT_SHORT[k]} ${p.stats[k]}`).join(', ') },
+      STAT_KEYS.map((k) => h('span', { class: 'lu-mini-col', title: `${STAT_SHORT[k]} ${p.stats[k]}` },
+        h('i', { class: `h${statHeat(p.stats[k])}`, style: { height: `${Math.round(Math.max(10, Math.min(100, ((p.stats[k] - 30) / 65) * 100)))}%` } }),
+        h('em', { 'aria-hidden': 'true' }, STAT_SHORT[k][0]))));
+    const strongChips = (p, n) => h('span', { class: 'lu-strong' }, topStats(p, n, 0).strong.map(({ key, value }) => h('span', { class: `lu-stchip h${statHeat(value)}`, title: `강점: ${STAT_SHORT[key]} ${value}` }, `${STAT_SHORT[key]} ${value}`)));
     const slotButton = (cls, ref, p, seatPos, emptyLabel) => {
       const selected = sameRef(ui.sel, ref);
       const el = h('button', {
         type: 'button', class: `lu-slot ${cls} ${p ? 'filled' : 'empty'} ${selected ? 'selected' : ''} ${p && seatPos ? `fit-${seatFit(p, seatPos)}` : ''}`,
         'data-drop': 'slot', 'data-area': ref.area, 'data-index': ref.index, 'aria-pressed': String(selected), disabled: !live,
-        'aria-label': p ? `${labelOf(ref)}: ${p.name}, ${p.position}, OVR ${p.ovr}, 코스트 ${p.cost}` : `${labelOf(ref)}: 비어 있음`,
+        'aria-label': p ? `${labelOf(ref)}: ${p.name}, ${p.position}, OVR ${p.ovr}, ${STAT_KEYS.map((k) => `${STAT_SHORT[k]} ${p.stats[k]}`).join(' ')}` : `${labelOf(ref)}: 비어 있음`,
         onclick: () => press(ref)
       },
       seatPos ? h('span', { class: 'lu-seatpos' }, seatPos) : h('span', { class: 'lu-seatpos' }, `벤치 ${ref.index + 1}`),
-      p ? [avatarEl(p, { size: seatPos ? 36 : 34, teamColor: colorOf(p.teamId), cls: 'avatar-lu' }), h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p), h('span', { class: 'lu-cost' }, `코 ${p.cost}`)), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
+      p ? [avatarEl(p, { size: seatPos ? 36 : 34, teamColor: colorOf(p.teamId), cls: 'avatar-lu' }), h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p)), miniBars(p), strongChips(p, seatPos ? 2 : 1), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
         : [h('span', { class: 'lu-plus', 'aria-hidden': 'true' }, '+'), h('span', { class: 'lu-emptylabel' }, emptyLabel)]);
       if (p) enableDrag(el, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return el;
@@ -248,6 +258,9 @@ export function render(ctx) {
     const roleText = (p) => { const t = refOfPlayer(slots, p.id); return t.kind === 'pool' ? '제외' : t.area === 'seat' ? `스타팅 ${POSITIONS[t.index]}` : `벤치 ${t.index + 1}`; };
     const selSeat = ui.sel?.kind === 'slot' && ui.sel.area === 'seat' ? POSITIONS[ui.sel.index] : null;
     const shown = poolList(roster, { pos: ui.pos, sort: ui.sort }).filter((p) => !ui.unusedOnly || refOfPlayer(slots, p.id).kind === 'pool');
+    // 능력치 칸: 색 단계(0~4)와 숫자, 같은 포지션 평균보다 8 이상 높으면 ▲, 8 이상 낮으면 ▼ (title에 평균과 차이)
+    const statCell = (r) => h('td', { class: `r lu-st h${statHeat(r.value)}`, title: r.avg == null ? `${r.label} ${r.value}` : `${STAT_SHORT[r.key]} ${r.value} · 같은 포지션 평균 ${Math.round(r.avg)} (${signed(r.diff)})` },
+      r.value, r.diff >= 8 ? h('sup', { class: 'up', 'aria-label': '포지션 평균보다 높음' }, '▲') : r.diff <= -8 ? h('sup', { class: 'down', 'aria-label': '포지션 평균보다 낮음' }, '▼') : null);
     const rows = shown.map((p) => {
       const ref = refOfPlayer(slots, p.id);
       const picked = sameRef(ui.sel, ref) || (ui.sel?.kind === 'slot' && selId === p.id);
@@ -258,21 +271,53 @@ export function render(ctx) {
         onclick: (ev) => { if (ev.target.closest('a, [data-nodrag]')) return; press(refOfPlayer(slots, p.id)); },
         onkeydown: (ev) => { if ((ev.key === 'Enter' || ev.key === ' ') && ev.target === tr) { ev.preventDefault(); press(refOfPlayer(slots, p.id)); } }
       },
-      h('td', { class: 'lu-namecell' }, h('span', { class: 'lu-pname' }, p.name), hurt.get(p.id) ? injuryTag(hurt.get(p.id)) : null, h('a', { href: `#/player/${p.id}`, class: 'lu-info', title: `${p.name} 선수 정보`, 'aria-label': `${p.name} 선수 정보`, 'data-nodrag': '1', onclick: (ev) => ev.stopPropagation() }, 'ⓘ'), condOf ? condBar(condOf(p.id), { compact: true }) : null),
+      h('td', { class: 'lu-namecell' }, h('span', { class: 'lu-pname' }, p.name), hurt.get(p.id) ? injuryTag(hurt.get(p.id)) : null, h('button', { type: 'button', class: 'lu-info', title: `${p.name} 선수 정보`, 'aria-label': `${p.name} 선수 정보`, 'aria-haspopup': 'dialog', 'data-nodrag': '1', onclick: (ev) => { ev.stopPropagation(); openPlayerInfo(ctx, p); } }, 'ⓘ'), condOf ? condBar(condOf(p.id), { compact: true }) : null),
       h('td', h('span', { class: 'pos' }, p.position), selSeat && seatFit(p, selSeat) !== 'exact' ? h('span', { class: `lu-tag fit-${seatFit(p, selSeat)}` }, FIT_LABEL[seatFit(p, selSeat)]) : null),
-      h('td', { class: 'r lu-hide-sm lu-hide-md' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.cost),
+      h('td', { class: 'r lu-hide-sm lu-hide-md' }, p.age), h('td', { class: 'r' }, ovrChip(p)),
+      ...(ui.showStats ? statRows(p, posAvgs).map((r) => statCell(r)) : []),
       h('td', { class: 'lu-hide-sm lu-hide-md' }, p.origin === 'domestic' ? '' : h('span', { class: 'tag' }, ORIGIN_LABEL[p.origin])),
       h('td', h('span', { class: `lu-role ${ref.kind === 'pool' ? 'out' : ''}` }, roleText(p))),
       h('td', ref.kind === 'pool' ? h('button', { type: 'button', class: 'btn ghost lu-quick', 'data-nodrag': '1', disabled: !live, title: '빈 칸에 바로 넣기', 'aria-label': `${p.name}을(를) 빈 칸에 넣기`, onclick: (ev) => { ev.stopPropagation(); quickAdd(p); } }, '＋') : null));
       enableDrag(tr, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return tr;
     });
+    const headCols = [
+      { label: '이름' }, { label: '포지션', sort: 'pos' }, { label: '나이', cls: 'r lu-hide-sm lu-hide-md', sort: 'age' }, { label: 'OVR', cls: 'r', sort: 'ovr' },
+      ...(ui.showStats ? STAT_KEYS.map((k) => ({ label: STAT_SHORT[k], cls: 'r', sort: k })) : []),
+      { label: '구분', cls: 'lu-hide-sm lu-hide-md' }, { label: '지금' }, { label: '' }];
     const chip = (label, on, fn) => h('button', { type: 'button', class: `lu-chip ${on ? 'on' : ''}`, 'aria-pressed': String(on), onclick: fn }, label);
     const filters = h('div', { class: 'lu-filters' },
       h('div', { class: 'lu-chips', role: 'group', 'aria-label': '포지션 필터' }, chip('전체', !ui.pos, () => { ui.pos = null; draw(); }), POSITIONS.map((pos) => chip(pos, ui.pos === pos, () => { ui.pos = ui.pos === pos ? null : pos; draw(); }))),
       h('label', { class: 'lu-sort' }, h('span', { class: 'note' }, '정렬'), h('select', { onchange: (ev) => { ui.sort = ev.target.value; draw(); } }, Object.entries(POOL_SORTS).map(([k, [label]]) => h('option', { value: k, selected: ui.sort === k }, label)))),
-      chip('엔트리 밖만', ui.unusedOnly, () => { ui.unusedOnly = !ui.unusedOnly; draw(); }));
+      chip('엔트리 밖만', ui.unusedOnly, () => { ui.unusedOnly = !ui.unusedOnly; draw(); }),
+      chip('능력치 열', ui.showStats, () => { ui.showStats = !ui.showStats; draw(); }));
 
+    // 선택한 선수 상세: 레이더 + 능력치 6줄(같은 포지션 평균 대비) + 정보 창
+    const detailOf = (p) => {
+      const rowsD = statRows(p, posAvgs);
+      const { strong, weak } = topStats(p, 2, 1);
+      return h('div', { class: 'lu-detail', role: 'region', 'aria-label': `${p.name} 능력치 상세` },
+        h('div', { class: 'lu-detail-radar' }, radar(p.stats, { size: 190 })),
+        h('div', { class: 'lu-detail-body' },
+          h('div', { class: 'lu-detail-head' }, h('b', p.name), ovrChip(p), h('span', { class: 'note' }, `${p.position} · ${p.age}세 · ${roleText(p)}`)),
+          h('div', { class: 'note' }, `강점 ${strong.map((x) => `${STAT_SHORT[x.key]} ${x.value}`).join(' · ')} / 약점 ${weak.map((x) => `${STAT_SHORT[x.key]} ${x.value}`).join(' · ')}`),
+          h('ul', { class: 'lu-detail-rows' }, rowsD.map((r) => h('li', { class: `h${statHeat(r.value)}` },
+            h('span', { class: 'lu-dl' }, STAT_SHORT[r.key]), h('b', r.value),
+            h('span', { class: 'lu-dbar', 'aria-hidden': 'true' }, h('i', { style: { width: `${Math.max(2, Math.min(100, r.value))}%` } }), r.avg != null ? h('s', { style: { left: `${Math.min(100, r.avg)}%` } }) : null),
+            h('span', { class: `lu-dd ${r.diff > 0 ? 'up' : r.diff < 0 ? 'down' : ''}`, title: '같은 포지션 평균과의 차이' }, r.avg == null ? '' : `${signed(r.diff)}`)))),
+          h('button', { type: 'button', class: 'btn ghost lu-detail-btn', 'data-nodrag': '1', onclick: () => openPlayerInfo(ctx, p) }, '선수 정보 창')));
+    };
+    const selPlayer = selId ? byId.get(selId) : null;
+    // 스타팅 능력치: 스타팅 평균을 리그 평균과 견준다
+    const prof = teamProfile(e.starters, leagueAvg);
+    const balance = positionBalance(e.starters);
+    const profileCard = h('div', { class: 'card lu-profile' },
+      h('div', { class: 'row between lu-poshead' }, h('h2', { style: { margin: 0 } }, '스타팅 능력치'), h('span', { class: 'note' }, '스타팅 5명 평균 · 세로선은 리그 전체 선수 평균')),
+      e.starters.length ? h('ul', { class: 'lu-prof' }, prof.map((r) => h('li', { class: `h${statHeat(r.value)}`, title: `${r.label} ${r.value.toFixed(1)} · 리그 평균 ${r.avg.toFixed(1)}` },
+        h('span', { class: 'lu-dl' }, r.label), h('b', r.value.toFixed(1)),
+        h('span', { class: 'lu-dbar', 'aria-hidden': 'true' }, h('i', { style: { width: `${Math.max(2, Math.min(100, r.value))}%` } }), h('s', { style: { left: `${Math.min(100, r.avg)}%` } })),
+        h('span', { class: `lu-dd ${r.diff > 0.4 ? 'up' : r.diff < -0.4 ? 'down' : ''}` }, `${r.diff > 0 ? '+' : ''}${r.diff.toFixed(1)}`)))) : h('p', { class: 'muted', style: { margin: 0 } }, '스타팅 선수를 넣으면 능력치 평균이 나옵니다.'),
+      h('p', { class: `note lu-balance ${balance.ok ? 'ok' : ''}` }, balance.text));
     const hurtInDraft = [...slots.seats, ...slots.bench].filter((id) => id && hurt.has(id));
     const injWarn = hurt.size ? h('div', { class: 'card inj-warn' },
       h('b', `부상 선수 ${hurt.size}명이 있습니다`),
@@ -283,9 +328,9 @@ export function render(ctx) {
       h('div', { class: 'grid g4' },
         stat('스타팅', `${e.starters.length} / ${rules.lineup.starters}`, e.starters.length === rules.lineup.starters ? '완성' : `${rules.lineup.starters}명을 채워 주세요`),
         stat('벤치', `${e.bench.length} / ${nBench}`, e.bench.length === nBench ? '완성' : `${nBench}명을 채워 주세요`),
-        stat('코스트', `${e.totalCost} / ${cap}`, e.totalCost > cap ? `${e.totalCost - cap} 초과` : `여유 ${cap - e.totalCost}`),
+        stat('팀 전력', e.power.toFixed(1), `자동 편성 ${autoEval.power.toFixed(1)}`),
         stat('스타팅 외국 선수', `${e.foreignStarters}명`, `동시에 ${onCourt}명까지`)),
-      h('div', { class: 'card' }, h('div', { class: 'row between' }, h('span', { class: 'note' }, `코스트 사용 · 엔트리 ${rules.lineup.starters + nBench}명(스타팅 ${rules.lineup.starters} + 벤치 ${nBench})`), h('span', { class: 'note' }, `${e.totalCost}/${cap}`)), bar(e.totalCost, cap, { cls: e.totalCost > cap ? 'bad' : e.totalCost > cap - 3 ? 'warn' : '' })),
+      profileCard,
       e.errors.length ? h('div', { class: 'lu-errors', role: 'alert' }, h('b', '이 편성은 적용할 수 없습니다'), h('ul', e.errors.map((m) => h('li', m)))) : message('규칙에 맞는 편성입니다.', 'ok'),
       h('div', { class: 'card lu-actions' },
         h('div', { class: 'row' },
@@ -308,19 +353,20 @@ export function render(ctx) {
           h('h3', { class: 'lu-benchtitle' }, `벤치 ${nBench}명`), benchRow,
           h('p', { class: 'note' }, '포지션 자리는 보기용입니다. 경기 시뮬레이션은 자리와 포지션이 맞는지 따지지 않고, 출전 시간은 스타팅·벤치 각각 OVR이 높은 순서로 나눕니다. 외국 선수는 스타팅에 동시에 2명까지 둘 수 있습니다.')),
         h('div', { class: 'card flush lu-listcard', 'data-drop': 'out' },
-          h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '선수 목록'), h('p', { class: 'note', style: { margin: '4px 0 8px' } }, '행을 누르면 선택, 이어서 코트의 칸이나 다른 선수를 누르면 바뀝니다. 행을 칸으로 끌어 놓아도 되고, 코트 선수를 이 목록으로 끌어 오면 편성에서 빠집니다. 이름 옆 ⓘ는 선수 정보입니다.'), filters),
+          h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '선수 목록'), h('p', { class: 'note', style: { margin: '4px 0 8px' } }, '행을 누르면 선택, 이어서 코트의 칸이나 다른 선수를 누르면 바뀝니다. 행을 칸으로 끌어 놓아도 되고, 코트 선수를 이 목록으로 끌어 오면 편성에서 빠집니다. 이름 옆 ⓘ는 선수 정보 창, 머리글(OVR·능력치)을 누르면 그 순서로 정렬합니다.'), filters, selPlayer ? detailOf(selPlayer) : null),
           h('div', { class: 'table-wrap lu-listscroll' }, h('table', { class: 'lu-table' },
-            h('thead', h('tr', ['이름', '포지션', '나이', 'OVR', '코스트', '구분', '지금', ''].map((t, i) => h('th', { class: `${[2, 3, 4].includes(i) ? 'r' : ''} ${[2, 5].includes(i) ? 'lu-hide-sm lu-hide-md' : ''}` }, t)))),
-            h('tbody', rows.length ? rows : h('tr', h('td', { colspan: 8, class: 'muted' }, '조건에 맞는 선수가 없습니다.')))))),
+            h('thead', h('tr', headCols.map((c) => h('th', { class: `${c.cls ?? ''}`, 'aria-sort': c.sort && ui.sort === c.sort ? 'descending' : null },
+              c.sort ? h('button', { type: 'button', class: `lu-th ${ui.sort === c.sort ? 'on' : ''}`, title: `${c.label} 순으로 정렬`, onclick: () => { ui.sort = ui.sort === c.sort ? 'ovr' : c.sort; draw(); } }, c.label) : c.label)))),
+            h('tbody', rows.length ? rows : h('tr', h('td', { colspan: headCols.length, class: 'muted' }, '조건에 맞는 선수가 없습니다.')))))),
       ),
       h('div', { class: 'card lu-compare' },
         h('h2', '자동 편성과 비교'),
         h('div', { class: 'lu-cmp-grid' },
           h('div', h('div', { class: 'note' }, '현재 편집'), h('div', { class: 'lu-big' }, e.power.toFixed(1)), h('div', { class: 'note' }, `스타팅 ${powerOf(e.starters, []).toFixed(1)} · 벤치 ${e.bench.length ? powerOf(e.bench, []).toFixed(1) : '-'}`)),
-          h('div', h('div', { class: 'note' }, '자동 편성'), h('div', { class: 'lu-big' }, autoEval.power.toFixed(1)), h('div', { class: 'note' }, `코스트 ${autoEval.totalCost}/${cap}`)),
+          h('div', h('div', { class: 'note' }, '자동 편성'), h('div', { class: 'lu-big' }, autoEval.power.toFixed(1)), h('div', { class: 'note' }, `스타팅 ${powerOf(autoEval.starters, []).toFixed(1)} · 벤치 ${autoEval.bench.length ? powerOf(autoEval.bench, []).toFixed(1) : '-'}`)),
           h('div', h('div', { class: 'note' }, '차이'), h('div', { class: `lu-big ${diff > 0.05 ? 'good' : diff < -0.05 ? 'bad' : ''}` }, `${diff > 0 ? '+' : ''}${diff.toFixed(1)}`), h('div', { class: 'note' }, '스타팅 70% + 벤치 30%'))))].filter(Boolean));
   };
   draw();
   return { title: '라인업', body: h('div', { class: 'stack lineup-view' },
-    h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '라인업'), h('h1', '라인업 · 코스트'))), host) };
+    h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '라인업'), h('h1', '라인업'))), host) };
 }

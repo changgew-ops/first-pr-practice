@@ -29,7 +29,6 @@
 .lineup-view .lu-seat .lu-seatpos { background: var(--team); color: var(--accent-ink); border-radius: 99px; padding: 0 8px; }
 .lineup-view .lu-name { font-weight: 700; font-size: .88rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .lineup-view .lu-line { white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: .78rem; }
-.lineup-view .lu-cost { color: var(--muted); font-variant-numeric: tabular-nums; }
 .lineup-view .lu-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; min-height: 1em; }
 .lineup-view .lu-tag { font-size: .66rem; font-weight: 700; padding: 0 6px; border-radius: 99px; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); }
 .lineup-view .lu-tag.foreign { color: var(--focus); border-color: var(--focus); }
@@ -144,4 +143,60 @@ body.lu-dragging .lineup-view .lu-slot, body.lu-dragging .lineup-view .lu-row { 
   .lineup-view .lu-postarget { font-size: .62rem; }
   .lineup-view .lu-outzone { min-height: 46px; }
   .lineup-view .lu-info { padding: 6px 8px; }
+}
+
+/* ---- 능력치 보기: 색 단계 h0~h4(낮음~높음). 숫자를 같이 적으므로 색은 보조다 ---- */
+.lineup-view { --h0: color-mix(in srgb, var(--muted) 35%, transparent); --h1: color-mix(in srgb, var(--focus) 22%, transparent); --h2: color-mix(in srgb, var(--focus) 42%, transparent); --h3: color-mix(in srgb, var(--focus) 68%, transparent); --h4: var(--accent, var(--focus)); }
+.lineup-view .lu-mini { display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 30px; width: 100%; padding: 0 2px; }
+.lineup-view .lu-mini-col { flex: 1 1 0; max-width: 16px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 1px; }
+.lineup-view .lu-mini-col i { display: block; width: 100%; min-height: 3px; border-radius: 2px 2px 0 0; background: var(--h0); }
+.lineup-view .lu-mini-col i.h1 { background: var(--h1); } .lineup-view .lu-mini-col i.h2 { background: var(--h2); } .lineup-view .lu-mini-col i.h3 { background: var(--h3); } .lineup-view .lu-mini-col i.h4 { background: var(--h4); }
+.lineup-view .lu-mini-col em { font-style: normal; font-size: .52rem; line-height: 1; color: var(--muted); }
+.lineup-view .lu-seat .lu-mini-col i, .lineup-view .lu-bslot .lu-mini-col i { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 18%, transparent); }
+.lineup-view .lu-strong { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; }
+.lineup-view .lu-stchip { font-size: .66rem; font-weight: 700; font-variant-numeric: tabular-nums; padding: 0 6px; border-radius: 99px; border: 1px solid var(--line); background: color-mix(in srgb, var(--panel-2) 80%, transparent); color: var(--text); white-space: nowrap; }
+.lineup-view .lu-stchip.h4 { border-color: var(--h4); } .lineup-view .lu-stchip.h3 { border-color: var(--h3); }
+/* 목록의 능력치 열 */
+.lineup-view .lu-st { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+.lineup-view .lu-row .lu-st.h0 { background: color-mix(in srgb, var(--muted) 14%, transparent); color: var(--muted); }
+.lineup-view .lu-row .lu-st.h1 { background: color-mix(in srgb, var(--focus) 8%, transparent); }
+.lineup-view .lu-row .lu-st.h2 { background: color-mix(in srgb, var(--focus) 18%, transparent); }
+.lineup-view .lu-row .lu-st.h3 { background: color-mix(in srgb, var(--focus) 32%, transparent); font-weight: 700; }
+.lineup-view .lu-row .lu-st.h4 { background: color-mix(in srgb, var(--accent, var(--focus)) 48%, transparent); font-weight: 800; }
+.lineup-view .lu-st sup { font-size: .55rem; margin-left: 2px; vertical-align: super; }
+.lineup-view .lu-st sup.up, .lineup-view .lu-dd.up { color: var(--good); }
+.lineup-view .lu-st sup.down, .lineup-view .lu-dd.down { color: var(--bad); }
+.lineup-view .lu-th { font: inherit; font-weight: 700; color: inherit; background: none; border: 0; padding: 2px 4px; cursor: pointer; border-radius: 6px; white-space: nowrap; }
+.lineup-view .lu-th:hover { background: var(--panel-2); }
+.lineup-view .lu-th.on { color: var(--focus); text-decoration: underline; text-underline-offset: 3px; }
+.lineup-view .lu-th:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.lineup-view .lu-table th { white-space: nowrap; }
+.lineup-view .lu-info { background: none; border: 0; font: inherit; cursor: pointer; }
+.lineup-view .lu-listscroll { overflow-x: auto; }
+/* 선택 선수 상세 */
+.lineup-view .lu-detail { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 10px; padding: 10px 12px; background: var(--panel-2); border: 1px solid var(--line); border-left: 3px solid var(--focus); border-radius: 0 10px 10px 0; }
+.lineup-view .lu-detail-radar { flex: 0 0 150px; width: 150px; margin: -8px 0; }
+.lineup-view .lu-detail-radar .radar { width: 150px; height: 150px; }
+.lineup-view .lu-detail-body { flex: 1 1 200px; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.lineup-view .lu-detail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.lineup-view .lu-detail-rows, .lineup-view .lu-prof { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.lineup-view .lu-detail-rows li, .lineup-view .lu-prof li { display: grid; grid-template-columns: 2.4em 2.6em minmax(0, 1fr) 3em; align-items: center; gap: 6px; font-size: .84rem; font-variant-numeric: tabular-nums; }
+.lineup-view .lu-prof li { grid-template-columns: 2.6em 3em minmax(0, 1fr) 3.2em; font-size: .9rem; }
+.lineup-view .lu-dl { color: var(--muted); font-size: .8rem; }
+.lineup-view .lu-dbar { position: relative; display: block; height: 8px; border-radius: 99px; background: var(--line); }
+.lineup-view .lu-dbar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 99px; background: var(--h2); }
+.lineup-view li.h3 .lu-dbar i { background: var(--h3); } .lineup-view li.h4 .lu-dbar i { background: var(--h4); } .lineup-view li.h1 .lu-dbar i, .lineup-view li.h0 .lu-dbar i { background: var(--h1); }
+.lineup-view .lu-dbar s { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); opacity: .75; text-decoration: none; }
+.lineup-view .lu-dd { text-align: right; font-weight: 700; }
+.lineup-view .lu-detail-btn { align-self: flex-start; padding: 3px 10px; font-size: .8rem; }
+.lineup-view .lu-profile { display: flex; flex-direction: column; gap: 8px; }
+.lineup-view .lu-balance { margin: 0; }
+.lineup-view .lu-balance.ok { color: var(--good); }
+@media (max-width: 560px) {
+  .lineup-view .lu-seat .lu-strong, .lineup-view .lu-seat .lu-mini-col em { display: none; }
+  .lineup-view .lu-seat .lu-mini { height: 18px; gap: 2px; }
+  .lineup-view .lu-bslot .lu-mini { height: 22px; gap: 2px; }
+  .lineup-view .lu-bslot .lu-stchip { font-size: .56rem; padding: 0 4px; }
+  .lineup-view .lu-detail-radar { flex-basis: 100%; width: auto; margin: 0; display: flex; justify-content: center; }
+  .lineup-view .lu-th { padding: 2px; font-size: .78rem; }
 }
