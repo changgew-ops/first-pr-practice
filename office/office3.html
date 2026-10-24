@@ -1048,6 +1048,7 @@ async function janitorLoop() {
   const j = NPC.janitor; let i = 0;
   await sleepReal(5000);
   for (;;) {
+    while (running || document.hidden) await sleepReal(800);                                   // 장면(주문·보고·반려)이 재생되는 동안은 엘리베이터를 직원들에게 양보한다
     const stops = J_STOPS(), [f, x] = stops[i % stops.length]; i++;
     await j.job(async () => {
       await goFloor(j, f, x);
@@ -1641,7 +1642,8 @@ function runDemo() {
     { kind: 'ghost', text: '데모: 야간의 부끄왕' }
   ];
   // 데모는 화면만 바꾸고 db 상태는 건드리지 않는다. 끝나면 원래 배치로 돌아간다.
-  seq.forEach((e) => scenes.push(e)); runScenes().then(() => { if (a) a.forceDesk = false; settleAll(false); });
+  const prevSpeed = SPEED; if (!reduce) SPEED = 1.6;                                      // 데모는 조금 빠르게(너무 길지 않게)
+  seq.forEach((e) => scenes.push(e)); runScenes().then(() => { SPEED = prevSpeed; if (a) a.forceDesk = false; settleAll(false); });
 }
 
 /* =====================================================================
@@ -1660,7 +1662,8 @@ async function boot() {
   document.getElementById('b-demo').addEventListener('click', runDemo);
   document.getElementById('b-night').addEventListener('click', () => { nightForce = !isNight(); nightDemo = false; renderStaff(); announce(isNight() ? '야간 모드로 봅니다.' : '낮 모드로 봅니다.'); });
   document.getElementById('b-replay').addEventListener('click', replayRecent);
-  window.__office = { actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, boss, ghost, npc: NPC, legends: () => LEGENDS, ghostVisit, ghostCatch, setNight: (v) => { nightForce = v; }, setSpeed: (n) => { SPEED = n; } };
+  window.__framesOf = framesOf; window.__hidden = () => ({ ...HIDDEN });
+  window.__office = { isRunning: () => running, actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, boss, ghost, npc: NPC, legends: () => LEGENDS, ghostVisit, ghostCatch, setNight: (v) => { nightForce = v; }, setSpeed: (n) => { SPEED = n; } };
   setInterval(wander, 9000); setInterval(renderStaff, 2500);
   initNpcs(); renderStaff();
   renderDom(); requestAnimationFrame(frame); connect();

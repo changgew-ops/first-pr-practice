@@ -1,6 +1,5 @@
 // 시즌 화면이 쓰는 순수 가공 함수(브라우저 API 없음, node에서 테스트한다).
-import { attendanceFor, popularity, initialAttendance } from '../../src/funds.mjs';
-import { moodOf, fanFactor } from '../../src/fans.mjs';
+import { gameAttendanceCalc } from '../../src/funds.mjs';
 import { capacityOf } from '../../src/arenas.mjs';
 
 const pct = (w, l) => (w + l > 0 ? w / (w + l) : 0);
@@ -97,9 +96,9 @@ export function advanceChoices(day, totalDays, cycle = 9) {
 }
 
 // ---------- 관중 표시 ----------
-// 구단 수입 계산(src/funds.mjs revenueOf)과 같은 모델·같은 키(`r${홈 경기 순번}`, 플레이오프 `p${라운드}:${경기 순번}`)를 읽기 전용으로 부른다.
-// 상태를 저장하지 않으므로 저장·복원과 무관하고, 같은 상태에서는 같은 값이다. 홈 팀의 승률은 지금까지의 순위표 기준이라
-// 시즌 중에는 지나간 경기의 값이 조금 움직일 수 있고, 시즌이 끝나면 정산에 쓰인 값과 같다.
+// 경기 관중은 경기가 진행되는 순간 엔진이 계산해 경기 결과(g.att)에 저장한다(src/season-run.mjs, src/funds.mjs gameAttendanceCalc). 화면은 저장된 값을 읽기만 하므로
+// 시즌이 더 지나도 예전 경기의 숫자가 바뀌지 않고, 구단 수입 정산·홈 카드의 평균 관중과 같은 값의 합이다.
+// 저장된 값이 없는 경기(엔진 밖에서 만든 결과)는 지금 순위표로 다시 계산해 보여 주되 estimate: true로 표시한다.
 
 /** 정규리그 일별 결과에서 (day, i)번 경기가 홈 팀의 몇 번째 홈 경기인지(0부터) */
 export function homeOrdinal(dayResults, day, i) {
@@ -114,29 +113,24 @@ export function homeOrdinal(dayResults, day, i) {
 }
 
 /**
- * 관중 계산기. 반환: (경기, 키) → { attendance, sellout, capacity, occupancy }.
- *  teamData: 구단 목록(venue 포함), standings: 현재 순위표, att: 리그 관중 상태(없으면 출발값), season: 시즌 문자열, rules: 그 시즌 규칙
+ * 관중 조회기. 반환: (경기, { key, round }) → { attendance, sellout, capacity, occupancy, estimate? }.
+ *  teamData: 구단 목록(venue 포함), standings: 현재 순위표(저장된 값이 없을 때의 추정에만 쓴다), att: 리그 관중 상태, season, rules: 그 시즌 규칙
  */
 export function attendanceCalc({ teamData, standings, att, season, rules }) {
-  const state = att ?? initialAttendance(teamData, rules);
-  const fans = Object.values(state.fan);
-  const meanFan = fans.reduce((s, v) => s + v, 0) / Math.max(1, fans.length);
-  const popOf = (id) => (state.fan[id] ?? 1) / meanFan;
-  const winPct = (id) => { const r = standings.find((x) => x.id === id); return r ? r.wins / Math.max(1, r.wins + r.losses) : 0.5; };
-  const poRules = rules.revenue.gate.playoff;
+  const calc = gameAttendanceCalc({ teamData, att, season, rules });
+  const winPct = (id) => { const r = standings.find((x) => x.id === id); return r && r.wins + r.losses ? r.wins / (r.wins + r.losses) : 0.5; };
   return (g, { key, round = null }) => {
-    const team = teamData.find((t) => t.id === g.homeId);
-    const capacity = team ? capacityOf(team) : null;
-    const pop = popularity((state.fan[g.homeId] ?? 1) * fanFactor(moodOf(state, g.homeId, rules), rules), winPct(g.homeId), rules);
-    const a = round
-      ? attendanceFor({ season, teamId: g.homeId, key, pop, weight: (poRules[round === '챔피언결정전' ? '결승' : round] ?? poRules['6강']).attendance, capacity, scale: state.index }, rules)
-      : attendanceFor({ season, teamId: g.homeId, key, pop, oppPop: popOf(g.awayId), capacity, scale: state.index }, rules);
-    return { attendance: a.attendance, sellout: a.sellout, capacity, occupancy: capacity ? a.attendance / capacity : null };
+    if (g.att != null) {
+      const team = teamData.find((t) => t.id === g.homeId);
+      const capacity = team ? capacityOf(team) : null;
+      return { attendance: g.att, sellout: capacity != null && g.att >= capacity, capacity, occupancy: capacity ? g.att / capacity : null };
+    }
+    return { ...calc(g, { key, round, winPct: winPct(g.homeId) }), estimate: true };
   };
 }
 
 /** "관중 2,987명 · 점유율 78%" / "관중 4,200명 · 매진" 같은 한 줄 */
 export function attendanceText(a) {
   if (!a) return '';
-  return `관중 ${a.attendance.toLocaleString('ko-KR')}명${a.sellout ? ' · 매진' : a.occupancy != null ? ` · 점유율 ${Math.round(a.occupancy * 100)}%` : ''}`;
+  return `관중 ${a.attendance.toLocaleString('ko-KR')}명${a.sellout ? ' · 매진' : a.occupancy != null ? ` · 점유율 ${Math.round(a.occupancy * 100)}%` : ''}${a.estimate ? ' (추정)' : ''}`;
 }

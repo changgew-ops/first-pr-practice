@@ -113,9 +113,10 @@ export function render(ctx) {
   const key = `${s.game.seed}:${s.season}`;
   const hurt = injuryMap(s); // 결장 중인 선수: 자동 편성에서 빠진다
   const condOf = s.stage === 'regular' ? conditionOf(s, rules) : null; // 컨디션(시즌 중에만)
-  const sig = roster.map((p) => `${p.id}:${p.ovr}:${hurt.has(p.id) ? 'x' : ''}`).join(',');
+  const restIds = new Set(s.rest); // 다음 경기에서 쉬게 한 선수: 엔진도 이 경기만 결장한 것처럼 자동 편성에서 뺀다(src/season-run.mjs buildTeams)
+  const sig = roster.map((p) => `${p.id}:${p.ovr}:${hurt.has(p.id) ? 'x' : ''}${restIds.has(p.id) ? 'r' : ''}`).join(',');
   if (!autoCache || autoCache.key !== key || autoCache.sig !== sig) {
-    const raw = autoDraft(roster, rules, hurt);
+    const raw = autoDraft(roster, rules, new Map([...[...hurt].map(([id, i]) => [id, i.left ?? 1]), ...[...restIds].map((id) => [id, 1])])); // id → 남은 결장 경기 수
     autoCache = { key, sig, draft: draftFromSlots(slotsFromDraft(raw, roster, rules, { arrange: true })) }; // 자동 편성도 포지션에 맞춰 자리를 앉힌다
   }
   const auto = autoCache.draft;
@@ -123,8 +124,8 @@ export function render(ctx) {
   if (ui.key !== key) ui = { key, sel: null, pos: null, sort: 'ovr', unusedOnly: false, showStats: ui.showStats };
   if (ui.showStats == null) ui.showStats = window.innerWidth > 560;
   const posAvgs = positionAverages(s.players), leagueAvg = leagueAverages(s.players);
-  if (!edit || edit.key !== key) edit = { key, slots: slotsFromDraft(appliedNow(), roster, rules, { arrange: !s.lineup }), sig, auto };
-  else if (!s.lineup && edit.sig !== sig && sameArrangement(draftFromSlots(edit.slots), edit.auto)) edit = { key, slots: slotsFromDraft(auto, roster, rules, { arrange: true }), sig, auto }; // 자동 편성을 쓰는 중이고 편집을 안 했다면, 부상·복귀로 달라진 자동 편성을 따라간다
+  if (!edit || edit.key !== key || edit.sess !== s) edit = { key, sess: s, slots: slotsFromDraft(appliedNow(), roster, rules, { arrange: !s.lineup }), sig, auto };
+  else if (!s.lineup && edit.sig !== sig && sameArrangement(draftFromSlots(edit.slots), edit.auto)) edit = { key, sess: s, slots: slotsFromDraft(auto, roster, rules, { arrange: true }), sig, auto }; // 자동 편성을 쓰는 중이고 편집을 안 했다면, 부상·복귀로 달라진 자동 편성을 따라간다
   else if (edit.sig !== sig) { edit.sig = sig; edit.auto = auto; }
   { // 없어진 선수(방출·이적)를 비운다
     const ids = new Set(roster.map((p) => p.id));

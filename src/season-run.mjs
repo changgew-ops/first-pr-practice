@@ -15,7 +15,7 @@ import { addGameToSplits } from './player-record.mjs';
 import { updateSkillsFromSeason } from './stats-rating.mjs';
 import { trainPlayer, autoFocus } from './training.mjs';
 import { seedLegacy, appendSeason, prestigeTable } from './legacy.mjs';
-import { initialFunds, settleSeason } from './funds.mjs';
+import { initialFunds, settleSeason, initialAttendance, gameAttendanceCalc } from './funds.mjs';
 import { advanceMood } from './fans.mjs';
 import { waiversOn, priorRanks, claimOrder, newWaiver, waiverLeft, claimCheck, resolveWaiver, claimedPlayer } from './waivers.mjs';
 import { calcOvr, calcCost } from './rating.mjs';
@@ -238,11 +238,13 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     onCheckpoint: () => { applyUpdates(); applyTraining(); return buildTeams(); }
   });
   let playoffs = null;
+  let poTeams = null; // 플레이오프가 시리즈마다 읽는 구단 → 팀(라인업 포함) 표. 플레이오프 중에 편성을 바꾸면 이 표도 같이 바꾼다(다음 라운드부터 반영)
   let finished = null;
   const tradeOpen = () => regular.day <= rules.transactions.trade.deadlineDay && !playoffs;
 
   // ---------- 부상과 시즌 중 선수단 변동 ----------
-  const rebuildTeams = () => { const built = buildTeams(); regular.setTeams(built.teams, built.baseline); };
+  const syncPlayoffTeams = (teams) => { if (poTeams) for (const t of teams) poTeams.set(t.id, t); };
+  const rebuildTeams = () => { const built = buildTeams(); regular.setTeams(built.teams, built.baseline); syncPlayoffTeams(built.teams); };
   const playerById = (id) => players.find((p) => p.id === id);
   const lineupHas = (id) => lineup && [...lineup.starters, ...lineup.bench].includes(id);
   const inactiveForeign = (teamId) => [...injured.values()].filter((i) => i.teamId === teamId && i.temp).map((i) => i.playerId); // 일시교체 선수가 대신 뛰는 부상 선수
@@ -448,8 +450,30 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     }
     for (const p of players) cond.set(p.id, nextCondition(condOf(p.id), p, minutes.get(p.id) ?? 0, rules, recoveryMul(staff?.[p.teamId], rules)));
   };
+  // 관중: 경기가 진행되는 순간 그 경기의 관중을 계산해 경기 결과(g.att)에 저장한다. 정규리그는 경기 직전 순위표의 홈 팀 승률, 플레이오프는 정규리그 최종 승률로 계산한다.
+  // 저장한 값은 다시 계산하지 않으므로 시즌이 더 지나도 예전 경기의 관중이 바뀌지 않고, 시즌 정산(src/funds.mjs revenueOf)도 이 합계를 그대로 쓴다(attReg)
+  const attCalc = gameAttendanceCalc({ teamData, att: league.att ?? initialAttendance(teamData, rules), season: league.season, rules });
+  const winPctNow = (standings) => new Map(standings.map((r) => [r.id, r.wins + r.losses ? r.wins / (r.wins + r.losses) : 0.5]));
+  const homeCount = new Map(); // 구단 → 지금까지 치른 정규리그 홈 경기 수(관중 키 r0, r1 …)
+  const attReg = new Map(); // 구단 → { total, n, sellouts }
+  const stampRegularAtt = (games, before) => {
+    for (const g of games) {
+      const n = homeCount.get(g.homeId) ?? 0; homeCount.set(g.homeId, n + 1);
+      const a = attCalc(g, { key: `r${n}`, winPct: before.get(g.homeId) ?? 0.5 });
+      g.att = a.attendance;
+      const t = attReg.get(g.homeId) ?? { total: 0, n: 0, sellouts: 0 };
+      t.total += a.attendance; t.n++; if (a.sellout) t.sellouts++;
+      attReg.set(g.homeId, t);
+    }
+  };
+  const stampPlayoffAtt = (seriesList) => {
+    const fin = winPctNow(regular.standings());
+    for (const sr of seriesList) sr.games.forEach((g, i) => { g.att = attCalc(g, { key: `p${sr.round}:${i}`, round: sr.round, winPct: fin.get(g.homeId) ?? 0.5 }).attendance; });
+  };
   const playDayFull = () => {
+    const before = winPctNow(regular.standings());
     const r = regular.playDay();
+    stampRegularAtt(r.games, before);
     let changed = injuriesOn ? afterDay(r) : false;
     if (condEnabled) { updateCondition(r); changed = true; } // 컨디션이 바뀌었으니 팀 보정(이득)·AI의 휴식 판단을 다시 한다
     if (restNext.size) { restNext = new Set(); changed = true; }
@@ -466,6 +490,11 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     get players() { return players; },
     get focus() { return focus; },
     get lineup() { return lineup; },
+    /** 다음 경기에 실제로 쓰이는 구단 편성 { starters, bench }(선수 객체): 직접 편성·부상 대체·휴식·컨디션까지 반영한 엔진의 값. 화면의 "전력" 표시는 이것을 써야 실제와 어긋나지 않는다 */
+    lineupOf(teamId) {
+      const t = (poTeams?.get(teamId)) ?? regular.teams.find((x) => x.id === teamId);
+      return t ? { starters: [...t.lineup.starters], bench: [...t.lineup.bench] } : null;
+    },
     get playoffs() { return playoffs; },
     get totals() { return totals; },
     get splits() { return splits; },
@@ -488,6 +517,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       lineup = next ? { starters: [...next.starters], bench: [...next.bench] } : null;
       const built = buildTeams();
       regular.setTeams(built.teams, built.baseline);
+      syncPlayoffTeams(built.teams); // 플레이오프 중이면 다음 라운드부터 이 편성으로 치른다
       return { ok: true, errors: [] };
     },
     /** 선수의 훈련 집중 능력치. 다음 훈련 시점부터 반영된다 (육성 프로그램 참가 중인 선수도 바꿀 수 있다) */
@@ -791,10 +821,11 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       }
       if (condEnabled) { inPlayoffs = true; restNext = new Set(); rebuildTeams(); } // 플레이오프 전 휴식으로 컨디션은 회복된 것으로 본다(컨디션 이득 없음)
       const reg = regular.finish();
-      playoffs = createPlayoffs(reg.standings.map((r) => r.id), new Map(reg.teams.map((t) => [t.id, t])), rules, reg.baseline, rules.simulation, rng);
+      poTeams = new Map(reg.teams.map((t) => [t.id, t]));
+      playoffs = createPlayoffs(reg.standings.map((r) => r.id), poTeams, rules, reg.baseline, rules.simulation, rng);
       return playoffs;
     },
-    playoffRound() { return run.startPlayoffs().playRound(); },
+    playoffRound() { const out = run.startPlayoffs().playRound(); stampPlayoffAtt(out); return out; },
     /** 시즌 마무리: 시즌 전체 기록으로 능력치를 한 번 더 갱신하고 결과를 묶는다 */
     finish() {
       if (finished) return finished;
@@ -824,7 +855,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const contracts = releaseLog.length || extendLog.length ? { teamId: manager, released: released.map((x) => ({ ...x })), releaseLog: releaseLog.map((r) => ({ ...r })), extendLog: extendLog.map((r) => ({ ...r })), severance: sum(releaseLog, 'severance'), earned: sum(releaseLog, 'earned'), adj: sum(extendLog, 'adj') } : null;
       finished = {
         result: { standings: reg.standings, games: reg.games, playoffs: po, championId: po.championId, teams: reg.teams, baseline: reg.baseline },
-        totals, splits, seasonPlayers: (returned.length ? [...players, ...returned] : players).map((q) => (q.claimLockUntil === undefined ? q : (({ claimLockUntil, ...r }) => r)(q))), startStats: start, dev, contracts, streaks: Object.fromEntries(worstLosing),
+        attReg: Object.fromEntries(attReg), totals, splits, seasonPlayers: (returned.length ? [...players, ...returned] : players).map((q) => (q.claimLockUntil === undefined ? q : (({ claimLockUntil, ...r }) => r)(q))), startStats: start, dev, contracts, streaks: Object.fromEntries(worstLosing),
         roster: { pool: faPool, payAdj: Object.fromEntries(payAdj), usedKbl: usedKblNew, log: rosterLog },
         ...(staff ? { staffInfo: { manager, staff, charge: Object.fromEntries(teamData.map((t) => [t.id, seasonCharge(staff[t.id], t.id === manager ? staffHired : null, t.id === manager ? staffBuyouts : 0, regular.schedule.length, rules)])) } } : {})
       };
@@ -845,7 +876,7 @@ export function settleYear(league, finished, teamData, rules) {
   // 유학 중이던 선수는 등록 명단 밖이라 캡·연봉 지출에서 빠지고, 대신 프로그램 비용(유학비 + 연봉의 일부)을 낸다
   const { dev } = finished;
   const payPlayers = dev?.abroadIds?.length ? seasonPlayers.filter((p) => !dev.abroadIds.includes(p.id)) : seasonPlayers;
-  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), payPlayers, result.standings, result.playoffs, teamData, rules, prestigeTable(league.legacy, rules), league.season, league.att ?? null); // 수입은 이번 시즌 이전의 전통으로
+  const settled = settleSeason(league.funds ?? initialFunds(teamData, rules), payPlayers, result.standings, result.playoffs, teamData, rules, prestigeTable(league.legacy, rules), league.season, league.att ?? null, finished.attReg ?? null); // 수입은 이번 시즌 이전의 전통으로
   if (dev?.totalCost > 0) {
     const t = dev.teamId, l = settled.ledger[t], round2 = (v) => Math.round(v * 100) / 100;
     settled.funds[t] = round2(settled.funds[t] - dev.totalCost);

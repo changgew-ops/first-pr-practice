@@ -2,7 +2,7 @@
 // 세션 단계(stage)에 따라 regular / playoffs / offseason 화면을 보여 준다. 스타일은 css/season.css (sv- 접두).
 import { h, table, stat, link } from '../lib/dom.js';
 import { playerLink } from '../lib/player-info.js';
-import { teamPower, seasonLabel } from '../lib/game.js';
+import { seasonLabel } from '../lib/game.js';
 import { injuryCard } from '../lib/injury-view.js';
 import {
   standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesGameRows, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText
@@ -83,7 +83,7 @@ function regularView(ctx) {
 function nextGameCard(ctx, next, rows) {
   const s = ctx.session;
   const opp = rows.find((r) => r.id === next.oppId), mine = rows.find((r) => r.id === s.managerId);
-  const power = (id) => teamPower(ctx.game, ctx.data, id).power;
+  const power = (id) => s.teamPower(id).power; // 다음 경기에 실제로 쓰일 편성(부상·휴식·직접 편성 반영) 기준
   const mp = power(s.managerId), op = power(next.oppId);
   return h('div', { class: 'card sv-next' },
     h('div', { class: 'row between' },
@@ -92,7 +92,7 @@ function nextGameCard(ctx, next, rows) {
       h('span', { class: `tag ${next.home ? 'hot' : ''}` }, next.home ? '홈 경기' : '원정 경기')),
     h('div', { class: 'grid g3 sv-next-stats' },
       stat('상대 전적', `${opp.wins}승 ${opp.losses}패`, `${opp.rank}위 · 득실 ${signed1(opp.diffPerGame)}`),
-      stat('전력', `${op.toFixed(1)}`, `우리 ${mp.toFixed(1)} (${mp - op >= 0 ? '+' : ''}${(mp - op).toFixed(1)})`),
+      stat('전력(출전 편성)', `${op.toFixed(1)}`, `우리 ${mp.toFixed(1)} (${mp - op >= 0 ? '+' : ''}${(mp - op).toFixed(1)}) · 스타팅 70% + 벤치 30%`),
       stat('우리 순위', `${mine.rank}위`, `${mine.wins}승 ${mine.losses}패`)));
 }
 

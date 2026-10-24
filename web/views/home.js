@@ -68,7 +68,7 @@ export function render(ctx) {
   const { game, data } = ctx;
   const my = game.managerId, team = ctx.team(my);
   const season = seasonLabel(game.league.season);
-  const ranking = powerRanking(game, data);
+  const ranking = ctx.session.stage === 'offseason' ? powerRanking(game, data) : ctx.session.powerRanking(); // 시즌 중에는 실제 출전 편성 기준(부상·휴식 반영)
   const myPower = ranking.find((r) => r.id === my);
   const pay = payrollInfo(game, data, my);
   const pr = prestigeOf(game, data)[my];
@@ -88,7 +88,7 @@ export function render(ctx) {
     newsCard(ctx),
     financeCard(ctx),
     h('div', { class: 'grid g4' },
-      stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 전력 ${myPower.power.toFixed(1)}`),
+      stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 전력 ${myPower.power.toFixed(1)}${ctx.session.stage === 'offseason' ? ' (로스터 기준)' : ' (출전 편성 기준)'}`),
       stat('국내 선수 연봉', eok(pay.domestic), `캡 ${eok(pay.cap, 1)}${pay.over ? ` · ${eok(pay.over)} 초과` : ` · 여유 ${eok(pay.cap - pay.domestic)}`}`),
       stat('구단 자금', eok(fundsOf(game, data, my)), last ? `지난 시즌 ${last.ledger[my].net >= 0 ? '+' : ''}${last.ledger[my].net.toFixed(1)}억` : '시작 자금'),
       stat('전통 점수', pr.score.toFixed(2), `통산 우승 ${pr.titles}회 · 정규 1위 ${pr.regularTitles}회`)),

@@ -26,12 +26,20 @@ export const fundsOf = (game, data, teamId) => (game.league.funds ?? initialFund
 export const rosterOf = (game, teamId) => game.league.players.filter((p) => p.teamId === teamId);
 export const playerById = (game, id) => game.league.players.find((p) => p.id === id);
 
-/** 구단별 자동 편성 라인업과 전력(스타팅 OVR 합 + 벤치 × 가중) */
+/** 전력: 스타팅 OVR 평균 70% + 벤치 OVR 평균 30% (라인업 화면·세션과 같은 식) */
+export function powerOfLineup(lineup) {
+  const sum = (l) => l.reduce((s, p) => s + p.ovr, 0);
+  return sum(lineup.starters) / lineup.starters.length * 0.7 + sum(lineup.bench) / lineup.bench.length * 0.3;
+}
+
+/**
+ * 로스터에서 자동으로 짠 편성의 전력(부상·휴식·직접 편성을 모른다). 시즌이 시작되기 전(새 게임 구단 고르기·프리뷰)이나 오프시즌처럼 엔진의 편성이 없을 때만 쓴다.
+ * 시즌 중 화면은 세션의 teamPower(실제 출전 편성 기준)를 쓴다.
+ */
 export function teamPower(game, data, teamId) {
   const roster = rosterOf(game, teamId);
   const lineup = buildLineup(roster, data.rules, data.rules.simulation.benchWeight);
-  const sum = (l) => l.reduce((s, p) => s + p.ovr, 0);
-  return { lineup, power: sum(lineup.starters) / lineup.starters.length * 0.7 + sum(lineup.bench) / lineup.bench.length * 0.3 };
+  return { lineup, power: powerOfLineup(lineup) };
 }
 
 /** 10개 구단 전력 순위: [{ id, power, rank }] */

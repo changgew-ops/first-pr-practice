@@ -80,7 +80,11 @@ test('관중 표시: 수입 계산과 같은 모델·키, 수용 인원이 있�
   assert.equal(x.attendance, direct.attendance);
   assert.deepEqual(calc(g, { key: 'r0' }), x);
   assert.equal(x.occupancy, null);
-  assert.match(attendanceText(x), /^관중 [\d,]+명$/);
+  assert.equal(x.estimate, true); // 저장된 관중(g.att)이 없으면 추정
+  assert.match(attendanceText(x), /^관중 [\d,]+명 \(추정\)$/);
+  const kept = calc({ ...g, att: 2345 }, { key: 'r0' }); // 엔진이 경기 때 저장한 값은 그대로 보여 주고 추정 표시가 없다
+  assert.equal(kept.attendance, 2345); assert.equal(kept.estimate, undefined);
+  assert.match(attendanceText(kept), /^관중 2,345명$/);
   const full = calc({ homeId: 'b', awayId: 'a' }, { key: 'r0' });
   assert.ok(full.attendance <= 3000);
   assert.match(attendanceText({ attendance: 3000, sellout: true, occupancy: 1 }), /매진/);

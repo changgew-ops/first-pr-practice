@@ -20,7 +20,7 @@ import { moodOf } from '../../src/fans.mjs';
 import { newCodexKeys } from '../../src/codex.mjs';
 import { newAchievements } from '../../src/achievements.mjs';
 import { buildPreview } from '../../src/preview.mjs';
-import { teamPower } from './game.js';
+import { teamPower, powerOfLineup } from './game.js';
 import { prestigeTable } from '../../src/legacy.mjs';
 
 export const VERSION = 2;
@@ -122,6 +122,27 @@ export class Session {
     return { ...pv, atStart };
   }
 
+  /**
+   * 다음 경기에 실제로 쓰일 구단 편성(엔진의 값: 직접 편성·부상 대체·휴식·컨디션 반영). 시즌 중이 아니면 로스터에서 자동으로 짠 편성.
+   * 화면의 "전력"은 모두 이 편성으로 계산한다.
+   */
+  lineupOf(teamId) {
+    const live = this.run && (this.state.stage === 'regular' || this.state.stage === 'playoffs') ? this.run.lineupOf(teamId) : null;
+    if (live) return live;
+    return teamPower(this.view, { ...this.data, rules: this.rules }, teamId).lineup;
+  }
+  /** 구단 전력: 실제 출전 편성의 스타팅 OVR 평균 70% + 벤치 30%. 반환 { lineup, power } */
+  teamPower(teamId) {
+    const lineup = this.lineupOf(teamId);
+    return { lineup, power: powerOfLineup(lineup) };
+  }
+  /** 10개 구단 전력 순위(실제 출전 편성 기준): [{ id, power, rank }] */
+  powerRanking() {
+    const rows = this.data.teams.map((t) => ({ id: t.id, power: this.teamPower(t.id).power }));
+    rows.sort((a, b) => b.power - a.power);
+    return rows.map((r, i) => ({ ...r, rank: i + 1 }));
+  }
+
   /** 우리 구단의 다음 경기: { day(몇 일차), home, oppId } 또는 null(정규리그 종료) */
   nextGame() {
     if (!this.run || this.run.regularDone) return null;
@@ -216,13 +237,13 @@ export class Session {
   setLineup(next) {
     this.#need('regular', 'playoffs');
     const r = this.run.setLineup(next);
-    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'lineup', starters: next?.starters ?? null, bench: next?.bench ?? null }); this.emit(); }
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'lineup', starters: next?.starters ?? null, bench: next?.bench ?? null, ...this.#poMark() }); this.emit(); }
     return r;
   }
   setFocus(playerId, stat) {
     this.#need('regular', 'playoffs');
     this.run.setFocus(playerId, stat);
-    this.state.actions.push({ day: this.state.day, type: 'focus', playerId, stat });
+    this.state.actions.push({ day: this.state.day, type: 'focus', playerId, stat, ...this.#poMark() });
     this.emit();
   }
   /** 육성 프로그램 파견('dleague' | 'abroad') 또는 소환(program이 null). 규칙에 맞지 않으면 { ok: false, errors } */
@@ -500,29 +521,38 @@ export class Session {
     const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null });
     this.run = run;
     let ai = 0;
+    const apply = (a) => {
+      if (a.type === 'lineup') run.setLineup(a.starters ? { starters: a.starters, bench: a.bench } : null);
+      else if (a.type === 'focus') run.setFocus(a.playerId, a.stat);
+      else if (a.type === 'trade') run.executeTrade(a.trade);
+      else if (a.type === 'program') run.setProgram(a.playerId, a.program, a.stat);
+      else if (a.type === 'release') run.releasePlayer(a.playerId);
+      else if (a.type === 'claim') run.claimWaiver(a.playerId);
+      else if (a.type === 'unclaim') run.cancelWaiverClaim(a.playerId);
+      else if (a.type === 'extend') run.extendContract(a.playerId, { salaryEok: a.salaryEok, years: a.years });
+      else if (a.type === 'fasign') run.signFa(a.playerId, { salaryEok: a.salaryEok, years: a.years });
+      else if (a.type === 'forrep') run.replaceForeign(a.outId, a.kind, a.candId);
+      else if (a.type === 'tactic') run.setTactic(a.id);
+      else if (a.type === 'rest') run.setRest(a.ids);
+      else if (a.type === 'staff') run.replaceStaff(a.role, a.candId, a.years);
+    };
     const due = () => {
-      while (ai < g.actions.length && g.actions[ai].day <= run.day) {
-        const a = g.actions[ai++];
-        if (a.type === 'lineup') run.setLineup(a.starters ? { starters: a.starters, bench: a.bench } : null);
-        else if (a.type === 'focus') run.setFocus(a.playerId, a.stat);
-        else if (a.type === 'trade') run.executeTrade(a.trade);
-        else if (a.type === 'program') run.setProgram(a.playerId, a.program, a.stat);
-        else if (a.type === 'release') run.releasePlayer(a.playerId);
-        else if (a.type === 'claim') run.claimWaiver(a.playerId);
-        else if (a.type === 'unclaim') run.cancelWaiverClaim(a.playerId);
-        else if (a.type === 'extend') run.extendContract(a.playerId, { salaryEok: a.salaryEok, years: a.years });
-        else if (a.type === 'fasign') run.signFa(a.playerId, { salaryEok: a.salaryEok, years: a.years });
-        else if (a.type === 'forrep') run.replaceForeign(a.outId, a.kind, a.candId);
-        else if (a.type === 'tactic') run.setTactic(a.id);
-        else if (a.type === 'rest') run.setRest(a.ids);
-        else if (a.type === 'staff') run.replaceStaff(a.role, a.candId, a.years);
-      }
+      // po가 있는 조작은 플레이오프 중에 한 것이라 아래에서 라운드 수에 맞춰 적용한다(옛 저장에는 po가 없고, 그때는 예전처럼 정규리그 끝에 적용된다)
+      while (ai < g.actions.length && g.actions[ai].po == null && g.actions[ai].day <= run.day) apply(g.actions[ai++]);
     };
     due();
     while (run.day < g.day) { due(); this.dayResults.push(run.playDay()); }
     due();
-    if (g.stage === 'playoffs') { run.startPlayoffs(); for (let i = 0; i < g.poRounds; i++) run.playoffRound(); }
+    if (g.stage === 'playoffs') {
+      run.startPlayoffs();
+      const poDue = (rounds) => { while (ai < g.actions.length && (g.actions[ai].po ?? 0) <= rounds) apply(g.actions[ai++]); };
+      poDue(0);
+      for (let i = 0; i < g.poRounds; i++) { run.playoffRound(); poDue(i + 1); }
+    }
   }
+
+  /** 플레이오프 중의 조작에 붙이는 표시: 지금까지 치른 라운드 수(복원할 때 그 시점에 다시 적용한다) */
+  #poMark() { return this.state.stage === 'playoffs' ? { po: this.state.poRounds } : {}; }
 
   #need(...stages) {
     if (!stages.includes(this.state.stage)) throw new Error(`지금(${this.state.stage})은 할 수 없는 일입니다`);

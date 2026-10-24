@@ -89,6 +89,29 @@ export function attendanceFor({ season, teamId, key, pop, oppPop = 1, weight = 1
   return { attendance, demand: Math.round(demand), sellout: capacity != null && demand >= capacity };
 }
 
+/**
+ * 경기 한 번의 관중 계산기(정규리그 홈 경기·플레이오프 경기 공용). 반환: (경기, { key, round, winPct }) → { attendance, sellout, capacity, occupancy }.
+ *  teamData: 구단 목록(venue 포함), att: 리그 관중 상태(없으면 출발값), season, rules: 그 시즌 규칙.
+ *  winPct: 그 경기 때의 홈 팀 승률(정규리그는 경기 직전 순위표 기준, 플레이오프는 정규리그 최종 승률). 경기가 진행되는 순간 이 값으로 계산해 경기 결과에 저장한다
+ *  (조회할 때마다 현재 순위로 다시 계산하면 시즌이 더 지난 뒤 같은 경기의 관중이 달라진다). key는 정규리그 `r${그 팀의 n번째 홈 경기}`, 플레이오프 `p${라운드}:${시리즈 안 경기 순번}`.
+ */
+export function gameAttendanceCalc({ teamData, att, season, rules }) {
+  const state = att ?? initialAttendance(teamData, rules);
+  const fans = Object.values(state.fan);
+  const meanFan = fans.reduce((s, v) => s + v, 0) / Math.max(1, fans.length);
+  const popOf = (id) => (state.fan[id] ?? 1) / meanFan;
+  const poRules = rules.revenue.gate.playoff;
+  return (g, { key, round = null, winPct = 0.5 }) => {
+    const team = teamData.find((t) => t.id === g.homeId);
+    const capacity = team ? capacityOf(team) : null;
+    const pop = popularity((state.fan[g.homeId] ?? 1) * fanFactor(moodOf(state, g.homeId, rules), rules), winPct, rules);
+    const a = round
+      ? attendanceFor({ season, teamId: g.homeId, key, pop, weight: (poRules[round === '챔피언결정전' ? '결승' : round] ?? poRules['6강']).attendance, capacity, scale: state.index }, rules)
+      : attendanceFor({ season, teamId: g.homeId, key, pop, oppPop: popOf(g.awayId), capacity, scale: state.index }, rules);
+    return { attendance: a.attendance, sellout: a.sellout, capacity, occupancy: capacity ? a.attendance / capacity : null };
+  };
+}
+
 /** 한 구단의 정규시즌 홈 경기 상대 목록(상대 구단을 번갈아 돌며 홈 경기 수를 채운다). 실제 일정이 아니라 관중 계산용 */
 export function homeOpponents(teamId, teamData, rules) {
   const others = teamData.filter((t) => t.id !== teamId).map((t) => t.id);
@@ -99,7 +122,7 @@ export function homeOpponents(teamId, teamData, rules) {
 /** 플레이오프에서 이 구단이 홈으로 치른 경기: [{ round, key }] */
 function playoffHomeGames(teamId, playoffs) {
   const out = [];
-  for (const s of playoffs?.series ?? []) (s.games ?? []).forEach((g, i) => { if (g.homeId === teamId) out.push({ round: s.round, key: `${s.round}:${i}` }); });
+  for (const s of playoffs?.series ?? []) (s.games ?? []).forEach((g, i) => { if (g.homeId === teamId) out.push({ round: s.round, key: `${s.round}:${i}`, att: g.att ?? null }); });
   return out;
 }
 
@@ -116,17 +139,25 @@ export function revenueOf(teamId, ctx, rules) {
   const popOf = (id) => (att.fan[id] ?? 1) / meanFan;
   const pi = priceIndex(season, rules); // 물가: 객단가·중계권·스폰서·굿즈에 곱한다
   const yieldMan = ticketYieldMan(pop, rules) * pi;
-  let total = 0, sellouts = 0, gate = 0;
-  const games = homeOpponents(teamId, teamData, rules);
-  games.forEach((opp, i) => {
-    const a = attendanceFor({ season, teamId, key: `r${i}`, pop, oppPop: popOf(opp), capacity: cap, scale: att.index }, rules);
-    total += a.attendance; if (a.sellout) sellouts++;
-    gate += a.attendance * yieldMan * MAN;
-  });
+  let total = 0, sellouts = 0, gate = 0, homeCount;
+  const stored = ctx.attReg?.[teamId]; // 경기가 진행될 때 저장해 둔 홈 경기 관중 합계({ total, n, sellouts }). 없으면(이전 방식·기록이 없는 호출) 상대를 번갈아 돌며 계산한다
+  if (stored && stored.n > 0) {
+    total = stored.total; sellouts = stored.sellouts; homeCount = stored.n;
+    gate = total * yieldMan * MAN;
+  } else {
+    const games = homeOpponents(teamId, teamData, rules);
+    games.forEach((opp, i) => {
+      const a = attendanceFor({ season, teamId, key: `r${i}`, pop, oppPop: popOf(opp), capacity: cap, scale: att.index }, rules);
+      total += a.attendance; if (a.sellout) sellouts++;
+      gate += a.attendance * yieldMan * MAN;
+    });
+    homeCount = games.length;
+  }
   let playoffGate = 0, poGames = 0, poPeople = 0;
   for (const g of playoffHomeGames(teamId, playoffs)) {
     const w = rv.gate.playoff[g.round === '챔피언결정전' ? '결승' : g.round] ?? rv.gate.playoff['6강'];
-    const a = attendanceFor({ season, teamId, key: `p${g.key}`, pop, weight: w.attendance, capacity: cap, scale: att.index }, rules);
+    const a = g.att != null ? { attendance: g.att, sellout: cap != null && g.att >= cap } // 경기 때 저장한 관중
+      : attendanceFor({ season, teamId, key: `p${g.key}`, pop, weight: w.attendance, capacity: cap, scale: att.index }, rules);
     playoffGate += a.attendance * ticketYieldMan(pop, rules, w.price) * pi * MAN;
     poPeople += a.attendance; poGames++; if (a.sellout) sellouts++;
   }
@@ -142,15 +173,15 @@ export function revenueOf(teamId, ctx, rules) {
   return {
     parts, revenue,
     attendance: {
-      avg: Math.round(total / games.length), total, homeGames: games.length, sellouts, capacity: cap,
-      occupancy: cap ? round2(total / games.length / cap) : null, yieldMan: round2(yieldMan), priceIndex: round2(pi), popularity: round2(pop), fan: round2(att.fan[teamId] ?? 1), leagueIndex: round2(att.index),
+      avg: Math.round(total / homeCount), total, homeGames: homeCount, sellouts, capacity: cap,
+      occupancy: cap ? round2(total / homeCount / cap) : null, yieldMan: round2(yieldMan), priceIndex: round2(pi), popularity: round2(pop), fan: round2(att.fan[teamId] ?? 1), leagueIndex: round2(att.index),
       playoffGames: poGames, playoffAvg: poGames ? Math.round(poPeople / poGames) : null
     }
   };
 }
 
 /** 시즌 정산. 반환: { funds, ledger, att } (ledger = 구단별 수입·지출 내역: revenue, parts, attendance, payroll, penalty, net. att = 다음 시즌 관중 상태) */
-export function settleSeason(funds, players, standings, playoffs, teamData, rules, prestige = null, season = 0, att = null) {
+export function settleSeason(funds, players, standings, playoffs, teamData, rules, prestige = null, season = 0, att = null, attReg = null) {
   const f = rules.transactions.funds;
   const next = { ...funds };
   const ledger = {};
@@ -158,7 +189,7 @@ export function settleSeason(funds, players, standings, playoffs, teamData, rule
   for (const t of teamData) {
     const rec = standings.find((s) => s.id === t.id);
     const stage = playoffStage(t.id, playoffs);
-    const rev = revenueOf(t.id, { team: t, teamData, rec, stage, playoffs, prestige, season, att: state }, rules);
+    const rev = revenueOf(t.id, { team: t, teamData, rec, stage, playoffs, prestige, season, att: state, attReg }, rules);
     const domestic = payrollEok(players, t.id);
     const payroll = domestic + asiaPayrollEok(players, t.id) + foreignPayrollUsd(players, t.id) * f.foreignUsdToEok;
     const penalty = softCapPenaltyEok(domestic, rules);

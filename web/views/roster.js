@@ -1,5 +1,5 @@
 import { h, table, ovrChip, eok, ORIGIN_LABEL, POS_ORDER, stat, bar, RARITY_LABEL } from '../lib/dom.js';
-import { rosterOf, payrollInfo, teamPower } from '../lib/game.js';
+import { rosterOf, payrollInfo } from '../lib/game.js';
 import { contractButtons } from '../lib/contract-view.js';
 import { avatarEl } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
@@ -13,7 +13,7 @@ export function render(ctx, [teamParam]) {
   const mine = teamId === game.managerId;
   const roster = rosterOf(game, teamId);
   const pay = payrollInfo(game, data, teamId);
-  const { lineup } = teamPower(game, data, teamId);
+  const { lineup } = ctx.session.teamPower(teamId); // 실제 출전 편성(시즌 중), 오프시즌에는 로스터 자동 편성
   const starters = new Set(lineup.starters.map((p) => p.id)), bench = new Set(lineup.bench.map((p) => p.id));
   const hurt = injuryMap(ctx.session); // 지금 결장 중인 선수(전 구단)
   const condOf = ctx.session.stage === 'regular' ? conditionOf(ctx.session, data.rules) : null; // 시즌 중에만 컨디션 열을 보여 준다
