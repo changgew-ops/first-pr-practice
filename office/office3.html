@@ -49,7 +49,7 @@ button:focus-visible, .agent:focus-visible, canvas:focus-visible { outline: 2px 
 .stage { position: relative; line-height: 0; border: 1px solid var(--line); background: #0b1022; width: 100%; max-width: 1400px; margin-inline: auto; }
 .stage.shake { animation: shake .6s linear; }
 @keyframes shake { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-3px, 1px); } 20% { transform: translate(3px, -1px); } 30% { transform: translate(-3px, -2px); } 40% { transform: translate(2px, 2px); } 50% { transform: translate(-2px, 0); } 60% { transform: translate(3px, 1px); } 70% { transform: translate(-1px, -1px); } 80% { transform: translate(1px, 1px); } }
-canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; image-rendering: crisp-edges; touch-action: manipulation; }
+canvas { display: block; width: 100%; height: auto; image-rendering: auto; touch-action: manipulation; }
 .ov { position: absolute; inset: 0; overflow: hidden; pointer-events: none; line-height: 1.25; }
 .ov > * { position: absolute; left: 0; top: 0; will-change: transform; }
 .ftag { font: 400 calc(11px * var(--k, 1))/1 var(--game); color: #ffb35c; background: #10162f; border: 1px solid #36447a; padding: 3px 6px; letter-spacing: .03em; white-space: nowrap; }
@@ -669,7 +669,7 @@ const LETTER = (() => { const c = document.createElement('canvas'); c.width = 9;
 const IMGA = { ok: false };
 const PROP = {};          // id → { c(원본 크기 캔버스), w, h(원본 크기), meta }
 const CS = 0.42, CMAXW = 30, CMAXH = 37; // 캐릭터: 원본 픽셀 → 논리 픽셀(몸 크기 차이는 살리되 휴게 자리 간격 안에 들어오게 상한)
-const BS2 = 0.6;         // 사장님 상반신
+const BS2 = 0.45;        // 사장님 상반신: 예전(0.6)의 75%. 4상태 모두 같은 배율·같은 바닥 기준으로 그린다
 const MEWS = 0.27;        // 비서
 function loadImage(src) { return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('이미지 로드 실패: ' + src)); i.src = src; }); }
 function cropTo(img, r) { const c = document.createElement('canvas'); c.width = r[2]; c.height = r[3]; c.getContext('2d').drawImage(img, r[0], r[1], r[2], r[3], 0, 0, r[2], r[3]); return c; }
@@ -678,16 +678,17 @@ async function loadAssets() {
   try {
     const meta = await (await fetch('assets/atlas.json')).json();
     const [ai, pi] = await Promise.race([Promise.all([loadImage('assets/' + meta.atlas.file), loadImage('assets/' + meta.props.file)]), new Promise((_, rej) => setTimeout(() => rej(new Error('이미지 로드 시간 초과')), 9000))]);
-    const frames = (c) => { const k = Math.min(CS, CMAXW / c.width, CMAXH / c.height); const f = { c, w: Math.round(c.width * k), h: Math.round(c.height * k) }; return [f, f, f, f, f]; };
+    const UPF = meta.atlas.up ?? 1; // atlas.png는 시트 원본을 UPF배로 키워 둔 것(make-atlas.py): 논리 크기는 원본 기준으로 계산한다
+    const frames = (c) => { const k = Math.min(CS / UPF, CMAXW / c.width, CMAXH / c.height); const f = { c, w: c.width * k, h: c.height * k }; return [f, f, f, f, f]; };
     const chars = meta.atlas.chars.map((it) => ({ id: it.id, name: it.name, frames: frames(cropTo(ai, it.rect)) }));
     const bossBy = Object.fromEntries(meta.atlas.boss.map((it) => [it.id, cropTo(ai, it.rect)]));
-    const bf = (c) => ({ c, w: Math.round(c.width * BS2), h: Math.round(c.height * BS2) });
+    const bf = (c) => ({ c, w: c.width * BS2 / UPF, h: c.height * BS2 / UPF });
     const angryC = bossBy.boss_angry ?? bossBy.boss_angry2;
     const newBoss = { sleep: bf(bossBy.boss_sleep), awake: bf(bossBy.boss_awake), happy: bf(bossBy.boss_happy), angry: bf(tintCanvas(angryC, '#ff2020', 0.22)) };
     const mewC = cropTo(ai, meta.atlas.chars.find((it) => it.id === 'mew').rect);
     for (const it of meta.props.items) PROP[it.id] = { c: cropTo(pi, it.rect), w: it.rect[2], h: it.rect[3], meta: it.numbers ?? null };
     SPR = chars.map((c) => c.frames); SPNAMES = chars.map((c) => c.name);
-    BOSS = newBoss; MEW = { c: mewC, w: Math.round(mewC.width * MEWS), h: Math.round(mewC.height * MEWS) };
+    BOSS = newBoss; MEW = { c: mewC, w: mewC.width * MEWS / UPF, h: mewC.height * MEWS / UPF };
     VAR_CACHE.clear(); IMGA.ok = true;
   } catch (e) { console.warn('이미지 에셋을 불러오지 못해 코드로 그린 그림을 씁니다:', e.message); }
 }
@@ -818,7 +819,7 @@ function drawFront(g) { // 캐릭터 앞에 올 가구(책상 앞면, 사장님 
 }
 let BG, FG;
 let KB = 3;
-function buildStatic() { KB = Math.min(4, Math.max(2, K2)); [BG] = mkCanvas(W, H, KB); drawWalls(BG.getContext('2d')); [FG] = mkCanvas(W, H, KB); drawFront(FG.getContext('2d')); }
+function buildStatic() { KB = Math.min(4, Math.max(2, Math.ceil(K2))); [BG] = mkCanvas(W, H, KB); drawWalls(BG.getContext('2d')); [FG] = mkCanvas(W, H, KB); drawFront(FG.getContext('2d')); }
 
 /* =====================================================================
    데이터 해석: 층 배정, 상태, 배치
@@ -914,10 +915,11 @@ const WALK = 46, AS = 1, BS = 1;
 let LOOKS = new Map();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms / SPEED));
 class Actor {
-  constructor(a) { this.id = a.id; this.sync(a); this.floor = 4; this.x = 20; this.face = 1; this.walk = null; this.phase = 0; this.inCar = false; this.q = Promise.resolve(); this.sitting = false; this.pose = 'stand'; this.bub = null; this.vis = true; this.sw = null; }
+  constructor(a) { this.id = a.id; this.sync(a); this.floor = 4; this.x = 20; this.face = 1; this.walk = null; this.phase = 0; this.inCar = false; this.q = Promise.resolve(); this.sitting = false; this.pose = 'stand'; this.bub = null; this.vis = true; this.sw = null;
+    this.v = 0; this.fx = 1; this.sink = 0; this.land = 0; this.alpha = 1; this.alphaT = 1; this.carMode = false; this.lift = 0; this.turn = 0; }
   sync(a) { this.doc = a; this.name = a.name ?? a.id; const lk = LOOKS.get(a.id); this.sp = lk?.sp ?? 0; this.vr = lk?.v ?? 0; this.color = a.color ?? '#ff8a2b'; this.sh = framesOf(this.sp, this.vr)[0]?.h ?? 28; }
   get feet() { return this.inCar ? car.y + 52 : fFeet(this.floor); }
-  walkTo(x) { return new Promise((res) => { if (Math.abs(this.x - x) < 0.6) { this.sitting = false; this.pose = 'stand'; return res(); } this.sitting = false; this.pose = 'stand'; this.walk = { x, res }; }); }
+  walkTo(x) { return new Promise((res) => { this.sitting = false; this.pose = 'stand'; if (Math.abs(this.x - x) < 0.6) return res(); this.walk = { x, res, d0: Math.abs(x - this.x) }; }); }
   setPose(d) { this.sitting = d.mode === 'desk' || d.pose === 'nap'; this.pose = d.pose ?? 'stand'; if (d.face && !this.walk) this.face = d.face; }
   job(fn) { this.q = this.q.then(fn).catch((e) => console.warn(e)); return this.q; }
   say(text, kind = 'say', ms = 1600) { this.bub = { text, kind, until: performance.now() + ms / SPEED }; }
@@ -926,15 +928,21 @@ const car = { f: 4, y: fTop(4) + 8, door: 1, doorT: 1, move: null, free: Promise
 function carYForFloor(f) { return fTop(f) + 18; }
 car.y = carYForFloor(4) - 0;
 function moveCar(f) { return new Promise((res) => { if (Math.abs(car.y - carYForFloor(f)) < 0.5) { car.f = f; return res(); } car.move = { f, res }; }); }
-function setDoor(open) { car.doorT = open ? 1 : 0; return sleep(380); }
+function setDoor(open) { car.doorT = open ? 1 : 0; return sleep(open === (car.door > 0.5) && Math.abs(car.door - car.doorT) < 0.05 ? 60 : 460); }
 let elevQ = Promise.resolve();
 function withElev(fn) { const p = elevQ.then(fn); elevQ = p.catch(() => {}); return p; }
 async function ride(a, toF) {
   return withElev(async () => {
-    await setDoor(false); await moveCar(a.floor); await setDoor(true);
-    await a.walkTo(DOOR_X); a.inCar = true; a.face = 1; await sleep(250);
-    await setDoor(false); await moveCar(toF); a.floor = toF; a.say(FLOOR_SHORT[FL[toF]], 'think', 700); await setDoor(true);
-    a.x = DOOR_X; a.inCar = false; await a.walkTo(QUEUE_X); await setDoor(false);
+    if (car.f !== a.floor || car.move) { await setDoor(false); await moveCar(a.floor); }   // 부른 층으로 카가 내려오거나 올라온다
+    await setDoor(true);
+    a.carMode = true;
+    await a.walkTo(DOOR_X);                       // 문으로 걸어 들어가 카 한가운데에 선다
+    a.face = 1; await sleep(260);
+    await setDoor(false); await sleep(160);
+    await moveCar(toF); a.floor = toF; a.say(FLOOR_SHORT[FL[toF]], 'think', 800);
+    await sleep(120); await setDoor(true); await sleep(200);
+    await a.walkTo(QUEUE_X);                      // 문이 열리면 걸어 나온다(카에서 나오는 순간 층 바닥에 이어진다)
+    a.carMode = false; a.inCar = false;
   });
 }
 async function goFloor(a, f, x) {
@@ -946,7 +954,17 @@ const boss = { mode: 'sleep', bub: null, until: 0, angryT: 0, hold: 0 };
 function bossSet(mode, ms) { boss.mode = mode; boss.until = ms ? performance.now() + ms / SPEED : 0; }
 function bossSay(text, kind = 'say', ms = 1600) { boss.bub = { text, kind, until: performance.now() + ms / SPEED }; }
 const letters = [];
-function flyLetter(pts, speed = 70) { return new Promise((res) => { letters.push({ pts, i: 0, x: pts[0][0], y: pts[0][1], speed, res }); }); }
+function smoothPath(pts, n = 2) { // 꺾이는 점을 둥글게(Chaikin): 편지가 각진 길 대신 부드러운 곡선으로 난다
+  let p = pts;
+  for (let k = 0; k < n; k++) { const q = [p[0]]; for (let i = 0; i < p.length - 1; i++) { const a = p[i], b = p[i + 1]; q.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25], [a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]); } q.push(p[p.length - 1]); p = q; }
+  return p;
+}
+function flyLetter(pts, speed = 70) {
+  return new Promise((res) => {
+    const sm = smoothPath(pts); let total = 0; for (let i = 1; i < sm.length; i++) total += Math.hypot(sm[i][0] - sm[i - 1][0], sm[i][1] - sm[i - 1][1]);
+    letters.push({ pts: sm, i: 0, x: sm[0][0], y: sm[0][1], speed, res, total, run: 0 });
+  });
+}
 function shake() { if (reduce) return; const s = document.getElementById('stage'); s.classList.remove('shake'); void s.offsetWidth; s.classList.add('shake'); }
 
 /* =====================================================================
@@ -995,8 +1013,8 @@ async function sceneStart(ev) {
   const dest = layout().get(a.id) ?? { floor: floorOf(a.doc), x: DESK_X[0], mode: 'desk' };
   const f = fIdx(dest.floor);
   a.vis = true;
-  if (!a.fresh && (a.floor !== 4 || Math.abs(a.x - 20) > 40)) { a.floor = 4; a.x = 20; a.inCar = false; a.sitting = false; a.walk = null; }
-  a.fresh = false;
+  const fresh = a.fresh; a.fresh = false;
+  if (!fresh && (a.floor !== 4 || Math.abs(a.x - 20) > 40)) { await a.job(async () => { a.say('잠깐 내려갔다 올게요', 'think', 1100); await goFloor(a, 4, 20); }); } // 이미 있던 직원은 1층 입구까지 걸어 내려가 출근한다
   a.say('출근합니다!', 'good', 1500); await sleep(1200);
   await a.job(async () => { await goFloor(a, f, dest.x); a.setPose(dest); a.face = 1; });
   a.say('시작할게요', 'think', 1100); await sleep(500);
@@ -1032,14 +1050,14 @@ function settleAll(instant = false) {
     const dest = L.get(a.id);
     if (!dest) continue;
     if (!ac) {
-      ac = new Actor(a); actors.set(a.id, ac); ac.vis = !dest.hidden; ac.placedOnce = true;
-      if (initialDone && !instant && dest.mode === 'desk') { ac.floor = 4; ac.x = 20; ac.fresh = true; ac.freshUntil = performance.now() + 2600 / SPEED; setTimeout(() => settleAll(false), 2700 / SPEED); continue; } // 새로 투입된 에이전트는 1층 입구에서 출근한다
-      ac.floor = fIdx(dest.floor); ac.x = dest.x; ac.setPose(dest); if (!dest.face) ac.face = ((hash(ac.x) > 0.5) ? 1 : -1); continue;
+      ac = new Actor(a); actors.set(a.id, ac); ac.vis = !dest.hidden; ac.alpha = ac.alphaT = ac.vis ? 1 : 0; ac.placedOnce = true;
+      if (initialDone && !instant && dest.mode === 'desk') { ac.floor = 4; ac.x = 20; ac.fresh = true; ac.alpha = 0; ac.alphaT = 1; ac.freshUntil = performance.now() + 2600 / SPEED; setTimeout(() => settleAll(false), 2700 / SPEED); continue; } // 새로 투입된 에이전트는 1층 입구에서 출근한다
+      ac.floor = fIdx(dest.floor); ac.x = dest.x; ac.setPose(dest); ac.sink = ac.sitting ? 6 : ac.pose === 'sofa' ? 4 : 0; if (!dest.face) ac.face = ((hash(ac.x) > 0.5) ? 1 : -1); ac.fx = ac.face; continue;
     }
     if (ac.fresh && performance.now() < ac.freshUntil) { ac.sync(a); continue; }
     ac.fresh = false;
-    ac.sync(a); ac.vis = !dest.hidden;
-    if (instant) { ac.floor = fIdx(dest.floor); ac.x = dest.x; ac.walk = null; ac.setPose(dest); ac.inCar = false; continue; }
+    ac.sync(a); ac.vis = !dest.hidden; ac.alphaT = ac.vis ? 1 : 0;
+    if (instant) { ac.floor = fIdx(dest.floor); ac.x = dest.x; ac.walk = null; ac.setPose(dest); ac.inCar = false; ac.carMode = false; ac.sink = ac.sitting ? 6 : ac.pose === 'sofa' ? 4 : 0; ac.alpha = ac.alphaT; continue; }
     ac.dest = dest;
     if (!ac.settling && (ac.floor !== fIdx(dest.floor) || Math.abs(ac.x - dest.x) > 1) && ac.q) {
       ac.settling = true;
@@ -1051,69 +1069,99 @@ function settleAll(instant = false) {
 /* =====================================================================
    갱신·그리기 루프
    ===================================================================== */
-let cvs, ctx, scale = 1, K2 = 2, T = 0, last = 0, running2 = true;
+let cvs, ctx, scale = 1, K2 = 2, K2y = 2, T = 0, last = 0, running2 = true;
 const ovEl = () => document.getElementById('ov');
 const pool = new Map();
 function el(key, cls, parent) { let e = pool.get(key); if (!e) { e = document.createElement('div'); e.className = cls; ovEl().appendChild(e); pool.set(key, e); } e.dataset.u = '1'; return e; }
 function place(e, lx, ly, anchor = '-50%,-100%') { e.style.transform = `translate(${(lx * scale).toFixed(1)}px,${(ly * scale).toFixed(1)}px) translate(${anchor})`; }
 
+const ACC = 150, DEC = 170, STRIDE = 7;        // 걷기: 가속·감속(논리 px/s²), 한 걸음 길이(px)
+const approach = (v, to, k, dt) => v + (to - v) * Math.min(1, k * dt);
+const clampStep = (v, to, st) => (to > v ? Math.min(to, v + st) : Math.max(to, v - st));
 function update(dt) {
   T += dt;
+  const dtS = dt * SPEED; // 움직임 줄이기 설정이면 같은 동작을 더 짧게(순간이동 없이)
   for (const a of actors.values()) {
+    const standT = a.sitting ? 6 : a.pose === 'sofa' ? 4 : 0;
+    a.sink = approach(a.sink, standT, 9, dtS);                 // 앉기·일어나기는 부드럽게 가라앉았다 올라온다
+    a.fx = clampStep(a.fx, a.face, dtS * 7);                   // 방향 전환은 몸을 좁혔다 펴며 뒤집는다
+    a.alpha = clampStep(a.alpha, a.alphaT, dtS * 4);
+    a.land = Math.max(0, a.land - dtS);
+    a.inCar = a.carMode && a.x >= SHAFT_L + 1;
+    a.lift = approach(a.lift, (a === (selectedId && actors.get(selectedId)) || a.hover || a.walk) ? 11 : 0, 10, dtS);
     if (a.walk) {
-      const dx = a.walk.x - a.x, step = WALK * dt * SPEED;
-      if (Math.abs(dx) <= step) { a.x = a.walk.x; const r = a.walk.res; a.walk = null; a.phase = 0; r(); } else { a.x += Math.sign(dx) * step; a.face = Math.sign(dx); a.phase += dt * 9 * SPEED; }
-    }
+      const dx = a.walk.x - a.x, d = Math.abs(dx), dir = Math.sign(dx);
+      if (dir !== 0 && dir !== a.face) a.face = dir;
+      const ready = a.sink < 1.2 && Math.abs(a.fx - dir) < 0.5; // 다 일어나고 몸을 돌린 뒤에 걷기 시작
+      const vmax = 36 + Math.min(a.walk.d0, 240) * 0.07;         // 먼 거리는 약간 빠르게
+      const want = ready ? Math.min(vmax, Math.sqrt(2 * DEC * Math.max(0, d - 0.3)) + 4) : 0;
+      a.v = clampStep(a.v, want, (want > a.v ? ACC : DEC * 1.6) * dtS);
+      const step = a.v * dtS;
+      if (d <= 0.35 || (step >= d && a.v < 14)) { a.x = a.walk.x; const r = a.walk.res; a.walk = null; a.v = 0; a.phase = 0; a.land = 0.28; r(); }
+      else { a.x += dir * Math.min(step, d); a.phase += step / STRIDE * Math.PI; }
+    } else a.v = Math.max(0, a.v - DEC * dtS);
   }
-  // 엘리베이터 카
+  // 엘리베이터 카: 출발은 서서히 빨라지고 도착은 서서히 멈춘다
   if (car.move) {
-    const ty = carYForFloor(car.move.f), dy = ty - car.y, st = 62 * dt * SPEED;
-    if (Math.abs(dy) <= st) { car.y = ty; car.f = car.move.f; const r = car.move.res; car.move = null; r(); } else car.y += Math.sign(dy) * st;
-  }
-  car.door += Math.sign(car.doorT - car.door) * Math.min(Math.abs(car.doorT - car.door), dt * 3 * SPEED);
+    const ty = carYForFloor(car.move.f), dy = ty - car.y, d = Math.abs(dy), want = Math.min(78, Math.sqrt(2 * 90 * d) + 3);
+    car.vy = clampStep(car.vy ?? 0, want, (want > (car.vy ?? 0) ? 70 : 140) * dtS);
+    const st = car.vy * dtS;
+    if (d <= 0.4 || st >= d) { car.y = ty; car.f = car.move.f; car.vy = 0; const r = car.move.res; car.move = null; r(); } else car.y += Math.sign(dy) * st;
+  } else car.vy = 0;
+  car.door += Math.sign(car.doorT - car.door) * Math.min(Math.abs(car.doorT - car.door), dtS * 2.4);
   for (let i = letters.length - 1; i >= 0; i--) {
     const L = letters[i], nx = L.pts[L.i + 1];
     if (!nx) { letters.splice(i, 1); L.res(); continue; }
-    const dx = nx[0] - L.x, dy = nx[1] - L.y, d = Math.hypot(dx, dy), st = L.speed * dt * SPEED;
-    if (d <= st) { L.x = nx[0]; L.y = nx[1]; L.i++; } else { L.x += dx / d * st; L.y += dy / d * st; }
+    const dx = nx[0] - L.x, dy = nx[1] - L.y, d = Math.hypot(dx, dy), u = Math.min(1, L.run / Math.max(1, L.total)), ease = 0.35 + 0.65 * Math.min(1, Math.min(u, 1 - u) * 6), st = L.speed * ease * dt * SPEED; // 출발·도착은 천천히
+    if (d <= st) { L.x = nx[0]; L.y = nx[1]; L.i++; L.run += d; } else { L.x += dx / d * st; L.y += dy / d * st; L.run += st; }
   }
   const now = performance.now();
   if (boss.until && now > boss.until) { boss.mode = 'sleep'; boss.until = 0; }
 }
 
+const snap = (v) => Math.round(v * K2) / K2; // 화면 픽셀에 딱 맞게
 function drawActor(a) {
-  const frames = framesOf(a.sp, a.vr); const walking = !!a.walk && !a.inCar;
-  const dozing = !walking && (a.pose === 'nap' || (a.pose === 'sofa' && a.doze !== false && LOUNGE.find((l) => l.pose === 'sofa' && Math.abs(l.x - a.x) < 2)?.doze));
-  const fi = walking ? (Math.floor(a.phase / 1.4) % 2 === 0 ? 2 : 3) : dozing ? 4 : (reduce ? 0 : Math.floor(T * 2.4 + a.x * 0.05) % 2);
-  const spr = frames[fi];
-  const bob = reduce ? 0 : walking ? Math.abs(Math.sin(a.phase)) * 2.2 : dozing ? Math.sin(T * 1.1 + a.x) * 0.35 : Math.sin(T * 2 + a.x) * 0.5;
-  // 걸을 때 통통(발이 닿을 때 살짝 눌렸다 펴짐), 간식 먹을 때 볼이 불룩해지는 씹기 모션
+  const frames = framesOf(a.sp, a.vr);
+  const gait = Math.min(1, a.v / 24);                               // 걷는 정도(0~1): 출발·정지 때 자연스럽게 커졌다 작아진다
+  const dozing = !a.walk && (a.pose === 'nap' || (a.pose === 'sofa' && a.doze !== false && LOUNGE.find((l) => l.pose === 'sofa' && Math.abs(l.x - a.x) < 2)?.doze));
+  // 코드로 그린 대체 캐릭터(이미지가 없을 때)는 프레임이 여러 장: 걷기 2·3, 졸기 4, 평소 0·1. 이미지 캐릭터는 한 장이다
+  const spr = IMGA.ok ? frames[0] : frames[gait > 0.15 ? (Math.floor(a.phase / 1.4) % 2 === 0 ? 2 : 3) : dozing ? 4 : (reduce ? 0 : Math.floor(T * 2.4 + a.x * 0.05) % 2)];
+  const breathe = reduce ? 0 : Math.sin(T * 2 + a.x) * 0.5;
+  const bob = reduce ? 0 : gait * Math.abs(Math.sin(a.phase)) * 2.4 + (1 - gait) * (dozing ? Math.sin(T * 1.1 + a.x) * 0.35 : breathe);
   let sx = 1, sy = 1;
-  if (!reduce) { if (walking) { const k = Math.cos(a.phase * 2) * 0.06; sy = 1 - k; sx = 1 + k * 0.7; } else if (a.pose === 'snack') { sx = 1 + Math.max(0, Math.sin(T * 7 + a.x)) * 0.07; sy = 1 - Math.max(0, Math.sin(T * 7 + a.x)) * 0.03; } }
-  const fy = a.feet, dw = Math.round(spr.w * sx), dh = Math.round(spr.h * sy);
-  const sink = walking ? 0 : a.sitting ? 6 : a.pose === 'sofa' ? 4 : 0, x = Math.round(a.x);
-  const y = Math.round(fy + 2 - dh - bob - sink);
-  ctx.globalAlpha = 0.45; R(ctx, x - 9, fy - 1, 18, 2, a.color); ctx.globalAlpha = 1;
-  ctx.save(); ctx.translate(x, y + dh); if (a.face < 0) ctx.scale(-1, 1);
-  if (IMGA.ok && !reduce) { const tilt = walking ? Math.sin(a.phase * 1.6) * 0.09 : dozing ? 0.16 + Math.sin(T * 1.1 + a.x) * 0.02 : 0; if (tilt) ctx.rotate(tilt); }
-  ctx.drawImage(spr.c, -Math.floor(dw / 2), -dh, dw, dh); ctx.restore();
-  if (a.pose === 'snack' && !walking) { // 손에 든 열매를 한입씩 먹는다
+  if (!reduce) {
+    if (gait > 0) { const k = Math.cos(a.phase * 2) * 0.06 * gait; sy = 1 - k; sx = 1 + k * 0.7; }   // 발이 닿을 때 살짝 눌린다
+    else if (a.pose === 'snack' && !a.walk) { const m = Math.max(0, Math.sin(T * 7 + a.x)); sx = 1 + m * 0.07; sy = 1 - m * 0.03; }
+    if (a.land > 0) { const u = 1 - a.land / 0.28; const sq = Math.sin(u * Math.PI) * 0.1 * (1 - u * 0.4); sy *= 1 - sq; sx *= 1 + sq * 0.8; } // 도착하면 살짝 튕긴다
+  }
+  const lean = reduce ? 0 : (gait * (a.face * 0.07 + Math.sin(a.phase) * 0.035)) + (dozing ? 0.16 + Math.sin(T * 1.1 + a.x) * 0.02 : 0);
+  const fy = a.feet + (a.walk ? 1.5 * gait : 0), x = snap(a.x), baseY = snap(fy + 2 - bob - a.sink);
+  ctx.save(); ctx.globalAlpha = a.alpha;
+  // 바닥 그림자: 발이 떠 있는 동안 작아진다
+  ctx.globalAlpha = a.alpha * 0.4; ctx.fillStyle = a.color; ctx.beginPath(); ctx.ellipse(x, fy + 0.2, 9 - bob * 0.9, 1.9, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = a.alpha;
+  ctx.translate(x, baseY); ctx.rotate(lean); ctx.scale(a.fx * sx, sy);
+  ctx.drawImage(spr.c, -spr.w / 2, -spr.h, spr.w, spr.h);
+  ctx.restore();
+  const y = baseY - spr.h; // 소품·효과 기준(머리 쪽)
+  ctx.save(); ctx.globalAlpha = a.alpha;
+  if (a.pose === 'snack' && !a.walk) { // 손에 든 열매를 한입씩 먹는다
     const bite = reduce ? 0 : Math.floor(T * 1.4 + a.x) % 3, bx = x + a.face * 9, by = y + 18;
     if (bite < 2) { R(ctx, bx - 2, by, 4 - bite, 3 - (bite ? 1 : 0), '#ff6a5a'); R(ctx, bx - 1, by - 1, 2, 1, '#4ab04a'); R(ctx, bx - 2, by + 1, 1, 1, '#ffd0c8'); }
   }
   if (a.sweat && performance.now() < a.sweat) { R(ctx, x + 8, y + 7, 2, 4, '#7ad0ff'); R(ctx, x + 8, y + 5, 1, 2, '#c7efff'); }
   if (dozing && !reduce) { const k = Math.floor(T * 1.1 + a.x) % 3; ctx.fillStyle = '#d6e4ff'; ctx.font = '6px "Press Start 2P", monospace'; ctx.fillText('z', x + 8 + k * 2, y + 6 - k * 3); }
+  ctx.restore();
 }
 function drawBossImg() {
   const md = boss.mode, s = BOSS[md] ?? BOSS.sleep, fy = fFeet(0) + 1, cx = BOSS_X;
   const hov = reduce ? 0 : md === 'sleep' ? Math.sin(T * 1.2) * 1.4 : md === 'angry' ? Math.sin(T * 40) * 0.7 : Math.sin(T * 2.2) * 0.8;
-  const dw = s.w, dh = s.h, bottom = fy - 14 - hov, top = Math.round(bottom - dh), cy = top + dh * 0.5;
+  const dw = s.w, dh = s.h, bottom = fy - 29 - hov, top = bottom - dh, cy = top + dh * 0.5; // 환상의 포켓몬이라 책상 위로 떠 있다: 가슴·팔이 모니터 위로 보이고 머리가 천장에 닿지 않는 높이
   boss.topY = top;
   if (!reduce) {
     const ring = (rx, ry, col, a0, lw) => { ctx.globalAlpha = a0; ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; };
-    if (md === 'sleep') { for (let i = 0; i < 2; i++) { const u = ((T * 0.35 + i * 0.5) % 1); ring(20 + u * 26, 22 + u * 18, '#b88aff', 0.5 * (1 - u), 1); } }
-    else if (md === 'angry') { for (let i = 0; i < 3; i++) { const u = ((T * 1.6 + i / 3) % 1); ring(18 + u * 36, 20 + u * 28, i % 2 ? '#ff3a3a' : '#ff7a4a', 0.75 * (1 - u), 2); } const rg = ctx.createRadialGradient(cx, cy, 6, cx, cy, 64); rg.addColorStop(0, 'rgba(255,40,40,0.34)'); rg.addColorStop(1, 'rgba(255,40,40,0)'); ctx.fillStyle = rg; ctx.fillRect(cx - 66, cy - 66, 132, 132); }
-    else if (md === 'awake') { ring(22 + Math.sin(T * 6) * 2, 24 + Math.sin(T * 6) * 2, '#d6a8ff', 0.5, 1); }
+    if (md === 'sleep') { for (let i = 0; i < 2; i++) { const u = ((T * 0.35 + i * 0.5) % 1); ring(14 + u * 20, 14 + u * 8, '#b88aff', 0.5 * (1 - u), 1); } }
+    else if (md === 'angry') { for (let i = 0; i < 3; i++) { const u = ((T * 1.6 + i / 3) % 1); ring(14 + u * 30, 14 + u * 8, i % 2 ? '#ff3a3a' : '#ff7a4a', 0.75 * (1 - u), 2); } const rg = ctx.createRadialGradient(cx, cy, 5, cx, cy, 34); rg.addColorStop(0, 'rgba(255,40,40,0.34)'); rg.addColorStop(1, 'rgba(255,40,40,0)'); ctx.fillStyle = rg; ctx.fillRect(cx - 36, Math.max(fTop(0) + 3, cy - 36), 72, Math.min(72, fFeet(0) - Math.max(fTop(0) + 3, cy - 36))); }
+    else if (md === 'awake') { ring(16 + Math.sin(T * 6) * 1.5, 17 + Math.sin(T * 6) * 1.5, '#d6a8ff', 0.5, 1); }
   }
   // 홀로그램 모니터(깨어 있을 때 양옆에 떠오른다)
   if (md === 'awake' || md === 'happy') { ctx.globalAlpha = 0.5; for (const sx of [-1, 1]) { const hx = cx + sx * 40 - 11, hy = top + 4 - Math.sin(T * 2 + sx) * 1.2; ctx.fillStyle = '#7ad0ff'; ctx.fillRect(hx, hy, 22, 16); ctx.fillStyle = '#dff6ff'; for (let i = 0; i < 3; i++) ctx.fillRect(hx + 2, hy + 3 + i * 4, 6 + ((i + sx + 2) % 3) * 4, 2); } ctx.globalAlpha = 1; }
@@ -1165,10 +1213,17 @@ function drawElevator() {
   car._cx = cx;
 }
 function drawElevatorDoors() {
-  const cx = car._cx ?? (SHAFT_L + SHAFT_R) / 2, cy = car.y, cw = 30, open = car.door;
-  const pw = Math.max(2, Math.round((cw - 4) / 2 * (1 - open)));
-  ctx.globalAlpha = 0.9; R(ctx, cx - cw / 2 + 2, cy + 3, pw, 47, '#8a95b2'); R(ctx, cx + cw / 2 - 2 - pw, cy + 3, pw, 47, '#8a95b2'); ctx.globalAlpha = 1;
-  R(ctx, cx - cw / 2 + 2 + pw - 1, cy + 3, 1, 47, '#4a5a98'); R(ctx, cx + cw / 2 - 2 - pw, cy + 3, 1, 47, '#4a5a98');
+  const cx = car._cx ?? (SHAFT_L + SHAFT_R) / 2, cy = car.y, cw = 30;
+  const o = car.door * car.door * (3 - 2 * car.door);              // 부드럽게 열리고 닫힌다
+  const half = (cw - 4) / 2, pw = Math.max(1.5, half * (1 - o));
+  // 유리문: 닫혀 있어도 안의 캐릭터가 비쳐 보인다(문짝 틀과 반사 줄무늬만 불투명)
+  for (const side of [-1, 1]) {
+    const x0 = side < 0 ? cx - cw / 2 + 2 : cx + cw / 2 - 2 - pw;
+    ctx.globalAlpha = 0.2; R(ctx, x0, cy + 3, pw, 47, '#b9c6ea');
+    ctx.globalAlpha = 0.7; R(ctx, side < 0 ? x0 : x0 + pw - 1, cy + 3, 1, 47, '#cfd9f5');
+    if (pw > 5) { ctx.globalAlpha = 0.28; R(ctx, x0 + (side < 0 ? 3 : pw - 5), cy + 6, 1.5, 28, '#ffffff'); }
+  }
+  ctx.globalAlpha = 0.85; R(ctx, cx - cw / 2 + 2, cy + 3, cw - 4, 1, '#4a5a98'); ctx.globalAlpha = 1;
 }
 function drawLive() { // 동적 소품: 시계·칸반 숫자·서버 불빛·형광등
   const now = new Date(), t0 = fTop(0);
@@ -1198,12 +1253,12 @@ function frame(ts) {
   if (!running2) return;
   const dt = Math.min(0.05, (ts - last) / 1000 || 0.016); last = ts;
   update(dt);
-  ctx.setTransform(K2, 0, 0, K2, 0, 0); ctx.imageSmoothingEnabled = true;
+  ctx.setTransform(K2, 0, 0, K2y, 0, 0); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(BG, 0, 0, W, H); ctx.imageSmoothingEnabled = IMGA.ok;
   drawElevator();
   drawLive();
-  const list = [...actors.values()].filter((a) => a.vis);
-  const inside = list.filter((a) => a.inCar), outside = list.filter((a) => !a.inCar).sort((p, q) => p.floor - q.floor || p.x - q.x);
+  const list = [...actors.values()].filter((a) => a.vis || a.alpha > 0.02);
+  const inside = list.filter((a) => a.inCar), outside = list.filter((a) => !a.inCar).sort((p, q) => p.floor - q.floor || (!!p.walk - !!q.walk) || p.x - q.x); // 걷는 캐릭터는 앉거나 서 있는 캐릭터의 앞으로 지나간다
   drawBoss();
   for (const a of outside) drawActor(a);
   for (const a of inside) drawActor(a);
@@ -1229,7 +1284,7 @@ function overlays() {
   const spotA = sel ?? (working.length ? working[spot.i % working.length] : null);
   for (const a of actors.values()) {
     if (!a.vis) continue;
-    const sx = a.x, sy = a.feet - Math.max(30, a.sh + 3) - ((sel === a || a.hover || a.walk) ? 11 : 0);
+    const sx = a.x, sy = a.feet - Math.max(30, a.sh + 3) - a.lift;
     let b = null;
     if (a.bub && now < a.bub.until) b = a.bub;
     else if (spotA === a && a.doc.state !== 'idle') b = { text: a.doc.status ?? '', kind: hasFix(a.doc) ? 'warn' : 'think' };
@@ -1241,10 +1296,13 @@ function overlays() {
   for (const [k, e] of pool) if (e.dataset.u === '0') { e.style.display = 'none'; } else e.style.display = '';
 }
 function resize() {
-  const st = document.getElementById('stage'), cssW = st.clientWidth || 360;
-  scale = cssW / W; st.style.setProperty('--k', Math.max(1, Math.min(1.9, scale / 1.7)).toFixed(2)); K2 = Math.max(1, Math.round(cssW * (window.devicePixelRatio || 1) / W));
-  cvs.width = W * K2; cvs.height = H * K2; ctx = cvs.getContext('2d'); ctx.imageSmoothingEnabled = false;
-  if (BG && Math.min(4, Math.max(2, K2)) !== KB) buildStatic();
+  const st = document.getElementById('stage'), cssW = st.clientWidth || 360, dpr = window.devicePixelRatio || 1;
+  scale = cssW / W; st.style.setProperty('--k', Math.max(1, Math.min(1.9, scale / 1.7)).toFixed(2));
+  // 캔버스 해상도를 화면 픽셀(CSS 폭 × 화면 배율)에 정확히 맞춘다: 브라우저가 한 번 더 늘이거나 줄이지 않으므로 흐려지지 않는다
+  cvs.width = Math.max(W, Math.round(cssW * dpr)); cvs.height = Math.round(cvs.width * H / W);
+  K2 = cvs.width / W; K2y = cvs.height / H;
+  ctx = cvs.getContext('2d'); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  if (BG && Math.min(4, Math.max(2, Math.ceil(K2))) !== KB) buildStatic();
 }
 function hit(ev) {
   const r = cvs.getBoundingClientRect(), lx = (ev.clientX - r.left) / r.width * W, ly = (ev.clientY - r.top) / r.height * H;

@@ -48,6 +48,33 @@ def trim(rgba):
     ys, xs = np.where(al > 8)
     return rgba[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
 
+UP = 2  # 캐릭터 컷은 원본(약 60~90px, AI가 그린 부드러운 그림)을 2배로 키워 두고(라인츠 + 언샤프 + 알파 가장자리 선명화) 게임이 화면 크기에 맞춰 줄여 그린다.
+        # 원본을 그대로 1.3~1.6배 키워 그리던 때의 번짐이 없어진다. (2×2를 묶어 낮은 해상도 도트로 만드는 방법도 해 봤으나 눈 같은 세부가 뭉개져 채택하지 않았다)
+
+def enhance(arr, f=UP):
+    """RGBA 컷 → f배 확대. 투명 칸의 색은 가까운 불투명 색으로 채워 어두운 테두리 번짐을 막고, 가장자리 초록 기운을 눌러 준다."""
+    from scipy import ndimage as ndi
+    from PIL import ImageFilter, ImageEnhance
+    h, w = arr.shape[:2]
+    al = arr[..., 3] / 255.0
+    core = al > 0.5
+    fill = arr[..., :3].astype(float).copy()
+    if core.any() and not core.all():
+        _, (iy, ix) = ndi.distance_transform_edt(~core, return_indices=True)
+        fill[~core] = fill[iy[~core], ix[~core]]
+    # 가장자리(바깥에서 3칸 안)의 초록 번짐: 초록 성분을 빨강·파랑 중 큰 값 이하로
+    dist_in = ndi.distance_transform_edt(core)
+    band = core & (dist_in <= 3)
+    cap = np.maximum(fill[..., 0], fill[..., 2])
+    g = fill[..., 1]; sp = band & (g > cap)
+    fill[..., 1][sp] = cap[sp]
+    rgb = Image.fromarray(np.clip(fill, 0, 255).astype(np.uint8), 'RGB').resize((w * f, h * f), Image.LANCZOS)
+    rgb = rgb.filter(ImageFilter.UnsharpMask(radius=1.6 * f / 2, percent=110, threshold=2))
+    rgb = ImageEnhance.Color(rgb).enhance(1.08)
+    a = Image.fromarray((al * 255).astype(np.uint8), 'L').resize((w * f, h * f), Image.LANCZOS)
+    A = np.clip((np.array(a).astype(float) / 255 - 0.5) * 3.2 + 0.5, 0, 1)
+    return trim(np.dstack([np.array(rgb), (A * 255).astype(np.uint8)]))
+
 def pack(items, width):
     """items: [(id, rgba array)] → (PIL 이미지, {id: [x,y,w,h]}). 선반(shelf) 방식, 2px 여백"""
     x = y = rowh = 0; pos = {}; pad = 2
@@ -82,9 +109,9 @@ def main():
         g = out[..., 1].astype(int); m = np.maximum(out[..., 0], out[..., 2]).astype(int)
         out = out.copy(); out[ring & (g > m + 25), 3] = 0
         return trim(out)
-    chars = [(cid, cut(i, g)) for cid, _, i, g in CHARS]
-    boss = [(bid, cut(i)) for bid, _, i in BOSS]
-    atlas, apos = pack(chars + boss, 640)
+    chars = [(cid, enhance(cut(i, g))) for cid, _, i, g in CHARS]
+    boss = [(bid, enhance(cut(i))) for bid, _, i in BOSS]
+    atlas, apos = pack(chars + boss, 1280)
     props = [(pid, cut(i)) for pid, _, i in PROP_COMPS] + [(pid, rect(r)) for pid, _, r in PROP_RECTS]
     psheet, ppos = pack(props, 640)
     out = os.path.join(HERE, 'assets'); os.makedirs(out, exist_ok=True)
@@ -92,9 +119,9 @@ def main():
     def save(img, name):
         q = img.quantize(colors=256, method=Image.FASTOCTREE, dither=Image.NONE)
         q.save(os.path.join(out, name), optimize=True)
-    save(atlas, 'atlas.png'); save(psheet, 'props.png')
+    atlas.save(os.path.join(out, 'atlas.png'), optimize=True); save(psheet, 'props.png')
     meta = {
-        'atlas': {'file': 'atlas.png', 'w': atlas.width, 'h': atlas.height,
+        'atlas': {'file': 'atlas.png', 'w': atlas.width, 'h': atlas.height, 'up': UP,
                   'chars': [{'id': cid, 'name': n, 'rect': apos[cid]} for cid, n, _, _ in CHARS],
                   'boss': [{'id': bid, 'name': n, 'rect': apos[bid]} for bid, n, _ in BOSS]},
         'props': {'file': 'props.png', 'w': psheet.width, 'h': psheet.height,
