@@ -8,7 +8,7 @@
 .pi-id { flex: 1; min-width: 0; }
 .pi-id h2 { margin: 0; font-size: 1.2rem; overflow-wrap: anywhere; }
 .pi-close { padding: 4px 10px; }
-.pi-nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.pi-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
 .pi-nums > div { display: flex; flex-direction: column; background: var(--panel-2); border-radius: 8px; padding: 6px 10px; font-variant-numeric: tabular-nums; }
 .pi-nums b { font-size: 1rem; }
 .pi-stats { display: grid; gap: 6px; margin: 6px 0 4px; }

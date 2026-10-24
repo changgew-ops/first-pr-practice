@@ -1,6 +1,7 @@
 // 라인업 편성 화면의 순수 계산(브라우저 API 없음). 편집 중인 편성(draft)은 { starters: [선수 id], bench: [선수 id] }.
 import { validateLineup, buildLineup, buildLineupHealthy } from '../../src/lineup.mjs';
 import { POSITION_TARGET } from '../../src/valuation.mjs';
+import { STAT_KEYS } from '../../src/rating.mjs';
 
 export const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C'];
 
@@ -191,11 +192,52 @@ export function positionSummary(roster, slots, target = POSITION_TARGET) {
   });
 }
 
+// ---- 능력치 보기(색 단계·강점·팀 평균) --------------------------------------------------------------
+/** 화면용 짧은 이름 */
+export const STAT_SHORT = { shooting: '슈팅', passing: '패스', defense: '수비', rebound: '리바', athletic: '운동', stamina: '체력' };
+
+/** 능력치 값의 색 단계 0~4: 50 미만 · 60 미만 · 70 미만 · 80 미만 · 80 이상 (숫자와 같이 쓴다, 색만으로 구분하지 않는다) */
+export const statHeat = (v) => (v >= 80 ? 4 : v >= 70 ? 3 : v >= 60 ? 2 : v >= 50 ? 1 : 0);
+
+/** 강점 n개(값이 높은 순)와 약점 m개(낮은 순). 같으면 슈팅·패스·수비·리바·운동·체력 순서. 반환: { strong: [{key,value}], weak: [{key,value}] } */
+export function topStats(p, strong = 2, weak = 1) {
+  const list = STAT_KEYS.map((key, i) => ({ key, value: p.stats?.[key] ?? 0, i }));
+  const hi = [...list].sort((a, b) => b.value - a.value || a.i - b.i).slice(0, strong);
+  const lo = [...list].filter((x) => !hi.includes(x)).sort((a, b) => a.value - b.value || a.i - b.i).slice(0, weak);
+  const strip = ({ key, value }) => ({ key, value });
+  return { strong: hi.map(strip), weak: lo.map(strip) };
+}
+
+/** 리그 전체 선수의 능력치 평균(소속 있는 선수만): { shooting: 61.2, … } */
+export function leagueAverages(players) {
+  const list = players.filter((p) => p.teamId && p.stats);
+  return Object.fromEntries(STAT_KEYS.map((k) => [k, list.length ? list.reduce((s, p) => s + p.stats[k], 0) / list.length : 0]));
+}
+
+/** 선수 여럿(스타팅)의 능력치 평균을 리그 평균과 견준 표: [{ key, label, value, avg, diff }] (value·avg는 소수 한 자리) */
+export function teamProfile(players, avgs) {
+  return STAT_KEYS.map((key) => {
+    const value = players.length ? players.reduce((s, p) => s + p.stats[key], 0) / players.length : 0;
+    const avg = avgs?.[key] ?? 0;
+    return { key, label: STAT_SHORT[key], value: Math.round(value * 10) / 10, avg: Math.round(avg * 10) / 10, diff: Math.round((value - avg) * 10) / 10 };
+  });
+}
+
+/** 스타팅 포지션 균형 한 줄: 포지션마다 한 명씩이면 균형, 아니면 비거나 겹친 포지션을 알린다 */
+export function positionBalance(starters) {
+  const count = Object.fromEntries(POSITIONS.map((pos) => [pos, starters.filter((p) => p.position === pos).length]));
+  const missing = POSITIONS.filter((pos) => count[pos] === 0), extra = POSITIONS.filter((pos) => count[pos] > 1);
+  if (starters.length < POSITIONS.length) return { ok: false, text: `스타팅 ${POSITIONS.length}명을 채우면 포지션 균형을 알려 드립니다` };
+  if (!missing.length) return { ok: true, text: '스타팅 포지션이 PG·SG·SF·PF·C 한 명씩 고르게 짜여 있습니다' };
+  return { ok: false, text: `스타팅에 ${missing.join('·')} 선수가 없고 ${extra.map((pos) => `${pos} ${count[pos]}명`).join('·')}이(가) 겹칩니다` };
+}
+
+const byOvr = (a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id);
 export const POOL_SORTS = {
-  ovr: ['OVR순', (a, b) => b.ovr - a.ovr || a.id.localeCompare(b.id)],
-  cost: ['코스트순', (a, b) => b.cost - a.cost || b.ovr - a.ovr || a.id.localeCompare(b.id)],
-  pos: ['포지션순', (a, b) => POSITIONS.indexOf(a.position) - POSITIONS.indexOf(b.position) || b.ovr - a.ovr || a.id.localeCompare(b.id)],
-  age: ['나이 어린 순', (a, b) => a.age - b.age || b.ovr - a.ovr || a.id.localeCompare(b.id)]
+  ovr: ['OVR순', byOvr],
+  pos: ['포지션순', (a, b) => POSITIONS.indexOf(a.position) - POSITIONS.indexOf(b.position) || byOvr(a, b)],
+  age: ['나이 어린 순', (a, b) => a.age - b.age || byOvr(a, b)],
+  ...Object.fromEntries(STAT_KEYS.map((k) => [k, [`${STAT_SHORT[k]} 높은 순`, (a, b) => b.stats[k] - a.stats[k] || byOvr(a, b)]]))
 };
 
 /** 선수 목록: 포지션 필터(null이면 전체)와 정렬 */
