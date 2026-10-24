@@ -127,36 +127,81 @@ export function playSeries(higher, lower, bestOf, pattern, baseline, sim, rng) {
  * 플레이오프 (6팀 기준 대진)
  *  6강: 3위-6위, 4위-5위 / 4강: 1위-(4·5위 승자), 2위-(3·6위 승자) / 결승
  * 시드는 정규리그 순위. 시리즈마다 시드가 높은 팀이 홈 어드밴티지를 가진다.
- * 라운드씩 진행하는 진행기: { round(진행한 라운드 수), done, playRound() → [시리즈 …], result() }
+ *
+ * 진행기: 한 경기씩(playGame)·한 라운드씩(playRound)·끝까지 모두 같은 난수 순서로 진행한다 — 같은 시드에서 어느 방식으로 진행해도 결과가 같다.
+ * 경기 순서는 라운드 안에서 시리즈 차례(앞 시리즈를 먼저 끝까지, 그다음 시리즈), 시리즈 안에서는 1차전부터다. 경기마다 팀 표(teamsById)와 기준점을 다시 읽으므로
+ * 경기 사이에 편성·전술·컨디션 보정이 바뀌면 다음 경기부터 반영된다. baseline은 값 또는 () => 값.
+ * { seeds, round(끝난 라운드 수), done, gamesPlayed(치른 경기 수), series(끝난 시리즈들),
+ *   current(지금 라운드의 시리즈 상태들: 안 끝난 것 포함), peek()(다음 경기 정보), playGame(), playRound(), result() }
  */
 export function createPlayoffs(rankedIds, teamsById, rules, baseline, sim, rng) {
   const { qualify, rounds, homePattern } = rules.playoffs;
   if (qualify !== 6) throw new Error('현재 대진표는 6팀 진출만 지원합니다');
+  const baselineOf = typeof baseline === 'function' ? baseline : () => baseline;
   const seed = new Map(rankedIds.slice(0, qualify).map((id, i) => [id, i + 1]));
-  const run = (round, a, b) => {
-    const [hi, lo] = seed.get(a) < seed.get(b) ? [a, b] : [b, a];
-    const s = playSeries(teamsById.get(hi), teamsById.get(lo), round.bestOf, homePattern[round.bestOf], baseline, sim, rng);
-    return { round: round.name, ...s };
-  };
   const ids = rankedIds.slice(0, qualify);
-  const [r1, r2, r3] = rounds;
-  const series = [];
-  const plan = [
-    () => [run(r1, ids[2], ids[5]), run(r1, ids[3], ids[4])],
-    () => [run(r2, ids[0], series[1].winnerId), run(r2, ids[1], series[0].winnerId)],
-    () => [run(r3, series[2].winnerId, series[3].winnerId)]
+  const series = []; // 끝난 시리즈(예전과 같은 모양: { round, higherId, lowerId, winnerId, wins, games })
+  // 라운드마다 맞붙는 두 팀(앞 라운드가 끝나야 알 수 있다)
+  const pairs = [
+    () => [[ids[2], ids[5]], [ids[3], ids[4]]],
+    () => [[ids[0], series[1].winnerId], [ids[1], series[0].winnerId]],
+    () => [[series[2].winnerId, series[3].winnerId]]
   ];
-  let played = 0;
+  let played = 0; // 끝난 라운드 수
+  let live = null; // 지금 라운드의 시리즈 상태
+  let gamesPlayed = 0;
+  const open = () => {
+    if (live || played >= pairs.length) return;
+    const round = rounds[played];
+    live = pairs[played]().map(([a, b]) => {
+      const [hi, lo] = seed.get(a) < seed.get(b) ? [a, b] : [b, a];
+      return { round: round.name, higherId: hi, lowerId: lo, bestOf: round.bestOf, need: Math.floor(round.bestOf / 2) + 1, pattern: homePattern[round.bestOf], wins: { [hi]: 0, [lo]: 0 }, games: [], winnerId: null };
+    });
+  };
+  const nextSeries = () => { open(); return live?.find((x) => !x.winnerId) ?? null; };
+  const sides = (sr) => {
+    const higherHome = sr.pattern[sr.games.length % sr.pattern.length] === 1;
+    return higherHome ? [sr.higherId, sr.lowerId] : [sr.lowerId, sr.higherId];
+  };
   return {
     seeds: seed,
     get round() { return played; },
-    get done() { return played >= plan.length; },
+    get done() { return played >= pairs.length; },
     get series() { return series; },
+    get gamesPlayed() { return gamesPlayed; },
+    /** 지금 라운드의 시리즈 상태들(끝난 것·진행 중·아직 안 한 것). 끝난 라운드 뒤에는 다음 라운드의 대진(모두 0-0) */
+    get current() { open(); return live ? live.map((x) => ({ round: x.round, higherId: x.higherId, lowerId: x.lowerId, bestOf: x.bestOf, wins: { ...x.wins }, games: [...x.games], winnerId: x.winnerId })) : []; },
+    /** 다음에 치를 경기: { roundIndex, seriesIndex, higherId, lowerId, homeId, awayId, n(시리즈의 몇 차전), round } 또는 null(끝남) */
+    peek() {
+      const sr = nextSeries();
+      if (!sr) return null;
+      const [homeId, awayId] = sides(sr);
+      return { roundIndex: played, seriesIndex: live.indexOf(sr), round: sr.round, higherId: sr.higherId, lowerId: sr.lowerId, homeId, awayId, n: sr.games.length + 1 };
+    },
+    /** 한 경기를 치른다. 반환: { game, round, seriesIndex, n, seriesDone(그 시리즈가 끝났는지), roundDone(그 라운드가 끝났는지), series(시리즈 상태 복사본) } */
+    playGame() {
+      const sr = nextSeries();
+      if (!sr) throw new Error('플레이오프가 끝났습니다');
+      const [homeId, awayId] = sides(sr);
+      const r = simulateGame(teamsById.get(homeId), teamsById.get(awayId), baselineOf(), sim, rng);
+      sr.wins[r.winnerId]++;
+      sr.games.push(r);
+      gamesPlayed++;
+      const info = { game: r, round: sr.round, roundIndex: played, seriesIndex: live.indexOf(sr), n: sr.games.length, seriesDone: false, roundDone: false };
+      if (sr.wins[sr.higherId] >= sr.need || sr.wins[sr.lowerId] >= sr.need) {
+        sr.winnerId = sr.wins[sr.higherId] >= sr.need ? sr.higherId : sr.lowerId;
+        series.push({ round: sr.round, higherId: sr.higherId, lowerId: sr.lowerId, winnerId: sr.winnerId, wins: sr.wins, games: sr.games });
+        info.seriesDone = true;
+        if (live.every((x) => x.winnerId)) { info.roundDone = true; live = null; played++; }
+      }
+      return info;
+    },
+    /** 지금 라운드의 남은 경기를 모두 치른다. 반환: 그 라운드의 시리즈들(끝난 것) */
     playRound() {
-      if (played >= plan.length) throw new Error('플레이오프가 끝났습니다');
-      const out = plan[played]();
-      series.push(...out); played++;
-      return out;
+      if (played >= pairs.length) throw new Error('플레이오프가 끝났습니다');
+      const target = played;
+      while (played === target) this.playGame();
+      return series.filter((x) => x.round === rounds[target].name);
     },
     result() {
       const final = series[4];
