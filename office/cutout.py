@@ -52,7 +52,7 @@ def keyed(a):
 def despill(rgb, alpha, green_sprite):
     """컷 하나의 번짐 제거. 초록 몸 캐릭터(green_sprite)는 바깥 2px만 안쪽 색으로 바꾸고, 나머지는 윤곽 8px 안의 초록 성분을 눌러 없앤다."""
     rgb = rgb.copy()
-    inside = alpha > 0.2
+    inside = alpha > 0.1
     dist_out = ndi.distance_transform_edt(inside)
     r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
     if green_sprite:
@@ -66,7 +66,7 @@ def despill(rgb, alpha, green_sprite):
         sp = band & (g > cap)
         rgb[..., 1][sp] = cap[sp]
     al = alpha.copy()
-    al = np.where(dist_out <= 1, 0, al)
+    al = np.where((dist_out <= 1) | (al < 0.4), 0, al)
     return np.dstack([np.clip(rgb, 0, 255), al * 255]).astype(np.uint8)
 
 def components(alpha, minpix=60, dil=2):
