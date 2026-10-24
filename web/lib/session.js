@@ -20,7 +20,7 @@ import { moodOf } from '../../src/fans.mjs';
 import { newCodexKeys } from '../../src/codex.mjs';
 import { newAchievements } from '../../src/achievements.mjs';
 import { buildPreview } from '../../src/preview.mjs';
-import { teamPower, powerOfLineup } from './game.js';
+import { teamPower } from './game.js';
 import { prestigeTable } from '../../src/legacy.mjs';
 
 export const VERSION = 2;
@@ -127,18 +127,25 @@ export class Session {
    * 화면의 "전력"은 모두 이 편성으로 계산한다.
    */
   lineupOf(teamId) {
-    const live = this.run && (this.state.stage === 'regular' || this.state.stage === 'playoffs') ? this.run.lineupOf(teamId) : null;
-    if (live) return live;
-    return teamPower(this.view, { ...this.data, rules: this.rules }, teamId).lineup;
+    return this.teamPower(teamId).lineup;
   }
-  /** 구단 전력: 실제 출전 편성의 스타팅 OVR 평균 70% + 벤치 30%. 반환 { lineup, power } */
+  /**
+   * 구단 전력(src/effective.mjs): 시즌 중에는 엔진이 지금 쓰는 편성과 경기 보정을 그대로 읽고, 아니면 로스터 자동 편성과 중립 보정.
+   * 반환 { lineup, power(= effective, 화면 기본 표시), baseOvr(편성 OVR 전력), edge(경기 보정 합, 점), parts: { coach, tactic, cond }, tactic, fit, effective, pointsPerPower }
+   */
   teamPower(teamId) {
-    const lineup = this.lineupOf(teamId);
-    return { lineup, power: powerOfLineup(lineup) };
+    const live = this.run && (this.state.stage === 'regular' || this.state.stage === 'playoffs') ? this.run.effectiveOf(teamId) : null;
+    if (live) return { ...live, power: live.effective };
+    return teamPower(this.view, { ...this.data, rules: this.rules }, teamId);
   }
-  /** 10개 구단 전력 순위(실제 출전 편성 기준): [{ id, power, rank }] */
+  /** 편집 중인 편성이라면 우리 구단의 유효 전력은(경기 보정 포함): 시즌 중에만 엔진으로 계산하고 아니면 null */
+  effectiveIf(lineup) {
+    if (!this.run || !(this.state.stage === 'regular' || this.state.stage === 'playoffs')) return null;
+    return this.run.effectiveIf(this.managerId, lineup);
+  }
+  /** 10개 구단 전력 순위(유효 전력 기준): [{ id, power, baseOvr, edge, rank }] */
   powerRanking() {
-    const rows = this.data.teams.map((t) => ({ id: t.id, power: this.teamPower(t.id).power }));
+    const rows = this.data.teams.map((t) => { const e = this.teamPower(t.id); return { id: t.id, power: e.power, baseOvr: e.baseOvr, edge: e.edge }; });
     rows.sort((a, b) => b.power - a.power);
     return rows.map((r, i) => ({ ...r, rank: i + 1 }));
   }

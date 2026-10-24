@@ -1,6 +1,7 @@
 // 시즌 허브: 정규리그를 하루씩·한 바퀴씩·끝까지 진행하고, 플레이오프를 라운드씩 진행하고, 시즌을 마무리한다.
 // 세션 단계(stage)에 따라 regular / playoffs / offseason 화면을 보여 준다. 스타일은 css/season.css (sv- 접두).
 import { h, table, stat, link } from '../lib/dom.js';
+import { modChip, fmtPts } from '../lib/mods-view.js';
 import { playerLink } from '../lib/player-info.js';
 import { seasonLabel } from '../lib/game.js';
 import { injuryCard, injuryTag, injuryMap } from '../lib/injury-view.js';
@@ -89,8 +90,8 @@ function regularView(ctx) {
 function nextGameCard(ctx, next, rows) {
   const s = ctx.session;
   const opp = rows.find((r) => r.id === next.oppId), mine = rows.find((r) => r.id === s.managerId);
-  const power = (id) => s.teamPower(id).power; // 다음 경기에 실제로 쓰일 편성(부상·휴식·직접 편성 반영) 기준
-  const mp = power(s.managerId), op = power(next.oppId);
+  const me = s.teamPower(s.managerId), ot = s.teamPower(next.oppId); // 다음 경기에 실제로 쓰일 편성(부상·휴식·직접 편성)과 경기 보정(감독·전술·컨디션) 기준의 유효 전력
+  const mp = me.power, op = ot.power;
   return h('div', { class: 'card sv-next' },
     h('div', { class: 'row between' },
       h('div', h('div', { class: 'note' }, `다음 경기 · ${next.day}일차`),
@@ -98,7 +99,7 @@ function nextGameCard(ctx, next, rows) {
       h('span', { class: `tag ${next.home ? 'hot' : ''}` }, next.home ? '홈 경기' : '원정 경기')),
     h('div', { class: 'grid g3 sv-next-stats' },
       stat('상대 전적', `${opp.wins}승 ${opp.losses}패`, `${opp.rank}위 · 득실 ${signed1(opp.diffPerGame)}`),
-      stat('전력(출전 편성)', `${op.toFixed(1)}`, `우리 ${mp.toFixed(1)} (${mp - op >= 0 ? '+' : ''}${(mp - op).toFixed(1)}) · 스타팅 70% + 벤치 30%`),
+      stat('유효 전력(상대)', `${op.toFixed(1)}`, `우리 ${mp.toFixed(1)} (${mp - op >= 0 ? '+' : ''}${(mp - op).toFixed(1)}) · 기본 ${ot.baseOvr.toFixed(1)} / ${me.baseOvr.toFixed(1)}`),
       stat('우리 순위', `${mine.rank}위`, `${mine.wins}승 ${mine.losses}패`)));
 }
 
@@ -256,7 +257,7 @@ function opponentPanel(ctx, oppId) {
   const power = s.teamPower(oppId).power;
   return h('div', { class: 'sv-opp' },
     h('h3', { style: { margin: '0 0 6px' } }, `상대 확인 · ${ctx.name(oppId)}`),
-    h('p', { class: 'note', style: { margin: '0 0 6px' } }, `전력(출전 편성) ${power.toFixed(1)} · 전술 ${tacticName(rules, mod?.tactic)}${mod ? ` (적합도 ${mod.fit >= 0 ? '+' : ''}${mod.fit.toFixed(2)})` : ''}${hurt.size ? ` · 결장 ${hurt.size}명` : ''}`),
+    h('p', { class: 'note', style: { margin: '0 0 6px' } }, `유효 전력 ${power.toFixed(1)}(기본 ${s.teamPower(oppId).baseOvr.toFixed(1)}) · 전술 ${tacticName(rules, mod?.tactic)}${mod ? ` (적합도 ${mod.fit >= 0 ? '+' : ''}${mod.fit.toFixed(2)})` : ''} `, mod ? modChip(mod) : null, hurt.size ? ` · 결장 ${hurt.size}명` : ''),
     h('div', { class: 'table-wrap' }, h('table', { class: 'sv-opp-t' },
       h('thead', h('tr', h('th', '스타팅'), h('th', '포지션'), h('th', { class: 'r' }, 'OVR'), condOf ? h('th', { class: 'r' }, '컨디션') : null)),
       h('tbody', (lu?.starters ?? []).map((p) => h('tr', h('td', playerLink(p.id, p.name), hurt.has(p.id) ? injuryTag(hurt.get(p.id)) : null), h('td', p.position), h('td', { class: 'r' }, p.ovr), condOf ? h('td', { class: 'r' }, condBar(condOf(p.id), { compact: true })) : null))))),
@@ -284,8 +285,8 @@ function playoffNextCard(ctx, mine, po) {
       h('span', { class: `tag ${homeId === my ? 'hot' : ''}` }, homeId === my ? '홈 경기' : '원정 경기')),
     h('div', { class: 'grid g3 sv-next-stats' },
       stat('시리즈 전적', `${myW} : ${oppW}`, myW === oppW ? '동률' : myW > oppW ? `${myW - oppW}승 앞서 있음` : `${oppW - myW}승 뒤처짐`),
-      stat('전력(출전 편성)', op.toFixed(1), `우리 ${mp.toFixed(1)} (${mp - op >= 0 ? '+' : ''}${(mp - op).toFixed(1)}) · 스타팅 70% + 벤치 30%`),
-      stat('우리 보정', mod ? `${mod.edge >= 0 ? '+' : ''}${mod.edge.toFixed(2)}점` : '-', mod ? `전술 ${tacticName(rules, mod.tactic)} · 컨디션 ${mod.parts.cond >= 0 ? '+' : ''}${mod.parts.cond.toFixed(2)}` : '보정 없음')),
+      stat('유효 전력(상대)', op.toFixed(1), `우리 ${mp.toFixed(1)} (${mp - op >= 0 ? '+' : ''}${(mp - op).toFixed(1)}) · 기본 OVR 전력 + 경기 보정`),
+      stat('우리 경기 보정', mod ? fmtPts(mod.edge) : '-', mod ? `감독 ${fmtPts(mod.parts.coach)} · 전술 ${tacticName(rules, mod.tactic)} ${fmtPts(mod.parts.tactic)} · 컨디션 ${fmtPts(mod.parts.cond)}` : '보정 없음')),
     h('div', { class: 'row sv-po-actions', style: { marginTop: '12px' } },
       h('button', { class: 'btn primary big', onclick: () => go(() => s.playoffStep()) }, `${n}차전 진행`),
       h('button', { class: 'btn', onclick: () => go(() => s.playoffSeries()) }, '이 시리즈 끝까지'),

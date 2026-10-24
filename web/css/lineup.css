@@ -217,3 +217,7 @@ body.lu-dragging .lineup-view .lu-slot, body.lu-dragging .lineup-view .lu-row { 
 .lineup-view .lu-namecell .cond b { font-size: .7rem; font-weight: 600; }
 .lineup-view .lu-namecell .lu-info { margin-left: 2px; padding: 2px 3px; }
 .lineup-view .lu-table td { padding-left: 6px; padding-right: 6px; }
+/* 경기 보정 칩(감독·전술·컨디션): 선수 성장 변화 "(+N)"과 모양을 다르게 한다(web/lib/mods-view.js) */
+.mod-chip { display: inline-block; padding: 1px 8px; border-radius: 999px; border: 1px dashed var(--line); font-size: .74rem; line-height: 1.5; color: var(--muted); background: transparent; white-space: nowrap; }
+.mod-chip.good { color: #1f7a4d; border-color: #1f7a4d; } .mod-chip.bad { color: #b3392b; border-color: #b3392b; }
+.eff-sub { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }

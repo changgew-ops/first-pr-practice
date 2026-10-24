@@ -3,7 +3,8 @@ import { h } from './dom.js';
 import { playerLink } from './player-info.js';
 import { recommend, BALANCED, tacticList } from '../../src/tactics.mjs';
 import { condTier } from '../../src/condition.mjs';
-import { ROLE_LABEL } from '../../src/coaching.mjs';
+import { ROLE_LABEL, tacMult } from '../../src/coaching.mjs';
+import { modChip, fmtPts } from './mods-view.js';
 
 const sign = (v, d = 1) => `${v > 0 ? '+' : ''}${v.toFixed(d)}`;
 
@@ -37,27 +38,27 @@ export function tacticsCard(ctx, { lineup = null, onChange = null } = {}) {
   const info = s.tactics;
   if (!info) return null;
   const live = s.stage === 'regular' || (s.stage === 'playoffs' && !s.playoffs?.done); // 플레이오프에서도 경기 사이에 바꿀 수 있다
-  const list = lineup && lineup.starters.length && lineup.bench.length ? recommend(lineup, rules, info.refs) : info.list;
+  const mult = s.staff?.[s.managerId] ? tacMult(s.staff[s.managerId].head, rules) : 1; // 감독의 전술 이해(엔진과 같은 함수)
+  const list = lineup && lineup.starters.length && lineup.bench.length ? recommend(lineup, rules, info.refs, mult) : info.list;
   const mod = s.teamMods?.[s.managerId];
-  const mult = s.staff?.[s.managerId] ? 1 + (rules.coaching?.tacticsUnderstanding ?? 0) * (s.staff[s.managerId].head.tac - 50) / 50 : 1;
   const pick = (id) => { const r = s.setTactic(id); if (!r.ok) { ctx.toast(r.errors[0]); return; } ctx.toast(id ? `전술: ${tacticList(rules).find((t) => t.id === id).name}` : '추천 따르기로 바꿨습니다'); (onChange ?? ctx.refresh)(); };
   const best = list.find((r) => r.id !== BALANCED);
   const rows = list.map((t) => {
     const def = tacticList(rules).find((x) => x.id === t.id);
     const chosen = info.choice === t.id, using = info.current === t.id;
-    const edge = t.id === BALANCED ? 0 : rules.tactics.edgeMax * t.fit * mult;
+    const edge = t.edge ?? 0; // 엔진이 쓰는 값과 같은 식(src/tactics.mjs tacticEdge)
     return h('label', { class: `tac-row ${chosen ? 'picked' : ''} ${t.id === best?.id && t.fit >= rules.tactics.minFit ? 'rec' : ''}` },
       h('input', { type: 'radio', name: 'tactic', checked: chosen, disabled: !live, 'aria-label': `${t.name} 전술`, onchange: () => pick(t.id) }),
       h('span', { class: 'tac-main' }, h('b', t.name), t.id === best?.id && t.fit >= rules.tactics.minFit ? h('span', { class: 'tag hot' }, '추천') : null, using && !chosen ? h('span', { class: 'tag' }, '자동 적용 중') : null,
         h('span', { class: 'note' }, def?.desc ?? '')),
-      h('span', { class: 'tac-fit' }, t.id === BALANCED ? h('span', { class: 'note' }, '이득·손해 없음') : [fitBar(t.fit), h('span', { class: `tac-edge ${edge >= 0 ? 'good' : 'bad'}` }, `기대 득점 ${sign(edge)}점`)]));
+      h('span', { class: 'tac-fit' }, t.id === BALANCED ? h('span', { class: 'note' }, '이득·손해 없음') : [fitBar(t.fit), h('span', { class: `tac-edge ${edge >= 0 ? 'good' : 'bad'}` }, `기대 득점 ${fmtPts(edge)}`)]));
   });
   return h('div', { class: 'card tac-card' },
     h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, '전술'),
       h('div', { class: 'row' }, info.choice ? h('span', { class: 'tag hot' }, `직접 선택: ${tacticList(rules).find((t) => t.id === info.choice)?.name}`) : h('span', { class: 'tag' }, '추천 따르기'),
         h('button', { type: 'button', class: 'btn ghost', disabled: !live || !info.choice, onclick: () => pick(null) }, '추천 따르기'))),
     h('p', { class: 'note' }, '전술은 팀 구성에 맞을 때만 이득입니다. 적합도는 지금 편성이 그 전술이 요구하는 능력치에서 리그 평균보다 얼마나 나은지(+)·못한지(−)를 나타내고, 기대 득점 이득은 적합도 × ', rules.tactics.edgeMax, '점에 감독의 전술 이해를 곱한 값입니다. ',
-      mod ? h('b', `이번 경기 팀 보정: 감독 ${sign(mod.parts.coach, 2)} · 전술 ${sign(mod.parts.tactic, 2)} · 컨디션 ${sign(mod.parts.cond, 2)} = ${sign(mod.edge, 2)}점`) : null,
+      mod ? [h('b', '이번 경기에만 적용되는 보정: '), modChip(mod), ` 감독 ${fmtPts(mod.parts.coach)} · 전술 ${fmtPts(mod.parts.tactic)} · 컨디션 ${fmtPts(mod.parts.cond)}`] : null,
       s.stage === 'playoffs' ? ' 플레이오프에서도 경기 사이에 바꿀 수 있습니다(다음 경기부터 적용).' : ''),
     h('div', { class: 'tac-list' }, rows));
 }

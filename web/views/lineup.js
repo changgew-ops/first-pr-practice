@@ -8,6 +8,7 @@
 // 적용한 편성은 시즌이 끝날 때까지 쓰이고(선수가 팀을 떠나면 자동으로 돌아간다), 새 시즌에는 자동 편성으로 초기화된다.
 import { h, svg, ovrChip, stat, radar, signed, STAT_KEYS, ORIGIN_LABEL } from '../lib/dom.js';
 import { openPlayerInfo, positionAverages, statRows } from '../lib/player-info.js';
+import { modChip, modText, fmtPts } from '../lib/mods-view.js';
 import { avatarEl } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
 import { injuryMap, injuryTag, injuryCard } from '../lib/injury-view.js';
@@ -143,7 +144,11 @@ export function render(ctx) {
     const dirty = !sameArrangement(draft, applied);
     const customApplied = Boolean(s.lineup);
     const onCourt = rules.foreignPlayers.onCourt;
-    const diff = e.power - autoEval.power;
+    // 유효 전력(src/effective.mjs): 시즌 중에는 편집 중 편성을 엔진과 같은 함수로 평가한다(전술 적합도·컨디션·감독 보정 포함). 아니면 기본 전력만
+    const effOf = (ev) => (live && ev.complete && !ev.errors.length ? s.effectiveIf({ starters: ev.starters, bench: ev.bench }) : null);
+    const eff = effOf(e), effAuto = effOf(autoEval);
+    const shownPower = (ev, ef) => (ef ? ef.effective : ev.power);
+    const diff = shownPower(e, eff) - shownPower(autoEval, effAuto);
     const nBench = rules.lineup.bench;
     const message = (text, kind = 'ok') => h('div', { class: `lu-msg ${kind}`, role: 'status' }, text);
     const setSlots = (next) => { edit.slots = next; ui.sel = null; draw(); };
@@ -330,7 +335,7 @@ export function render(ctx) {
       h('div', { class: 'grid g4' },
         stat('스타팅', `${e.starters.length} / ${rules.lineup.starters}`, e.starters.length === rules.lineup.starters ? '완성' : `${rules.lineup.starters}명을 채워 주세요`),
         stat('벤치', `${e.bench.length} / ${nBench}`, e.bench.length === nBench ? '완성' : `${nBench}명을 채워 주세요`),
-        stat('팀 전력', e.power.toFixed(1), `자동 편성 ${autoEval.power.toFixed(1)}`),
+        stat('팀 전력', shownPower(e, eff).toFixed(1), eff ? `기본 ${eff.baseOvr.toFixed(1)} · 경기 보정 ${fmtPts(eff.edge)} · 자동 편성 ${shownPower(autoEval, effAuto).toFixed(1)}` : `기본 전력 · 자동 편성 ${autoEval.power.toFixed(1)}`),
         stat('스타팅 외국 선수', `${e.foreignStarters}명`, `동시에 ${onCourt}명까지`)),
       profileCard,
       e.errors.length ? h('div', { class: 'lu-errors', role: 'alert' }, h('b', '이 편성은 적용할 수 없습니다'), h('ul', e.errors.map((m) => h('li', m)))) : message('규칙에 맞는 편성입니다.', 'ok'),
@@ -364,9 +369,9 @@ export function render(ctx) {
       h('div', { class: 'card lu-compare' },
         h('h2', '자동 편성과 비교'),
         h('div', { class: 'lu-cmp-grid' },
-          h('div', h('div', { class: 'note' }, '현재 편집'), h('div', { class: 'lu-big' }, e.power.toFixed(1)), h('div', { class: 'note' }, `스타팅 ${powerOf(e.starters, []).toFixed(1)} · 벤치 ${e.bench.length ? powerOf(e.bench, []).toFixed(1) : '-'}`)),
-          h('div', h('div', { class: 'note' }, '자동 편성'), h('div', { class: 'lu-big' }, autoEval.power.toFixed(1)), h('div', { class: 'note' }, `스타팅 ${powerOf(autoEval.starters, []).toFixed(1)} · 벤치 ${autoEval.bench.length ? powerOf(autoEval.bench, []).toFixed(1) : '-'}`)),
-          h('div', h('div', { class: 'note' }, '차이'), h('div', { class: `lu-big ${diff > 0.05 ? 'good' : diff < -0.05 ? 'bad' : ''}` }, `${diff > 0 ? '+' : ''}${diff.toFixed(1)}`), h('div', { class: 'note' }, '스타팅 70% + 벤치 30%'))))].filter(Boolean));
+          h('div', h('div', { class: 'note' }, '현재 편집'), h('div', { class: 'lu-big' }, shownPower(e, eff).toFixed(1)), h('div', { class: 'note eff-sub' }, `기본 ${e.power.toFixed(1)}`, eff ? modChip(eff) : null), eff ? h('div', { class: 'note' }, `${modText(eff)}${eff.tactic ? '' : ''}`) : null),
+          h('div', h('div', { class: 'note' }, '자동 편성'), h('div', { class: 'lu-big' }, shownPower(autoEval, effAuto).toFixed(1)), h('div', { class: 'note eff-sub' }, `기본 ${autoEval.power.toFixed(1)}`, effAuto ? modChip(effAuto) : null), effAuto ? h('div', { class: 'note' }, modText(effAuto)) : null),
+          h('div', h('div', { class: 'note' }, '차이'), h('div', { class: `lu-big ${diff > 0.05 ? 'good' : diff < -0.05 ? 'bad' : ''}` }, `${diff > 0 ? '+' : ''}${diff.toFixed(1)}`), h('div', { class: 'note' }, live ? '유효 전력(기본 전력 + 경기 보정)' : '스타팅 70% + 벤치 30%'))))].filter(Boolean));
   };
   draw();
   return { title: '라인업', body: h('div', { class: 'stack lineup-view' },

@@ -50,9 +50,12 @@ export function leagueRefs(lineups, rules) {
   return out;
 }
 
-/** 모든 전술의 적합도, 높은 순: [{ id, name, fit }]. 균형도 들어 있다(0) */
-export function recommend(lineup, rules, refs = null) {
-  return tacticList(rules).map((t) => ({ id: t.id, name: t.name, desc: t.desc, fit: round2(fitOf(t.id, lineup, rules, refs)) })).sort((a, b) => b.fit - a.fit);
+/** 전술이 팀 기대 득점에 더하는 이득(점수). 엔진(tacticMods)과 화면이 같은 식을 쓴다. 균형은 0 */
+export const tacticEdge = (id, fit, rules, tacMult = 1) => round2(rules.tactics.edgeMax * fit * tacMult * (id === BALANCED ? 0 : 1));
+
+/** 모든 전술의 적합도와 그 이득(edge: 감독의 전술 이해 tacMult 반영), 높은 순: [{ id, name, fit, edge }]. 균형도 들어 있다(0) */
+export function recommend(lineup, rules, refs = null, tacMult = 1) {
+  return tacticList(rules).map((t) => { const fit = fitOf(t.id, lineup, rules, refs); return { id: t.id, name: t.name, desc: t.desc, fit: round2(fit), edge: tacticEdge(t.id, fit, rules, tacMult) }; }).sort((a, b) => b.fit - a.fit);
 }
 
 /** AI(와 "추천 따르기")가 고르는 전술: 적합도가 minFit 이상인 가장 좋은 전술, 없으면 균형 */
@@ -73,5 +76,5 @@ export function tacticMods(id, lineup, rules, tacMult = 1, refs = null) {
   const t = tacticOf(id, rules) ?? tacticOf(BALANCED, rules);
   if (!t) return null;
   const fit = fitOf(t.id, lineup, rules, refs);
-  return { id: t.id, fit: round2(fit), pace: t.pace ?? 1, three: t.three ?? 1, reb: t.reb ?? 1, to: t.to ?? 1, oppTo: t.oppTo ?? 1, edge: round2(cfg.edgeMax * fit * tacMult * (t.id === BALANCED ? 0 : 1)) };
+  return { id: t.id, fit: round2(fit), pace: t.pace ?? 1, three: t.three ?? 1, reb: t.reb ?? 1, to: t.to ?? 1, oppTo: t.oppTo ?? 1, edge: tacticEdge(t.id, fit, rules, tacMult) };
 }

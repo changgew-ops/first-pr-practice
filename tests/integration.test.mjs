@@ -13,6 +13,9 @@ import { attendanceCalc, homeOrdinal } from '../web/lib/season-view.js';
 import { slotsFromDraft, draftFromSlots, clearSlot, arrangeSeats, autoDraft } from '../web/lib/lineup-view.js';
 import { powerOfLineup } from '../web/lib/game.js';
 import { payrollEok } from '../src/valuation.mjs';
+import { computeTeamMods, effectiveOf, pointsPerPower } from '../src/effective.mjs';
+import { recommend } from '../src/tactics.mjs';
+import { effectiveTable } from '../web/lib/game.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../data/${p}`, import.meta.url), 'utf8'));
 const rules = read('league-rules.json');
@@ -57,7 +60,8 @@ test('전력 표시: 직접 편성·휴식·부상을 바꾸면 표시 전력과
   const auto0 = s.teamPower(MY);
   // 시즌 시작 전에는 자동 편성과 같다(예전 계산과 동일)
   assert.deepEqual(idsOf(auto0.lineup), idsOf(s.lineupOf(MY)));
-  assert.equal(auto0.power, powerOfLineup(s.lineupOf(MY)));
+  assert.equal(auto0.baseOvr, Math.round(powerOfLineup(s.lineupOf(MY)) * 100) / 100); // 기본 전력은 편성 OVR 합성
+  assert.equal(auto0.power, auto0.effective); // 화면 기본 표시 전력 = 유효 전력(기본 전력 + 경기 보정)
   // 직접 편성: 가장 약한 국내 12명 → 전력이 내려가고, 다음 경기 박스스코어는 정확히 그 12명(+필요하면 외국인 규칙은 이미 통과)만 쓴다
   const weak = myRoster(s).filter((p) => p.origin === 'domestic').sort((a, b) => a.ovr - b.ovr).slice(0, 12);
   assert.equal(s.setLineup({ starters: weak.slice(0, 5).map((p) => p.id), bench: weak.slice(5).map((p) => p.id) }).ok, true);
@@ -93,7 +97,7 @@ test('전력 표시: 직접 편성·휴식·부상을 바꾸면 표시 전력과
   assert.ok(!myBoxIds(d3).has(hurt.playerId), '다친 선수가 뛰었다');
   // 오프시즌에는 엔진 편성이 없어 로스터 자동 편성(예전 계산)으로 돌아간다
   toOffseason(s);
-  assert.equal(s.teamPower(MY).power, powerOfLineup(s.lineupOf(MY)));
+  assert.equal(s.teamPower(MY).baseOvr, Math.round(powerOfLineup(s.lineupOf(MY)) * 100) / 100);
 });
 
 // ---------- (플레이오프) 중 편성 변경: 다음 라운드에 반영되고 복원해도 같다 ----------
@@ -516,4 +520,87 @@ test('플레이오프 중 옛 저장(poGames·pg 없음, 라운드 수만 있음
   { const fa = JSON.parse(fingerprint(s)), fb = JSON.parse(fingerprint(opened)); delete fa.actions; delete fb.actions; assert.deepEqual(fa, fb, `seed ${seed} 옛 저장: 열었을 때 상태가 다르다(조작 기록의 pg 표시만 제외)`); }
   while (!s.playoffs.done) { s.playoffStep(); opened.playoffStep(); }
   assert.equal(poSig(s), poSig(opened));
+});
+
+// ---------- (6) 유효 전력: 엔진이 쓰는 보정 = 화면이 보여 주는 보정 ----------
+/** 세션의 지금 상태에서 effective 모듈로 다시 계산한 팀 보정(엔진의 team.mods와 같아야 한다) */
+function recomputeMods(s) {
+  const teams = s.data.teams.map((t) => ({ id: t.id, lineup: s.lineupOf(t.id) }));
+  const staff = s.staff;
+  return computeTeamMods(teams, { rules: s.rules, staff, manager: s.managerId, tacticChoice: s.tactics?.choice ?? null, condition: s.stage === 'regular' || s.rules.playoffs.condition?.enabled !== false, cond: s.conditions, meanIds: null }).mods;
+}
+
+test('유효 전력: 임의의 날 5곳에서 엔진이 실제로 쓴 보정 = effective 모듈 값, 화면 전력 = 기본 + 보정÷pointsPerPower', () => {
+  const s = Session.create(base, { managerId: MY, gmName: 'T', seed: 41 });
+  const ppp = pointsPerPower(s.rules);
+  for (const d of [0, 3, 7, 12, 20]) {
+    while (s.day < d) s.advance(1);
+    if (d === 7) s.setTactic(s.tactics.list.at(-1).id); // 일부러 가장 안 맞는 전술
+    if (d === 12) s.setRest([myRoster(s).sort((a, b) => b.ovr - a.ovr)[0].id]);
+    const mods = recomputeMods(s);
+    for (const t of s.data.teams) {
+      const live = s.teamMods[t.id], again = mods.get(t.id);
+      assert.equal(live.edge, again.edge, `${d}일차 ${t.id}: 엔진 보정 합이 effective 모듈과 다르다`);
+      assert.deepEqual(live.parts, again.parts, `${d}일차 ${t.id}: 보정 내역이 다르다`);
+      const tp = s.teamPower(t.id);
+      assert.equal(tp.edge, live.edge);
+      assert.equal(tp.baseOvr, Math.round(powerOfLineup(s.lineupOf(t.id)) * 100) / 100);
+      assert.equal(tp.effective, Math.round((powerOfLineup(s.lineupOf(t.id)) + tp.edge / ppp) * 100) / 100);
+      assert.equal(tp.power, tp.effective);
+    }
+    assert.equal(s.powerRanking().find((r) => r.id === MY).power, s.teamPower(MY).power);
+  }
+});
+
+test('유효 전력: 휴식·전술·컨디션·감독이 표시 전력을 올바른 방향으로 움직이고, 편집 중 편성 미리보기도 같은 값이다', () => {
+  const s = Session.create(base, { managerId: MY, gmName: 'T', seed: 42 });
+  while (s.day < 4) s.advance(1);
+  const baseline = s.teamPower(MY);
+  // 전술: 추천(적합도 최상) ≥ 균형 ≥ 가장 안 맞는 전술. 차이는 기대 득점 이득 ÷ pointsPerPower
+  const ppp = pointsPerPower(s.rules);
+  const list = recommend(s.lineupOf(MY), s.rules, s.tactics.refs, 1);
+  s.setTactic('balanced');
+  const bal = s.teamPower(MY);
+  const best = list.find((r) => r.id !== 'balanced'), worst = list.at(-1);
+  s.setTactic(best.id); const tb = s.teamPower(MY);
+  s.setTactic(worst.id); const tw = s.teamPower(MY);
+  assert.ok(tb.effective >= bal.effective - 0.011, `추천 전술이 균형보다 낮다 ${tb.effective} < ${bal.effective}`);
+  assert.ok(tw.effective <= bal.effective + 0.011, `맞지 않는 전술이 균형보다 높다 ${tw.effective} > ${bal.effective}`);
+  // 화면의 전술 행에 보이는 기대 득점 이득(s.tactics.list[].edge)은 엔진이 그 전술을 골랐을 때 쓰는 값(parts.tactic)과 같다
+  assert.equal(tb.parts.tactic, s.tactics.list.find((r) => r.id === best.id).edge);
+  assert.equal(tw.parts.tactic, s.tactics.list.find((r) => r.id === worst.id).edge);
+  assert.equal(bal.parts.tactic, 0);
+  // 휴식: 가장 센 선수를 쉬게 하면 기본 전력과 유효 전력이 내려간다
+  s.setTactic(null);
+  const before = s.teamPower(MY);
+  s.setRest([myRoster(s).filter((p) => !s.injuryOf(p.id)).sort((a, b) => b.ovr - a.ovr)[0].id]);
+  const rested = s.teamPower(MY);
+  assert.ok(rested.baseOvr < before.baseOvr && rested.effective < before.effective);
+  s.setRest([]);
+  // 컨디션: 쉬지 않고 계속 뛰게 하면 팀 컨디션 보정이 나빠진다(리그 평균 대비)
+  for (let i = 0; i < 12; i++) s.advance(1);
+  const tired = s.teamPower(MY);
+  assert.ok(Object.keys(tired.parts).every((k) => Number.isFinite(tired.parts[k])));
+  // 편집 중 편성 미리보기(effectiveIf): 지금 편성을 그대로 넣으면 지금 값과 같다
+  const lu = s.lineupOf(MY), cur = s.teamPower(MY);
+  const same = s.effectiveIf({ starters: lu.starters, bench: lu.bench });
+  assert.equal(same.effective, cur.effective);
+  assert.equal(same.edge, cur.edge);
+  // 약한 편성으로 바꾸면 미리보기 전력이 내려간다
+  const weak = myRoster(s).filter((p) => p.origin === 'domestic').sort((a, b) => a.ovr - b.ovr).slice(0, 12);
+  const wk = s.effectiveIf({ starters: weak.slice(0, 5), bench: weak.slice(5) });
+  assert.ok(wk.effective < cur.effective - 3);
+  assert.ok(baseline && ppp > 0);
+});
+
+test('유효 전력: 시즌 시작 전 표(effectiveTable)와 프리뷰는 저장했다 복원해도 같은 값이다', () => {
+  const s = Session.create(base, { managerId: MY, gmName: 'T', seed: 43 });
+  const t0 = JSON.stringify([...effectiveTable(s.view, s.data).entries()].map(([id, e]) => [id, e.baseOvr, e.edge, e.effective]));
+  const pv0 = s.preview();
+  const r = clone(s);
+  const t1 = JSON.stringify([...effectiveTable(r.view, r.data).entries()].map(([id, e]) => [id, e.baseOvr, e.edge, e.effective]));
+  assert.equal(t1, t0);
+  assert.equal(JSON.stringify(r.preview().rows.map((x) => [x.id, x.power, x.titleP, x.playoffP])), JSON.stringify(pv0.rows.map((x) => [x.id, x.power, x.titleP, x.playoffP])));
+  // 시즌 시작 전(0일차) 엔진 표시 전력과 시작 전 표가 같은 값이다
+  for (const t of s.data.teams) assert.equal(s.teamPower(t.id).effective, effectiveTable(s.view, s.data).get(t.id).effective, `${t.id}: 시작 전 표와 엔진 표시가 다르다`);
 });

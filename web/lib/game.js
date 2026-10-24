@@ -6,6 +6,8 @@ import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
 import { prestigeTable } from '../../src/legacy.mjs';
 import { buildLineup } from '../../src/lineup.mjs';
+import { powerOfLineup, computeTeamMods, effectiveOf } from '../../src/effective.mjs';
+import { coachingOn, staffOf } from '../../src/coaching.mjs';
 import { initialFunds } from '../../src/funds.mjs';
 import { domesticOf, foreignOf, asiaOf, payrollEok, hardLimitEok } from '../../src/valuation.mjs';
 import { franchiseSummary } from '../../src/history-summary.mjs';
@@ -26,25 +28,39 @@ export const fundsOf = (game, data, teamId) => (game.league.funds ?? initialFund
 export const rosterOf = (game, teamId) => game.league.players.filter((p) => p.teamId === teamId);
 export const playerById = (game, id) => game.league.players.find((p) => p.id === id);
 
-/** 전력: 스타팅 OVR 평균 70% + 벤치 OVR 평균 30% (라인업 화면·세션과 같은 식) */
-export function powerOfLineup(lineup) {
-  const sum = (l) => l.reduce((s, p) => s + p.ovr, 0);
-  return sum(lineup.starters) / lineup.starters.length * 0.7 + sum(lineup.bench) / lineup.bench.length * 0.3;
-}
+/** 기본 전력: 스타팅 OVR 평균 70% + 벤치 OVR 평균 30%(src/effective.mjs와 같은 함수) */
+export { powerOfLineup };
+
+// 구단 → 유효 전력 표 캐시(같은 리그 상태·규칙이면 같은 결과라 다시 계산하지 않는다)
+const tableMemo = new WeakMap();
 
 /**
- * 로스터에서 자동으로 짠 편성의 전력(부상·휴식·직접 편성을 모른다). 시즌이 시작되기 전(새 게임 구단 고르기·프리뷰)이나 오프시즌처럼 엔진의 편성이 없을 때만 쓴다.
- * 시즌 중 화면은 세션의 teamPower(실제 출전 편성 기준)를 쓴다.
+ * 로스터에서 자동으로 짠 편성으로 구한 모든 구단의 유효 전력 표: Map(구단 id → { lineup, baseOvr, edge, parts, tactic, fit, effective, pointsPerPower }).
+ * 시즌 시작 전(새 게임 구단 고르기·프리뷰·오프시즌)에 쓴다. 컨디션은 모두 새것(중립), 전술은 추천 따르기, 감독·코치는 그 구단의 스태프(src/coaching.mjs).
+ * 시즌 중에는 세션의 teamPower(엔진이 실제로 쓰는 편성·보정)를 쓴다.
  */
-export function teamPower(game, data, teamId) {
-  const roster = rosterOf(game, teamId);
-  const lineup = buildLineup(roster, data.rules, data.rules.simulation.benchWeight);
-  return { lineup, power: powerOfLineup(lineup) };
+export function effectiveTable(game, data) {
+  const key = game.league;
+  const hit = tableMemo.get(key);
+  if (hit && hit.rules === data.rules) return hit.table;
+  const rules = data.rules;
+  const teams = data.teams.map((t) => ({ id: t.id, lineup: buildLineup(rosterOf(game, t.id), rules, rules.simulation.benchWeight) }));
+  const staff = coachingOn(rules) ? staffOf(game.league, data.teams, rules) : null;
+  const { mods } = computeTeamMods(teams, { rules, staff, manager: game.managerId, tacticChoice: null, condition: false, cond: new Map(), meanIds: null });
+  const table = new Map(teams.map((t) => [t.id, { lineup: t.lineup, ...effectiveOf(t.lineup, mods.get(t.id), rules) }]));
+  tableMemo.set(key, { rules: data.rules, table });
+  return table;
 }
 
-/** 10개 구단 전력 순위: [{ id, power, rank }] */
+/** 시즌 시작 전·오프시즌의 구단 전력. power = 유효 전력(표시 기본값), baseOvr = 기본 OVR 전력 */
+export function teamPower(game, data, teamId) {
+  const e = effectiveTable(game, data).get(teamId);
+  return { ...e, power: e.effective };
+}
+
+/** 10개 구단 전력 순위(유효 전력 기준): [{ id, power, baseOvr, edge, rank }] */
 export function powerRanking(game, data) {
-  const rows = data.teams.map((t) => ({ id: t.id, power: teamPower(game, data, t.id).power }));
+  const rows = data.teams.map((t) => { const e = teamPower(game, data, t.id); return { id: t.id, power: e.power, baseOvr: e.baseOvr, edge: e.edge }; });
   rows.sort((a, b) => b.power - a.power);
   return rows.map((r, i) => ({ ...r, rank: i + 1 }));
 }

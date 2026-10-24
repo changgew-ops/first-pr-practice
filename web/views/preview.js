@@ -24,7 +24,7 @@ export function render(ctx) {
   const cols = [
     { key: 'rank', label: '순위', get: (r) => pv.rows.indexOf(r) + 1, sort: 'num', align: 'r' },
     { key: 'name', label: '구단', get: (r) => r.name, sort: 'str', render: (r) => h('span', { class: 'pv-team', style: { '--c': colorOf(r.id) } }, emblem(r.id, { size: 26 }), r.name, r.id === my ? h('span', { class: 'tag' }, '우리 팀') : null) },
-    { key: 'power', label: '전력', get: (r) => r.power, sort: 'num', align: 'r', render: (r) => h('span', `${r.power.toFixed(1)} `, h('span', { class: 'note' }, `(${r.powerRank}위)`)) },
+    { key: 'power', label: '유효 전력', get: (r) => r.power, sort: 'num', align: 'r', render: (r) => h('span', `${r.power.toFixed(1)} `, h('span', { class: 'note' }, `(${r.powerRank}위)`)) },
     { key: 'titleP', label: '우승 확률', get: (r) => r.titleP, sort: 'num', align: 'r', render: (r) => h('span', { class: 'pv-p' }, h('b', pct(r.titleP)), bar(r.titleP, maxP, { cls: 'pv-bar', label: `우승 확률 ${pct(r.titleP)}` })) },
     { key: 'odds', label: '가상 배당', title: '우승 확률을 바꾼 게임 안의 점수. 현금을 걸 수 없다', get: (r) => r.titleOdds ?? 999, sort: 'num', align: 'r', render: (r) => oddsText(r.titleOdds, maxOdds) },
     { key: 'playoffP', label: '6강 확률', get: (r) => r.playoffP, sort: 'num', align: 'r', render: (r) => `${Math.round(r.playoffP * 100)}%` },
@@ -61,7 +61,7 @@ export function render(ctx) {
 
   const body = h('div', { class: 'stack pv' },
     h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, `${pv.season} 시즌`), h('h1', '시즌 프리뷰')))),
-    h('p', { class: 'callout' }, pv.atStart ? '시즌 시작 전 전력 기준입니다.' : '시즌 시작 시점의 전력 기준입니다(저장 후 다시 불러온 경우에는 불러온 시점 로스터 기준). 시즌 중 부상·영입은 반영하지 않습니다.'),
+    h('p', { class: 'callout' }, pv.atStart ? '시즌 시작 전 유효 전력(기본 OVR 전력 + 감독·추천 전술 보정) 기준입니다.' : '시즌 시작 시점의 유효 전력 기준입니다(저장 후 다시 불러온 경우에는 불러온 시점 로스터 기준). 시즌 중 부상·영입은 반영하지 않습니다.'),
     pv.myLine ? h('div', { class: 'card pv-my' }, h('h2', '우리 팀 전망'), h('p', { style: { margin: 0 } }, pv.myLine)) : null,
     h('div', { class: 'card flush' }, h('div', { class: 'pad' }, h('h2', '우승 후보 순위'), h('p', { class: 'note', style: { margin: '2px 0 8px' } }, '시즌을 400번 돌려 본 가벼운 모의 결과입니다(시즌마다 부상·영입 같은 변수가 전력에 섞입니다). 제목 줄을 누르면 정렬됩니다.')),
       table(pv.rows, cols, { sort: { key: 'titleP', dir: -1 }, rowClass: (r) => (r.id === my ? 'me' : '') })),

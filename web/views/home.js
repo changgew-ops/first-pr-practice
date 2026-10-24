@@ -1,4 +1,5 @@
 import { h, stat, bar, ovrChip, rankChart, link, eok, table } from '../lib/dom.js';
+import { fmtPts } from '../lib/mods-view.js';
 import { emblem } from '../lib/emblem.js';
 import { playerLink } from '../lib/player-info.js';
 import { seasonLabel, powerRanking, payrollInfo, prestigeOf, fundsOf, rosterOf, fullHistory } from '../lib/game.js';
@@ -90,7 +91,7 @@ export function render(ctx) {
     newsCard(ctx),
     financeCard(ctx),
     h('div', { class: 'grid g4' },
-      stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 전력 ${myPower.power.toFixed(1)}${ctx.session.stage === 'offseason' ? ' (로스터 기준)' : ' (출전 편성 기준)'}`),
+      stat('전력 순위', `${myPower.rank}위`, `10개 구단 중 · 유효 전력 ${myPower.power.toFixed(1)} (기본 ${myPower.baseOvr.toFixed(1)} · 경기 보정 ${fmtPts(myPower.edge)})${ctx.session.stage === 'offseason' ? ' · 로스터 기준' : ''}`),
       stat('국내 선수 연봉', eok(pay.domestic), `캡 ${eok(pay.cap, 1)}${pay.over ? ` · ${eok(pay.over)} 초과` : ` · 여유 ${eok(pay.cap - pay.domestic)}`}`),
       stat('구단 자금', eok(fundsOf(game, data, my)), last ? `지난 시즌 ${last.ledger[my].net >= 0 ? '+' : ''}${last.ledger[my].net.toFixed(1)}억` : '시작 자금'),
       stat('전통 점수', pr.score.toFixed(2), `통산 우승 ${pr.titles}회 · 정규 1위 ${pr.regularTitles}회`)),
@@ -103,7 +104,8 @@ export function render(ctx) {
       table(ranking, [
         { key: 'rank', label: '순위', get: (r) => r.rank, sort: false },
         { key: 'name', label: '구단', get: (r) => ctx.name(r.id), sort: false },
-        { key: 'power', label: '전력', get: (r) => r.power, render: (r) => r.power.toFixed(1), align: 'r', sort: false },
+        { key: 'power', label: '유효 전력', get: (r) => r.power, render: (r) => r.power.toFixed(1), align: 'r', sort: false },
+        { key: 'base', label: '기본', get: (r) => r.baseOvr, render: (r) => r.baseOvr.toFixed(1), align: 'r', sort: false },
         { key: 'pr', label: '전통', get: (r) => prestigeOf(game, data)[r.id].score, render: (r) => prestigeOf(game, data)[r.id].score.toFixed(2), align: 'r', sort: false },
         { key: 'pay', label: '국내 연봉', get: (r) => payrollInfo(game, data, r.id).domestic, render: (r) => eok(payrollInfo(game, data, r.id).domestic), align: 'r', sort: false }
       ], { rowClass: (r) => (r.id === my ? 'me' : ''), onRow: (r) => ctx.go(`history/${r.id}`) })));

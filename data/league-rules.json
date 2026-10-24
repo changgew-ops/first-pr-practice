@@ -1156,5 +1156,9 @@
     "bubble": true,
     "bubbleDays": 9,
     "bubbleGap": 2
+  },
+  "effective": {
+    "_note": "유효 전력(src/effective.mjs): 전력 1(OVR 합성 전력)이 경기 기대 득점 차이로 몇 점인지 = qPerPower × simulation.ratingScale. qPerPower는 팀 편성의 (공격+수비) 점수가 전력 1당 오르는 폭을 시즌 8개×10개 구단 편성의 회귀로 잰 값(1.83, 게임용 보정값). 화면의 '전력'은 기본 전력 + 경기 보정(edge)÷이 값이다.",
+    "qPerPower": 1.83
   }
 }

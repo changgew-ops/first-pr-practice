@@ -2,6 +2,7 @@
 // 같은 시드·같은 조작(라인업·훈련 지정)이면 항상 같은 결과다 — 저장은 "조작 기록"만 하고 불러올 때 다시 돌려 복원한다.
 import { rulesFor } from './economy.mjs';
 import { buildLineup, validateLineup, buildLineupHealthy, substituteInjured } from './lineup.mjs';
+import { computeTeamMods, effectiveOf } from './effective.mjs';
 import { coachingOn, staffOf, staffIds, candidatePool, rotationEdge, tacMult, trainMul, recoveryMul, buyoutEok, seasonCharge, extraCharge, rollStaff, payOf, ROLES, ROLE_LABEL } from './coaching.mjs';
 import { chooseAuto, tacticMods, leagueRefs, recommend, tacticList, BALANCED } from './tactics.mjs';
 import { conditionOn, startCondition, nextCondition, lineupCondScore, condEdge, fatigueStreak } from './condition.mjs';
@@ -168,29 +169,12 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     attachMods(teams);
     return { teams, baseline: leagueBaseline(teams.map((t) => t.lineup), rules.simulation) };
   };
-  /** 팀마다 전술·감독·컨디션 보정(team.mods)을 붙인다. 셋 다 꺼져 있으면 붙이지 않는다 */
+  /** 팀마다 전술·감독·컨디션 보정(team.mods)을 붙인다. 셋 다 꺼져 있으면 붙이지 않는다. 계산은 src/effective.mjs(화면의 유효 전력과 같은 함수) */
   function attachMods(teams) {
     if (!coachingEnabled && !tacticsEnabled && !condEnabled) return;
-    tacticRefs = tacticsEnabled ? leagueRefs(teams.map((t) => t.lineup), rules) : null;
-    const scores = condActive() ? new Map(teams.map((t) => [t.id, lineupCondScore(t.lineup, cond, rules)])) : null;
-    // 플레이오프에서는 진출한 팀들끼리의 평균과 견준다(탈락한 팀의 푹 쉰 컨디션이 평균을 올리지 않게)
-    const meanOf = scores && inPlayoffs && poSeeds ? teams.filter((t) => poSeeds.has(t.id)) : teams;
-    const mean = scores ? meanOf.reduce((a, t) => a + scores.get(t.id), 0) / Math.max(1, meanOf.length) : 0;
-    for (const t of teams) {
-      const st = staff?.[t.id];
-      const parts = { coach: 0, tactic: 0, cond: 0 };
-      const mods = { pace: 1, three: 1, reb: 1, to: 1, oppTo: 1, drain: 1, edge: 0 };
-      if (coachingEnabled) parts.coach = rotationEdge(st.head, rules);
-      if (tacticsEnabled) {
-        const id = t.id === manager && tacticChoice ? tacticChoice : chooseAuto(t.lineup, rules, tacticRefs);
-        const tm = tacticMods(id, t.lineup, rules, st ? tacMult(st.head, rules) : 1, tacticRefs);
-        if (tm) { Object.assign(mods, { pace: tm.pace, three: tm.three, reb: tm.reb, to: tm.to, oppTo: tm.oppTo }); mods.drain = tacticList(rules).find((x) => x.id === tm.id)?.drain ?? 1; mods.tactic = tm.id; mods.fit = tm.fit; parts.tactic = tm.edge; }
-      }
-      if (scores) parts.cond = condEdge(scores.get(t.id), mean, rules);
-      mods.edge = Math.round((parts.coach + parts.tactic + parts.cond) * 100) / 100;
-      mods.parts = parts;
-      t.mods = mods;
-    }
+    const { mods, refs } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null });
+    tacticRefs = refs; // 플레이오프에서는 진출한 팀들끼리의 평균과 견준다(탈락한 팀의 푹 쉰 컨디션이 평균을 올리지 않게: meanIds)
+    for (const t of teams) t.mods = mods.get(t.id);
   }
 
   // 시즌 중 트레이드: AI 구단의 판단에 쓰는 상황(지금까지의 순위·승률·전통)
@@ -548,6 +532,24 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const t = (poTeams?.get(teamId)) ?? regular.teams.find((x) => x.id === teamId);
       return t ? { starters: [...t.lineup.starters], bench: [...t.lineup.bench] } : null;
     },
+    /**
+     * 다음 경기에 실제로 쓰이는 구단 유효 전력(src/effective.mjs): 엔진이 지금 쓰는 편성(lineupOf)과 팀 보정(team.mods)을 그대로 읽는다.
+     * 반환 { lineup, baseOvr, edge, parts: { coach, tactic, cond }, tactic, fit, effective, pointsPerPower }
+     */
+    effectiveOf(teamId) {
+      const t = (poTeams?.get(teamId)) ?? regular.teams.find((x) => x.id === teamId);
+      return t ? { lineup: { starters: [...t.lineup.starters], bench: [...t.lineup.bench] }, ...effectiveOf(t.lineup, t.mods, rules) } : null;
+    },
+    /**
+     * "만약 이 구단이 이 편성이라면"의 유효 전력(라인업 화면의 편집 중 편성 미리보기): 다른 구단은 지금 엔진 편성 그대로 두고
+     * 이 구단의 편성만 바꿔 같은 보정 함수로 다시 계산한다(전술 적합도의 기준인 리그 평균과 컨디션 평균이 함께 달라진다).
+     */
+    effectiveIf(teamId, hypothetical) {
+      const now = poTeams ?? new Map(regular.teams.map((t) => [t.id, t]));
+      const teams = [...now.values()].map((t) => ({ id: t.id, lineup: t.id === teamId ? hypothetical : t.lineup }));
+      const { mods } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null });
+      return { lineup: hypothetical, ...effectiveOf(hypothetical, mods.get(teamId), rules) };
+    },
     get playoffs() { return playoffs; },
     get totals() { return totals; },
     get splits() { return splits; },
@@ -847,7 +849,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     get tactics() {
       if (!tacticsEnabled || !manager) return null;
       const team = regular.teams.find((t) => t.id === manager);
-      return { choice: tacticChoice, current: team?.mods?.tactic ?? BALANCED, refs: tacticRefs, list: recommend(team.lineup, rules, tacticRefs) };
+      return { choice: tacticChoice, current: team?.mods?.tactic ?? BALANCED, refs: tacticRefs, list: recommend(team.lineup, rules, tacticRefs, manager && staff?.[manager] ? tacMult(staff[manager].head, rules) : 1) };
     },
     /** 우리 구단 전술을 고른다(null이면 추천 따르기). 정규리그 중에만 */
     setTactic(id) {
