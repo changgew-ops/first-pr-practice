@@ -11,6 +11,7 @@ import cutout
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'source', 'sheet.webp')
+SRC2 = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, 'source', 'sheet2.webp')  # 전설의 포켓몬·굼바 변형이 들어 있는 두 번째 시트
 
 # (id, 한글 이름, 컷 번호, 초록 몸 여부)
 CHARS = [
@@ -42,6 +43,12 @@ PROP_RECTS = [('mon_gantt', '일정 모니터', (824, 355, 930, 416)), ('mon_sco
               ('mon_code3', '코드 모니터 3', (945, 538, 1066, 626)),
               ('rack_a', '서버랙 A', (815, 652, 860, 757)), ('rack_b', '서버랙 B', (860, 652, 922, 757)), ('rack_c', '서버랙 C', (922, 655, 967, 757)),
               ('rack_tall', '높은 서버랙', (1006, 635, 1067, 758))]
+
+# 두 번째 시트(sheet2.webp)에서 가져오는 컷: (id, 한글 이름, 컷 번호 또는 좌표(x0,y0,x1,y1))
+#  - 사장실의 전설 직원(고정 장식), 청소부 굼바(서 있기·걷기 두 장), 부끄왕
+EXTRA2 = [('solgaleo', '솔가레오풍', 53), ('necrozma', '네크로즈마풍', 54),
+          ('palkia', '펄기아풍', (1189, 243, 1272, 324)), ('dialga', '디아루가풍', (1276, 240, 1318, 324)),
+          ('goomba_a', '굼바(정면)', 21), ('goomba_b', '굼바(걸음)', 27), ('kingboo2', '부끄왕', 23)]
 
 def trim(rgba):
     al = rgba[..., 3]
@@ -109,9 +116,27 @@ def main():
         g = out[..., 1].astype(int); m = np.maximum(out[..., 0], out[..., 2]).astype(int)
         out = out.copy(); out[ring & (g > m + 25), 3] = 0
         return trim(out)
+    # 두 번째 시트
+    a2 = cutout.load(SRC2); rgb2, alpha2 = cutout.keyed(a2)
+    comps2 = cutout.components(alpha2, minpix=120, dil=3)
+    comps2.sort(key=lambda c: (round(c[1] / 60), c[0]))
+    def cut2(idx):
+        x0, y0, x1, y1, mask = comps2[idx]; pad = 3
+        sl = (slice(max(0, y0 - pad), y1 + pad), slice(max(0, x0 - pad), x1 + pad))
+        al = np.where(mask[sl], alpha2[sl], 0)
+        return trim(cutout.despill(rgb2[sl], al, False))
+    def rect2(r):
+        x0, y0, x1, y1 = r
+        al = alpha2[y0:y1, x0:x1].copy()
+        out = trim(cutout.despill(rgb2[y0:y1, x0:x1], al, False))
+        h, w = out.shape[:2]; ring = np.ones((h, w), bool); ring[3:-3, 3:-3] = False
+        g = out[..., 1].astype(int); m = np.maximum(out[..., 0], out[..., 2]).astype(int)
+        out = out.copy(); out[ring & (g > m + 25), 3] = 0
+        return trim(out)
+    extra = [(eid, enhance(rect2(c) if isinstance(c, tuple) else cut2(c))) for eid, _, c in EXTRA2]
     chars = [(cid, enhance(cut(i, g))) for cid, _, i, g in CHARS]
     boss = [(bid, enhance(cut(i))) for bid, _, i in BOSS]
-    atlas, apos = pack(chars + boss, 1280)
+    atlas, apos = pack(chars + boss + extra, 1280)
     props = [(pid, cut(i)) for pid, _, i in PROP_COMPS] + [(pid, rect(r)) for pid, _, r in PROP_RECTS]
     psheet, ppos = pack(props, 640)
     out = os.path.join(HERE, 'assets'); os.makedirs(out, exist_ok=True)
@@ -123,7 +148,8 @@ def main():
     meta = {
         'atlas': {'file': 'atlas.png', 'w': atlas.width, 'h': atlas.height, 'up': UP,
                   'chars': [{'id': cid, 'name': n, 'rect': apos[cid]} for cid, n, _, _ in CHARS],
-                  'boss': [{'id': bid, 'name': n, 'rect': apos[bid]} for bid, n, _ in BOSS]},
+                  'boss': [{'id': bid, 'name': n, 'rect': apos[bid]} for bid, n, _ in BOSS],
+                  'extra': [{'id': eid, 'name': n, 'rect': apos[eid]} for eid, n, _ in EXTRA2]},
         'props': {'file': 'props.png', 'w': psheet.width, 'h': psheet.height,
                   'items': [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_COMPS] + [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_RECTS]}}
     # 점수판: 숫자 자리(그림에 구워진 "6 1 0 62")를 찾아 게임이 위에 칠하고 실제 숫자를 쓸 수 있게 위치를 적는다
