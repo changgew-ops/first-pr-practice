@@ -107,8 +107,12 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const condOf = (id) => cond.get(id) ?? startCondition(rules);
   let tacticChoice = null; // 우리 구단이 고른 전술 id(null이면 추천 따르기, AI와 같은 방식)
   let restNext = new Set(); // 다음 경기에서 쉬게 한 우리 선수 id(하루 지나면 비운다)
-  let inPlayoffs = false; // 플레이오프에서는 컨디션 이득이 없다(휴식일이 있다고 본다)
+  let inPlayoffs = false;
+  const poCondOn = condEnabled && rules.playoffs.condition?.enabled !== false; // 플레이오프에서도 컨디션·휴식이 작동한다(rules.playoffs.condition.enabled가 false면 예전처럼 플레이오프에서는 컨디션 이득이 없다)
+  const condActive = () => condEnabled && (!inPlayoffs || poCondOn); // 지금 컨디션 보정·휴식이 적용되는 때
   let tacticRefs = null; // 리그 평균 구성 점수(전술 적합도의 기준)
+  let poSeeds = null; // 플레이오프 진출 구단 id 집합(플레이오프 시작 뒤)
+  let poBaseline = null; // 플레이오프가 경기마다 읽는 기준점(편성·휴식·컨디션이 바뀌면 같이 바뀐다)
 
   const applyUpdates = () => {
     if (!inSeasonUpdates) return;
@@ -134,7 +138,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   };
   // 쉬는 선수: 우리 구단은 단장이 지정한 선수, AI 구단은 컨디션이 restBelow 미만인 선수(건강한 선수가 minHealthyAfterRest명 남을 때까지만)
   const restOf = (teamId, roster) => {
-    if (!condEnabled || inPlayoffs) return new Set();
+    if (!condActive()) return new Set();
     if (teamId === manager) return new Set([...restNext].filter((id) => roster.some((p) => p.id === id)));
     const c = rules.condition;
     const healthy = roster.filter((p) => !injured.has(p.id));
@@ -168,8 +172,10 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   function attachMods(teams) {
     if (!coachingEnabled && !tacticsEnabled && !condEnabled) return;
     tacticRefs = tacticsEnabled ? leagueRefs(teams.map((t) => t.lineup), rules) : null;
-    const scores = condEnabled && !inPlayoffs ? new Map(teams.map((t) => [t.id, lineupCondScore(t.lineup, cond, rules)])) : null;
-    const mean = scores ? [...scores.values()].reduce((a, b) => a + b, 0) / scores.size : 0;
+    const scores = condActive() ? new Map(teams.map((t) => [t.id, lineupCondScore(t.lineup, cond, rules)])) : null;
+    // 플레이오프에서는 진출한 팀들끼리의 평균과 견준다(탈락한 팀의 푹 쉰 컨디션이 평균을 올리지 않게)
+    const meanOf = scores && inPlayoffs && poSeeds ? teams.filter((t) => poSeeds.has(t.id)) : teams;
+    const mean = scores ? meanOf.reduce((a, t) => a + scores.get(t.id), 0) / Math.max(1, meanOf.length) : 0;
     for (const t of teams) {
       const st = staff?.[t.id];
       const parts = { coach: 0, tactic: 0, cond: 0 };
@@ -243,8 +249,8 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   const tradeOpen = () => regular.day <= rules.transactions.trade.deadlineDay && !playoffs;
 
   // ---------- 부상과 시즌 중 선수단 변동 ----------
-  const syncPlayoffTeams = (teams) => { if (poTeams) for (const t of teams) poTeams.set(t.id, t); };
-  const rebuildTeams = () => { const built = buildTeams(); regular.setTeams(built.teams, built.baseline); syncPlayoffTeams(built.teams); };
+  const syncPlayoffTeams = (teams, baseline) => { if (poTeams) { for (const t of teams) poTeams.set(t.id, t); if (baseline) poBaseline = baseline; } };
+  const rebuildTeams = () => { const built = buildTeams(); regular.setTeams(built.teams, built.baseline); syncPlayoffTeams(built.teams, built.baseline); };
   const playerById = (id) => players.find((p) => p.id === id);
   const lineupHas = (id) => lineup && [...lineup.starters, ...lineup.bench].includes(id);
   const inactiveForeign = (teamId) => [...injured.values()].filter((i) => i.teamId === teamId && i.temp).map((i) => i.playerId); // 일시교체 선수가 대신 뛰는 부상 선수
@@ -438,9 +444,9 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     }
     return changed;
   };
-  /** 하루가 끝난 뒤 컨디션: 뛴 시간만큼 떨어지고 모두 회복한다(전술의 체력 소모 배수, 체력 코치의 회복 배수 반영) */
-  const updateCondition = (r) => {
-    const now = new Map(regular.teams.map((t) => [t.id, t]));
+  /** 경기를 치른 뒤 컨디션: 뛴 시간만큼 떨어지고 모두 회복한다(전술의 체력 소모 배수, 체력 코치의 회복 배수 반영). 정규리그는 하루(리그 전체 5경기)마다, 플레이오프는 경기마다(only: 그 경기를 치른 두 구단의 선수만) */
+  const updateCondition = (r, only = null) => {
+    const now = poTeams ?? new Map(regular.teams.map((t) => [t.id, t]));
     const minutes = new Map();
     for (const g of r.games) {
       for (const [side, teamId] of [[g.box.home, g.homeId], [g.box.away, g.awayId]]) {
@@ -448,7 +454,10 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
         for (const line of side) minutes.set(line.id, (line.minutes ?? 0) * dm);
       }
     }
-    for (const p of players) cond.set(p.id, nextCondition(condOf(p.id), p, minutes.get(p.id) ?? 0, rules, recoveryMul(staff?.[p.teamId], rules)));
+    for (const p of players) {
+      if (only && !only.has(p.teamId)) continue;
+      cond.set(p.id, nextCondition(condOf(p.id), p, minutes.get(p.id) ?? 0, rules, recoveryMul(staff?.[p.teamId], rules)));
+    }
   };
   // 관중: 경기가 진행되는 순간 그 경기의 관중을 계산해 경기 결과(g.att)에 저장한다. 정규리그는 경기 직전 순위표의 홈 팀 승률, 플레이오프는 정규리그 최종 승률로 계산한다.
   // 저장한 값은 다시 계산하지 않으므로 시즌이 더 지나도 예전 경기의 관중이 바뀌지 않고, 시즌 정산(src/funds.mjs revenueOf)도 이 합계를 그대로 쓴다(attReg)
@@ -517,7 +526,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       lineup = next ? { starters: [...next.starters], bench: [...next.bench] } : null;
       const built = buildTeams();
       regular.setTeams(built.teams, built.baseline);
-      syncPlayoffTeams(built.teams); // 플레이오프 중이면 다음 라운드부터 이 편성으로 치른다
+      syncPlayoffTeams(built.teams, built.baseline); // 플레이오프 중이면 다음 경기부터 이 편성으로 치른다
       return { ok: true, errors: [] };
     },
     /** 선수의 훈련 집중 능력치. 다음 훈련 시점부터 반영된다 (육성 프로그램 참가 중인 선수도 바꿀 수 있다) */
