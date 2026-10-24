@@ -60,7 +60,7 @@
 .st-team[aria-pressed="true"] { border-color: var(--team); box-shadow: 0 0 0 2px var(--team); background: color-mix(in srgb, var(--team) 10%, var(--panel)); }
 .st-team[aria-pressed="true"]::after { content: "선택됨"; position: absolute; right: 12px; top: 12px; font-size: .7rem; font-weight: 800; color: #fff; background: var(--team); padding: 2px 8px; border-radius: 99px; }
 .st-team-head { display: flex; gap: 12px; align-items: center; }
-.st-emblem { width: 40px; height: 40px; display: grid; place-items: center; flex: none; text-shadow: 0 1px 2px #0006; box-shadow: inset 0 0 0 3px #fff3; }
+.st-emblem { min-width: 40px; max-width: 76px; height: 40px; display: grid; place-items: center; flex: none; text-shadow: 0 1px 2px #0006; box-shadow: inset 0 0 0 3px #fff3; }
 .st-level { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--muted); }
 .st-stars { color: var(--warn); letter-spacing: 1px; font-size: .95rem; }
 .st-tags { display: flex; flex-wrap: wrap; gap: 5px; min-height: 22px; }

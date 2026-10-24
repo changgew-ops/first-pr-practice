@@ -1,5 +1,5 @@
-// 구단 엠블럼: 실제 구단 로고가 아니라 화면 구분용으로 직접 만든 배지다(공식 로고·CI를 쓰지 않는다. web/lib/team-ui.js 참고).
-// 구단 색 + 구단마다 다른 모양 + 농구공 이음선 + 두 글자 약호. 구단 id가 없거나 모르는 구단(과거 구단 등)은 회색 농구공 배지.
+// 구단 엠블럼: 사용자가 제공한 구단 로고 이미지(web/assets/emblems/<구단 id>.png, tools/make-emblems.py로 스크린샷에서 잘라 만듦)를 쓴다.
+// 이미지가 없거나 불러오지 못하면, 그리고 구단 id를 모르는 구단(과거 구단 등)은 직접 만든 배지(구단 색 + 모양 + 두 글자 약호, 모르는 구단은 회색 농구공)로 대신한다.
 import { svg } from './dom.js';
 import { colorOf } from './team-ui.js';
 
@@ -29,8 +29,26 @@ function shade(hex, k) {
   return `#${[f((n >> 16) & 255), f((n >> 8) & 255), f(n & 255)].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
-/** 구단 엠블럼 SVG. size: 화면 px */
+const LOGO_IDS = new Set(Object.keys(CODE));
+const logoUrl = (id) => new URL(`../assets/emblems/${id}.png`, import.meta.url).href;
+
+/** 구단 엠블럼. 로고 이미지가 있으면 <span><img></span>(높이 size, 폭은 비율대로), 없으면 SVG 배지. size: 화면 px */
 export function emblem(id, { size = 22, label = null } = {}) {
+  if (!LOGO_IDS.has(id)) return badge(id, { size, label });
+  const wrap = document.createElement('span');
+  wrap.className = 'emblem emblem-logo';
+  wrap.style.cssText = `display:inline-flex;align-items:center;justify-content:center;height:${size}px;min-width:${size}px;max-width:${Math.round(size * 1.9)}px;`;
+  const img = document.createElement('img');
+  img.src = logoUrl(id); img.alt = label ?? ''; img.decoding = 'async'; img.loading = 'lazy';
+  img.style.cssText = `height:${size}px;width:auto;max-width:100%;object-fit:contain;image-rendering:auto;`;
+  if (!label) img.setAttribute('aria-hidden', 'true');
+  img.onerror = () => { wrap.replaceChildren(badge(id, { size, label })); };
+  wrap.append(img);
+  return wrap;
+}
+
+/** 직접 만든 SVG 배지(로고 이미지가 없을 때) */
+export function badge(id, { size = 22, label = null } = {}) {
   const known = id in SHAPE;
   const base = known ? colorOf(id) : '#8b93a7';
   const dark = shade(base, 0.62);

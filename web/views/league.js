@@ -30,7 +30,7 @@ const ui = { season: null, mode: 'avg', gt: 'r', q: '', team: 'all', qualified: 
 const PAGE = 50;
 const WORSE_IS_HIGHER = new Set(['pa', 'to']); // 팀 기록에서 낮을수록 좋은 열
 
-const dot = (id) => h('span', { class: 'lg-emb' }, emblem(id, { size: 24 }));
+const dot = (id) => h('span', { class: 'lg-emb' }, emblem(id, { size: 28 }));
 const sortArrow = (cfg, key) => (cfg.key === key ? (cfg.dir < 0 ? ' ▾' : ' ▴') : '');
 
 /** 시즌 종류와 기록 출처: 'live' | 'game' | 'real' */

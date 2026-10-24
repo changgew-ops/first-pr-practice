@@ -23,7 +23,7 @@ export function render(ctx) {
 
   const cols = [
     { key: 'rank', label: '순위', get: (r) => pv.rows.indexOf(r) + 1, sort: 'num', align: 'r' },
-    { key: 'name', label: '구단', get: (r) => r.name, sort: 'str', render: (r) => h('span', { class: 'pv-team', style: { '--c': colorOf(r.id) } }, emblem(r.id, { size: 22 }), r.name, r.id === my ? h('span', { class: 'tag' }, '우리 팀') : null) },
+    { key: 'name', label: '구단', get: (r) => r.name, sort: 'str', render: (r) => h('span', { class: 'pv-team', style: { '--c': colorOf(r.id) } }, emblem(r.id, { size: 26 }), r.name, r.id === my ? h('span', { class: 'tag' }, '우리 팀') : null) },
     { key: 'power', label: '전력', get: (r) => r.power, sort: 'num', align: 'r', render: (r) => h('span', `${r.power.toFixed(1)} `, h('span', { class: 'note' }, `(${r.powerRank}위)`)) },
     { key: 'titleP', label: '우승 확률', get: (r) => r.titleP, sort: 'num', align: 'r', render: (r) => h('span', { class: 'pv-p' }, h('b', pct(r.titleP)), bar(r.titleP, maxP, { cls: 'pv-bar', label: `우승 확률 ${pct(r.titleP)}` })) },
     { key: 'odds', label: '가상 배당', title: '우승 확률을 바꾼 게임 안의 점수. 현금을 걸 수 없다', get: (r) => r.titleOdds ?? 999, sort: 'num', align: 'r', render: (r) => oddsText(r.titleOdds, maxOdds) },
