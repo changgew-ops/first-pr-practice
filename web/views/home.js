@@ -1,4 +1,5 @@
 import { h, stat, bar, ovrChip, rankChart, link, eok, table } from '../lib/dom.js';
+import { emblem } from '../lib/emblem.js';
 import { playerLink } from '../lib/player-info.js';
 import { seasonLabel, powerRanking, payrollInfo, prestigeOf, fundsOf, rosterOf, fullHistory } from '../lib/game.js';
 import { colorOf } from '../lib/team-ui.js';
@@ -80,7 +81,7 @@ export function render(ctx) {
 
   const capRatio = pay.domestic / pay.cap;
   const body = h('div', { class: 'stack' },
-    h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, `${gm} 단장`), h('h1', team.name)))),
+    h('div', { class: 'topbar' }, h('div', { class: 'title' }, emblem(my, { size: 44, label: team.name }), h('div', h('div', { class: 'crumb' }, `${gm} 단장`), h('h1', team.name)))),
     heroCard(ctx, season, lastSeason, lastRow),
     goalsCard(ctx),
     staffLine(ctx),

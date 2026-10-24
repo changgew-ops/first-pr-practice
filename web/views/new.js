@@ -1,5 +1,6 @@
 // 새 게임: 단장 이름과 맡을 구단을 정한다.
 import { h, eok } from '../lib/dom.js';
+import { emblem } from '../lib/emblem.js';
 import { Session } from '../lib/session.js';
 import { powerRanking, prestigeOf, payrollInfo } from '../lib/game.js';
 import { colorOf } from '../lib/team-ui.js';
@@ -74,7 +75,7 @@ export function render(ctx) {
       teamId = t.id; cards.forEach((c) => c.setAttribute('aria-pressed', String(c === card))); sync();
     } },
       h('div', { class: 'st-team-head' },
-        h('span', { class: 'st-emblem', 'aria-hidden': 'true' }, t.name.replace(/\s/g, '')[0]),
+        h('span', { class: 'st-emblem', 'aria-hidden': 'true' }, emblem(t.id, { size: 40 })),
         h('div', h('h3', t.name), h('div', { class: 'note' }, `${t.city} · ${t.arena}`))),
       h('div', { class: 'st-level', title: `난이도 ${LEVEL[tr.level]}` }, h('span', { class: 'st-stars', 'aria-hidden': 'true' }, STARS(tr.level)), h('span', `난이도 ${LEVEL[tr.level]}`)),
       h('div', { class: 'st-tags' }, tr.tags.map((x) => h('span', { class: `tag ${x === '초보 추천' || x === '우승 도전' ? 'hot' : ''}` }, x))),

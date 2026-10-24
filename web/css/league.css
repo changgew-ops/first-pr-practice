@@ -74,3 +74,7 @@
   .lg-table th, .lg-table td { padding: 6px 8px; }
   .lg-leaders { grid-template-columns: 1fr; }
 }
+.lg-emb { display: inline-flex; margin-right: 6px; flex: none; vertical-align: middle; }
+.emblem { display: block; flex: none; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .18)); }
+.pv-team { display: inline-flex; align-items: center; gap: 6px; }
+.topbar .title > .emblem { margin-right: 4px; }

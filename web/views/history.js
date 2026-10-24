@@ -1,4 +1,5 @@
 import { h, table, tabs, link, rankChart, stat, pct } from '../lib/dom.js';
+import { emblem } from '../lib/emblem.js';
 import { fullHistory } from '../lib/game.js';
 import { stageOfHistory } from '../../src/legacy.mjs';
 import { colorOf } from '../lib/team-ui.js';
@@ -8,7 +9,7 @@ function teamPage(ctx, hist, id) {
   const sum = hist.summary.find((x) => x.id === id);
   const rows = hist.seasons.map((s) => ({ s, r: s.teams.find((t) => t.franchiseId === id) })).filter((x) => x.r);
   const body = h('div', { class: 'stack', style: { '--team': colorOf(id) } },
-    h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, link('#/history', '구단 역사'), ' / ', ctx.name(id)), h('h1', ctx.name(id)))), link(`#/roster/${id}`, '현재 로스터 →')),
+    h('div', { class: 'topbar' }, h('div', { class: 'title' }, emblem(id, { size: 44, label: ctx.name(id) }), h('div', h('div', { class: 'crumb' }, link('#/history', '구단 역사'), ' / ', ctx.name(id)), h('h1', ctx.name(id)))), link(`#/roster/${id}`, '현재 로스터 →')),
     h('div', { class: 'grid g4' },
       stat('우승', `${sum.titles.length}회`, sum.titles.slice(-3).join(', ') || '-'), stat('결승', `${sum.finals}회`, `플레이오프 ${sum.playoffAppearances}회 진출`),
       stat('통산 승률', pct(sum.winPct), `${sum.seasons}시즌 ${sum.wins}승 ${sum.losses}패`), stat('최고 순위', `${sum.bestRank}위`, `정규 1위 ${sum.firstPlaces}회 · 최저 ${sum.worstRank}위`)),

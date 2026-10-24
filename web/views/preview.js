@@ -1,6 +1,7 @@
 // 시즌 프리뷰: 우승 후보 순위(확률·가상 배당), 기자단 예측, 예상 베스트5, 팀별 키 플레이어. 계산은 src/preview.mjs, 세션에서는 session.preview().
 // 기자·설문·배당은 모두 게임이 만든 가상 콘텐츠이고 현금을 걸 수 없다.
 import { h, table, bar } from '../lib/dom.js';
+import { emblem } from '../lib/emblem.js';
 import { nameButton } from '../lib/player-info.js';
 import { GROUP_LABEL } from '../../src/preview.mjs';
 import { colorOf } from '../lib/team-ui.js';
@@ -22,7 +23,7 @@ export function render(ctx) {
 
   const cols = [
     { key: 'rank', label: '순위', get: (r) => pv.rows.indexOf(r) + 1, sort: 'num', align: 'r' },
-    { key: 'name', label: '구단', get: (r) => r.name, sort: 'str', render: (r) => h('span', { class: 'pv-team', style: { '--c': colorOf(r.id) } }, h('i', { class: 'pv-dot' }), r.name, r.id === my ? h('span', { class: 'tag' }, '우리 팀') : null) },
+    { key: 'name', label: '구단', get: (r) => r.name, sort: 'str', render: (r) => h('span', { class: 'pv-team', style: { '--c': colorOf(r.id) } }, emblem(r.id, { size: 22 }), r.name, r.id === my ? h('span', { class: 'tag' }, '우리 팀') : null) },
     { key: 'power', label: '전력', get: (r) => r.power, sort: 'num', align: 'r', render: (r) => h('span', `${r.power.toFixed(1)} `, h('span', { class: 'note' }, `(${r.powerRank}위)`)) },
     { key: 'titleP', label: '우승 확률', get: (r) => r.titleP, sort: 'num', align: 'r', render: (r) => h('span', { class: 'pv-p' }, h('b', pct(r.titleP)), bar(r.titleP, maxP, { cls: 'pv-bar', label: `우승 확률 ${pct(r.titleP)}` })) },
     { key: 'odds', label: '가상 배당', title: '우승 확률을 바꾼 게임 안의 점수. 현금을 걸 수 없다', get: (r) => r.titleOdds ?? 999, sort: 'num', align: 'r', render: (r) => oddsText(r.titleOdds, maxOdds) },

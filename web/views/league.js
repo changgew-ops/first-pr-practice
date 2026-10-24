@@ -2,6 +2,7 @@
 // 기록의 출처는 시즌마다 다르다: 진행 중인 시즌은 게임의 박스스코어 집계, 게임에서 끝난 시즌은 저장된 선수 줄,
 // 실제 시즌(1997~2025-26)은 공식 기록(data/history/stats/<시즌>.json, 선택한 시즌만 불러온다).
 import { h, table, tabs, link } from '../lib/dom.js';
+import { emblem } from '../lib/emblem.js';
 import { playerLink } from '../lib/player-info.js';
 import { fullHistory, liveSeason, logToHistory, playerById } from '../lib/game.js';
 import { awardRows } from '../../src/awards.mjs';
@@ -29,7 +30,7 @@ const ui = { season: null, mode: 'avg', gt: 'r', q: '', team: 'all', qualified: 
 const PAGE = 50;
 const WORSE_IS_HIGHER = new Set(['pa', 'to']); // 팀 기록에서 낮을수록 좋은 열
 
-const dot = (id) => h('i', { class: 'lg-dot', style: { background: colorOf(id) }, 'aria-hidden': 'true' });
+const dot = (id) => h('span', { class: 'lg-emb' }, emblem(id, { size: 24 }));
 const sortArrow = (cfg, key) => (cfg.key === key ? (cfg.dir < 0 ? ' ▾' : ' ▴') : '');
 
 /** 시즌 종류와 기록 출처: 'live' | 'game' | 'real' */
