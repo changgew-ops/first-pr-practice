@@ -92,7 +92,6 @@ def main():
     def save(img, name):
         q = img.quantize(colors=256, method=Image.FASTOCTREE, dither=Image.NONE)
         q.save(os.path.join(out, name), optimize=True)
-        img.save(os.path.join(out, name.replace('.png', '.full.png')))
     save(atlas, 'atlas.png'); save(psheet, 'props.png')
     meta = {
         'atlas': {'file': 'atlas.png', 'w': atlas.width, 'h': atlas.height,
