@@ -6,7 +6,7 @@ import { buildLineup } from '../../src/lineup.mjs';
 
 const r2 = (v) => Math.round(v * 100) / 100;
 
-const roleIn = (lineup, id) => (lineup.starters.some((p) => p.id === id) ? 'starter' : lineup.bench.some((p) => p.id === id) ? 'bench' : 'out');
+const roleIn = (lineup, id) => (!lineup ? null : lineup.starters.some((p) => p.id === id) ? 'starter' : lineup.bench.some((p) => p.id === id) ? 'bench' : 'out');
 export const ROLE_TEXT = { starter: '스타팅', bench: '벤치', out: '엔트리 밖' };
 
 /**
@@ -40,7 +40,7 @@ export function signingImpact({ roster, cand, offer, rules, teamId, releaseId = 
 
   // 예상 역할: 자동 편성(엔진이 쓰는 buildLineup)에서 이 선수의 자리
   const bw = rules.simulation?.benchWeight ?? 0.45;
-  const lineupOf = (list) => buildLineup(list, rules, bw);
+  const lineupOf = (list) => { try { return buildLineup(list, rules, bw); } catch { return null; } }; // 선수가 모자라 편성이 안 되면 null(역할 미정)
   out.role = { before: cand.teamId === teamId ? roleIn(lineupOf(before), cand.id) : null, after: roleIn(lineupOf(after), cand.id) };
 
   // 같은 포지션 경쟁자 상위 2명
@@ -54,4 +54,28 @@ export function signingImpact({ roster, cand, offer, rules, teamId, releaseId = 
   out.next = { eok: r2(cont.reduce((s, p) => s + eokOf(p), 0)), thisContractContinues: offer.years > 1, years: offer.years, domesticEok: r2(cont.filter((p) => p.origin === 'domestic').reduce((s, p) => s + p.contract.salaryEok, 0)) };
   out.salaryEok = r2(salaryEok);
   return out;
+}
+
+/**
+ * 트레이드 영향: 우리가 give(보내는 선수)를 내보내고 get(받는 선수)을 받으면.
+ * check는 엔진 검증(validateTrade)의 결과 { ok, errors }. 반환은 signingImpact와 같은 모양의 일부.
+ */
+export function tradeImpact({ roster, give, get, rules, teamId, check = null }) {
+  const before = roster.filter((p) => p.teamId === teamId);
+  const giveIds = new Set(give.map((p) => p.id));
+  const after = [...before.filter((p) => !giveIds.has(p.id)), ...get.map((p) => ({ ...p, teamId }))];
+  const b = payrollEok(before, teamId), a = payrollEok(after, teamId), cap = rules.salaryCap.domesticEok;
+  const bw = rules.simulation?.benchWeight ?? 0.45;
+  const lineupOf = (list) => { try { return buildLineup(list, rules, bw); } catch { return null; } };
+  const lb = lineupOf(before), la = lineupOf(after);
+  const eokOf = (p) => (p.origin === 'foreign' ? (p.contract?.salaryUsd ?? 0) * (rules.transactions?.funds?.foreignUsdToEok ?? 0) : p.contract?.salaryEok ?? 0);
+  const cont = (list) => list.filter((p) => (p.contract?.yearsLeft ?? 0) > 1).reduce((s, p) => s + eokOf(p), 0);
+  return {
+    ok: check ? Boolean(check.ok) : true, reason: check && !check.ok ? (check.reason ?? check.errors?.[0] ?? null) : null,
+    domestic: { before: r2(b), after: r2(a), cap, hardLimit: r2(hardLimitEok(rules)), roomBefore: r2(cap - b), roomAfter: r2(cap - a), over: r2(Math.max(0, a - cap)), penaltyBefore: softCapPenaltyEok(b, rules), penaltyAfter: softCapPenaltyEok(a, rules), overHard: a > hardLimitEok(rules) + 1e-9 },
+    incoming: get.map((p) => ({ player: p, role: roleIn(la, p.id) })),
+    outgoing: give.map((p) => ({ player: p, role: roleIn(lb, p.id) })),
+    roster: { before: before.length, after: after.length },
+    next: { eok: r2(cont(before) - cont(before.filter((p) => giveIds.has(p.id))) + cont(get)), before: r2(cont(before)) }
+  };
 }

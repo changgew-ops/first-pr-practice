@@ -4,6 +4,8 @@ import { buildCtx, faPlan, minAcceptSalary, round1, valueOf } from '../../lib/of
 import { offerScore, compensationFor, preferredYears, yearsRange } from '../../../src/freeagency.mjs';
 import { domesticOf } from '../../../src/valuation.mjs';
 import { playerLine, decide, fill, offerResultsCard } from './common.js';
+import { signingImpact } from '../../lib/preview-signing.js';
+import { signingPreviewDetails } from '../../lib/preview-signing-view.js';
 
 const SORTS = { value: ['가치순', (p) => -valueOf(p)], ovr: ['OVR순', (p) => -p.ovr], pot: ['POT순', (p) => -p.potential], age: ['어린 순', (p) => p.age], price: ['요구액 낮은 순', (p, d) => d(p)] };
 const PLAN = { ok: ['제안 가능', 'good'], cap: ['캡·한도에 걸림', 'bad'], full: ['로스터 자리 없음', 'bad'] };
@@ -30,9 +32,11 @@ export function render(ctx, pending) {
     for (const [id, r] of refs) {
       const st = plan.byId.get(id);
       r.row.classList.toggle('picked', Boolean(offers[id]));
-      if (!offers[id]) { r.badge.textContent = ''; r.hint.textContent = ''; continue; }
+      if (!offers[id]) { r.badge.textContent = ''; r.hint.textContent = ''; r.prev.replaceChildren(); continue; }
       const [text, cls] = PLAN[st];
       const p = pool.find((x) => x.id === id);
+      const wasOpen = r.prev.querySelector('details')?.open;
+      r.prev.replaceChildren(signingPreviewDetails(signingImpact({ roster: state.players, cand: p, offer: offers[id], rules, teamId: my, check: { ok: st === 'ok', reason: text } }), { ctx, open: wasOpen, note: '이 선수 한 명만 영입했을 때 기준입니다(다른 제안은 반영하지 않음). 모두 합친 결과는 위 요약을 보세요.' }));
       const v = offerScore(p, offers[id].salaryEok, my, roster, ectx, rules, round);
       r.badge.className = `os-status ${st === 'ok' ? (v.accept ? 'good' : 'warn') : cls}`;
       r.badge.textContent = st === 'ok' ? (v.accept ? '이 선수는 수락할 조건' : '조건 부족(거절 예상)') : text;
@@ -67,6 +71,7 @@ export function render(ctx, pending) {
       const years = h('select', { id: `fa-yr-${p.id}`, 'aria-label': `${p.name} 계약 기간`, onchange: (e) => { if (offers[p.id]) { offers[p.id].years = Number(e.target.value); update(); } } }, (() => { const [lo, hi] = yearsRange(p, rules); const def = Math.max(lo, Math.min(hi, o?.years ?? preferredYears(p))); return Array.from({ length: hi - lo + 1 }, (_, i) => lo + i).map((y) => h('option', { value: y, selected: y === def }, `${y}년`)); })());
       const badge = h('span', { class: 'os-status' });
       const hint = h('span', { class: 'note' });
+      const prev = h('div', { class: 'sp-host' });
       const row = h('div', { class: 'os-fa-row' },
         h('div', { class: 'os-resign-head' }, h('label', { for: `fa-on-${p.id}`, class: 'os-check' }, on, playerLine(p)), badge),
         h('div', { class: 'os-resign-body' },
@@ -76,8 +81,8 @@ export function render(ctx, pending) {
           h('div', { class: 'os-fact', title: '다른 구단에서 온 FA를 영입하면 원소속 구단에 내는 보상' }, h('span', { class: 'note' }, 'FA 보상'), h('b', comp && p.prevTeamId !== my ? `${comp.grade ?? ''}등급 ${eok(comp.cashOnly)}${comp.withPlayerCash != null ? ` / 선수+${eok(comp.withPlayerCash)}` : ''}` : '없음')),
           h('label', { class: 'os-input', for: `fa-sal-${p.id}` }, h('span', { class: 'note' }, '제안 연봉(억)'), salary),
           h('label', { class: 'os-input', for: `fa-yr-${p.id}` }, h('span', { class: 'note' }, '기간'), years)),
-        hint);
-      refs.set(p.id, { row, badge, hint });
+        hint, prev);
+      refs.set(p.id, { row, badge, hint, prev });
       return row;
     })) : h('p', { class: 'muted' }, '조건에 맞는 FA가 없습니다.'));
     update();

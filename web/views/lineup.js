@@ -323,14 +323,15 @@ export function render(ctx, [preselect] = []) {
       return h('div', { class: 'lu-cands', role: 'region', 'aria-label': `${p.name} 교체 후보` },
         h('div', { class: 'row between' }, h('b', `교체 후보 (${p.name} 대비)`), h('span', { class: 'note' }, '숫자는 선택한 선수와의 비교 차이이며 성장 변화가 아닙니다')),
         h('div', { class: 'table-wrap' }, h('table', { class: 'lu-table lu-cand-table' },
-          h('thead', h('tr', h('th', '선수'), h('th', '지금'), h('th', { class: 'r' }, 'OVR'), STAT_KEYS.map((k) => h('th', { class: 'r' }, STAT_SHORT[k])), condOf ? h('th', { class: 'r' }, '컨디션') : null, h('th', ''))),
+          h('thead', h('tr', h('th', ''), h('th', '선수'), h('th', '지금'), h('th', { class: 'r' }, 'OVR'), STAT_KEYS.map((k) => h('th', { class: 'r' }, STAT_SHORT[k])), condOf ? h('th', { class: 'r' }, '컨디션') : null)),
           h('tbody', list.map((c) => h('tr', { class: c.hurt ? 'out' : '' },
+            h('td', h('button', { type: 'button', class: 'btn lu-swapbtn', 'data-nodrag': '1', disabled: !live, 'aria-label': `${c.player.name}와(과) 바꾸기`, onclick: () => setSlots(moveRefs(slots, ui.sel, refOfPlayer(slots, c.player.id))) }, '바꾸기')),
             h('td', h('span', { class: 'lu-pname' }, c.player.name), ' ', h('span', { class: 'pos' }, c.player.position), c.samePos ? null : h('span', { class: 'lu-tag fit-near', title: '다른 포지션' }, '타 포지션'), c.hurt ? injuryTag(hurt.get(c.player.id)) : null),
             h('td', h('span', { class: 'note' }, ROLE[c.role])),
             h('td', { class: `r lu-cd ${c.ovrDiff > 0 ? 'up' : c.ovrDiff < 0 ? 'down' : ''}` }, `${c.player.ovr} `, h('small', { title: '선택한 선수 대비 OVR 차이' }, c.ovrDiff === 0 ? '' : `(${signed(c.ovrDiff)})`)),
             STAT_KEYS.map((k) => dcell(c.diffs[k], k)),
             condOf ? h('td', { class: `r lu-cd ${c.condDiff > 0 ? 'up' : c.condDiff < 0 ? 'down' : ''}`, title: '컨디션 차이(선택한 선수 대비)' }, c.condDiff == null ? '' : c.condDiff === 0 ? '·' : signed(c.condDiff)) : null,
-            h('td', h('button', { type: 'button', class: 'btn lu-swapbtn', 'data-nodrag': '1', disabled: !live, onclick: () => setSlots(moveRefs(slots, ui.sel, refOfPlayer(slots, c.player.id))) }, '바꾸기'))))))));
+            ))))));
     };
     // 스타팅 능력치: 스타팅 평균을 리그 평균과 견준다
     const prof = teamProfile(e.starters, leagueAvg);

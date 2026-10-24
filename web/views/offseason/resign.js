@@ -4,6 +4,8 @@ import { createManagerBot } from '../../../src/manager-bot.mjs';
 import { demandEok, preferredYears, resignPlan, minAcceptSalary, round1, valueOf } from '../../lib/offseason-view.js';
 import { domesticOf, softCapPenaltyEok } from '../../../src/valuation.mjs';
 import { playerLine, decide, fill } from './common.js';
+import { signingImpact } from '../../lib/preview-signing.js';
+import { signingPreviewDetails } from '../../lib/preview-signing-view.js';
 import { extensionCheck, extensionYears, extendedPlayer, salaryRanks } from '../../../src/contracts.mjs';
 
 const STATUS = {
@@ -45,6 +47,11 @@ export function render(ctx, pending) {
       r.badge.textContent = text;
       r.row.classList.toggle('off', !state[p.id].on);
       r.hint.textContent = '';
+      if (state[p.id].on) {
+        const wasOpen = r.prev.querySelector('details')?.open;
+        const others = expiring.filter((x) => x.id !== p.id && plan.byId.get(x.id)?.status === 'ok').map((x) => ({ ...x, contract: { ...x.contract, salaryEok: offers[x.id].salaryEok, yearsLeft: offers[x.id].years } }));
+        r.prev.replaceChildren(signingPreviewDetails(signingImpact({ roster: [...staying, ...others], cand: { ...p, teamId: null }, offer: offers[p.id], rules, teamId: my, check: { ok: st.status === 'ok', reason: text } }), { ctx, open: wasOpen, title: '재계약하면', blockedLabel: '재계약 불가', note: '재계약이 끝난 선수(계약 남은 선수 + 수락 예상 재계약) 로스터 기준이고, 아직 FA·드래프트·외국인 영입은 반영하지 않았습니다.' }));
+      } else r.prev.replaceChildren();
       if (st.status === 'refuse') {
         const min = minAcceptSalary(p, my, domesticOf(staying, my), ectx, rules);
         r.hint.textContent = min == null ? `요구액 ${eok(st.verdict.demand)}: 어떤 금액으로도 설득이 어렵습니다` : `최소 ${eok(min)}은 제시해야 수락할 것 같습니다 (요구액 ${eok(st.verdict.demand)})`;
@@ -86,6 +93,7 @@ export function render(ctx, pending) {
     const years = h('select', { id: `rs-yr-${p.id}`, 'aria-label': `${p.name} 계약 기간`, onchange: (e) => { st.years = Number(e.target.value); update(); } }, [1, 2, 3, 4].map((y) => h('option', { value: y, selected: y === st.years }, `${y}년${y === preferredYears(p) ? ' (선호)' : ''}`)));
     const badge = h('span', { class: 'os-status' });
     const hint = h('div', { class: 'note' });
+    const prev = h('div', { class: 'sp-host' });
     const row = h('div', { class: 'os-resign off' },
       h('div', { class: 'os-resign-head' }, h('label', { for: `rs-on-${p.id}`, class: 'os-check' }, on, playerLine(p)), badge),
       h('div', { class: 'os-resign-body' },
@@ -94,8 +102,8 @@ export function render(ctx, pending) {
         h('div', { class: 'os-fact' }, h('span', { class: 'note' }, '요구 연봉'), h('b', eok(demandEok(p)))),
         h('label', { class: 'os-input', for: `rs-sal-${p.id}` }, h('span', { class: 'note' }, '제시 연봉(억)'), salary),
         h('label', { class: 'os-input', for: `rs-yr-${p.id}` }, h('span', { class: 'note' }, '계약 기간'), years)),
-      hint);
-    refs.set(p.id, { row, badge, hint, on, salary, years });
+      hint, prev);
+    refs.set(p.id, { row, badge, hint, on, salary, years, prev });
     return row;
   });
 

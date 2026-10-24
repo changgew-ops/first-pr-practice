@@ -15,34 +15,44 @@ const base = { rules, teams: read('teams.json'), players: read('players.json'), 
 const MY = 'busan-kcc';
 const mine = (s) => s.players.filter((p) => p.teamId === MY);
 
+const noWaiver = { ...base, rules: { ...rules, waivers: { ...rules.waivers, enabled: false } } };
+
 test('시즌 중 FA 영입: 미리보기의 캡·소프트캡 패널티·인원·역할이 실제 영입 결과와 같다', () => {
-  const s = Session.create(base, { managerId: MY, gmName: 'T', seed: 5 });
-  s.advance(1);
+  const s = Session.create(noWaiver, { managerId: MY, gmName: 'T', seed: 21 });
+  while (!s.regularDone) s.advance(9);
+  s.startPlayoffs(); while (!s.playoffs.done) s.playoffRound();
+  s.endSeason(); s.autoOffseason();
+  s.advance(10);
   const market = s.faMarket();
-  assert.ok(market.length > 0, '시즌 중 FA 시장에 선수가 있어야 한다');
-  // 영입 가능한 후보 하나 찾기(가장 OVR이 높은 것부터)
-  let tried = 0, done = false;
-  for (const m of [...market].sort((a, b) => b.player.ovr - a.player.ovr)) {
-    const offer = { salaryEok: m.asking, years: 1 };
-    const check = s.faCheck(m.player.id, offer);
-    if (!check.ok) continue;
-    tried++;
-    const imp = signingImpact({ roster: s.players, cand: m.player, offer, rules: s.rules, teamId: MY, check });
-    assert.equal(imp.ok, true);
-    const r = s.signFa(m.player.id, offer);
-    assert.equal(r.ok, true, JSON.stringify(r));
-    const after = mine(s);
-    assert.equal(Math.round(payrollEok(after, MY) * 100) / 100, imp.domestic.after, '영입 후 국내 연봉 합');
-    assert.equal(softCapPenaltyEok(payrollEok(after, MY), s.rules), imp.domestic.penaltyAfter, '소프트캡 패널티');
-    assert.equal(after.length, imp.roster.after, '로스터 인원');
-    // 예상 역할 = 영입 직후 엔진 편성에서의 자리(건강하고 직접 편성이 없을 때)
+  assert.ok(market.length > 3, `시장 ${market.length}명`);
+  const cand = [...market].sort((a, b) => b.player.ovr - a.player.ovr)[0];
+  const victim = mine(s).filter((p) => p.origin === 'domestic').sort((a, b) => a.ovr - b.ovr)[0];
+  const offer = { salaryEok: cand.asking, years: 2 };
+  // 자리가 없으면 영입할 수 없다: 엔진의 검증 결과(faCheck)를 미리보기가 그대로 보여 준다
+  const blockedCheck = s.faCheck(cand.player.id, offer);
+  assert.equal(blockedCheck.ok, false);
+  const blocked = signingImpact({ roster: s.players, cand: cand.player, offer, rules: s.rules, teamId: MY, check: blockedCheck });
+  assert.equal(blocked.ok, false); assert.ok(blocked.reason);
+  // 방출을 함께 보면: 미리보기 = 실제 방출 + 영입 뒤의 값
+  assert.equal(s.releasePlayer(victim.id).ok, true);
+  const check = s.faCheck(cand.player.id, offer);
+  assert.equal(check.ok, true, check.reason);
+  const imp = signingImpact({ roster: s.players, cand: cand.player, offer, rules: s.rules, teamId: MY, check });
+  assert.equal(imp.ok, true);
+  const r = s.signFa(cand.player.id, offer);
+  assert.equal(r.ok, true, r.errors?.[0]);
+  const after = mine(s);
+  assert.equal(Math.round(payrollEok(after, MY) * 100) / 100, imp.domestic.after, '영입 후 국내 연봉 합');
+  assert.equal(softCapPenaltyEok(payrollEok(after, MY), s.rules), imp.domestic.penaltyAfter, '소프트캡 패널티');
+  assert.equal(after.length, imp.roster.after, '로스터 인원');
+  assert.equal(after.filter((p) => p.origin === 'domestic').length, imp.roster.countByOrigin.after);
+  // 예상 역할 = 영입 직후 엔진 편성에서의 자리(건강하고 직접 편성이 없을 때). 부상자가 있으면 건너뛴다
+  if (!s.injuries.some((i) => i.teamId === MY) && !s.lineup && !s.rest.length) {
     const lu = s.lineupOf(MY);
-    const role = lu.starters.some((p) => p.id === m.player.id) ? 'starter' : lu.bench.some((p) => p.id === m.player.id) ? 'bench' : 'out';
+    const role = lu.starters.some((p) => p.id === cand.player.id) ? 'starter' : lu.bench.some((p) => p.id === cand.player.id) ? 'bench' : 'out';
     assert.equal(role, imp.role.after, '예상 역할');
-    assert.ok(ROLE_TEXT[imp.role.after]);
-    done = true; break;
   }
-  assert.ok(done, `영입 가능한 FA를 찾지 못했다(시도 ${tried})`);
+  assert.ok(ROLE_TEXT[imp.role.after]);
 });
 
 test('미리보기: 소프트캡 초과 패널티·하드 한도·경쟁자·다음 시즌 확정 지출 계산', () => {
@@ -74,11 +84,43 @@ test('미리보기: 소프트캡 초과 패널티·하드 한도·경쟁자·다
 });
 
 test('외국인·아시아쿼터 후보는 각자의 한도로 계산한다', () => {
-  const players = [{ id: 'f1', teamId: 'T', origin: 'foreign', position: 'C', ovr: 75, stats: {}, contract: { salaryUsd: 500000, yearsLeft: 1 } }];
+  const filler = Array.from({ length: 12 }, (_, i) => ({ id: `d${i}`, teamId: 'T', origin: 'domestic', position: ['PG', 'SG', 'SF', 'PF', 'C'][i % 5], ovr: 60 - i, stats: {}, contract: { salaryEok: 1, yearsLeft: 1 } }));
+  const players = [...filler, { id: 'f1', teamId: 'T', origin: 'foreign', position: 'C', ovr: 75, stats: {}, contract: { salaryUsd: 500000, yearsLeft: 1 } }];
   const cand = { id: 'f2', teamId: null, origin: 'foreign', position: 'PF', ovr: 70, stats: {}, contract: {} };
   const imp = signingImpact({ roster: players, cand, offer: { salaryUsd: 400000, years: 1 }, rules, teamId: 'T' });
   assert.equal(imp.foreign.beforeUsd, 500000); assert.equal(imp.foreign.afterUsd, 900000); assert.equal(imp.foreign.limitUsd, rules.salaryCap.foreignUsdTotal);
   assert.equal(imp.domestic, undefined);
   const asia = signingImpact({ roster: players, cand: { ...cand, id: 'a1', origin: 'asia' }, offer: { salaryEok: 1.5, years: 1 }, rules, teamId: 'T' });
   assert.equal(asia.asia.afterEok, 1.5);
+});
+
+test('tradeImpact: 캡·로스터·다음 시즌 지출이 실제 교환 결과와 같다', async () => {
+  const { tradeImpact } = await import('../web/lib/preview-signing.js');
+  const { executeTrade, validateTrade } = await import('../src/trade.mjs');
+  const s = Session.create(noWaiver, { managerId: MY, gmName: 'T', seed: 5 });
+  const league = { players: s.players.map((p) => ({ ...p })) };
+  const other = base.teams.find((t) => t.id !== MY).id;
+  const mineDom = league.players.filter((p) => p.teamId === MY && p.origin === 'domestic').sort((a, b) => a.ovr - b.ovr);
+  const theirs = league.players.filter((p) => p.teamId === other && p.origin === 'domestic').sort((a, b) => b.ovr - a.ovr);
+  const trade = { teamA: MY, teamB: other, giveA: [mineDom[0].id], giveB: [theirs[0].id] };
+  const check = validateTrade(league, trade, s.rules, { window: 'offseason' });
+  const give = [mineDom[0]], get = [theirs[0]];
+  const imp = tradeImpact({ roster: league.players, give, get, rules: s.rules, teamId: MY, check });
+  assert.equal(imp.ok, check.ok);
+  const done = executeTrade(league, trade);
+  const after = done.players.filter((p) => p.teamId === MY);
+  assert.equal(imp.domestic.after, Math.round(payrollEok(after, MY) * 100) / 100);
+  assert.equal(imp.roster.after, after.length);
+  const cont = after.filter((p) => (p.contract?.yearsLeft ?? 0) > 1).reduce((a, p) => a + (p.origin === 'foreign' ? p.contract.salaryUsd * s.rules.transactions.funds.foreignUsdToEok : p.contract.salaryEok), 0);
+  assert.equal(imp.next.eok, Math.round(cont * 100) / 100);
+  assert.ok(['starter', 'bench', 'out'].includes(imp.incoming[0].role));
+});
+
+test('로스터가 모자라 편성이 안 되는 단계(재계약 등)에서도 미리보기가 예외 없이 역할 미정으로 나온다', () => {
+  const s = Session.create(noWaiver, { managerId: MY, gmName: 'T', seed: 3 });
+  const few = s.players.filter((p) => p.teamId === MY).slice(0, 3);
+  const cand = s.players.find((p) => p.teamId !== MY && p.origin === 'domestic');
+  const imp = signingImpact({ roster: few, cand: { ...cand, teamId: null }, offer: { salaryEok: 2, years: 2 }, rules: s.rules, teamId: MY });
+  assert.equal(imp.role.after, null);
+  assert.equal(imp.roster.after, 4);
 });

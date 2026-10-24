@@ -1,6 +1,8 @@
 // 트레이드 단계: 성장·은퇴 결과 → 받은 제안(수락) → 내가 먼저 제안 → 제출.
 import { h, signed, link, eok } from '../../lib/dom.js';
 import { validateTrade, proposeTrade } from '../../../src/trade.mjs';
+import { tradeImpact } from '../../lib/preview-signing.js';
+import { tradePreviewCard } from '../../lib/preview-signing-view.js';
 import { domesticOf } from '../../../src/valuation.mjs';
 import { offerHint, usedPlayerIds } from '../../lib/offseason-view.js';
 import { playerLine, salaryText, contractText, decide, fill } from './common.js';
@@ -76,6 +78,7 @@ export function render(ctx, pending) {
         h('select', { id: 'os-team', onchange: (e) => { builder.teamId = e.target.value || null; builder.mine.clear(); builder.theirs.clear(); builder.result = null; draw(); } },
           h('option', { value: '' }, '구단 선택'), aiTeams.map((t) => h('option', { value: t.id, selected: t.id === builder.teamId }, t.name)))),
       builder.teamId ? h('div', { class: 'os-cols' }, h('div', { class: 'os-side' }, h('div', { class: 'os-side-title' }, '우리가 보낼 선수'), pickList(mineRoster, builder.mine)), h('div', { class: 'os-side' }, h('div', { class: 'os-side-title' }, `${ctx.name(builder.teamId)}에게 받을 선수`), pickList(theirRoster, builder.theirs))) : null,
+      ready ? tradePreviewCard(tradeImpact({ roster: league.players, give: trade.giveA.map((id) => league.players.find((p) => p.id === id)), get: trade.giveB.map((id) => league.players.find((p) => p.id === id)), rules, teamId: my, check: validateTrade(league, trade, rules, { window: 'offseason' }) }), { ctx }) : null,
       builder.teamId ? h('div', { class: 'row' },
         h('button', { class: 'btn', type: 'button', disabled: !ready, onclick: () => { builder.result = proposeTrade(league, trade, ectx, rules, { window: 'offseason' }); draw(); } }, 'AI 반응 보기'),
         r ? h('span', { class: r.executed ? 'good' : 'bad' }, r.executed ? `수락합니다 (가치 비율 ${r.verdict.margin.toFixed(2)}배, 필요 ${rules.transactions.trade.acceptMargin}배)` : `거절: ${r.reason.replaceAll(builder.teamId, ctx.name(builder.teamId))}`) : null,

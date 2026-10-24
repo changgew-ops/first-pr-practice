@@ -2,6 +2,8 @@
 import { h } from '../../lib/dom.js';
 import { foreignOf } from '../../../src/valuation.mjs';
 import { playerLine, decide, fill } from './common.js';
+import { signingImpact } from '../../lib/preview-signing.js';
+import { signingPreviewCard } from '../../lib/preview-signing-view.js';
 
 const STAT_LABEL = [['shooting', '슛'], ['passing', '패스'], ['defense', '수비'], ['rebound', '리바'], ['athletic', '운동'], ['stamina', '체력']];
 const usdText = (usd) => `${Math.round(usd / 10000).toLocaleString('ko-KR')}만 달러`;
@@ -38,6 +40,7 @@ export function render(ctx, pending) {
         h('span', { class: 'note' }, STAT_LABEL.map(([k, l]) => `${l} ${p.stats[k]}`).join(' · ')),
         p.card?.minutes ? h('span', { class: 'note' }, `${p.card.gp}경기 ${Math.round(p.card.minutes / Math.max(1, p.card.gp))}분`) : null,
         ok ? null : h('span', { class: 'os-why bad' }, `영입 불가: ${why}`))))),
+      chosen ? signingPreviewCard(signingImpact({ roster: state?.players ?? ctx.session.players, cand: chosen.player, offer: { salaryUsd: chosen.usd, years: 1 }, rules, teamId: team, check: { ok: chosen.ok, reason: chosen.why } }), { ctx, title: `${chosen.player.name}을(를) 영입하면`, note: '계약 기간은 1~2년 중 무작위로 정해져서, 다음 시즌 확정 지출에는 이 계약을 넣지 않았습니다.' }) : null,
       h('div', { class: 'os-submit' },
         h('span', { class: 'note' }, chosen ? `${chosen.player.name} · 요구 ${usdText(chosen.usd)}` : '고를 수 있는 후보가 없습니다'),
         options.length

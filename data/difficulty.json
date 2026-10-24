@@ -1,0 +1,449 @@
+{
+ "_note": "생성물: tools/build-difficulty.mjs(npm run build:difficulty)로만 바꾼다. 구단마다 첫 시즌을 반복 시뮬레이션한 결과와 그것으로 정한 난이도·목표 태그.",
+ "version": 1,
+ "generated": "2026-10-24",
+ "seeds": 200,
+ "rebuildSeeds": 100,
+ "bots": {
+  "auto": "무개입(자동 편성·추천 전술)",
+  "basic": "기본 운영(휴식 로테이션 + 훈련 집중 + 기본 자동 단장)"
+ },
+ "rules": {
+  "_note": "기본 운영 봇의 첫 시즌 반복 시뮬레이션 결과로 정한다. 난이도(level): 쉬움 = 우승 ≥ easyChamp 또는 PO 진출 ≥ easyPo, 보통 = PO 진출 ≥ midPo, 어려움 = PO 진출 ≥ hardPo, 그 밖은 매우 어려움. 목표 태그: 우승 ≥ tagChamp면 \"우승 도전\", PO 진출 ≥ tagPo면 \"PO 경쟁\", 그 밖은 \"리빌딩\". 임계값은 게임용 가정이다.",
+  "easyChamp": 0.2,
+  "easyPo": 0.9,
+  "midPo": 0.5,
+  "hardPo": 0.25,
+  "tagChamp": 0.12,
+  "tagPo": 0.4
+ },
+ "engineFingerprint": {
+  "rules": "170139478ab4",
+  "players": "1fa18a3913fe",
+  "keys": [
+   "simulation",
+   "effective",
+   "tactics",
+   "condition",
+   "coaching",
+   "injuries",
+   "lineup",
+   "salaryCap",
+   "roster",
+   "transactions",
+   "offseason",
+   "economy",
+   "aging",
+   "revenue",
+   "playoffs",
+   "ratingModel",
+   "devProgram",
+   "fans",
+   "inSeason",
+   "waivers"
+  ],
+  "date": "2026-10-24"
+ },
+ "teams": {
+  "wonju-db": {
+   "level": 1,
+   "levelLabel": "쉬움",
+   "tag": "우승 도전",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 36.9,
+     "winsSd": 3.4,
+     "winsP10": 32,
+     "winsP50": 37,
+     "winsP90": 41,
+     "rankMean": 1.5,
+     "po": 1,
+     "champ": 0.54,
+     "top2": 0.9,
+     "bottom3": 0
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 35.4,
+     "winsSd": 3.4,
+     "winsP10": 31,
+     "winsP50": 36,
+     "winsP90": 39,
+     "rankMean": 1.76,
+     "po": 0.995,
+     "champ": 0.425,
+     "top2": 0.835,
+     "bottom3": 0
+    }
+   },
+   "rebuild": null
+  },
+  "seoul-samsung": {
+   "level": 1,
+   "levelLabel": "쉬움",
+   "tag": "PO 경쟁",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 30.7,
+     "winsSd": 3.6,
+     "winsP10": 27,
+     "winsP50": 31,
+     "winsP90": 35,
+     "rankMean": 3.69,
+     "po": 0.955,
+     "champ": 0.115,
+     "top2": 0.23,
+     "bottom3": 0.01
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 30.4,
+     "winsSd": 3.5,
+     "winsP10": 25,
+     "winsP50": 31,
+     "winsP90": 35,
+     "rankMean": 3.83,
+     "po": 0.93,
+     "champ": 0.09,
+     "top2": 0.185,
+     "bottom3": 0.035
+    }
+   },
+   "rebuild": null
+  },
+  "goyang-sono": {
+   "level": 2,
+   "levelLabel": "보통",
+   "tag": "PO 경쟁",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 28.6,
+     "winsSd": 3.4,
+     "winsP10": 24,
+     "winsP50": 28,
+     "winsP90": 34,
+     "rankMean": 4.56,
+     "po": 0.885,
+     "champ": 0.06,
+     "top2": 0.12,
+     "bottom3": 0.03
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 29,
+     "winsSd": 3.6,
+     "winsP10": 24,
+     "winsP50": 29,
+     "winsP90": 34,
+     "rankMean": 4.49,
+     "po": 0.86,
+     "champ": 0.055,
+     "top2": 0.12,
+     "bottom3": 0.04
+    }
+   },
+   "rebuild": null
+  },
+  "seoul-sk": {
+   "level": 1,
+   "levelLabel": "쉬움",
+   "tag": "우승 도전",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 33.8,
+     "winsSd": 3.5,
+     "winsP10": 29,
+     "winsP50": 34,
+     "winsP90": 38,
+     "rankMean": 2.49,
+     "po": 0.98,
+     "champ": 0.35,
+     "top2": 0.63,
+     "bottom3": 0
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 34,
+     "winsSd": 3.6,
+     "winsP10": 29,
+     "winsP50": 34,
+     "winsP90": 39,
+     "rankMean": 2.4,
+     "po": 1,
+     "champ": 0.255,
+     "top2": 0.605,
+     "bottom3": 0
+    }
+   },
+   "rebuild": null
+  },
+  "changwon-lg": {
+   "level": 3,
+   "levelLabel": "어려움",
+   "tag": "리빌딩",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 24.8,
+     "winsSd": 3.9,
+     "winsP10": 20,
+     "winsP50": 25,
+     "winsP90": 30,
+     "rankMean": 6.5,
+     "po": 0.465,
+     "champ": 0,
+     "top2": 0.04,
+     "bottom3": 0.325
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 24,
+     "winsSd": 3.9,
+     "winsP10": 19,
+     "winsP50": 24,
+     "winsP90": 30,
+     "rankMean": 6.86,
+     "po": 0.38,
+     "champ": 0.01,
+     "top2": 0.005,
+     "bottom3": 0.415
+    }
+   },
+   "rebuild": null
+  },
+  "anyang-jungkwanjang": {
+   "level": 2,
+   "levelLabel": "보통",
+   "tag": "PO 경쟁",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 27.6,
+     "winsSd": 3.7,
+     "winsP10": 23,
+     "winsP50": 28,
+     "winsP90": 32,
+     "rankMean": 5.13,
+     "po": 0.79,
+     "champ": 0.02,
+     "top2": 0.06,
+     "bottom3": 0.11
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 26.9,
+     "winsSd": 3.8,
+     "winsP10": 22,
+     "winsP50": 27,
+     "winsP90": 31,
+     "rankMean": 5.41,
+     "po": 0.73,
+     "champ": 0.035,
+     "top2": 0.055,
+     "bottom3": 0.145
+    }
+   },
+   "rebuild": null
+  },
+  "busan-kcc": {
+   "level": 2,
+   "levelLabel": "보통",
+   "tag": "PO 경쟁",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 27.4,
+     "winsSd": 3.8,
+     "winsP10": 23,
+     "winsP50": 27,
+     "winsP90": 32,
+     "rankMean": 5.26,
+     "po": 0.705,
+     "champ": 0.03,
+     "top2": 0.09,
+     "bottom3": 0.125
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 27.1,
+     "winsSd": 3.5,
+     "winsP10": 23,
+     "winsP50": 27,
+     "winsP90": 32,
+     "rankMean": 5.38,
+     "po": 0.71,
+     "champ": 0.03,
+     "top2": 0.05,
+     "bottom3": 0.1
+    }
+   },
+   "rebuild": null
+  },
+  "suwon-kt": {
+   "level": 4,
+   "levelLabel": "매우 어려움",
+   "tag": "리빌딩",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 20.9,
+     "winsSd": 3.4,
+     "winsP10": 17,
+     "winsP50": 21,
+     "winsP90": 25,
+     "rankMean": 8.4,
+     "po": 0.1,
+     "champ": 0,
+     "top2": 0,
+     "bottom3": 0.77
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 20.8,
+     "winsSd": 3.5,
+     "winsP10": 16,
+     "winsP50": 21,
+     "winsP90": 26,
+     "rankMean": 8.3,
+     "po": 0.14,
+     "champ": 0,
+     "top2": 0,
+     "bottom3": 0.74
+    }
+   },
+   "rebuild": {
+    "seasons": 5,
+    "n": 100,
+    "poBySeason": [
+     0.14,
+     0.42,
+     0.69,
+     0.79,
+     0.82
+    ],
+    "winsBySeason": [
+     20.9,
+     24.5,
+     28.4,
+     30.4,
+     31.1
+    ],
+    "po5": 0.99,
+    "champ5": 0.49,
+    "top3Within5": 0.8
+   }
+  },
+  "daegu-kogas": {
+   "level": 4,
+   "levelLabel": "매우 어려움",
+   "tag": "리빌딩",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 21,
+     "winsSd": 3.6,
+     "winsP10": 16,
+     "winsP50": 21,
+     "winsP90": 26,
+     "rankMean": 8.32,
+     "po": 0.135,
+     "champ": 0.005,
+     "top2": 0,
+     "bottom3": 0.76
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 21.1,
+     "winsSd": 3.7,
+     "winsP10": 17,
+     "winsP50": 21,
+     "winsP90": 26,
+     "rankMean": 8.3,
+     "po": 0.125,
+     "champ": 0,
+     "top2": 0,
+     "bottom3": 0.735
+    }
+   },
+   "rebuild": {
+    "seasons": 5,
+    "n": 100,
+    "poBySeason": [
+     0.12,
+     0.11,
+     0.15,
+     0.41,
+     0.69
+    ],
+    "winsBySeason": [
+     21.2,
+     19.6,
+     21.3,
+     25,
+     28.2
+    ],
+    "po5": 0.83,
+    "champ5": 0.18,
+    "top3Within5": 0.5
+   }
+  },
+  "ulsan-hyundai-mobis": {
+   "level": 4,
+   "levelLabel": "매우 어려움",
+   "tag": "리빌딩",
+   "first": {
+    "auto": {
+     "n": 200,
+     "winsMean": 19,
+     "winsSd": 3.3,
+     "winsP10": 15,
+     "winsP50": 19,
+     "winsP90": 23,
+     "rankMean": 8.98,
+     "po": 0.03,
+     "champ": 0,
+     "top2": 0,
+     "bottom3": 0.875
+    },
+    "basic": {
+     "n": 200,
+     "winsMean": 18.9,
+     "winsSd": 3.5,
+     "winsP10": 14,
+     "winsP50": 19,
+     "winsP90": 24,
+     "rankMean": 8.93,
+     "po": 0.055,
+     "champ": 0,
+     "top2": 0,
+     "bottom3": 0.85
+    }
+   },
+   "rebuild": {
+    "seasons": 5,
+    "n": 100,
+    "poBySeason": [
+     0.02,
+     0.16,
+     0.43,
+     0.59,
+     0.75
+    ],
+    "winsBySeason": [
+     18.6,
+     22,
+     24.6,
+     27.8,
+     29
+    ],
+    "po5": 0.93,
+    "champ5": 0.31,
+    "top3Within5": 0.65
+   }
+  }
+ }
+}

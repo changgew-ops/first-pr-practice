@@ -82,7 +82,7 @@ function runLongrun(j) {
     const r = playSeason(s, null);
     const e = r.entry;
     const standings = e.standings.map((x) => ({ id: x.id, rank: x.rank, wins: x.wins }));
-    const po = e.po;
+    const po = e.stage;
     rows.push({ i, league: lm, standings, po, champ: e.championId, settle, retiredOvr: null, drafted: null, ledgerNet: Object.fromEntries(Object.entries(e.ledger).map(([k, v]) => [k, v.net])) });
     prevStand = standings;
     if (i < EXPERIMENTS.longrun.seasons - 1) {

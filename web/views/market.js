@@ -5,6 +5,8 @@ import { nameButton } from '../lib/player-info.js';
 import { injuryTag, tempTag, injuryMap } from '../lib/injury-view.js';
 import { KIND_TEXT, ORIGIN_TEXT, faYearsRange } from '../../src/inseason.mjs';
 import { payrollEok, softCapPenaltyEok, domesticOf } from '../../src/valuation.mjs';
+import { signingImpact } from '../lib/preview-signing.js';
+import { signingPreviewCard } from '../lib/preview-signing-view.js';
 
 const f1 = (v) => Number(v).toFixed(1);
 const man = (usd) => `${Math.round(usd / 10000)}만 달러`;
@@ -104,6 +106,7 @@ function openSignDialog(ctx, p, asking, onDone) {
   const yearsIn = h('select', { id: `mk-yr-${p.id}`, 'aria-label': '계약 기간', onchange: (e) => { st.years = Number(e.target.value); update(); } }, Array.from({ length: yHi - yLo + 1 }, (_, i) => yLo + i).map((y) => h('option', { value: y, selected: y === st.years }, `${y}년`)));
   const status = h('p', { class: 'ct-line' });
   const info = h('p', { class: 'note' });
+  const preview = h('div', { class: 'sp-host' });
   const ok = h('button', { class: 'btn primary', type: 'button', onclick: () => {
     const r = s.signFa(p.id, { salaryEok: st.salaryEok, years: st.years });
     if (!r.ok) { ctx.toast(r.errors[0]); update(); return; }
@@ -114,6 +117,7 @@ function openSignDialog(ctx, p, asking, onDone) {
     status.className = `ct-line ${c.ok ? 'good' : 'bad'}`;
     status.textContent = c.ok ? '계약 가능합니다.' : c.reason;
     ok.disabled = !c.ok;
+    preview.replaceChildren(signingPreviewCard(signingImpact({ roster: s.players, cand: p, offer: { salaryEok: st.salaryEok, years: st.years }, rules, teamId: s.managerId, check: c }), { ctx }));
     const payroll = payrollEok(s.players, s.managerId) + st.salaryEok;
     const frac = Math.max(0, 1 - s.day / s.totalDays);
     info.textContent = `영입 후 국내 연봉 ${eok(payroll)} / 캡 ${eok(rules.salaryCap.domesticEok, 0)}${payroll > rules.salaryCap.domesticEok ? ` · 초과 기금 ${eok(softCapPenaltyEok(payroll, rules))}` : ''} · 이번 시즌 남은 ${Math.round(frac * 100)}%만큼의 보수(${eok(st.salaryEok * frac)})를 정산합니다.`;
@@ -125,7 +129,7 @@ function openSignDialog(ctx, p, asking, onDone) {
         h('div', h('span', { class: 'note' }, '최저 연봉'), h('b', eok(rules.salaryCap.minSalaryEok))),
         h('label', { for: `mk-sal-${p.id}` }, h('span', { class: 'note' }, '연봉(억)'), salaryIn),
         h('label', { for: `mk-yr-${p.id}` }, h('span', { class: 'note' }, '계약 기간(이번 시즌 포함)'), yearsIn)),
-      status, info,
+      status, preview, info,
       h('p', { class: 'note' }, '요구 연봉 이상이면 선수는 바로 수락합니다. 샐러리캡을 넘기면 소프트캡 규정에 따라 초과분의 일부를 시즌 말 기금으로 내며, 한도(캡의 120%)를 넘는 계약은 할 수 없습니다.')),
     (close) => [h('button', { class: 'btn', type: 'button', onclick: close }, '취소'), ok]);
   update();
@@ -179,6 +183,8 @@ function openForeignDialog(ctx, out, kind) {
   const st = { pick: market.find((c) => checks.get(c.player.id).ok)?.player.id ?? null };
   const candEok = (c) => (c.eok ?? c.usd * rules.transactions.funds.foreignUsdToEok);
   const host = h('div', { class: 'stack' });
+  const previewOf = (c) => signingPreviewCard(signingImpact({ roster: s.players, cand: c.player, offer: asia ? { salaryEok: c.eok, years: 1 } : { salaryUsd: c.usd, years: 1 }, rules, teamId: s.managerId, releaseId: kind === 'temp' ? null : out.id, check: checks.get(c.player.id) }),
+    { ctx, title: `${c.player.name}을(를) 등록하면`, note: kind === 'temp' ? '일시교체 선수는 뛴 기간만큼만 보수를 받고 부상 선수가 돌아오면 떠납니다(여기 연봉은 전액 기준).' : '이번 시즌에는 합류 후 남은 기간만큼만 보수를 받습니다(여기 연봉은 전액 기준).' });
   const ok = h('button', { class: 'btn primary', type: 'button', onclick: () => {
     const r = s.replaceForeign(out.id, kind, st.pick);
     if (!r.ok) { ctx.toast(r.errors[0]); return; }
@@ -203,6 +209,7 @@ function openForeignDialog(ctx, out, kind) {
           chk.ok ? null : h('span', { class: 'mk-why bad' }, chk.reason));
         return el;
       })) : h('p', { class: 'muted' }, '교체 후보가 없습니다.'),
+      pick ? previewOf(pick) : '',
       h('p', { class: 'note' }, payLine),
       h('p', { class: 'note' }, asia ? '후보는 시즌 시작 때 정해지는 과거 시즌 아시아쿼터 카드 몇 장입니다(외국인 후보와 따로). 등록하면 그 시즌 카드 능력치로 뜁니다. 규정에 없는 절차를 외국인 선수와 같게 적용한 게임용 가정입니다.' : '후보는 시즌 시작 때 정해지는 과거 시즌 외국인 카드 몇 장입니다. 등록하면 그 시즌 카드 능력치로 뜁니다. 등록 기한(부상 공시 15일 이내)과 급여지원 삭감은 게임에서 단순화했습니다.'));
   };

@@ -1,0 +1,17 @@
+/* "영입하면" 미리보기 카드(web/lib/preview-signing-view.js) */
+.sp-card { border: 1px solid var(--line, #d9dde3); border-radius: 8px; padding: 8px 10px; background: var(--panel-2, rgba(127,127,127,.06)); display: grid; gap: 4px; font-size: .92em; }
+.sp-card.blocked { border-color: var(--bad, #c0392b); }
+.sp-head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.sp-blocked { color: var(--bad, #c0392b); font-weight: 600; }
+.sp-row { display: grid; grid-template-columns: 9.5em 1fr; gap: 2px 8px; align-items: baseline; }
+.sp-row > .note { grid-column: 2; }
+.sp-k { color: var(--muted, #6b7280); }
+.sp-row .bad { color: var(--bad, #c0392b); }
+.sp-row .warn { color: var(--warn, #b7791f); }
+.sp-note { margin: 2px 0 0; }
+.sp-link { font: inherit; }
+.sp-details { margin-top: 4px; }
+.sp-details > summary { cursor: pointer; font-size: .9em; color: var(--muted, #6b7280); }
+.sp-details.blocked > summary { color: var(--bad, #c0392b); }
+.sp-host { margin: 6px 0; }
+@media (max-width: 560px) { .sp-row { grid-template-columns: 1fr; } .sp-row > .note { grid-column: 1; } }

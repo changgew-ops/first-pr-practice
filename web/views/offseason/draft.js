@@ -1,11 +1,14 @@
 // 신인 드래프트: 순번 추첨 결과를 보고, 우리 차례마다 한 명을 지명하거나 포기한다.
 import { h } from '../../lib/dom.js';
 import { draftRanking } from '../../lib/offseason-view.js';
-import { domesticOf } from '../../../src/valuation.mjs';
+import { domesticOf, payrollEok, hardLimitEok } from '../../../src/valuation.mjs';
+import { rookieSalary } from '../../../src/offseason.mjs';
+import { signingImpact } from '../../lib/preview-signing.js';
+import { signingPreviewCard } from '../../lib/preview-signing-view.js';
 import { playerLine, decide, fill, offerResultsCard } from './common.js';
 
 export function render(ctx, pending) {
-  const { available, round, pickInRound, overall, lottery, roster } = pending.payload;
+  const { available, round, pickInRound, overall, lottery, roster, state } = pending.payload;
   const my = ctx.session.managerId;
   const mine = roster ?? domesticOf(ctx.session.game.seasonEnd.league.players, my);
   const ranking = draftRanking(available, mine);
@@ -15,6 +18,19 @@ export function render(ctx, pending) {
   const teamName = (id) => ctx.name(id);
   const myLot = lottery?.find((l) => l.teamId === my);
   const firstDecision = pending.key === 'draft:0';
+
+  // 지명하면: 엔진이 쓰는 신인 보수표(rookieSalary)와 같은 값으로 캡·역할을 미리 계산한다
+  const rookiePreview = (p) => {
+    const rules = ctx.data.rules, off = rules.offseason;
+    const salaryEok = rookieSalary(overall - 1, off.rookieSalaryEok);
+    const years = round === 1 ? dr.rookieYears : dr.rookieYearsRound2;
+    const players = state?.players ?? ctx.session.game.seasonEnd.league.players;
+    const pay = payrollEok(players, my);
+    const full = mine.length >= rules.roster.domestic + 2;
+    const over = pay + salaryEok > hardLimitEok(rules) + 1e-9;
+    const check = full ? { ok: false, reason: `국내 선수가 이미 ${mine.length}명이라 지명할 수 없습니다` } : over ? { ok: false, reason: '캡 한도를 넘어 지명할 수 없습니다' } : { ok: true };
+    return signingPreviewCard(signingImpact({ roster: players, cand: p, offer: { salaryEok, years }, rules, teamId: my, check }), { ctx, title: '지명하면', blockedLabel: '지명 불가', note: `신인 보수는 지명 순번(전체 ${overall}번째 칸) 기준 ${salaryEok.toFixed(2)}억, ${years}년입니다. 드래프트로는 국내 정원보다 2명까지 더 지명할 수 있습니다.` });
+  };
 
   function draw() {
     fill(host, 
@@ -32,6 +48,7 @@ export function render(ctx, pending) {
         h('span', { class: 'os-fact' }, h('span', { class: 'note' }, 'POT'), h('b', r.p.potential)),
         r.need ? h('span', { class: 'tag hot' }, `${r.p.position} 필요 +${r.need}`) : h('span', { class: 'tag' }, `${r.p.position} 충분`),
         h('span', { class: 'note' }, `점수 ${r.score.toFixed(1)}`))))),
+      rookiePreview(available.find((p) => p.id === pick)),
       h('div', { class: 'os-submit' }, h('span', { class: 'note' }, `선택: ${available.find((p) => p.id === pick).name}`),
         h('button', { class: 'btn', type: 'button', onclick: () => decide(ctx, pending.key, 'pass') }, '지명 포기'),
         h('button', { class: 'btn primary big', type: 'button', onclick: () => decide(ctx, pending.key, pick) }, '지명 확정')));
