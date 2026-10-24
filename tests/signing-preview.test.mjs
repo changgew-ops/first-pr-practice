@@ -124,3 +124,19 @@ test('로스터가 모자라 편성이 안 되는 단계(재계약 등)에서도
   assert.equal(imp.role.after, null);
   assert.equal(imp.roster.after, 4);
 });
+
+test('시즌 중 외국인·아시아쿼터 교체 후보 미리보기가 엔진 검증을 그대로 보여 준다', () => {
+  const s = Session.create(noWaiver, { managerId: MY, gmName: 'T', seed: 8 });
+  for (const [origin, mk] of [['foreign', () => s.foreignMarket()], ['asia', () => s.asiaMarket()]]) {
+    const out = mine(s).find((p) => p.origin === origin);
+    if (!out) continue;
+    const market = mk();
+    if (!market.length) continue;
+    const c = market[0];
+    const check = s.foreignCheck(out.id, 'season', c.player.id);
+    const imp = signingImpact({ roster: s.players, cand: c.player, offer: origin === 'asia' ? { salaryEok: c.eok, years: 1 } : { salaryUsd: c.usd, years: 1 }, rules: s.rules, teamId: MY, releaseId: out.id, check });
+    assert.equal(imp.ok, Boolean(check.ok));
+    assert.ok(origin === 'asia' ? imp.asia : imp.foreign);
+    assert.equal(imp.roster.after, mine(s).length);
+  }
+});
