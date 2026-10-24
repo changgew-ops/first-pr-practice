@@ -42,7 +42,7 @@ export function signingPreviewCard(imp, { title = '영입하면', note = null, c
     : arrow(imp.roster.before, imp.roster.after);
   const comps = imp.competitors.length
     ? imp.competitors.map((c, i) => h('span', { class: 'sp-comp' }, i ? ' · ' : '',
-      playerLink(c.player.id, c.player.name, { ctx, cls: 'sp-link' }), ` (${c.player.ovr}${c.diff === 0 ? ', 동률' : c.diff > 0 ? `, 영입 선수가 +${c.diff}` : `, 영입 선수가 ${c.diff}`})`))
+      playerLink(c.player.id, c.player.name, { ctx, cls: 'sp-link' }), ` (${c.player.ovr}${c.diff === 0 ? ', 동률' : c.diff > 0 ? `, 이 선수가 +${c.diff}` : `, 이 선수가 ${c.diff}`})`))
     : [h('span', { class: 'muted' }, '같은 포지션 선수가 없습니다')];
   return h('div', { class: `sp-card ${imp.ok ? '' : 'blocked'}`, role: 'group', 'aria-label': title },
     h('div', { class: 'sp-head' }, h('b', title), imp.ok ? null : h('span', { class: 'sp-blocked' }, `${blockedLabel}: ${imp.reason ?? '조건 미충족'}`)),
