@@ -245,3 +245,27 @@ export function poolList(roster, { pos = null, sort = 'ovr' } = {}) {
   return roster.filter((p) => !pos || p.position === pos).sort((POOL_SORTS[sort] ?? POOL_SORTS.ovr)[1]);
 }
 
+
+/**
+ * 선택한 선수의 교체 후보: 같은 포지션 우선, 그다음 OVR 순으로 n명(기본 4).
+ * 선택 선수와의 능력치 차이(후보 − 선택, 6개)와 컨디션 차이를 같이 돌려 "바꾸면 무엇이 달라지는가"를 보여 준다.
+ * 선택이 편성 안(스타팅·벤치)이면 후보는 그 선수 외 전원(부상·결장 중은 맨 뒤), 편성 밖이면 후보는 편성 안 선수(같은 포지션 우선).
+ * roleOf(p)는 'starter'|'bench'|'out', condOf는 (id)=>컨디션|null(없으면 컨디션 차이는 null), hurt는 결장 중 선수 id Set.
+ * 반환 [{ player, role, samePos, hurt, diffs: { 능력치: 차이 }, ovrDiff, condDiff }]
+ */
+export function replacementCandidates(roster, selected, { roleOf, condOf = null, hurt = new Set(), n = 4 } = {}) {
+  if (!selected) return [];
+  const selRole = roleOf(selected);
+  const pool = roster.filter((p) => p.id !== selected.id && (selRole === 'out' ? roleOf(p) !== 'out' : true));
+  const rank = (p) => [hurt.has(p.id) ? 1 : 0, p.position === selected.position ? 0 : 1, -p.ovr];
+  const cmp = (a, b) => { const ra = rank(a), rb = rank(b); for (let i = 0; i < ra.length; i++) if (ra[i] !== rb[i]) return ra[i] - rb[i]; return a.id < b.id ? -1 : 1; };
+  const selCond = condOf ? condOf(selected.id) : null;
+  return pool.sort(cmp).slice(0, n).map((p) => {
+    const c = condOf ? condOf(p.id) : null;
+    return {
+      player: p, role: roleOf(p), samePos: p.position === selected.position, hurt: hurt.has(p.id),
+      diffs: Object.fromEntries(STAT_KEYS.map((k) => [k, p.stats[k] - selected.stats[k]])),
+      ovrDiff: p.ovr - selected.ovr, condDiff: c != null && selCond != null ? Math.round(c - selCond) : null
+    };
+  });
+}

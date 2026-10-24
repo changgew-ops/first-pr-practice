@@ -16,7 +16,7 @@ import { tacticsCard, conditionCard, condBar, conditionOf } from '../lib/tactics
 import {
   evalDraft, autoDraft, rosterOfTeam, POSITIONS, powerOf, seatFit, slotsFromDraft, draftFromSlots, sameArrangement,
   firstFreeSlot, placeInSlot, slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS,
-  STAT_SHORT, statHeat, topStats, leagueAverages, teamProfile, positionBalance
+  STAT_SHORT, statHeat, topStats, leagueAverages, teamProfile, positionBalance, replacementCandidates
 } from '../lib/lineup-view.js';
 
 let edit = null; // { key, slots } — 화면을 다시 그려도(다른 화면에 갔다 와도) 편집 중인 편성을 유지한다
@@ -105,7 +105,7 @@ function enableDrag(el, { ghostText, from, enabled, onDrop }) {
   });
 }
 
-export function render(ctx) {
+export function render(ctx, [preselect] = []) {
   const s = ctx.session, rules = ctx.data.rules;
   const my = s.managerId;
   const roster = rosterOfTeam(s.players, my);
@@ -135,8 +135,10 @@ export function render(ctx) {
   }
 
   const host = h('div', { class: 'stack' });
+  let pre = preselect ?? null; // 홈 "지금 해야 할 일" 등에서 #/lineup/<선수 id>로 들어오면 그 선수를 선택한 채로 연다
   const draw = () => {
     const slots = edit.slots;
+    if (pre) { if (byId.has(pre)) ui.sel = refOfPlayer(slots, pre); pre = null; }
     const draft = draftFromSlots(slots);
     const e = evalDraft(draft, roster, rules);
     const autoEval = evalDraft(auto, roster, rules);
@@ -207,11 +209,7 @@ export function render(ctx) {
       p.origin !== 'domestic' ? h('span', { class: 'lu-tag foreign', title: ORIGIN_LABEL[p.origin] }, p.origin === 'foreign' ? '외국' : '아쿼') : null,
       seatPos && seatFit(p, seatPos) !== 'exact' ? h('span', { class: `lu-tag fit-${seatFit(p, seatPos)}`, title: `${p.position} 선수를 ${seatPos} 자리에 두었습니다` }, `${p.position} ${FIT_LABEL[seatFit(p, seatPos)]}`) : null
     ];
-    // 능력치 요약: 6칸 미니 막대(높이=값, 색 단계) + 강점 칩. 값은 칩·title·aria-label에도 숫자로 적는다.
-    const miniBars = (p) => h('span', { class: 'lu-mini', role: 'img', 'aria-label': STAT_KEYS.map((k) => `${STAT_SHORT[k]} ${p.stats[k]}`).join(', ') },
-      STAT_KEYS.map((k) => h('span', { class: 'lu-mini-col', title: `${STAT_SHORT[k]} ${p.stats[k]}` },
-        h('i', { class: `h${statHeat(p.stats[k])}`, style: { height: `${Math.round(Math.max(10, Math.min(100, ((p.stats[k] - 30) / 65) * 100)))}%` } }),
-        h('em', { 'aria-hidden': 'true' }, STAT_SHORT[k][0]))));
+    // 카드에는 이름·OVR·주요 장점 칩 하나·컨디션만 둔다(6개 능력치 전체는 선수 목록의 능력치 열과 선택 시 상세·교체 후보에서 본다)
     const strongChips = (p, n) => h('span', { class: 'lu-strong' }, topStats(p, n, 0).strong.map(({ key, value }) => h('span', { class: `lu-stchip h${statHeat(value)}`, title: `강점: ${STAT_SHORT[key]} ${value}` }, `${STAT_SHORT[key]} ${value}`)));
     const slotButton = (cls, ref, p, seatPos, emptyLabel) => {
       const selected = sameRef(ui.sel, ref);
@@ -222,7 +220,7 @@ export function render(ctx) {
         onclick: () => press(ref)
       },
       seatPos ? h('span', { class: 'lu-seatpos' }, seatPos) : h('span', { class: 'lu-seatpos' }, `벤치 ${ref.index + 1}`),
-      p ? [avatarEl(p, { size: seatPos ? 30 : 32, teamColor: colorOf(p.teamId), cls: 'avatar-lu' }), h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p), seatPos ? strongChips(p, 1) : null), miniBars(p), seatPos ? null : strongChips(p, 1), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
+      p ? [avatarEl(p, { size: seatPos ? 30 : 32, teamColor: colorOf(p.teamId), cls: 'avatar-lu' }), h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p), seatPos ? strongChips(p, 1) : null), seatPos ? null : strongChips(p, 1), condOf ? condBar(condOf(p.id), { compact: true }) : null, h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
         : [h('span', { class: 'lu-plus', 'aria-hidden': 'true' }, '+'), h('span', { class: 'lu-emptylabel' }, emptyLabel)]);
       if (p) enableDrag(el, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return el;
@@ -315,6 +313,25 @@ export function render(ctx) {
           h('button', { type: 'button', class: 'btn ghost lu-detail-btn', 'data-nodrag': '1', onclick: () => openPlayerInfo(ctx, p) }, '선수 정보 창')));
     };
     const selPlayer = selId ? byId.get(selId) : null;
+    // 교체 후보: 선택한 선수와 같은 포지션 우선으로 4명, 선택한 선수 대비 능력치·컨디션 차이. (성장 변화 (+N)이 아니라 "비교" 값이라 따로 표기한다)
+    const candidatesOf = (p) => {
+      const roleFn = (q) => { const t = refOfPlayer(slots, q.id); return t.kind === 'pool' ? 'out' : t.area === 'seat' ? 'starter' : 'bench'; };
+      const list = replacementCandidates(roster, p, { roleOf: roleFn, condOf, hurt: new Set(hurt.keys()), n: 4 });
+      if (!list.length) return null;
+      const ROLE = { starter: '스타팅', bench: '벤치', out: '엔트리 밖' };
+      const dcell = (v, key) => h('td', { class: `r lu-cd ${v > 0 ? 'up' : v < 0 ? 'down' : ''}`, title: `${STAT_SHORT[key]} ${signed(v)} (선택한 선수 대비)` }, v === 0 ? '·' : signed(v));
+      return h('div', { class: 'lu-cands', role: 'region', 'aria-label': `${p.name} 교체 후보` },
+        h('div', { class: 'row between' }, h('b', `교체 후보 (${p.name} 대비)`), h('span', { class: 'note' }, '숫자는 선택한 선수와의 비교 차이이며 성장 변화가 아닙니다')),
+        h('div', { class: 'table-wrap' }, h('table', { class: 'lu-table lu-cand-table' },
+          h('thead', h('tr', h('th', '선수'), h('th', '지금'), h('th', { class: 'r' }, 'OVR'), STAT_KEYS.map((k) => h('th', { class: 'r' }, STAT_SHORT[k])), condOf ? h('th', { class: 'r' }, '컨디션') : null, h('th', ''))),
+          h('tbody', list.map((c) => h('tr', { class: c.hurt ? 'out' : '' },
+            h('td', h('span', { class: 'lu-pname' }, c.player.name), ' ', h('span', { class: 'pos' }, c.player.position), c.samePos ? null : h('span', { class: 'lu-tag fit-near', title: '다른 포지션' }, '타 포지션'), c.hurt ? injuryTag(hurt.get(c.player.id)) : null),
+            h('td', h('span', { class: 'note' }, ROLE[c.role])),
+            h('td', { class: `r lu-cd ${c.ovrDiff > 0 ? 'up' : c.ovrDiff < 0 ? 'down' : ''}` }, `${c.player.ovr} `, h('small', { title: '선택한 선수 대비 OVR 차이' }, c.ovrDiff === 0 ? '' : `(${signed(c.ovrDiff)})`)),
+            STAT_KEYS.map((k) => dcell(c.diffs[k], k)),
+            condOf ? h('td', { class: `r lu-cd ${c.condDiff > 0 ? 'up' : c.condDiff < 0 ? 'down' : ''}`, title: '컨디션 차이(선택한 선수 대비)' }, c.condDiff == null ? '' : c.condDiff === 0 ? '·' : signed(c.condDiff)) : null,
+            h('td', h('button', { type: 'button', class: 'btn lu-swapbtn', 'data-nodrag': '1', disabled: !live, onclick: () => setSlots(moveRefs(slots, ui.sel, refOfPlayer(slots, c.player.id))) }, '바꾸기'))))))));
+    };
     // 스타팅 능력치: 스타팅 평균을 리그 평균과 견준다
     const prof = teamProfile(e.starters, leagueAvg);
     const balance = positionBalance(e.starters);
@@ -360,7 +377,7 @@ export function render(ctx) {
           h('h3', { class: 'lu-benchtitle' }, `벤치 ${nBench}명`), benchRow,
           h('p', { class: 'note' }, '포지션 자리는 보기용입니다. 경기 시뮬레이션은 자리와 포지션이 맞는지 따지지 않고, 출전 시간은 스타팅·벤치 각각 OVR이 높은 순서로 나눕니다. 외국 선수는 스타팅에 동시에 2명까지 둘 수 있습니다.')),
         h('div', { class: 'card flush lu-listcard', 'data-drop': 'out' },
-          h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '선수 목록'), h('p', { class: 'note', style: { margin: '4px 0 8px' } }, '행을 누르면 선택, 이어서 코트의 칸이나 다른 선수를 누르면 바뀝니다. 행을 칸으로 끌어 놓아도 되고, 코트 선수를 이 목록으로 끌어 오면 편성에서 빠집니다. 이름 옆 ⓘ는 선수 정보 창, 머리글(OVR·능력치)을 누르면 그 순서로 정렬합니다.'), filters, selPlayer ? detailOf(selPlayer) : null),
+          h('div', { class: 'pad' }, h('h2', { style: { margin: 0 } }, '선수 목록'), h('p', { class: 'note', style: { margin: '4px 0 8px' } }, '행을 누르면 선택, 이어서 코트의 칸이나 다른 선수를 누르면 바뀝니다. 행을 칸으로 끌어 놓아도 되고, 코트 선수를 이 목록으로 끌어 오면 편성에서 빠집니다. 이름 옆 ⓘ는 선수 정보 창, 머리글(OVR·능력치)을 누르면 그 순서로 정렬합니다.'), filters, selPlayer ? detailOf(selPlayer) : null, selPlayer ? candidatesOf(selPlayer) : null),
           h('div', { class: 'table-wrap lu-listscroll' }, h('table', { class: 'lu-table' },
             h('thead', h('tr', headCols.map((c) => h('th', { class: `${c.cls ?? ''}`, 'aria-sort': c.sort && ui.sort === c.sort ? 'descending' : null },
               c.sort ? h('button', { type: 'button', class: `lu-th ${ui.sort === c.sort ? 'on' : ''}`, title: `${c.label} 순으로 정렬`, onclick: () => { ui.sort = ui.sort === c.sort ? 'ovr' : c.sort; draw(); } }, c.label) : c.label)))),

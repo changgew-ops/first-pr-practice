@@ -9,6 +9,30 @@ import { colorOf } from '../lib/team-ui.js';
 const SUGGEST = ['김가온', '이나래', '박하늘', '최다온', '정바다', '한그루', '오라온', '서보람', '윤새봄', '장누리'];
 const STARS = (n) => '★'.repeat(n) + '☆'.repeat(3 - n);
 const LEVEL = ['', '쉬움', '보통', '어려움'];
+const LEVEL4 = ['', '쉬움', '보통', '어려움', '매우 어려움'];
+const STARS4 = (n) => '★'.repeat(n) + '☆'.repeat(4 - n);
+const pct0 = (v) => `${Math.round(v * 100)}%`;
+
+/**
+ * 반복 시뮬레이션으로 만든 난이도(data/difficulty.json, tools/build-difficulty.mjs)가 있으면 그 구단 항목을 화면용으로 바꾼다.
+ * 없거나 값이 이상하면 null(그때는 전력 순위·캡 여유·전통으로 뽑은 자동 안내 teamTraits를 쓴다).
+ * 반환: { level(1~4), label, stars, tag, line(시뮬레이션 숫자 한 줄), recovery(리빌딩 구단의 3~5시즌 전망 한 줄 | null) }
+ */
+/** 카드·안내문에 보일 태그: 시뮬레이션 목표 태그가 있으면 그것을 앞에 두고, 자동 안내의 난이도성 태그(우승 도전·리빌딩 도전·초보 추천)는 뺀다 */
+export const tagsFor = (sd, tr) => (sd ? [sd.tag, ...tr.tags.filter((x) => x !== '우승 도전' && x !== '리빌딩 도전' && x !== '초보 추천')] : tr.tags);
+
+export function simDifficulty(difficulty, teamId) {
+  const t = difficulty?.teams?.[teamId];
+  const f = t?.first?.basic;
+  if (!t || !f || !(t.level >= 1 && t.level <= 4) || typeof f.champ !== 'number' || typeof f.po !== 'number') return null;
+  const n = difficulty.seeds ?? f.n;
+  const rb = t.rebuild;
+  return {
+    level: t.level, label: LEVEL4[t.level], stars: STARS4(t.level), tag: t.tag,
+    line: `시뮬레이션 ${n}시즌 기준: 우승 ${pct0(f.champ)} · PO 진출 ${pct0(f.po)}`,
+    recovery: rb && Array.isArray(rb.poBySeason) ? `${rb.seasons}시즌 안에 PO 진출 ${pct0(rb.po5)} · 우승 ${pct0(rb.champ5)} (3시즌째 PO ${pct0(rb.poBySeason[2])})` : null
+  };
+}
 
 /** 구단 성격: 전력 순위, 캡 여유 순위(연봉이 적은 순), 전통 점수 순위에서 규칙으로 뽑는다(새 숫자를 만들지 않는다) */
 export function teamTraits({ rank, teams, capRoomRank, prestigeRank }) {
@@ -56,8 +80,9 @@ export function render(ctx) {
     go.disabled = !(n && t);
     go.textContent = n && t ? `${n} 단장, ${t.name}에 취임` : '이름과 구단을 정해 주세요';
     if (t) {
+      const sd = simDifficulty(data.difficulty, t.id);
       const r = power.get(t.id), pay = payrollInfo(preview, data, t.id), tr = teamTraits({ rank: r.rank, teams: data.teams.length, capRoomRank: capRoomRank.get(t.id), prestigeRank: prestigeRank.get(t.id) });
-      goNote.textContent = `${t.name}은(는) 전력 ${r.rank}위, 국내 연봉 ${eok(pay.domestic)} / 캡 ${eok(pay.cap, 0)}. 난이도 ${LEVEL[tr.level]}${tr.tags.length ? ` · ${tr.tags.join(', ')}` : ''}. 취임하면 2026-27 시즌 시작 전 화면에서 시작합니다.`;
+      goNote.textContent = `${t.name}은(는) 전력 ${r.rank}위, 국내 연봉 ${eok(pay.domestic)} / 캡 ${eok(pay.cap, 0)}. 난이도 ${sd ? sd.label : LEVEL[tr.level]}${tagsFor(sd, tr).length ? ` · ${tagsFor(sd, tr).join(', ')}` : ''}${sd ? ` (${sd.line})` : ''}. 취임하면 2026-27 시즌 시작 전 화면에서 시작합니다.`;
     } else goNote.textContent = '구단 카드를 눌러 선택하세요. 전력이 약한 구단일수록 어렵지만 키울 재미가 큽니다.';
   };
   name.addEventListener('input', sync);
@@ -71,14 +96,17 @@ export function render(ctx) {
   const list = h('div', { class: 'grid g3 st-teams' }, [...data.teams].sort((a, b) => power.get(a.id).rank - power.get(b.id).rank).map((t) => {
     const pay = payrollInfo(preview, data, t.id), pr = prestige[t.id], r = power.get(t.id);
     const tr = teamTraits({ rank: r.rank, teams: data.teams.length, capRoomRank: capRoomRank.get(t.id), prestigeRank: prestigeRank.get(t.id) });
+    const sd = simDifficulty(data.difficulty, t.id); // 있으면 반복 시뮬레이션 값이 자동 안내보다 우선한다
+    const tags = tagsFor(sd, tr);
     const card = h('button', { class: 'team-card st-team', type: 'button', 'aria-pressed': 'false', style: { '--team': colorOf(t.id) }, onclick: () => {
       teamId = t.id; cards.forEach((c) => c.setAttribute('aria-pressed', String(c === card))); sync();
     } },
       h('div', { class: 'st-team-head' },
         h('span', { class: 'st-emblem', 'aria-hidden': 'true' }, emblem(t.id, { size: 40 })),
         h('div', h('h3', t.name), h('div', { class: 'note' }, `${t.city} · ${t.arena}`))),
-      h('div', { class: 'st-level', title: `난이도 ${LEVEL[tr.level]}` }, h('span', { class: 'st-stars', 'aria-hidden': 'true' }, STARS(tr.level)), h('span', `난이도 ${LEVEL[tr.level]}`)),
-      h('div', { class: 'st-tags' }, tr.tags.map((x) => h('span', { class: `tag ${x === '초보 추천' || x === '우승 도전' ? 'hot' : ''}` }, x))),
+      h('div', { class: 'st-level', title: `난이도 ${sd ? sd.label : LEVEL[tr.level]}` }, h('span', { class: 'st-stars', 'aria-hidden': 'true' }, sd ? sd.stars : STARS(tr.level)), h('span', `난이도 ${sd ? sd.label : LEVEL[tr.level]}`)),
+      h('div', { class: 'st-tags' }, tags.map((x) => h('span', { class: `tag ${x === '초보 추천' || x === '우승 도전' ? 'hot' : ''}` }, x))),
+      sd ? h('div', { class: 'st-sim' }, h('div', sd.line), sd.recovery ? h('div', sd.recovery) : null) : null,
       h('dl', h('dt', '전력 순위'), h('dd', `${r.rank}위`), h('dt', '전통 점수'), h('dd', pr.score.toFixed(2)), h('dt', '통산 우승'), h('dd', `${pr.titles}회`), h('dt', '국내 연봉'), h('dd', `${eok(pay.domestic)} / ${eok(pay.cap, 0)}`)));
     cards.push(card);
     return card;
@@ -94,6 +122,6 @@ export function render(ctx) {
         h('div', { class: 'row' }, name, suggest),
         h('p', { class: 'note', id: 'gm-hint' }, '게임 안에서 "OOO 단장"으로 불립니다. 나중에 바꿀 수 없습니다.')),
       idCard),
-    h('div', h('h2', '맡을 구단'), h('p', { class: 'note' }, '전력이 약한 구단일수록 어렵지만 키울 재미가 큽니다. 순서는 지금 로스터의 전력순입니다. 난이도와 성격 태그는 전력 순위·캡 여유·전통 점수에서 자동으로 뽑은 안내입니다.'), list),
+    h('div', h('h2', '맡을 구단'), h('p', { class: 'note' }, '전력이 약한 구단일수록 어렵지만 키울 재미가 큽니다. 순서는 지금 로스터의 전력순입니다. 난이도와 목표 태그는 구단마다 첫 시즌을 반복 시뮬레이션한 결과(기본 운영 기준)입니다. 시뮬레이션 자료가 없으면 전력 순위·캡 여유·전통 점수에서 자동으로 뽑은 안내를 보여 줍니다.'), list),
     h('div', { class: 'card st-go' }, goNote, h('div', { class: 'row' }, go))) };
 }

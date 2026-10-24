@@ -221,3 +221,14 @@ body.lu-dragging .lineup-view .lu-slot, body.lu-dragging .lineup-view .lu-row { 
 .mod-chip { display: inline-block; padding: 1px 8px; border-radius: 999px; border: 1px dashed var(--line); font-size: .74rem; line-height: 1.5; color: var(--muted); background: transparent; white-space: nowrap; }
 .mod-chip.good { color: #1f7a4d; border-color: #1f7a4d; } .mod-chip.bad { color: #b3392b; border-color: #b3392b; }
 .eff-sub { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+
+/* 교체 후보(선택한 선수 대비 차이): 성장 변화 "(+N)"과 섞이지 않게 작은 비교 숫자로만 보인다 */
+.lineup-view .lu-cands { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); display: grid; gap: 6px; }
+.lineup-view .lu-cand-table { width: 100%; font-size: .88rem; }
+.lineup-view .lu-cand-table th, .lineup-view .lu-cand-table td { padding: 4px 6px; white-space: nowrap; }
+.lineup-view .lu-cd { font-variant-numeric: tabular-nums; color: var(--muted); }
+.lineup-view .lu-cd.up { color: var(--good, #1f9d62); font-weight: 600; }
+.lineup-view .lu-cd.down { color: var(--bad, #d94f6a); }
+.lineup-view .lu-cd small { color: inherit; opacity: .85; }
+.lineup-view .lu-swapbtn { padding: 3px 10px; font-size: .85rem; }
+.lineup-view .lu-slot .cond.compact { align-self: stretch; margin-top: 2px; }

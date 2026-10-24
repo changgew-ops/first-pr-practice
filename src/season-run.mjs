@@ -504,14 +504,27 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     }
     return fresh;
   };
+  // 경기 후 운영 피드백용 읽기 정보(g.fx): 우리 경기에 그 경기 직전 상태(적용된 보정·휴식·결장·대신 뛴 선수)를 붙인다. 계산에는 쓰이지 않고 점수·난수에 영향이 없다.
+  const fxSide = (id) => {
+    const t = (poTeams?.get(id)) ?? regular.teams.find((x) => x.id === id), roster = players.filter((p) => p.teamId === id);
+    return { teamId: id, tactic: t?.mods?.tactic ?? null, fit: t?.mods?.fit ?? 0, edge: t?.mods?.edge ?? 0, parts: t?.mods?.parts ? { ...t.mods.parts } : null, rested: [...restOf(id, roster)], injured: roster.filter((p) => injured.has(p.id)).map((p) => p.id) };
+  };
   const playDayFull = () => {
     const before = winPctNow(regular.standings());
     const startersBefore = new Set((regular.teams.find((t) => t.id === manager)?.lineup.starters ?? []).map((p) => p.id));
     const logFrom = rosterLog.length;
+    const myGame = regular.schedule[regular.day]?.find((x) => x.homeId === manager || x.awayId === manager);
+    const preFx = myGame ? { home: fxSide(myGame.homeId), away: fxSide(myGame.awayId), swaps: lineupSwaps.map((x) => ({ out: x.out.id, in: x.in.id })) } : null;
+    const myRested = preFx ? (myGame.homeId === manager ? preFx.home : preFx.away).rested : [];
+    const condBefore = new Map(myRested.map((id) => [id, Math.round(condOf(id))]));
     const r = regular.playDay();
     stampRegularAtt(r.games, before);
     let changed = injuriesOn ? afterDay(r) : false;
     if (condEnabled) { updateCondition(r); changed = true; } // 컨디션이 바뀌었으니 팀 보정(이득)·AI의 휴식 판단을 다시 한다
+    if (preFx) {
+      const g = r.games.find((x) => x.homeId === manager || x.awayId === manager);
+      if (g) g.fx = { ...preFx, restCond: myRested.map((id) => ({ id, before: condBefore.get(id), after: Math.round(condOf(id)) })), events: rosterLog.slice(logFrom).filter((e) => e.teamId === manager && (e.type === 'injury' || e.type === 'return')).map((e) => ({ type: e.type, playerId: e.playerId, name: e.name, games: e.games ?? null, part: e.part ?? null })) };
+    }
     if (restNext.size) { restNext = new Set(); changed = true; }
     if (changed) rebuildTeams();
     if (waiverPool.length && resolveWaivers(r.day, regular.done)) rebuildTeams();
@@ -911,6 +924,10 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
         const t = poTeams.get(id), roster = players.filter((p) => p.teamId === id);
         fx[side] = { teamId: id, tactic: t.mods?.tactic ?? null, fit: t.mods?.fit ?? 0, edge: t.mods?.edge ?? 0, parts: t.mods?.parts ? { ...t.mods.parts } : null, rested: [...restOf(id, roster)], injured: roster.filter((p) => injured.has(p.id)).map((p) => p.id) };
       }
+      const mySide = nx.homeId === manager ? 'home' : nx.awayId === manager ? 'away' : null;
+      const poRested = mySide ? fx[mySide].rested : [];
+      const poCondBefore = new Map(poRested.map((id) => [id, Math.round(condOf(id))]));
+      if (mySide) fx.swaps = lineupSwaps.map((x) => ({ out: x.out.id, in: x.in.id }));
       const info = po.playGame();
       info.game.fx = fx;
       stampPlayoffGame(info.game, info.round, info.n);
@@ -918,6 +935,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       if (condEnabled && poCondOn) {
         updateCondition({ games: [info.game] }, new Set([nx.homeId, nx.awayId]), rules.playoffs.condition?.intensity ?? 1);
         changed = true;
+        if (mySide) fx.restCond = poRested.map((id) => ({ id, before: poCondBefore.get(id), after: Math.round(condOf(id)) }));
         if (info.roundDone) { // 라운드 사이 휴식: 모두 회복한다
           const days = rules.playoffs.condition?.restDaysBetweenRounds ?? 2;
           for (const p of players) { let c = condOf(p.id); for (let i = 0; i < days; i++) c = nextCondition(c, p, 0, rules, recoveryMul(staff?.[p.teamId], rules)); cond.set(p.id, c); }

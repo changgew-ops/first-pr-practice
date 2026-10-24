@@ -24,7 +24,10 @@ export async function loadData() {
   // 시즌별 총 관중(공식 집계 표). 없어도 게임은 열린다
   let attendance = [];
   try { attendance = (await (await get('history/attendance.csv')).text()).split(/\r?\n/).filter((l) => l && !l.startsWith('#')).slice(1).map((l) => l.split(',')).map(([season, total]) => ({ season, total: Number(total) })); } catch (e) { console.warn('attendance.csv를 읽지 못했습니다:', e.message); }
-  return { rules, teams: applyArenas(teams, arenaRows), attendance, players, history: { seasons, franchises }, profiles, careers, cards };
+  // 팀 난이도 안내(tools/build-difficulty.mjs가 만든 생성물). 없거나 깨져도 게임은 열린다(팀 선택 화면이 자동 안내로 대신한다)
+  let difficulty = null;
+  try { const d = await json('difficulty.json'); if (d?.teams && typeof d.teams === 'object') difficulty = d; } catch (e) { console.warn('difficulty.json을 읽지 못했습니다:', e.message); }
+  return { rules, teams: applyArenas(teams, arenaRows), attendance, difficulty, players, history: { seasons, franchises }, profiles, careers, cards };
 }
 
 /** 선수 이름(또는 별칭)으로 찾는 실제 프로필 (생년월일·키·학교·KBL 경력). 없으면 undefined */

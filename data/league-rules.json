@@ -480,7 +480,7 @@
         "결승": 3,
         "우승": 6
       },
-      "foreignUsdToEok": 1.4e-05,
+      "foreignUsdToEok": 0.000014,
       "prestigeSpread": 0.25
     },
     "asiaTradable": false
@@ -1160,5 +1160,14 @@
   "effective": {
     "_note": "유효 전력(src/effective.mjs): 전력 1(OVR 합성 전력)이 경기 기대 득점 차이로 몇 점인지 = qPerPower × simulation.ratingScale. qPerPower는 팀 편성의 (공격+수비) 점수가 전력 1당 오르는 폭을 시즌 8개×10개 구단 편성의 회귀로 잰 값(1.83, 게임용 보정값). 화면의 '전력'은 기본 전력 + 경기 보정(edge)÷이 값이다.",
     "qPerPower": 1.83
+  },
+  "todo": {
+    "_note": "홈 \"지금 해야 할 일\" 목록의 기준(게임용 가정). 필수는 진행을 막거나 즉시 대응이 필요한 일, 검토는 곧 판단이 필요한 일, 참고는 접어 둔다. conditionLow: 스타팅 선수의 컨디션이 이 값 미만이면 \"피로\" 검토 항목. maxReview: 검토 항목을 이만큼만 보이고 나머지는 \"더 보기\". expiring: 계약 남은 연수가 이 값 이하인 선수가 있으면 시즌 중 \"만료 예정\" 요약. waiverLeftDays: 웨이버 공시 마감까지 이 일수 이하면 임박. infoNews/infoAchievements: 참고에 보일 개수.",
+    "conditionLow": 55,
+    "maxReview": 5,
+    "expiringYears": 1,
+    "waiverLeftDays": 1,
+    "infoNews": 2,
+    "infoAchievements": 3
   }
 }

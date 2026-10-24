@@ -102,3 +102,14 @@
 .sv .sv-alert { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .sv .sv-alert.new { font-weight: 600; }
 .sv .sv-alert .grow { flex: 1; min-width: 12em; }
+
+/* 이번 경기 운영 피드백 */
+.ops-fb { margin: 6px 0 10px; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; background: var(--panel-2); }
+.ops-fb > summary { cursor: pointer; font-weight: 600; }
+.ops-fb .ops-note { margin: 6px 0; }
+.ops-fb .ops-list { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 0; }
+.ops-fb dt { color: var(--muted); font-size: .88rem; }
+.ops-fb dd { margin: 0; min-width: 0; }
+.ops-fb .ops-chip { display: inline-block; margin: 0 6px 2px 0; padding: 1px 8px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); font-size: .88rem; }
+.ops-fb .sv-fx { margin: 0; padding-left: 1.1em; }
+@media (max-width: 560px) { .ops-fb .ops-list { grid-template-columns: 1fr; } .ops-fb dt { margin-top: 4px; } }

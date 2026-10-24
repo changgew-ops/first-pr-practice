@@ -75,6 +75,8 @@ function regularView(ctx) {
   if (next) parts.push(nextGameCard(ctx, next, rows));
   const stopped = alertsCard(ctx);
   if (stopped) parts.push(stopped);
+  const lastFb = lastGameFeedback(ctx);
+  if (lastFb) parts.push(lastFb);
   parts.push(actionBar(ctx));
   parts.push(injuryCard(ctx)); // 부상 현황(우리 구단·리그)
 
@@ -85,6 +87,17 @@ function regularView(ctx) {
 
   parts.push(h('div', { class: 'grid split sv-cols' }, resultsPanel(ctx), standingsTable(ctx, rows, s.regularDone ? '최종 순위' : '현재 순위')));
   return h('div', { class: 'stack sv' }, parts);
+}
+
+// 우리가 방금 치른 정규리그 경기의 운영 피드백(접힘): 휴식·대신 출전·적용된 보정·부상·관중
+function lastGameFeedback(ctx) {
+  const s = ctx.session, last = s.myGames().at(-1);
+  if (!last?.game?.fx) return null;
+  const g = last.game, my = s.managerId, home = g.homeId === my;
+  const att = attCalc(ctx)(g, { key: 'r0' });
+  return h('div', { class: 'card sv-lastfb' },
+    h('div', { class: 'row between' }, h('b', `직전 경기(${last.day}일차) · ${ctx.name(home ? g.awayId : g.homeId)} ${last.win ? '승' : '패'} ${last.my}:${last.opp}`), h('span', { class: 'note' }, home ? '홈' : '원정')),
+    opsFeedback(ctx, g, home ? att : null));
 }
 
 function nextGameCard(ctx, next, rows) {
@@ -190,10 +203,46 @@ function boxTable(ctx, teamId, pts, lines, won) {
       h('thead', h('tr', h('th', '선수'), ...BOX_COLS.map(([, l]) => h('th', { class: 'r' }, l)), h('th', { class: 'r' }, 'FG'), h('th', { class: 'r' }, '3P'), h('th', { class: 'r' }, 'FT'))),
       h('tbody', [...lines].sort((a, b) => b.minutes - a.minutes).map((p) => row(p, false)), row(tot, true)))));
 }
+/**
+ * 이번 경기 운영 피드백(우리 팀 경기 g.fx): 그 경기에 실제로 적용된 값과 결과를 나란히 보여 줄 뿐, 결과의 원인을 단정하지 않는다.
+ * ① 휴식시킨 선수의 컨디션(전→후) ② 대신 뛴 선수의 출전·기록 ③ 적용된 보정(전술 적합도·감독·컨디션, 엔진 값 그대로) ④ 부상 발생·복귀 ⑤ 관중(저장값)
+ */
+export function opsFeedback(ctx, g, att = null, { open = false } = {}) {
+  const fx = g?.fx, my = ctx.session.managerId;
+  if (!fx || (g.homeId !== my && g.awayId !== my)) return null;
+  const home = g.homeId === my;
+  const mySide = home ? fx.home : fx.away, oppSide = home ? fx.away : fx.home, lines = home ? g.box.home : g.box.away;
+  const rules = ctx.data.rules;
+  const line = (id) => lines.find((l) => l.id === id);
+  const nm = (id) => nameOfPlayer(ctx, id);
+  const sg = (v) => `${v > 0 ? '+' : ''}${v.toFixed(2)}`;
+  const rows = [];
+  // ① 휴식
+  const rest = fx.restCond ?? (mySide?.rested ?? []).map((id) => ({ id, before: null, after: null }));
+  rows.push(['휴식', rest.length ? rest.map((r) => h('span', { class: 'ops-chip' }, nm(r.id), r.before != null ? ` 컨디션 ${r.before} → ${r.after}` : '')) : '이 경기에 휴식시킨 선수 없음']);
+  // ② 대신 뛴 선수
+  const subs = (fx.swaps ?? []).map((x) => ({ out: x.out, line: line(x.in), id: x.in }));
+  rows.push(['대신 출전', subs.length ? subs.map((x) => h('span', { class: 'ops-chip' }, `${nm(x.id)}(${nm(x.out)} 자리) `, x.line ? `${Math.round(x.line.minutes)}분 ${x.line.points}점 ${x.line.rebounds}리바 ${x.line.assists}어시` : '출전 기록 없음')) : '부상 선수를 대신해 자리를 메운 선수 없음']);
+  // ③ 적용된 보정
+  const effect = (side, label) => side ? h('li', h('b', label), ' ', side.tactic ? `전술 ${tacticName(rules, side.tactic)}(적합도 ${sg(side.fit ?? 0)}) · ` : '전술 균형 · ', side.parts ? [modChip({ edge: side.edge, parts: side.parts }), h('span', { class: 'note' }, ` 감독 ${fmtPts(side.parts.coach)} · 전술 ${fmtPts(side.parts.tactic)} · 컨디션 ${fmtPts(side.parts.cond)}`)] : `팀 보정 ${fmtPts(side.edge ?? 0)}`) : null;
+  rows.push(['적용된 보정', h('ul', { class: 'sv-fx' }, effect(mySide, ctx.name(my)), effect(oppSide, ctx.name(home ? g.awayId : g.homeId)))]);
+  // ④ 부상·복귀
+  const ev = fx.events ?? [];
+  const missing = (mySide?.injured ?? []);
+  rows.push(['부상·복귀', ev.length || missing.length ? [...ev.map((e) => h('span', { class: 'ops-chip' }, e.type === 'injury' ? `${e.name} 부상${e.part ? `(${e.part})` : ''}${e.games ? ` ${e.games}경기 결장` : ''}` : `${e.name} 복귀`)), ...missing.map((id) => h('span', { class: 'ops-chip' }, `${nm(id)} 결장 중`))] : '부상·복귀 없음']);
+  // ⑤ 관중(저장값)
+  if (att) rows.push(['관중', attendanceText(att)]);
+  return h('details', { class: 'ops-fb', open: open ? '' : null },
+    h('summary', '이번 경기 운영 피드백'),
+    h('p', { class: 'note ops-note' }, '이 경기에 실제로 적용된 값과 결과를 나란히 보여 줍니다. 적용된 효과가 결과의 원인이라는 뜻은 아닙니다.'),
+    h('dl', { class: 'ops-list' }, rows.flatMap(([k, v]) => [h('dt', k), h('dd', v)])));
+}
+
 function boxScore(ctx, g, close = () => { ui.box = null; ctx.refresh(); }, att = null) {
   return h('div', { class: 'sv-box-wrap' },
     h('div', { class: 'row between' }, h('h3', { style: { margin: 0 } }, '박스스코어'), h('button', { class: 'btn ghost', onclick: close }, '닫기')),
     att ? h('p', { class: 'note sv-box-att' }, `${ctx.name(g.homeId)} 홈 경기 · ${attendanceText(att)}`) : null,
+    opsFeedback(ctx, g, att),
     boxTable(ctx, g.awayId, g.awayPts, g.box.away, g.winnerId === g.awayId),
     boxTable(ctx, g.homeId, g.homePts, g.box.home, g.winnerId === g.homeId));
 }
@@ -311,19 +360,14 @@ function playoffLastGame(ctx) {
   if (!last) return null;
   const g = last.game, won = g.winnerId === my, home = g.homeId === my;
   const myPts = home ? g.homePts : g.awayPts, oppPts = home ? g.awayPts : g.homePts, oppId = home ? g.awayId : g.homeId;
-  const mySide = home ? g.fx?.home : g.fx?.away, oppSide = home ? g.fx?.away : g.fx?.home;
   const key = `last:${last.round}:${last.n}`;
   const open = ui.poBox === key;
-  const sgn = (v) => `${v > 0 ? '+' : ''}${v.toFixed(2)}`;
-  const fxLine = (side, label) => side ? h('li', h('b', label), ` 전술 ${tacticName(rules, side.tactic)}${side.tactic ? ` (적합도 ${sgn(side.fit)})` : ''} · 팀 보정 ${sgn(side.edge)}점${side.parts ? ` (감독 ${sgn(side.parts.coach)} · 전술 ${sgn(side.parts.tactic)} · 컨디션 ${sgn(side.parts.cond)})` : ''}`,
-    side.rested.length ? ` · 휴식 ${side.rested.map((id) => nameOfPlayer(ctx, id)).join(', ')}` : '', side.injured.length ? ` · 결장 ${side.injured.map((id) => nameOfPlayer(ctx, id)).join(', ')}` : '') : null;
   const attInfo = attCalc(ctx)(g, { key: `p${last.roundIndex}:${last.n - 1}`, round: last.round });
   const att = attendanceText(attInfo);
   return h('div', { class: `card sv-po-last ${won ? 'won' : 'lost'}` },
     h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, `직전 경기 · ${last.round} ${last.n}차전`), h('span', { class: `tag ${won ? 'hot' : ''}` }, won ? '승리' : '패배')),
     h('p', { style: { margin: '6px 0' } }, h('b', `${ctx.name(my)} ${myPts} : ${oppPts} ${ctx.name(oppId)}`), g.overtimes ? ` (연장${g.overtimes > 1 ? g.overtimes : ''})` : '', h('span', { class: 'note' }, ` · ${att}`)),
-    h('p', { class: 'note', style: { margin: '0 0 4px' } }, '이 경기에 실제로 적용된 보정입니다(경기 계산에 쓰인 값이며, 결과의 원인을 뜻하지는 않습니다).'),
-    h('ul', { class: 'sv-fx' }, fxLine(mySide, ctx.name(my)), fxLine(oppSide, ctx.name(oppId))),
+    opsFeedback(ctx, g, attInfo, { open: true }),
     h('div', { class: 'row' }, h('button', { class: 'btn', 'aria-pressed': String(open), onclick: () => { ui.poBox = open ? null : key; ctx.refresh(); } }, open ? '박스스코어 닫기' : '박스스코어 보기')),
     open && g.box ? boxScore(ctx, g, () => { ui.poBox = null; ctx.refresh(); }, attInfo) : null);
 }
