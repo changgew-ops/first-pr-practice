@@ -54,7 +54,7 @@
 .lineup-view { container-type: inline-size; }
 .lineup-view .lu-split { display: flex; flex-direction: column; gap: 16px; }
 @container (min-width: 820px) {
-  .lineup-view .lu-split { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .lineup-view .lu-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 16px; align-items: start; }
   .lineup-view .lu-listcard { position: sticky; top: 12px; }
   .lineup-view .lu-listscroll { max-height: calc(100vh - 150px); overflow: auto; }
   .lineup-view .lu-hide-md { display: none; }
@@ -200,3 +200,20 @@ body.lu-dragging .lineup-view .lu-slot, body.lu-dragging .lineup-view .lu-row { 
   .lineup-view .lu-detail-radar { flex-basis: 100%; width: auto; margin: 0; display: flex; justify-content: center; }
   .lineup-view .lu-th { padding: 2px; font-size: .78rem; }
 }
+
+/* 코트 카드는 작게: 강점 칩 한 개를 OVR 옆에 두고 미니 막대 글자는 벤치에서만 보인다. 코트가 좁으면 칩도 뺀다 */
+.lineup-view .lu-court { container-type: inline-size; container-name: court; }
+.lineup-view .lu-seat .lu-mini-col em { display: none; }
+.lineup-view .lu-seat .lu-mini { height: 22px; }
+.lineup-view .lu-seat { gap: 2px; padding: 5px 5px 6px; }
+.lineup-view .lu-seat .lu-line { flex-wrap: wrap; row-gap: 2px; }
+.lineup-view .lu-seat .lu-stchip { font-size: .62rem; padding: 0 5px; }
+@container court (max-width: 420px) { .lineup-view .lu-seat .lu-strong { display: none; } }
+/* 목록: 능력치 칸을 좁게 */
+.lineup-view .lu-table td.lu-st, .lineup-view .lu-table th.r { padding-left: 4px; padding-right: 6px; }
+.lineup-view .lu-table td.lu-st { min-width: 2.6em; }
+.lineup-view .lu-role { white-space: nowrap; }
+.lineup-view .lu-namecell .cond.compact .cond-track { width: 22px; }
+.lineup-view .lu-namecell .cond b { font-size: .7rem; font-weight: 600; }
+.lineup-view .lu-namecell .lu-info { margin-left: 2px; padding: 2px 3px; }
+.lineup-view .lu-table td { padding-left: 6px; padding-right: 6px; }

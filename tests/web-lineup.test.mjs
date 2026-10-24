@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import {
   evalDraft, autoDraft, setRole, roleOf, sameDraft, prune, rosterOfTeam, powerOf,
   POSITIONS, seatFit, arrangeSeats, slotsFromDraft, draftFromSlots, sameArrangement, locate, placeInSlot, clearSlot, swapSlots, firstFreeSlot,
-  slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS
+  slotRef, refOfPlayer, sameRef, idOfRef, moveRefs, OUT_REF, positionSummary, poolList, POOL_SORTS,
+  STAT_SHORT, statHeat, topStats, leagueAverages, teamProfile, positionBalance
 } from '../web/lib/lineup-view.js';
 import { remainingCheckpoints, previewGain, projectGain } from '../web/lib/training-view.js';
 import { Session } from '../web/lib/session.js';
@@ -22,7 +23,6 @@ test('라인업: 자동 편성은 규칙에 맞고 평가가 오류 없이 완�
   const e = evalDraft(draft, roster, rules);
   assert.deepEqual(e.errors, []);
   assert.equal(e.complete, true);
-  assert.ok(e.totalCost <= rules.lineup.costCap);
   assert.equal(e.starters.length, 5); assert.equal(e.bench.length, 7); // 엔트리 12명
   assert.ok(e.foreignStarters <= rules.foreignPlayers.onCourt);
   assert.equal(Object.values(e.positions).reduce((a, b) => a + b, 0), 5);
@@ -46,12 +46,13 @@ test('라인업: 역할 바꾸기·되돌리기·중복·부족을 점검한다'
   assert.deepEqual(prune({ starters: ['없는선수', first], bench: [] }, roster).starters, [first]);
 });
 
-test('라인업: 코스트 제한을 넘는 편성과 외국 선수 수 초과를 오류로 알린다', () => {
+test('라인업: 코스트 제한 없이 코스트가 높은 선수로 짠 편성도 통과하고, 외국 선수 수 초과를 오류로 알린다', () => {
   const roster = rosterOfTeam(data.players, MY);
-  const top = [...roster].sort((a, b) => b.cost - a.cost);
+  const top = [...roster].filter((p) => p.origin !== 'foreign').sort((a, b) => b.cost - a.cost);
   const d = { starters: top.slice(0, 5).map((p) => p.id), bench: top.slice(5, 12).map((p) => p.id) };
   const e = evalDraft(d, roster, rules);
-  assert.ok(e.totalCost > rules.lineup.costCap || e.errors.length === 0);
+  assert.deepEqual(e.errors.filter((m) => /코스트/.test(m)), []);
+  assert.equal('totalCost' in e, false);
   const foreigners = roster.filter((p) => p.origin === 'foreign');
   const others = roster.filter((p) => p.origin !== 'foreign');
   if (foreigners.length >= rules.foreignPlayers.onCourt + 1) return;
@@ -227,7 +228,31 @@ test('포지션 현황: 포지션별 로스터·스타팅·벤치·엔트리 밖
   assert.equal(short.find((r) => r.pos === 'PG').status, 'short');
   assert.equal(short.find((r) => r.pos === 'SG').status, 'ok');
   for (const pos of POSITIONS) assert.ok(poolList(roster, { pos }).every((p) => p.position === pos));
-  const byCost = poolList(roster, { sort: 'cost' });
-  assert.ok(byCost.every((p, i) => i === 0 || byCost[i - 1].cost >= p.cost));
-  assert.ok(Object.keys(POOL_SORTS).length >= 4);
+  assert.equal(POOL_SORTS.cost, undefined); // 코스트 정렬은 없다
+  for (const k of ['shooting', 'passing', 'defense', 'rebound', 'athletic', 'stamina']) {
+    const list = poolList(roster, { sort: k });
+    assert.ok(list.every((p, i) => i === 0 || list[i - 1].stats[k] >= p.stats[k]), k);
+  }
+  assert.ok(Object.keys(POOL_SORTS).length >= 9);
+});
+
+test('능력치 보기: 색 단계·강점 칩·리그 평균 대비 스타팅 프로필·포지션 균형', () => {
+  assert.deepEqual([49, 50, 59, 60, 69, 70, 79, 80, 99].map(statHeat), [0, 1, 1, 2, 2, 3, 3, 4, 4]);
+  const p = { stats: { shooting: 82, passing: 55, defense: 70, rebound: 79, athletic: 60, stamina: 48 } };
+  const t = topStats(p, 2, 1);
+  assert.deepEqual(t.strong.map((x) => [x.key, x.value]), [['shooting', 82], ['rebound', 79]]);
+  assert.deepEqual(t.weak.map((x) => [x.key, x.value]), [['stamina', 48]]);
+  assert.equal(topStats({ stats: { shooting: 60, passing: 60, defense: 60, rebound: 60, athletic: 60, stamina: 60 } }, 2, 0).strong[0].key, 'shooting'); // 같으면 정해진 순서
+  const avgs = leagueAverages(data.players);
+  for (const k of Object.keys(STAT_SHORT)) assert.ok(avgs[k] > 40 && avgs[k] < 90, k);
+  const roster = rosterOfTeam(data.players, MY);
+  const e = evalDraft(autoDraft(roster, rules), roster, rules);
+  const prof = teamProfile(e.starters, avgs);
+  assert.equal(prof.length, 6);
+  for (const r of prof) assert.ok(Math.abs(r.diff - (r.value - r.avg)) < 0.11, r.key);
+  assert.equal(teamProfile([], avgs)[0].value, 0);
+  assert.equal(positionBalance(POSITIONS.map((pos) => ({ position: pos }))).ok, true);
+  const bad = positionBalance([{ position: 'C' }, { position: 'C' }, { position: 'PF' }, { position: 'SF' }, { position: 'SG' }]);
+  assert.equal(bad.ok, false); assert.match(bad.text, /PG/); assert.match(bad.text, /C 2명/);
+  assert.equal(positionBalance([{ position: 'PG' }]).ok, false);
 });

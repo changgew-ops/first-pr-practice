@@ -68,7 +68,7 @@ test('라인업: 부상 선수는 자동 편성에서 빠지고, 건강한 선�
   assert.equal(avail.length, 8);
   assert.equal(playingHurt.length, 4);
   assert.ok(playingHurt.every((id) => most.get(id) <= 10 + 3), '남은 결장이 가장 짧은 선수부터');
-  // 직접 편성: 부상 선수 자리에 건강한 선수가 서고, 규칙(코스트·외국인 수)을 지킨다
+  // 직접 편성: 부상 선수 자리에 건강한 선수가 서고, 규칙(외국인 수)을 지킨다
   const hurt2 = new Map([[full.starters[0].id, 4], [full.bench[0].id, 2]]); // 엔트리 밖 선수가 둘이라 둘까지만 메울 수 있다
   const sub = substituteInjured(full, roster, hurt2, rules);
   assert.ok(sub);

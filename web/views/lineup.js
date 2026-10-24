@@ -26,7 +26,7 @@ let escHandler = null;
 window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && escHandler) escHandler(); });
 
 // 코트 위 자리 위치(코트 그림 크기에 대한 %)
-const SEAT_XY = { PG: [50, 79], SG: [83, 58], SF: [17, 58], PF: [70, 30], C: [30, 30] };
+const SEAT_XY = { PG: [50, 79], SG: [85, 57], SF: [15, 57], PF: [68, 29], C: [32, 29] };
 const FIT_LABEL = { exact: '', near: '인접', off: '어색' };
 const DRAG_PX = 5;      // 이 거리 안의 움직임은 끌기가 아니라 누르기
 const LONG_PRESS = 380; // 터치로 끌려면 이만큼(ms) 누르고 있는다
@@ -216,7 +216,7 @@ export function render(ctx) {
         onclick: () => press(ref)
       },
       seatPos ? h('span', { class: 'lu-seatpos' }, seatPos) : h('span', { class: 'lu-seatpos' }, `벤치 ${ref.index + 1}`),
-      p ? [avatarEl(p, { size: seatPos ? 36 : 34, teamColor: colorOf(p.teamId), cls: 'avatar-lu' }), h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p)), miniBars(p), strongChips(p, seatPos ? 2 : 1), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
+      p ? [avatarEl(p, { size: seatPos ? 30 : 32, teamColor: colorOf(p.teamId), cls: 'avatar-lu' }), h('span', { class: 'lu-name' }, p.name), h('span', { class: 'lu-line' }, ovrChip(p), seatPos ? strongChips(p, 1) : null), miniBars(p), seatPos ? null : strongChips(p, 1), h('span', { class: 'lu-tags' }, tagsOf(p, seatPos))]
         : [h('span', { class: 'lu-plus', 'aria-hidden': 'true' }, '+'), h('span', { class: 'lu-emptylabel' }, emptyLabel)]);
       if (p) enableDrag(el, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return el;
@@ -256,6 +256,7 @@ export function render(ctx) {
 
     // ---- 선수 목록 ----
     const roleText = (p) => { const t = refOfPlayer(slots, p.id); return t.kind === 'pool' ? '제외' : t.area === 'seat' ? `스타팅 ${POSITIONS[t.index]}` : `벤치 ${t.index + 1}`; };
+    const roleShort = (p) => { const t = refOfPlayer(slots, p.id); return t.kind === 'pool' ? '–' : t.area === 'seat' ? `스${POSITIONS[t.index]}` : `벤${t.index + 1}`; };
     const selSeat = ui.sel?.kind === 'slot' && ui.sel.area === 'seat' ? POSITIONS[ui.sel.index] : null;
     const shown = poolList(roster, { pos: ui.pos, sort: ui.sort }).filter((p) => !ui.unusedOnly || refOfPlayer(slots, p.id).kind === 'pool');
     // 능력치 칸: 색 단계(0~4)와 숫자, 같은 포지션 평균보다 8 이상 높으면 ▲, 8 이상 낮으면 ▼ (title에 평균과 차이)
@@ -276,7 +277,7 @@ export function render(ctx) {
       h('td', { class: 'r lu-hide-sm lu-hide-md' }, p.age), h('td', { class: 'r' }, ovrChip(p)),
       ...(ui.showStats ? statRows(p, posAvgs).map((r) => statCell(r)) : []),
       h('td', { class: 'lu-hide-sm lu-hide-md' }, p.origin === 'domestic' ? '' : h('span', { class: 'tag' }, ORIGIN_LABEL[p.origin])),
-      h('td', h('span', { class: `lu-role ${ref.kind === 'pool' ? 'out' : ''}` }, roleText(p))),
+      h('td', h('span', { class: `lu-role ${ref.kind === 'pool' ? 'out' : ''}`, title: roleText(p) }, ui.showStats ? roleShort(p) : roleText(p))),
       h('td', ref.kind === 'pool' ? h('button', { type: 'button', class: 'btn ghost lu-quick', 'data-nodrag': '1', disabled: !live, title: '빈 칸에 바로 넣기', 'aria-label': `${p.name}을(를) 빈 칸에 넣기`, onclick: (ev) => { ev.stopPropagation(); quickAdd(p); } }, '＋') : null));
       enableDrag(tr, { ghostText: `${p.name} · ${p.position} · OVR ${p.ovr}`, from: ref, enabled: live, onDrop });
       return tr;

@@ -25,34 +25,7 @@ test('선수 데이터의 cost가 OVR 공식과 일치한다', () => {
   for (const p of players) assert.equal(p.cost, calcCost(p.ovr), p.id);
 });
 
-test('모든 구단이 코스트 제한 안에서 라인업을 만들 수 있다', () => {
-  const { starters, bench, costCap } = rules.lineup;
-  for (const team of teams) {
-    const cheapest = players
-      .filter((p) => p.teamId === team.id)
-      .map((p) => p.cost)
-      .sort((a, b) => a - b)
-      .slice(0, starters + bench)
-      .reduce((a, b) => a + b, 0);
-    assert.ok(cheapest <= costCap, `${team.name}: 최소 ${cheapest} > ${costCap}`);
-  }
-});
-
-test('코스트 제한이 강팀에는 실제로 선택을 요구한다', () => {
-  const { starters, bench, costCap } = rules.lineup;
-  const binding = teams.filter((team) => {
-    const top = players
-      .filter((p) => p.teamId === team.id)
-      .map((p) => p.cost)
-      .sort((a, b) => b - a)
-      .slice(0, starters + bench)
-      .reduce((a, b) => a + b, 0);
-    return top > costCap;
-  });
-  assert.ok(binding.length >= 1, '제한이 어느 구단에도 걸리지 않습니다');
-});
-
-test('validateLineup: 정상, 인원 오류, 코스트 초과, 외국 선수 초과를 구분한다', () => {
+test('validateLineup: 정상, 인원 오류, 외국 선수 초과, 중복을 구분하고 코스트는 보지 않는다', () => {
   const mk = (id, cost, origin = 'domestic') => ({ id, cost, origin });
   const ok5 = [1, 2, 3, 4, 5].map((i) => mk(`s${i}`, 5));
   const ok5b = [1, 2, 3, 4, 5, 6, 7].map((i) => mk(`b${i}`, 5));
@@ -60,17 +33,12 @@ test('validateLineup: 정상, 인원 오류, 코스트 초과, 외국 선수 초
 
   assert.equal(validateLineup(ok5.slice(0, 4), ok5b, rules).ok, false);
 
-  // 합계 75는 제한과 같으므로 통과, 76은 초과 (스타팅 8×5 + 벤치 5×7)
-  const atCap = [1, 2, 3, 4, 5].map((i) => mk(`e${i}`, 8));
-  const atCapResult = validateLineup(atCap, ok5b, rules);
-  assert.equal(atCapResult.totalCost, rules.lineup.costCap);
-  assert.equal(atCapResult.ok, true);
-
-  const overCap = [mk('o1', 9), ...atCap.slice(1)];
-  const overResult = validateLineup(overCap, ok5b, rules);
-  assert.equal(overResult.totalCost, rules.lineup.costCap + 1);
-  assert.equal(overResult.ok, false);
-  assert.ok(overResult.errors.some((e) => e.includes('코스트')));
+  // 코스트 합계 제한은 없다: 코스트가 아주 높은 선수들로만 짜도 통과한다
+  const huge = [1, 2, 3, 4, 5].map((i) => mk(`h${i}`, 20));
+  const hugeBench = [1, 2, 3, 4, 5, 6, 7].map((i) => mk(`hb${i}`, 20));
+  const hugeResult = validateLineup(huge, hugeBench, rules);
+  assert.equal(hugeResult.ok, true);
+  assert.equal(rules.lineup.costCap, undefined);
 
   const three = [mk('f1', 3, 'foreign'), mk('f2', 3, 'foreign'), mk('f3', 3, 'foreign'), mk('d1', 3), mk('d2', 3)];
   const fr = validateLineup(three, ok5b, rules);

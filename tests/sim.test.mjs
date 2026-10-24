@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { buildLineup, validateLineup, lineupCost } from '../src/lineup.mjs';
+import { buildLineup, validateLineup } from '../src/lineup.mjs';
 import { simulateGame, leagueBaseline, lineupMinutes } from '../src/game.mjs';
 import { createSchedule, playSeason, playSeries } from '../src/season.mjs';
 import { mulberry32 } from '../src/rng.mjs';
@@ -30,25 +30,24 @@ function flatTeam(id, level) {
   return { id, lineup: { starters: all.slice(0, 5), bench: all.slice(5) } };
 }
 
-test('buildLineup: 모든 구단이 코스트 제한 안에서 5+7 라인업을 만든다', () => {
+test('buildLineup: 모든 구단이 규칙에 맞는 5+7 라인업을 만든다', () => {
   for (const t of teams) {
     const r = validateLineup(t.lineup.starters, t.lineup.bench, rules);
     assert.equal(r.ok, true, `${t.name}: ${r.errors.join(', ')}`);
   }
 });
 
-test('buildLineup: 코스트 제한 안에서 OVR 상위 순 탐욕 편성보다 점수가 낮지 않다', () => {
-  const score = (l) => l.starters.reduce((s, p) => s + p.ovr, 0) + l.bench.reduce((s, p) => s + p.ovr, 0) * sim.benchWeight;
+test('buildLineup: 코스트 제한 없이 OVR 상위 순으로 짜고, 외국 선수 제한 때문에 밀린 선수만 스타팅 밖에 있다', () => {
   for (const t of teams) {
-    const roster = players.filter((p) => p.teamId === t.id).sort((a, b) => b.ovr - a.ovr);
-    const picked = [];
-    for (const p of roster) {
-      const left = rules.lineup.starters + rules.lineup.bench - picked.length - 1;
-      const cheapestRest = roster.filter((x) => !picked.includes(x) && x !== p).map((x) => x.cost).sort((a, b) => a - b).slice(0, left).reduce((a, b) => a + b, 0);
-      if (picked.length < rules.lineup.starters + rules.lineup.bench && lineupCost(picked) + p.cost + cheapestRest <= rules.lineup.costCap) picked.push(p);
-    }
-    const greedy = { starters: picked.slice(0, 5), bench: picked.slice(5) };
-    assert.ok(score(t.lineup) >= score(greedy) - 1e-9, t.name);
+    const roster = players.filter((p) => p.teamId === t.id);
+    const { starters, bench } = t.lineup;
+    const used = new Set([...starters, ...bench].map((p) => p.id));
+    const minStart = Math.min(...starters.map((p) => p.ovr));
+    // 스타팅보다 OVR이 높은데 스타팅에 못 든 선수는 외국 선수 동시 출전 제한 때문이어야 한다
+    for (const p of roster.filter((x) => x.ovr > minStart && !starters.includes(x))) assert.equal(p.origin, 'foreign', `${t.name}: ${p.name}`);
+    // 엔트리 밖 선수는 벤치의 누구보다도 OVR이 낮거나 같다
+    const minBench = Math.min(...bench.map((p) => p.ovr));
+    for (const p of roster.filter((x) => !used.has(x.id))) assert.ok(p.ovr <= minBench, `${t.name}: ${p.name}`);
   }
 });
 
@@ -184,9 +183,6 @@ test('밸런스: 60시즌 평균으로 강팀이 약팀보다 확실히 많이 �
   assert.ok(ppg >= 140 && ppg <= 165, `경기당 합산 득점 ${ppg.toFixed(1)}`);
 });
 
-test('calcCost가 라인업 코스트 계산과 연결된다', () => {
-  for (const t of teams) {
-    const all = [...t.lineup.starters, ...t.lineup.bench];
-    assert.equal(lineupCost(all), all.reduce((s, p) => s + calcCost(p.ovr), 0));
-  }
+test('코스트는 화면에서 빠졌지만 선수 데이터의 cost 필드는 OVR 공식과 같다', () => {
+  for (const t of teams) for (const p of [...t.lineup.starters, ...t.lineup.bench]) assert.equal(p.cost, calcCost(p.ovr));
 });

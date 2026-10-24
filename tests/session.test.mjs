@@ -46,7 +46,7 @@ test('세션: 직접 편성은 규칙에 맞을 때만 적용되고 경기에 �
   const roster = s.players.filter((p) => p.teamId === MY);
   const bad = s.setLineup({ starters: roster.slice(0, 5).map((p) => p.id), bench: roster.slice(0, 7).map((p) => p.id) });
   assert.equal(bad.ok, false);
-  // 가장 약한 12명(코스트 제한 안): 규칙은 맞고 자동 편성보다 약하다
+  // 가장 약한 12명: 규칙은 맞고 자동 편성보다 약하다
   const weak = roster.filter((p) => p.origin === 'domestic').sort((a, b) => a.ovr - b.ovr).slice(0, 12);
   if (weak.length === 12) {
     const r = s.setLineup({ starters: weak.slice(0, 5).map((p) => p.id), bench: weak.slice(5).map((p) => p.id) });

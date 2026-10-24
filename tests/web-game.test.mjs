@@ -25,9 +25,8 @@ test('화면용 선택자: 전력 순위는 1~10을 한 번씩, 연봉·인원 �
   const pay = payrollInfo(g, data, 'wonju-db');
   const mine = g.league.players.filter((p) => p.teamId === 'wonju-db');
   assert.equal(pay.counts.domestic + pay.counts.foreign + pay.counts.asia, mine.length);
-  const { lineup, cost } = teamPower(g, data, 'wonju-db');
+  const { lineup } = teamPower(g, data, 'wonju-db');
   assert.equal(lineup.starters.length + lineup.bench.length, data.rules.lineup.starters + data.rules.lineup.bench);
-  assert.ok(cost <= data.rules.lineup.costCap);
 });
 
 test('playYear: 한 시즌을 진행해 결과를 쌓고, 같은 시드면 같은 결과이며, 저장(JSON)해도 이어진다', () => {
