@@ -32,7 +32,7 @@ export function newsSource(session, data) {
   if (session.stage !== 'offseason') dayMemo = { key: memoKey, dayResults: session.dayResults, totalDays: session.totalDays, schedule: session.run?.schedule ?? null };
   if (session.stage === 'offseason' && dayMemo.key !== memoKey) {
     // 오프시즌에서 바로 불러온 저장이라 기억해 둔 일별 결과가 없다: 같은 시드로 시즌을 한 번 다시 돌려 얻는다
-    const replay = new Session(data, { ...g, stage: 'playoffs', day: g.day, poRounds: 3, seasonEnd: null, decisions: {} });
+    const replay = new Session(data, { ...g, stage: 'playoffs', day: g.day, poRounds: 3, poGames: null, seasonEnd: null, decisions: {} });
     dayMemo = { key: memoKey, dayResults: replay.dayResults, totalDays: replay.totalDays, schedule: replay.run?.schedule ?? null };
   }
   const dayResults = session.stage === 'offseason' ? dayMemo.dayResults : session.dayResults;

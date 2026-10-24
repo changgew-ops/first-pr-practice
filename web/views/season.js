@@ -3,7 +3,9 @@
 import { h, table, stat, link } from '../lib/dom.js';
 import { playerLink } from '../lib/player-info.js';
 import { seasonLabel } from '../lib/game.js';
-import { injuryCard } from '../lib/injury-view.js';
+import { injuryCard, injuryTag, injuryMap } from '../lib/injury-view.js';
+import { conditionCard, condBar, conditionOf } from '../lib/tactics-view.js';
+import { tacticList } from '../../src/tactics.mjs';
 import {
   standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesGameRows, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText
 } from '../lib/season-view.js';
@@ -12,6 +14,8 @@ import {
 const ui = { season: null, lastDay: -1, dayView: null, box: null, poBox: null };
 
 const act = (ctx, fn) => { try { fn(); } catch (e) { console.error(e); ctx.toast(e.message); } ctx.refresh(); };
+// 여러 날 진행: 중요한 일이 생기면 그 날에서 멈추고 이유를 알린다(세션 lastStop). 이유는 시즌 화면 위의 카드에도 남는다
+const goDays = (ctx, n) => act(ctx, () => { ui.dayView = null; ui.box = null; const s = ctx.session; s.advance(n, { stopOnEvents: true }); if (s.lastStop?.length) ctx.toast(`진행을 멈췄습니다 — ${s.lastStop[0].text}`); });
 const pct3 = (v) => v.toFixed(3);
 const signed1 = (v) => `${v > 0 ? '+' : ''}${v.toFixed(1)}`;
 
@@ -68,6 +72,8 @@ function regularView(ctx) {
   }
   const next = s.nextGame();
   if (next) parts.push(nextGameCard(ctx, next, rows));
+  const stopped = alertsCard(ctx);
+  if (stopped) parts.push(stopped);
   parts.push(actionBar(ctx));
   parts.push(injuryCard(ctx)); // 부상 현황(우리 구단·리그)
 
@@ -99,11 +105,27 @@ function nextGameCard(ctx, next, rows) {
 function actionBar(ctx) {
   const s = ctx.session;
   const choices = advanceChoices(s.day, s.totalDays);
-  const go = (n) => act(ctx, () => { ui.dayView = null; ui.box = null; s.advance(n); });
+  const go = (n) => goDays(ctx, n);
   if (!choices.length) return h('div', { class: 'card sv-actions' }, h('div', { class: 'row' }, h('button', { class: 'btn primary big', onclick: () => act(ctx, () => s.startPlayoffs()) }, '플레이오프 시작')));
   return h('div', { class: 'card sv-actions' },
     h('div', { class: 'row' }, choices.map((c, i) => h('button', { class: `btn ${i === 0 ? 'primary big' : ''}`, onclick: () => go(c.days) }, c.days === 1 && s.day === 0 ? '시즌 시작 (1일 진행)' : c.label))),
     h('p', { class: 'note', style: { margin: '8px 0 0' } }, '매일 리그 전체 5경기가 열립니다. 라인업과 훈련은 진행 도중에도 바꿀 수 있습니다.'));
+}
+
+// 중요 사건 카드: 방금 진행이 멈춘 이유(lastStop)와 아직 해소되지 않은 사건. 같은 사건은 한 번만 나오고 해소되면 사라진다
+const ALERT_LABEL = { injury: '부상', shortage: '인원 부족', waiver: '웨이버', bubble: '플레이오프 경계' };
+export function alertsCard(ctx) {
+  const s = ctx.session;
+  const open = s.openAlerts;
+  const stopIds = new Set((s.lastStop ?? []).map((a) => a.id));
+  const rows = [...(s.lastStop ?? []).filter((a) => a.resolved), ...open];
+  if (!rows.length) return null;
+  const link = (a) => a.kind === 'injury' || a.kind === 'shortage' ? h('a', { class: 'btn', href: '#/roster' }, a.replaceable ? '교체·영입 보기' : '로스터 보기') : a.kind === 'bubble' ? h('a', { class: 'btn', href: '#/lineup' }, '라인업 점검') : null;
+  return h('div', { class: `card sv-alerts ${stopIds.size ? 'stopped' : ''}`, role: 'status' },
+    h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, stopIds.size ? '진행을 멈췄습니다' : '확인할 일'),
+      h('span', { class: 'note' }, stopIds.size ? '아래 일을 확인하고 계속 진행하세요.' : '해소되면 사라집니다.')),
+    h('ul', { class: 'sv-alert-list' }, rows.map((a) => h('li', { class: `sv-alert ${stopIds.has(a.id) ? 'new' : ''}` },
+      h('span', { class: `tag ${a.kind === 'injury' || a.kind === 'shortage' ? 'bad' : ''}` }, ALERT_LABEL[a.kind] ?? a.kind), h('span', { class: 'grow' }, ' ', `${a.day}일차 · ${a.text}`), link(a)))));
 }
 
 function finalCard(ctx, rows, qualify) {
@@ -179,7 +201,7 @@ function boxScore(ctx, g, close = () => { ui.box = null; ctx.refresh(); }, att =
 function playoffsView(ctx) {
   const s = ctx.session, { rules } = ctx.data, my = s.managerId, po = s.playoffs;
   const status = s.playoffStatus();
-  const model = bracketModel(po.seeds, po.series, rules);
+  const model = bracketModel(po.seeds, po.series, rules, po.current);
   const roundsMeta = rules.playoffs.rounds;
   const parts = [topbar(ctx, '시즌', `${seasonLabel(s.season)} 플레이오프`)];
 
@@ -197,17 +219,20 @@ function playoffsView(ctx) {
       model.filter((m) => m.round === r).map((m) => seriesCard(ctx, m, po.seeds)))))));
 
   if (!po.done) {
-    parts.push(h('div', { class: 'card sv-actions' }, h('div', { class: 'row' },
-      h('button', { class: 'btn primary big', onclick: () => act(ctx, () => s.playoffRound()) }, `${roundsMeta[po.round].name} 진행`),
-      h('a', { class: 'btn', href: '#/lineup' }, '라인업 편성'))));
+    const mine = s.myPlayoffSeries;
+    const last = playoffLastGame(ctx);
+    if (last) parts.push(last);
+    parts.push(mine ? playoffNextCard(ctx, mine, po) : spectateCard(ctx, po));
   } else {
+    const last = playoffLastGame(ctx);
+    if (last) parts.push(last);
     const champ = po.result().championId;
     parts.push(h('div', { class: `card sv-champ ${champ === my ? 'mine' : ''}` },
       h('div', { class: 'note' }, `${seasonLabel(s.season)} 시즌 챔피언`), h('h2', { style: { margin: '4px 0 12px' } }, ctx.name(champ)),
       h('button', { class: 'btn primary big', onclick: () => act(ctx, () => { s.endSeason(); ctx.go('offseason'); }) }, '시즌 마무리 → 오프시즌')));
   }
 
-  const played = model.filter((m) => m.played);
+  const played = model.filter((m) => m.played || m.partial);
   if (played.length) {
     parts.push(h('div', { class: 'card sv-series-detail' }, h('h2', '경기 결과'),
       ...[2, 1, 0].filter((r) => played.some((m) => m.round === r)).map((r) => h('div', { class: 'stack' },
@@ -217,24 +242,110 @@ function playoffsView(ctx) {
   return h('div', { class: 'stack sv' }, parts);
 }
 
+// ---------- 플레이오프 경기 사이: 상대 확인 · 피로 점검 · 진행 ----------
+const nameOfPlayer = (ctx, id) => ctx.session.players.find((p) => p.id === id)?.name ?? id;
+const tacticName = (rules, id) => (id ? tacticList(rules).find((t) => t.id === id)?.name ?? id : '균형');
+
+/** 상대 확인 패널: 엔진이 다음 경기에 실제로 쓸 편성(run.lineupOf), 부상 현황, 상대 전술(엔진이 정한 값) */
+function opponentPanel(ctx, oppId) {
+  const s = ctx.session, rules = ctx.data.rules;
+  const lu = s.lineupOf(oppId);
+  const hurt = new Map((s.injuries ?? []).filter((i) => i.teamId === oppId).map((i) => [i.playerId, i]));
+  const mod = s.teamMods?.[oppId];
+  const condOf = conditionOf(s, rules);
+  const power = s.teamPower(oppId).power;
+  return h('div', { class: 'sv-opp' },
+    h('h3', { style: { margin: '0 0 6px' } }, `상대 확인 · ${ctx.name(oppId)}`),
+    h('p', { class: 'note', style: { margin: '0 0 6px' } }, `전력(출전 편성) ${power.toFixed(1)} · 전술 ${tacticName(rules, mod?.tactic)}${mod ? ` (적합도 ${mod.fit >= 0 ? '+' : ''}${mod.fit.toFixed(2)})` : ''}${hurt.size ? ` · 결장 ${hurt.size}명` : ''}`),
+    h('div', { class: 'table-wrap' }, h('table', { class: 'sv-opp-t' },
+      h('thead', h('tr', h('th', '스타팅'), h('th', '포지션'), h('th', { class: 'r' }, 'OVR'), condOf ? h('th', { class: 'r' }, '컨디션') : null)),
+      h('tbody', (lu?.starters ?? []).map((p) => h('tr', h('td', playerLink(p.id, p.name), hurt.has(p.id) ? injuryTag(hurt.get(p.id)) : null), h('td', p.position), h('td', { class: 'r' }, p.ovr), condOf ? h('td', { class: 'r' }, condBar(condOf(p.id), { compact: true })) : null))))),
+    hurt.size ? h('p', { class: 'note', style: { margin: '6px 0 0' } }, `결장: ${[...hurt.values()].map((i) => `${nameOfPlayer(ctx, i.playerId)}(${i.kind === 'season' ? '시즌 아웃' : `${i.left}경기`})`).join(', ')}`) : null);
+}
+
+/** 우리 시리즈의 다음 경기 카드와 진행 버튼 세 가지(한 경기 · 시리즈 끝까지 · 라운드 전체) */
+function playoffNextCard(ctx, mine, po) {
+  const s = ctx.session, rules = ctx.data.rules, my = s.managerId;
+  const n = mine.games.length + 1;
+  const pattern = rules.playoffs.homePattern[mine.bestOf];
+  const higherHome = pattern[(n - 1) % pattern.length] === 1;
+  const homeId = higherHome ? mine.higherId : mine.lowerId;
+  const oppId = mine.higherId === my ? mine.lowerId : mine.higherId;
+  const myW = mine.wins[my], oppW = mine.wins[oppId];
+  const mp = s.teamPower(my).power, op = s.teamPower(oppId).power;
+  const mod = s.teamMods?.[my];
+  const say = (r) => { const m = r.mine; if (!m) return; const g = m.game, won = g.winnerId === my, myPts = g.homeId === my ? g.homePts : g.awayPts, oppPts = g.homeId === my ? g.awayPts : g.homePts; ctx.toast(`${m.round} ${m.n}차전 ${won ? '승리' : '패배'} ${myPts}:${oppPts}${m.seriesDone ? ` · 시리즈 ${won ? '승리' : '탈락'}` : ''}`); };
+  const go = (fn) => act(ctx, () => { ui.poBox = null; const r = fn(); [].concat(r).forEach(say); });
+  const champ = mine.round === rules.playoffs.rounds.at(-1).name;
+  return h('div', { class: 'card sv-next sv-po-next' },
+    h('div', { class: 'row between' },
+      h('div', h('div', { class: 'note' }, `다음 경기 · ${mine.round} ${n}차전 (${mine.bestOf}전 ${Math.ceil(mine.bestOf / 2)}선승)`),
+        h('h2', { style: { margin: '2px 0 0' } }, homeId === my ? '홈' : '원정', ' vs ', link(`#/roster/${oppId}`, ctx.name(oppId)))),
+      h('span', { class: `tag ${homeId === my ? 'hot' : ''}` }, homeId === my ? '홈 경기' : '원정 경기')),
+    h('div', { class: 'grid g3 sv-next-stats' },
+      stat('시리즈 전적', `${myW} : ${oppW}`, myW === oppW ? '동률' : myW > oppW ? `${myW - oppW}승 앞서 있음` : `${oppW - myW}승 뒤처짐`),
+      stat('전력(출전 편성)', op.toFixed(1), `우리 ${mp.toFixed(1)} (${mp - op >= 0 ? '+' : ''}${(mp - op).toFixed(1)}) · 스타팅 70% + 벤치 30%`),
+      stat('우리 보정', mod ? `${mod.edge >= 0 ? '+' : ''}${mod.edge.toFixed(2)}점` : '-', mod ? `전술 ${tacticName(rules, mod.tactic)} · 컨디션 ${mod.parts.cond >= 0 ? '+' : ''}${mod.parts.cond.toFixed(2)}` : '보정 없음')),
+    h('div', { class: 'row sv-po-actions', style: { marginTop: '12px' } },
+      h('button', { class: 'btn primary big', onclick: () => go(() => s.playoffStep()) }, `${n}차전 진행`),
+      h('button', { class: 'btn', onclick: () => go(() => s.playoffSeries()) }, '이 시리즈 끝까지'),
+      h('button', { class: 'btn', onclick: () => act(ctx, () => { ui.poBox = null; s.playoffRound(); }) }, `${rules.playoffs.rounds[po.round].name} 전체 진행`),
+      h('a', { class: 'btn', href: '#/lineup' }, '라인업·전술')),
+    h('p', { class: 'note', style: { margin: '8px 0 0' } }, champ ? '결승은 7전 4선승입니다.' : '한 경기씩 진행하면 경기 사이에 편성·전술·휴식을 바꿀 수 있습니다. 시리즈 끝까지·라운드 전체는 바꾸지 않고 연달아 진행합니다.'),
+    h('div', { class: 'grid split sv-po-panels', style: { marginTop: '12px' } }, opponentPanel(ctx, oppId), conditionCard(ctx, s.players.filter((p) => p.teamId === my), { onChange: ctx.refresh })));
+}
+
+/** 우리 구단이 이 라운드에 없을 때(탈락·미진출): 라운드 전체 진행만 */
+function spectateCard(ctx, po) {
+  const s = ctx.session, rules = ctx.data.rules;
+  return h('div', { class: 'card sv-actions' }, h('div', { class: 'row' },
+    h('button', { class: 'btn primary big', onclick: () => act(ctx, () => s.playoffRound()) }, `${rules.playoffs.rounds[po.round].name} 진행`)));
+}
+
+/** 우리가 가장 최근에 치른 플레이오프 경기 요약: 점수·박스스코어·그 경기에 실제 적용된 보정(원인이 아니라 적용된 값) */
+function playoffLastGame(ctx) {
+  const s = ctx.session, my = s.managerId, rules = ctx.data.rules;
+  const list = s.myPlayoffGames();
+  const last = list.at(-1);
+  if (!last) return null;
+  const g = last.game, won = g.winnerId === my, home = g.homeId === my;
+  const myPts = home ? g.homePts : g.awayPts, oppPts = home ? g.awayPts : g.homePts, oppId = home ? g.awayId : g.homeId;
+  const mySide = home ? g.fx?.home : g.fx?.away, oppSide = home ? g.fx?.away : g.fx?.home;
+  const key = `last:${last.round}:${last.n}`;
+  const open = ui.poBox === key;
+  const sgn = (v) => `${v > 0 ? '+' : ''}${v.toFixed(2)}`;
+  const fxLine = (side, label) => side ? h('li', h('b', label), ` 전술 ${tacticName(rules, side.tactic)}${side.tactic ? ` (적합도 ${sgn(side.fit)})` : ''} · 팀 보정 ${sgn(side.edge)}점${side.parts ? ` (감독 ${sgn(side.parts.coach)} · 전술 ${sgn(side.parts.tactic)} · 컨디션 ${sgn(side.parts.cond)})` : ''}`,
+    side.rested.length ? ` · 휴식 ${side.rested.map((id) => nameOfPlayer(ctx, id)).join(', ')}` : '', side.injured.length ? ` · 결장 ${side.injured.map((id) => nameOfPlayer(ctx, id)).join(', ')}` : '') : null;
+  const attInfo = attCalc(ctx)(g, { key: `p${last.roundIndex}:${last.n - 1}`, round: last.round });
+  const att = attendanceText(attInfo);
+  return h('div', { class: `card sv-po-last ${won ? 'won' : 'lost'}` },
+    h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, `직전 경기 · ${last.round} ${last.n}차전`), h('span', { class: `tag ${won ? 'hot' : ''}` }, won ? '승리' : '패배')),
+    h('p', { style: { margin: '6px 0' } }, h('b', `${ctx.name(my)} ${myPts} : ${oppPts} ${ctx.name(oppId)}`), g.overtimes ? ` (연장${g.overtimes > 1 ? g.overtimes : ''})` : '', h('span', { class: 'note' }, ` · ${att}`)),
+    h('p', { class: 'note', style: { margin: '0 0 4px' } }, '이 경기에 실제로 적용된 보정입니다(경기 계산에 쓰인 값이며, 결과의 원인을 뜻하지는 않습니다).'),
+    h('ul', { class: 'sv-fx' }, fxLine(mySide, ctx.name(my)), fxLine(oppSide, ctx.name(oppId))),
+    h('div', { class: 'row' }, h('button', { class: 'btn', 'aria-pressed': String(open), onclick: () => { ui.poBox = open ? null : key; ctx.refresh(); } }, open ? '박스스코어 닫기' : '박스스코어 보기')),
+    open && g.box ? boxScore(ctx, g, () => { ui.poBox = null; ctx.refresh(); }, attInfo) : null);
+}
+
 function seriesCard(ctx, m, seeds) {
   const my = ctx.session.managerId;
   const mine = m.a === my || m.b === my;
   const row = (id, label, w) => {
     const won = m.played && m.winnerId === id, lost = m.played && m.winnerId && m.winnerId !== id;
+    const shown = m.played || m.partial;
     return h('div', { class: `sv-side ${won ? 'won' : ''} ${lost ? 'lost' : ''} ${id === my ? 'me' : ''}` },
       h('span', { class: 'sv-seed' }, id && seeds.get(id) ? seeds.get(id) : ''),
       h('span', { class: 'sv-name' }, id ? ctx.name(id) : h('i', label)),
-      h('b', { class: 'sv-wins' }, m.played ? w : ''));
+      h('b', { class: 'sv-wins' }, shown ? w : ''));
   };
   const open = () => {
     ui.poBox = `${m.round}:${m.a}:${m.b}:${m.games.length}`; ctx.refresh();
     setTimeout(() => document.getElementById(`po-${m.round}-${m.a}-${m.b}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' }), 0);
   };
-  return h('div', m.played && m.games?.length
+  return h('div', (m.played || m.partial) && m.games?.length
     ? { class: `sv-series pickable played ${mine ? 'mine' : ''}`, tabindex: 0, role: 'button', 'aria-label': `${ctx.name(m.a)} 대 ${ctx.name(m.b)} 경기 결과 보기`, onclick: open, onkeydown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } } }
-    : { class: `sv-series ${m.played ? 'played' : ''} ${mine ? 'mine' : ''}` },
-    row(m.a, m.aLabel, m.played ? m.wins[m.a] : ''), row(m.b, m.bLabel, m.played ? m.wins[m.b] : ''));
+    : { class: `sv-series ${m.played ? 'played' : ''} ${m.partial ? 'partial' : ''} ${mine ? 'mine' : ''}` },
+    row(m.a, m.aLabel, m.played || m.partial ? m.wins[m.a] : ''), row(m.b, m.bLabel, m.played || m.partial ? m.wins[m.b] : ''));
 }
 
 function seriesDetail(ctx, m) {
@@ -248,7 +359,7 @@ function seriesDetail(ctx, m) {
   const attOf = attCalc(ctx);
   const poAtt = (g, n) => attOf(g, { key: `p${m.round}:${n - 1}`, round: m.round });
   return h('div', { class: `sv-detail ${mine ? 'mine' : ''} ${openN != null ? 'has-box' : ''}`, id: `po-${m.round}-${m.a}-${m.b}` },
-    h('div', { class: 'row between' }, h('b', `${ctx.name(m.a)} ${seriesScore({ wins: m.wins, higherId: m.a, lowerId: m.b })} ${ctx.name(m.b)}`), h('span', { class: 'tag' }, `${ctx.name(m.winnerId)} 승`)),
+    h('div', { class: 'row between' }, h('b', `${ctx.name(m.a)} ${seriesScore({ wins: m.wins, higherId: m.a, lowerId: m.b })} ${ctx.name(m.b)}`), m.played ? h('span', { class: 'tag' }, `${ctx.name(m.winnerId)} 승`) : h('span', { class: 'tag hot' }, `진행 중 · ${m.bestOf}전 ${Math.ceil(m.bestOf / 2)}선승`)),
     h('p', { class: 'note', style: { margin: '4px 0' } }, '경기를 누르면 박스스코어를 봅니다.'),
     h('div', { class: 'table-wrap' }, h('table', { class: 'sv-sg' }, h('tbody', rows.map((g) => h('tr', {
       class: `pick ${g.winnerId === my ? 'win' : ''} ${openN === g.n ? 'open' : ''}`, tabindex: 0, role: 'button', 'aria-pressed': String(openN === g.n), 'aria-label': `${g.n}차전 박스스코어`,

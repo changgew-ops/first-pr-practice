@@ -56,7 +56,7 @@ export function boxTotals(lines) {
  *   { round: 0|1|2, name, bestOf, a, b, aLabel, bLabel, played, wins, winnerId, games }
  * 아직 안 치른 칸의 팀은 알 수 있을 때만(시드로 정해진 6강, 앞 라운드가 끝난 뒤의 4강) 채우고 나머지는 null + 라벨("4·5위 승자")
  */
-export function bracketModel(seeds, series, rules) {
+export function bracketModel(seeds, series, rules, live = []) {
   const order = [...seeds].sort((x, y) => x[1] - y[1]).map(([id]) => id); // 시드 순서
   const rounds = rules.playoffs.rounds;
   const slots = [
@@ -67,9 +67,13 @@ export function bracketModel(seeds, series, rules) {
     { round: 2, a: null, b: null, aLabel: '4강 승자', bLabel: '4강 승자' }
   ];
   const playedAt = (i) => series[i] ?? null;
+  // 진행 중인 시리즈(한 경기씩 진행할 때): 끝난 시리즈 바로 뒤 칸부터 순서대로 채운다(live: playoffs.current 중 아직 안 끝난 것)
+  const liveAt = (i) => { const k = i - series.length; return k >= 0 ? live.filter((x) => !x.winnerId)[k] ?? null : null; };
   return slots.map((slot, i) => {
     const s = playedAt(i);
-    const out = { ...slot, name: rounds[slot.round].name, bestOf: rounds[slot.round].bestOf, played: Boolean(s), wins: null, winnerId: null, games: [] };
+    const lv = s ? null : liveAt(i);
+    const out = { ...slot, name: rounds[slot.round].name, bestOf: rounds[slot.round].bestOf, played: Boolean(s), partial: false, wins: null, winnerId: null, games: [] };
+    if (lv && lv.games.length) { out.partial = true; out.a = lv.higherId; out.b = lv.lowerId; out.wins = lv.wins; out.games = lv.games; }
     if (slot.from != null && playedAt(slot.from)) out.b = playedAt(slot.from).winnerId;
     if (i === 4) { out.a = playedAt(2)?.winnerId ?? null; out.b = playedAt(3)?.winnerId ?? null; }
     if (s) { out.a = s.higherId; out.b = s.lowerId; out.wins = s.wins; out.winnerId = s.winnerId; out.games = s.games; }
@@ -79,7 +83,7 @@ export function bracketModel(seeds, series, rules) {
 
 /** 시리즈의 경기별 점수 줄: 시리즈에서 높은 시드(higherId) 기준 좌우로 정렬 [{ n, homeId, awayId, homePts, awayPts, winnerId, ot }] */
 export function seriesGameRows(s) {
-  return s.games.map((g, i) => ({ n: i + 1, homeId: g.homeId, awayId: g.awayId, homePts: g.homePts, awayPts: g.awayPts, winnerId: g.winnerId, ot: g.overtimes ?? 0 }));
+  return s.games.map((g, i) => ({ n: i + 1, homeId: g.homeId, awayId: g.awayId, homePts: g.homePts, awayPts: g.awayPts, winnerId: g.winnerId, ot: g.overtimes ?? 0, att: g.att }));
 }
 
 /** 시리즈 점수 문자열 "3-1" (높은 시드 기준) */

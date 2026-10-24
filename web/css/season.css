@@ -87,3 +87,18 @@
 .sv .sv-game .sv-att { grid-column: 1 / -1; text-align: center; font-size: .72rem; color: var(--muted); }
 .sv table.sv-sg td.sv-att { font-size: .72rem; color: var(--muted); white-space: nowrap; font-weight: 400; }
 .sv .sv-box-att { margin: 2px 0 6px; }
+/* 플레이오프 경기 사이 */
+.sv .sv-po-actions { flex-wrap: wrap; }
+.sv .sv-po-panels { align-items: start; }
+.sv .sv-opp-t { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.sv .sv-opp-t th, .sv .sv-opp-t td { padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--line); }
+.sv .sv-opp-t .r { text-align: right; }
+.sv .sv-series.partial { border-style: dashed; }
+.sv .sv-po-last.won { border-left: 4px solid var(--good, #2a9d6a); }
+.sv .sv-po-last.lost { border-left: 4px solid var(--bad, #d9534f); }
+.sv .sv-fx { margin: 0 0 8px; padding-left: 1.1em; font-size: .9rem; }
+.sv .sv-alerts.stopped { border-left: 4px solid var(--warn, #e8a23c); }
+.sv .sv-alert-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.sv .sv-alert { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.sv .sv-alert.new { font-weight: 600; }
+.sv .sv-alert .grow { flex: 1; min-width: 12em; }

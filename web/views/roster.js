@@ -16,7 +16,7 @@ export function render(ctx, [teamParam]) {
   const { lineup } = ctx.session.teamPower(teamId); // 실제 출전 편성(시즌 중), 오프시즌에는 로스터 자동 편성
   const starters = new Set(lineup.starters.map((p) => p.id)), bench = new Set(lineup.bench.map((p) => p.id));
   const hurt = injuryMap(ctx.session); // 지금 결장 중인 선수(전 구단)
-  const condOf = ctx.session.stage === 'regular' ? conditionOf(ctx.session, data.rules) : null; // 시즌 중에만 컨디션 열을 보여 준다
+  const condOf = ctx.session.stage === 'regular' || ctx.session.stage === 'playoffs' ? conditionOf(ctx.session, data.rules) : null; // 시즌 중·플레이오프에 컨디션 열을 보여 준다
   const f = { origin: 'all', pos: 'all', q: '' };
   const host = h('div');
   const draw = () => {

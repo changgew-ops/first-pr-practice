@@ -32,6 +32,7 @@ function fingerprint(s) {
     injuries: off ? null : s.injuries, rosterLog: off ? null : s.rosterLog, lineup: off ? null : s.lineup, lineupSwaps: off ? null : s.lineupSwaps, rest: off ? null : s.rest,
     cond: off ? null : [...s.conditions.entries()].sort(), tactics: off ? null : s.tactics, staff: off ? null : s.staff,
     games: off ? null : s.dayResults.map((d) => d.games.map((g) => [g.homeId, g.awayId, g.homePts, g.awayPts, g.overtimes, g.att, g.box])),
+    poLive: !off && s.playoffs ? [s.state.poRounds, s.state.poGames, s.playoffs.gamesPlayed, s.playoffs.current.map((x) => [x.higherId, x.lowerId, x.wins, x.games.map((g) => [g.homePts, g.awayPts, g.att, g.fx])])] : null,
     playoffs: !off && s.playoffs ? s.playoffs.result().series.map((x) => [x.higherId, x.lowerId, x.winnerId, x.wins, x.games.map((g) => [g.homePts, g.awayPts, g.att, g.box])]) : null,
     contractLog: off ? null : s.contractLog, waivers: off ? null : s.waivers.map((w) => [w.player.id, w.left, w.mine]),
     pending: s.pending?.key ?? null, actions: s.state.actions, decisions: s.state.decisions,
@@ -374,4 +375,145 @@ test('전력의 단일 출처: 엔진이 다음 경기에 쓰는 편성(lineupOf
     for (const p of mine.starters) assert.ok(played.has(p.id), `${day + 1}일차: 스타팅 ${p.name}이(가) 뛰지 않았다`);
   }
   assert.ok(payrollEok(s.players, MY) > 0);
+});
+
+
+// ---------- (플레이오프 한 경기씩 진행) ----------
+const poSig = (s) => plain(s.playoffs.result().series.map((x) => [x.round, x.higherId, x.lowerId, x.winnerId, x.wins, x.games.map((g) => [g.homeId, g.homePts, g.awayPts, g.overtimes, g.att, g.fx, g.box])]));
+const poSeeds = (n = 3) => {
+  const out = [];
+  for (const seed of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    const s = Session.create(base, { managerId: MY, gmName: 'T', seed });
+    finishRegular(s); s.startPlayoffs();
+    if (s.playoffStatus() !== 'notQualified') out.push({ seed, s });
+    if (out.length >= n) break;
+  }
+  return out;
+};
+
+test('플레이오프 한 경기씩: 한 경기 진행·시리즈 끝까지·라운드 일괄이 모두 같은 결과를 낸다(난수 순서 동일)', () => {
+  const found = poSeeds(3);
+  assert.ok(found.length >= 3, '플레이오프에 오른 시드가 모자란다');
+  for (const { seed, s } of found) {
+    const byRound = clone(s), byStep = clone(s), bySeries = clone(s);
+    while (!byRound.playoffs.done) byRound.playoffRound();
+    let steps = 0;
+    while (!byStep.playoffs.done) { byStep.playoffStep(); steps++; }
+    while (!bySeries.playoffs.done) bySeries.playoffSeries();
+    assert.equal(poSig(byStep), poSig(byRound), `seed ${seed}: 한 경기씩 진행한 결과가 라운드 일괄과 다르다`);
+    assert.equal(poSig(bySeries), poSig(byRound), `seed ${seed}: 시리즈씩 진행한 결과가 라운드 일괄과 다르다`);
+    assert.equal(byStep.state.poGames, byRound.playoffs.gamesPlayed);
+    assert.equal(byStep.state.poRounds, 3);
+    assert.ok(steps >= 3, '한 경기씩이라면 여러 번 눌러야 한다');
+    sameState(`seed ${seed} 끝`, byStep, clone(byStep)); // 끝난 뒤 복원도 같다
+  }
+});
+
+test('플레이오프 한 경기씩: 경기 사이에 저장·불러오기를 해도 다음 경기 결과가 같다(시리즈 중간·시리즈 끝·라운드 경계)', () => {
+  const [{ seed, s }] = poSeeds(1);
+  let live = s, restores = 0;
+  for (let guard = 0; guard < 40 && !live.playoffs.done; guard++) {
+    const r = live.playoffStep();
+    const back = clone(live);
+    sameState(`seed ${seed} ${live.state.poGames}경기째`, live, back);
+    if (r.mySeriesDone || r.games.some((g) => g.roundDone) || restores < 2) { restores++; live = back; } // 복원한 세션으로 갈아타 계속 진행한다
+  }
+  assert.ok(restores >= 3, '시리즈 끝·라운드 경계 복원을 확인하지 못했다');
+  // 저장 없이 계속 진행한 세션과 최종 결과가 같다
+  const straight = clone(poSeeds(1)[0].s);
+  while (!straight.playoffs.done) straight.playoffStep();
+  assert.equal(poSig(live), poSig(straight));
+});
+
+test('플레이오프 한 경기씩: 경기 사이의 휴식·전술·편성 변경이 다음 경기에 반영되고(그 경기에 쓰인 값이 기록됨) 복원해도 같다', () => {
+  let usedRest = 0, usedTactic = 0;
+  for (const { seed, s } of poSeeds(3)) {
+    s.playoffStep(); // 1차전
+    const star = idsOf(s.lineupOf(MY)).map((id) => s.players.find((p) => p.id === id)).sort((a, b) => b.ovr - a.ovr)[0];
+    assert.equal(s.setRest([star.id]).ok, true, '플레이오프에서도 휴식을 지정할 수 있다');
+    const other = (s.tactics?.list ?? []).find((t) => t.id !== s.tactics.current)?.id ?? null;
+    if (other) { assert.equal(s.setTactic(other).ok, true, '플레이오프에서도 전술을 바꿀 수 있다'); usedTactic++; }
+    assert.ok(!idsOf(s.lineupOf(MY)).includes(star.id), '쉬는 선수가 다음 경기 편성에서 빠진다');
+    assert.deepEqual(s.state.actions.slice(-2).map((a) => a.pg != null), [true, true], '조작에 치른 경기 수가 붙는다');
+    const back = clone(s);
+    sameState(`seed ${seed} 조작 직후`, s, back);
+    const r = s.playoffStep(); const rb = back.playoffStep();
+    const g = r.mine.game;
+    const side = g.homeId === MY ? g.fx.home : g.fx.away;
+    assert.ok(side.rested.includes(star.id), '그 경기에 쓰인 값(fx)에 휴식 선수가 기록된다');
+    if (other) assert.equal(side.tactic, other, '그 경기에 쓰인 전술이 기록된다');
+    assert.ok(!(g.homeId === MY ? g.box.home : g.box.away).some((l) => l.id === star.id && l.minutes > 0), '쉰 선수가 뛰었다');
+    assert.equal(plain(r.mine.game.box), plain(rb.mine.game.box), '복원한 세션도 같은 박스스코어');
+    assert.deepEqual(s.rest, [], '휴식 지정은 그 경기를 치르면 비워진다');
+    usedRest++;
+    sameState(`seed ${seed} 경기 후`, s, back);
+  }
+  assert.equal(usedRest, 3); assert.ok(usedTactic >= 1);
+});
+
+test('플레이오프 컨디션: 경기마다 두 팀 선수만 지치고 라운드가 끝나면 회복한다(rules.playoffs.condition)', () => {
+  const [{ s }] = poSeeds(1);
+  const start = rules.condition.start;
+  assert.ok(s.players.every((p) => (s.conditions.get(p.id) ?? start) === start), '플레이오프는 모두 회복해서 시작한다');
+  const r = s.playoffStep();
+  const g = r.mine.game;
+  const playing = new Set([g.homeId, g.awayId]);
+  for (const p of s.players) {
+    const c = s.conditions.get(p.id) ?? start;
+    if (!playing.has(p.teamId)) assert.equal(c, start, '경기를 안 치른 팀의 컨디션은 그대로');
+  }
+  assert.ok(myRoster(s).some((p) => (s.conditions.get(p.id) ?? start) < start), '경기를 치른 우리 선수는 지쳤다');
+  // 끝까지 진행해도 컨디션은 범위 안
+  while (!s.playoffs.done) s.playoffStep();
+  assert.ok([...s.conditions.values()].every((v) => v >= 0 && v <= 100));
+});
+
+// ---------- (여러 날 진행 중 중요 사건 중단) ----------
+test('중요 사건: 진행이 그 날에서 멈추고(우리 주전 중상·인원 부족·교체 시점), 알림은 한 번만 생기며, 저장·복원해도 같은 알림이 같은 날에 다시 생긴다', () => {
+  const hurtRules = { ...busy, rules: { ...busy.rules, injuries: { ...busy.rules.injuries, perMinute: 0.004 } } };
+  const run = (seed) => { const s = Session.create(hurtRules, { managerId: MY, gmName: 'T', seed }); s.advance(54, { stopOnEvents: true }); return s; };
+  let stopped = 0;
+  for (const seed of [41, 42, 43, 44]) {
+    const s = run(seed);
+    if (!s.lastStop?.length) continue;
+    stopped++;
+    assert.ok(s.day < 54 || s.regularDone === false || s.lastStop, '멈췄다면 그 날에 서 있다');
+    assert.ok(s.lastStop.every((a) => a.day === s.day), '멈춘 날의 사건이다');
+    assert.ok(s.lastStop.some((a) => a.kind === 'injury' || a.kind === 'shortage' || a.kind === 'waiver' || a.kind === 'bubble'));
+    // 같은 시드에서 같은 날에 멈춘다(결정적)
+    const twin = run(seed);
+    assert.equal(twin.day, s.day);
+    assert.equal(plain(twin.alerts), plain(s.alerts));
+    // 저장했다 복원해도 같은 알림이 생긴다(조작 기록과 무관한 파생 정보)
+    const back = clone(s);
+    assert.equal(plain(back.alerts), plain(s.alerts));
+    // 이어서 진행하면 같은 사건이 다시 생기지 않는다
+    const before = s.alerts.length;
+    const ids = new Set(s.alerts.map((a) => a.id));
+    s.advance(1, { stopOnEvents: true });
+    const dup = s.alerts.filter((a) => a.kind === 'injury').map((a) => a.playerId + ':' + a.day);
+    assert.equal(new Set(dup).size, dup.length, '같은 부상 알림이 두 번 생겼다');
+    assert.ok(s.alerts.length >= before);
+    for (const id of ids) assert.ok(s.alerts.some((a) => a.id === id));
+  }
+  assert.ok(stopped >= 2, '부상이 잦은 규칙인데도 멈춘 시드가 거의 없다');
+  // stopOnEvents를 쓰지 않으면(자동 진행·테스트) 54일을 그대로 진행한다
+  const plainRun = Session.create(hurtRules, { managerId: MY, gmName: 'T', seed: 41 });
+  plainRun.advance(54);
+  assert.equal(plainRun.regularDone, true);
+  assert.equal(plainRun.lastStop, null);
+});
+
+test('플레이오프 중 옛 저장(poGames·pg 없음, 라운드 수만 있음)도 열리고 이어서 진행해 같은 결과가 나온다', () => {
+  const [{ seed, s }] = poSeeds(1);
+  s.playoffRound();
+  const weak = myRoster(s).filter((p) => p.origin === 'domestic').sort((a, b) => a.ovr - b.ovr).slice(0, 12);
+  s.setLineup({ starters: weak.slice(0, 5).map((p) => p.id), bench: weak.slice(5).map((p) => p.id) });
+  const old = JSON.parse(serialize(s));
+  delete old.poGames; for (const a of old.actions) delete a.pg; // 이 변경 전 저장 모양
+  const opened = restore(s.data, JSON.stringify(old));
+  assert.equal(opened.state.poGames, s.playoffs.gamesPlayed, '열면서 치른 경기 수를 채운다');
+  { const fa = JSON.parse(fingerprint(s)), fb = JSON.parse(fingerprint(opened)); delete fa.actions; delete fb.actions; assert.deepEqual(fa, fb, `seed ${seed} 옛 저장: 열었을 때 상태가 다르다(조작 기록의 pg 표시만 제외)`); }
+  while (!s.playoffs.done) { s.playoffStep(); opened.playoffStep(); }
+  assert.equal(poSig(s), poSig(opened));
 });

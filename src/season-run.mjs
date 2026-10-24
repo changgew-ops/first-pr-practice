@@ -445,12 +445,12 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     return changed;
   };
   /** 경기를 치른 뒤 컨디션: 뛴 시간만큼 떨어지고 모두 회복한다(전술의 체력 소모 배수, 체력 코치의 회복 배수 반영). 정규리그는 하루(리그 전체 5경기)마다, 플레이오프는 경기마다(only: 그 경기를 치른 두 구단의 선수만) */
-  const updateCondition = (r, only = null) => {
+  const updateCondition = (r, only = null, intensity = 1) => {
     const now = poTeams ?? new Map(regular.teams.map((t) => [t.id, t]));
     const minutes = new Map();
     for (const g of r.games) {
       for (const [side, teamId] of [[g.box.home, g.homeId], [g.box.away, g.awayId]]) {
-        const dm = now.get(teamId)?.mods?.drain ?? 1;
+        const dm = (now.get(teamId)?.mods?.drain ?? 1) * intensity;
         for (const line of side) minutes.set(line.id, (line.minutes ?? 0) * dm);
       }
     }
@@ -475,12 +475,55 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       attReg.set(g.homeId, t);
     }
   };
-  const stampPlayoffAtt = (seriesList) => {
-    const fin = winPctNow(regular.standings());
-    for (const sr of seriesList) sr.games.forEach((g, i) => { g.att = attCalc(g, { key: `p${sr.round}:${i}`, round: sr.round, winPct: fin.get(g.homeId) ?? 0.5 }).attendance; });
+  const stampPlayoffGame = (g, round, n) => { // n: 시리즈의 몇 차전(1부터)
+    g.att = attCalc(g, { key: `p${round}:${n - 1}`, round, winPct: winPctNow(regular.standings()).get(g.homeId) ?? 0.5 }).attendance;
+  };
+  // ---------- 중요 사건(여러 날 진행을 멈추는 이유) ----------
+  // 조작 기록과 무관한 파생 정보다: 시드와 조작 기록으로 같은 시즌을 다시 돌리면 같은 알림이 같은 날에 다시 생긴다. rules.stopEvents로 종류별로 켜고 끈다.
+  const stopCfg = rules.stopEvents ?? null;
+  const alerts = []; // { id, kind: 'injury'|'shortage'|'waiver'|'bubble', day, text, resolved, stop(진행을 멈췄는지), … }
+  let alertSeq = 0;
+  let lastStop = null;
+  const addAlert = (a) => { const al = { id: ++alertSeq, resolved: false, stop: true, ...a }; alerts.push(al); return al; };
+  const detectEvents = (day, startersBefore, logFrom) => {
+    const fresh = [];
+    if (!manager || !stopCfg?.enabled) return fresh;
+    const on = (k) => stopCfg[k] !== false;
+    // 해소 확인
+    const healthyMine = players.filter((p) => p.teamId === manager && !injured.has(p.id)).length;
+    const need = rules.lineup.starters + rules.lineup.bench;
+    for (const al of alerts) {
+      if (al.resolved) continue;
+      if (al.kind === 'injury') { const inj = injured.get(al.playerId); if (!inj || inj.temp || !playerById(al.playerId)) al.resolved = true; else if (al.replaceable === false) { /* 교체 대상이 아닌 중상은 복귀까지 */ } }
+      else if (al.kind === 'shortage' && healthyMine >= need) al.resolved = true;
+      else if (al.kind === 'bubble' && regular.done) al.resolved = true;
+    }
+    for (const e of rosterLog.slice(logFrom)) {
+      if (e.type === 'injury' && e.teamId === manager && on('injury')) {
+        const p = playerById(e.playerId);
+        const th = p && isOverseas(p) ? foreignGameThresholds(rules, p.origin) : null;
+        const replaceable = Boolean(th && e.games >= th.temporary);
+        if ((startersBefore.has(e.playerId) && e.games >= (stopCfg.majorInjuryGames ?? 5)) || replaceable) {
+          fresh.push(addAlert({ kind: 'injury', day, playerId: e.playerId, name: e.name, games: e.games, replaceable, text: `${e.name} 선수가 ${e.part ?? '부상'}으로 ${e.games}경기 결장합니다${replaceable ? ' (일시교체·시즌 대체를 검토할 수 있습니다)' : ''}.` }));
+        }
+      } else if ((e.type === 'claim' && (e.teamId === manager || e.fromTeamId === manager)) || ((e.type === 'waiver_fa' || e.type === 'claim_fail') && e.teamId === manager)) {
+        if (on('waiver')) fresh.push(addAlert({ kind: 'waiver', day, playerId: e.playerId, name: e.name, resolved: true, text: e.type === 'claim' ? (e.teamId === manager ? `웨이버 양수가 성사됐습니다: ${e.name}.` : `웨이버로 내놓은 ${e.name} 선수를 다른 구단이 양수했습니다.`) : e.type === 'claim_fail' ? `웨이버 양수 신청이 받아들여지지 않았습니다: ${e.name}.` : `웨이버 공시한 ${e.name} 선수를 아무도 양수하지 않아 FA 시장으로 갔습니다.` }));
+      }
+    }
+    if (on('shortage') && healthyMine < need && !alerts.some((a) => a.kind === 'shortage' && !a.resolved)) {
+      fresh.push(addAlert({ kind: 'shortage', day, count: healthyMine, need, text: `출전 가능한 선수가 ${healthyMine}명뿐입니다(엔트리 ${need}명). 영입·교체가 필요합니다.` }));
+    }
+    if (on('bubble') && !alerts.some((a) => a.kind === 'bubble') && regular.schedule.length - regular.day === (stopCfg.bubbleDays ?? 9)) {
+      const st = regular.standings(), q = rules.playoffs.qualify, idx = st.findIndex((r) => r.id === manager);
+      const edge = st[q - 1]?.wins ?? 0, mine = st[idx]?.wins ?? 0;
+      if (idx >= 0 && Math.abs(mine - edge) <= (stopCfg.bubbleGap ?? 2)) fresh.push(addAlert({ kind: 'bubble', day, rank: idx + 1, text: `플레이오프 경계(6위)에 ${idx + 1}위로 걸려 있습니다. 남은 ${stopCfg.bubbleDays ?? 9}경기가 중요합니다.` }));
+    }
+    return fresh;
   };
   const playDayFull = () => {
     const before = winPctNow(regular.standings());
+    const startersBefore = new Set((regular.teams.find((t) => t.id === manager)?.lineup.starters ?? []).map((p) => p.id));
+    const logFrom = rosterLog.length;
     const r = regular.playDay();
     stampRegularAtt(r.games, before);
     let changed = injuriesOn ? afterDay(r) : false;
@@ -488,6 +531,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     if (restNext.size) { restNext = new Set(); changed = true; }
     if (changed) rebuildTeams();
     if (waiverPool.length && resolveWaivers(r.day, regular.done)) rebuildTeams();
+    r.alerts = detectEvents(r.day, startersBefore, logFrom);
     return r;
   };
 
@@ -510,12 +554,24 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     schedule: regular.schedule,
     standings: () => regular.standings(),
     playDay: () => playDayFull(),
-    /** n일(또는 끝까지) 진행. 반환: 날짜별 결과 배열 */
-    playDays(n = Infinity) {
+    /**
+     * n일(또는 끝까지) 진행. 반환: 날짜별 결과 배열. opts.stopOnEvents이면 중요한 일(주전 중상, 출전 인원 부족, 웨이버 마감 결과, 플레이오프 경계…)이
+     * 생긴 날에서 멈춘다(rules.stopEvents). 멈춘 이유는 lastStop(없으면 null).
+     */
+    playDays(n = Infinity, opts = {}) {
       const out = [];
-      while (!regular.done && out.length < n) out.push(playDayFull());
+      lastStop = null;
+      while (!regular.done && out.length < n) {
+        const day = playDayFull();
+        out.push(day);
+        if (opts.stopOnEvents && day.alerts?.some((a) => a.stop) && !regular.done) { lastStop = day.alerts.filter((a) => a.stop); break; }
+      }
       return out;
     },
+    /** 중요 사건 목록(해소된 것 포함, 생긴 순서) */
+    get alerts() { return alerts.map((a) => ({ ...a })); },
+    /** 마지막 playDays가 멈춘 이유(알림 배열) 또는 null */
+    get lastStop() { return lastStop ? lastStop.map((a) => ({ ...a })) : null; },
     /** 단장의 직접 편성. 규칙에 어긋나면 적용하지 않고 오류를 돌려준다. null이면 자동 편성으로 돌아간다 */
     setLineup(next) {
       if (!manager) throw new Error('단장 구단이 없습니다');
@@ -797,7 +853,6 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     setTactic(id) {
       if (!tacticsEnabled) return { ok: false, errors: ['전술 기능이 꺼져 있습니다'] };
       if (id != null && !tacticList(rules).some((t) => t.id === id)) return { ok: false, errors: ['알 수 없는 전술입니다'] };
-      if (playoffs) return { ok: false, errors: ['플레이오프가 시작된 뒤에는 전술을 바꿀 수 없습니다'] };
       tacticChoice = id ?? null;
       rebuildTeams();
       return { ok: true, errors: [] };
@@ -810,7 +865,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     /** 다음 경기에서 쉴 우리 선수를 지정한다(이전 지정은 덮어쓴다, 경기를 하루 치르면 비워진다) */
     setRest(ids) {
       if (!condEnabled) return { ok: false, errors: ['컨디션 기능이 꺼져 있습니다'] };
-      if (regular.done || playoffs) return { ok: false, errors: ['지금은 휴식을 지정할 수 없습니다'] };
+      if (playoffs ? !poCondOn : regular.done) return { ok: false, errors: ['지금은 휴식을 지정할 수 없습니다'] };
       const mine = new Set(players.filter((p) => p.teamId === manager).map((p) => p.id));
       const next = new Set((ids ?? []).filter((id) => mine.has(id)));
       if (players.filter((p) => p.teamId === manager && !next.has(p.id) && !injured.has(p.id)).length < rules.lineup.starters + rules.lineup.bench) return { ok: false, errors: ['쉬게 하면 엔트리를 채울 선수가 모자랍니다'] };
@@ -828,13 +883,55 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
         for (const inj of [...injured.values()]) { inj.left -= rules.injuries.playoffRecoveryGames; if (inj.left <= 0) recover(inj, regular.day); }
         rebuildTeams();
       }
-      if (condEnabled) { inPlayoffs = true; restNext = new Set(); rebuildTeams(); } // 플레이오프 전 휴식으로 컨디션은 회복된 것으로 본다(컨디션 이득 없음)
+      const ranked = regular.standings().map((r) => r.id);
+      poSeeds = new Set(ranked.slice(0, rules.playoffs.qualify));
+      if (condEnabled) { // 플레이오프 전 휴식으로 모두 회복한다. rules.playoffs.condition.enabled가 꺼져 있으면 예전처럼 플레이오프에서는 컨디션 이득·휴식이 없다
+        inPlayoffs = true; restNext = new Set();
+        for (const p of players) cond.set(p.id, startCondition(rules));
+        rebuildTeams();
+      }
       const reg = regular.finish();
       poTeams = new Map(reg.teams.map((t) => [t.id, t]));
-      playoffs = createPlayoffs(reg.standings.map((r) => r.id), poTeams, rules, reg.baseline, rules.simulation, rng);
+      poBaseline = reg.baseline;
+      playoffs = createPlayoffs(reg.standings.map((r) => r.id), poTeams, rules, () => poBaseline, rules.simulation, rng);
       return playoffs;
     },
-    playoffRound() { const out = run.startPlayoffs().playRound(); stampPlayoffAtt(out); return out; },
+    /**
+     * 플레이오프를 한 경기 치른다(다음 경기: playoffs.peek()). 그 경기의 관중을 저장하고, 컨디션을 갱신하고(켜져 있으면), 쉬기 지정을 비우고, 팀 편성·보정을 다시 만든다.
+     * 한 경기씩·라운드씩 진행해도 난수 순서는 같다. 경기 결과에 fx(그 경기에 실제로 적용된 보정·결장 선수)를 붙인다. 반환: playoffs.playGame()의 정보
+     */
+    playoffGame() {
+      const po = run.startPlayoffs();
+      const nx = po.peek();
+      if (!nx) throw new Error('플레이오프가 끝났습니다');
+      const fx = {};
+      for (const [side, id] of [['home', nx.homeId], ['away', nx.awayId]]) {
+        const t = poTeams.get(id), roster = players.filter((p) => p.teamId === id);
+        fx[side] = { teamId: id, tactic: t.mods?.tactic ?? null, fit: t.mods?.fit ?? 0, edge: t.mods?.edge ?? 0, parts: t.mods?.parts ? { ...t.mods.parts } : null, rested: [...restOf(id, roster)], injured: roster.filter((p) => injured.has(p.id)).map((p) => p.id) };
+      }
+      const info = po.playGame();
+      info.game.fx = fx;
+      stampPlayoffGame(info.game, info.round, info.n);
+      let changed = false;
+      if (condEnabled && poCondOn) {
+        updateCondition({ games: [info.game] }, new Set([nx.homeId, nx.awayId]), rules.playoffs.condition?.intensity ?? 1);
+        changed = true;
+        if (info.roundDone) { // 라운드 사이 휴식: 모두 회복한다
+          const days = rules.playoffs.condition?.restDaysBetweenRounds ?? 2;
+          for (const p of players) { let c = condOf(p.id); for (let i = 0; i < days; i++) c = nextCondition(c, p, 0, rules, recoveryMul(staff?.[p.teamId], rules)); cond.set(p.id, c); }
+        }
+      }
+      if (restNext.size && (nx.homeId === manager || nx.awayId === manager)) { restNext = new Set(); changed = true; } // 쉬기 지정은 그 경기 하나에만 적용된다
+      if (changed) rebuildTeams();
+      return info;
+    },
+    /** 플레이오프 한 라운드(남은 경기 전부) 진행. 반환: 그 라운드의 시리즈들 */
+    playoffRound() {
+      const po = run.startPlayoffs();
+      const target = po.round;
+      while (po.round === target) run.playoffGame();
+      return po.series.filter((x) => x.round === rules.playoffs.rounds[target].name);
+    },
     /** 시즌 마무리: 시즌 전체 기록으로 능력치를 한 번 더 갱신하고 결과를 묶는다 */
     finish() {
       if (finished) return finished;

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText } from '../web/lib/season-view.js';
+import { standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesGameRows, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText } from '../web/lib/season-view.js';
 import { attendanceFor, popularity, initialAttendance } from '../src/funds.mjs';
 
 const rules = JSON.parse(readFileSync(new URL('../data/league-rules.json', import.meta.url), 'utf8'));
@@ -49,6 +49,21 @@ test('플레이오프 대진: 시드로 정해진 6강, 진행에 따라 4강·�
   assert.equal(m1[0].played, true); assert.equal(m1[0].winnerId, 's6');
   assert.equal(m1[2].b, 's4'); assert.equal(m1[3].b, 's6'); // 1위 vs 4·5위 승자, 2위 vs 3·6위 승자
   assert.equal(seriesScore(s0), '1-3');
+});
+
+test('플레이오프 대진: 한 경기씩 진행 중인 시리즈는 partial로 지금까지의 전적·경기를 보여 주고, 경기 줄에 저장된 관중이 따라온다', () => {
+  const seeds = new Map(['s1', 's2', 's3', 's4', 's5', 's6'].map((id, i) => [id, i + 1]));
+  const g = (homePts, awayPts, att) => ({ homeId: 's3', awayId: 's6', homePts, awayPts, winnerId: homePts > awayPts ? 's3' : 's6', att });
+  const live = [{ round: '6강', higherId: 's3', lowerId: 's6', winnerId: null, wins: { s3: 1, s6: 1 }, games: [g(80, 70, 4100), g(70, 75, 4200)] }, { round: '6강', higherId: 's4', lowerId: 's5', winnerId: null, wins: { s4: 0, s5: 0 }, games: [] }];
+  const m = bracketModel(seeds, [], rules, live);
+  assert.equal(m[0].partial, true); assert.equal(m[0].played, false); assert.equal(m[0].wins.s3, 1); assert.equal(m[0].games.length, 2);
+  assert.equal(m[1].partial, false, '아직 한 경기도 안 한 시리즈는 partial이 아니다');
+  const rows = seriesGameRows({ games: m[0].games });
+  assert.deepEqual(rows.map((r) => r.att), [4100, 4200]);
+  // 앞 시리즈가 끝났다면 진행 중인 시리즈는 그 다음 칸
+  const done = { round: '6강', higherId: 's3', lowerId: 's6', winnerId: 's3', wins: { s3: 3, s6: 0 }, games: [] };
+  const m2 = bracketModel(seeds, [done], rules, [{ ...live[0], winnerId: 's3' }, { ...live[1], wins: { s4: 1, s5: 0 }, games: [g(70, 60, 3900)] }]);
+  assert.equal(m2[0].played, true); assert.equal(m2[1].partial, true); assert.equal(m2[1].wins.s4, 1);
 });
 
 test('진행 버튼: 남은 날수에 맞게 자른다', () => {

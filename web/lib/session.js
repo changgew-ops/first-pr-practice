@@ -47,7 +47,7 @@ export class Session {
     const game = {
       version: VERSION, seed, managerId, gm: { name: gmName?.trim() || '단장' },
       league: { ...base, funds: initialFunds(data.teams, data.rules) }, log: [],
-      stage: 'regular', day: 0, actions: [], poRounds: 0, seasonEnd: null, decisions: {}
+      stage: 'regular', day: 0, actions: [], poRounds: 0, poGames: 0, seasonEnd: null, decisions: {}
     };
     return new Session(data, game);
   }
@@ -176,14 +176,21 @@ export class Session {
 
   // ---------- 시즌 진행 ----------
   /** 정규리그를 n일 진행(기본 1일). 반환: 날짜별 결과 배열 */
-  advance(n = 1) {
+  advance(n = 1, opts = {}) {
     this.#need('regular');
-    const out = this.run.playDays(n);
+    const out = this.run.playDays(n, opts);
     this.dayResults.push(...out);
     this.state.day = this.run.day;
+    this.lastStop = this.run.lastStop; // 중요한 일이 생겨 멈췄다면 그 이유들(opts.stopOnEvents일 때만). 화면이 안내한다
     this.emit();
     return out;
   }
+  /** 마지막 advance가 중요한 일 때문에 멈춘 이유들: [{ kind, day, text, … }] 또는 null */
+  lastStop = null;
+  /** 중요 사건 알림(해소된 것 포함, 생긴 순서). 시드와 조작 기록으로 다시 만들어지는 파생 정보라 저장하지 않는다 */
+  get alerts() { return this.run?.alerts ?? []; }
+  /** 아직 해소되지 않은 중요 사건("해야 할 일"에 보인다) */
+  get openAlerts() { return this.alerts.filter((a) => !a.resolved); }
   /** 우리 구단의 다음 경기가 있는 날까지(없으면 시즌 끝까지) — 지금은 매일 경기가 있어 1일과 같다 */
   advanceToDay(day) { return this.advance(Math.max(0, day - this.state.day)); }
 
@@ -191,15 +198,70 @@ export class Session {
     this.#need('regular');
     if (!this.run.regularDone) throw new Error('정규리그가 아직 끝나지 않았습니다');
     this.run.startPlayoffs();
-    this.state.stage = 'playoffs'; this.state.poRounds = 0;
+    this.state.stage = 'playoffs'; this.state.poRounds = 0; this.state.poGames = 0;
     this.emit();
   }
-  /** 플레이오프를 한 라운드 진행. 반환: 그 라운드의 시리즈들 */
+  /** 플레이오프를 한 라운드(남은 경기 전부) 진행. 반환: 그 라운드의 시리즈들 */
   playoffRound() {
     this.#need('playoffs');
     const out = this.run.playoffRound();
-    this.state.poRounds = this.run.playoffs.round;
+    this.#syncPo();
     this.emit();
+    return out;
+  }
+  /** 이 라운드에 우리 구단이 아직 치를 시리즈가 있는지 */
+  get myPlayoffSeries() {
+    const po = this.run?.playoffs;
+    if (!po || po.done) return null;
+    return po.current.find((x) => !x.winnerId && (x.higherId === this.managerId || x.lowerId === this.managerId)) ?? null;
+  }
+  /**
+   * 플레이오프 한 경기 진행: 우리 시리즈의 다음 경기를 치른다. 우리 시리즈보다 앞 차례인 다른 시리즈는 먼저 끝까지 치르고(난수 순서가 라운드 일괄 진행과 같다),
+   * 우리 시리즈가 끝나면 그 라운드의 나머지 시리즈도 마저 치른다. 우리 구단이 이 라운드에 없으면(탈락·미진출) 라운드를 마저 치른다.
+   * 반환: { games: [치른 경기 정보들], mine: 우리 경기 정보 | null, mySeriesDone }
+   */
+  playoffStep() {
+    this.#need('playoffs');
+    const po = this.run.playoffs;
+    if (po.done) throw new Error('플레이오프가 끝났습니다');
+    const my = this.managerId, games = [];
+    let mine = null;
+    if (!this.myPlayoffSeries) {
+      const target = po.round;
+      while (po.round === target) games.push(this.run.playoffGame());
+    } else {
+      for (let pk = po.peek(); pk && pk.homeId !== my && pk.awayId !== my; pk = po.peek()) games.push(this.run.playoffGame());
+      mine = this.run.playoffGame();
+      games.push(mine);
+      if (mine.seriesDone && !mine.roundDone) { const target = po.round; while (po.round === target) games.push(this.run.playoffGame()); }
+    }
+    this.#syncPo();
+    this.emit();
+    return { games, mine, mySeriesDone: Boolean(mine?.seriesDone) };
+  }
+  /** 우리 시리즈가 끝날 때까지 경기를 계속 진행한다(우리 시리즈가 없으면 라운드를 마저 치른다). 반환: playoffStep 결과들 */
+  playoffSeries() {
+    this.#need('playoffs');
+    const out = [];
+    for (;;) {
+      const r = this.playoffStep();
+      out.push(r);
+      if (r.mySeriesDone || !r.mine || this.run.playoffs.done) break;
+    }
+    return out;
+  }
+  #syncPo() { this.state.poRounds = this.run.playoffs.round; this.state.poGames = this.run.playoffs.gamesPlayed; }
+  /** 플레이오프에서 우리 구단이 치른 경기들(치른 순서): [{ round, roundIndex, n, game, series: 그 시리즈(끝났으면 결과) }] */
+  myPlayoffGames() {
+    const po = this.run?.playoffs;
+    if (!po) return [];
+    const my = this.managerId, out = [];
+    const rounds = this.data.rules.playoffs.rounds.map((r) => r.name);
+    const list = [...po.series, ...po.current.filter((x) => !x.winnerId)];
+    for (const sr of list) {
+      if (sr.higherId !== my && sr.lowerId !== my) continue;
+      sr.games.forEach((g, i) => out.push({ round: sr.round, roundIndex: rounds.indexOf(sr.round), n: i + 1, game: g, series: sr }));
+    }
     return out;
   }
   /** 우리 구단의 플레이오프 진행 상태: 'out' | 'alive' | 'champion' | 'notQualified' */
@@ -368,11 +430,11 @@ export class Session {
   }
   /** 우리 구단의 전술 { choice, current, refs, list: [{ id, name, desc, fit }] } (꺼져 있으면 null) */
   get tactics() { return this.run?.tactics ?? null; }
-  /** 전술을 고른다(null이면 추천 따르기). 정규리그 중에만. 반환 { ok, errors } */
+  /** 전술을 고른다(null이면 추천 따르기). 정규리그와 플레이오프 중에. 반환 { ok, errors } */
   setTactic(id) {
-    this.#need('regular');
+    this.#need('regular', 'playoffs');
     const r = this.run.setTactic(id);
-    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'tactic', id: id ?? null }); this.emit(); }
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'tactic', id: id ?? null, ...this.#poMark() }); this.emit(); }
     return r;
   }
   /** 모든 선수의 컨디션 Map(선수 id → 0~100). 시즌 중이 아니면 빈 Map */
@@ -381,9 +443,9 @@ export class Session {
   get rest() { return this.run?.rest ?? []; }
   /** 다음 경기에서 쉴 선수를 지정한다(빈 배열이면 해제). 반환 { ok, errors } */
   setRest(ids) {
-    this.#need('regular');
+    this.#need('regular', 'playoffs');
     const r = this.run.setRest(ids);
-    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'rest', ids: [...ids] }); this.emit(); }
+    if (r.ok) { this.state.actions.push({ day: this.state.day, type: 'rest', ids: [...ids], ...this.#poMark() }); this.emit(); }
     return r;
   }
   /** 구단별 팀 보정 { [구단 id]: { tactic, fit, edge, parts: { coach, tactic, cond } } } */
@@ -492,7 +554,7 @@ export class Session {
     const entry = attachOffseason(g.seasonEnd.entry, res.report, funds);
     g.log = [...g.log, entry];
     g.league = funds === res.league.funds ? res.league : { ...res.league, funds };
-    g.stage = 'regular'; g.day = 0; g.actions = []; g.poRounds = 0; g.seasonEnd = null; g.decisions = {};
+    g.stage = 'regular'; g.day = 0; g.actions = []; g.poRounds = 0; g.poGames = 0; g.seasonEnd = null; g.decisions = {};
     this.offseason = null;
     this.rebuild();
   }
@@ -545,14 +607,19 @@ export class Session {
     due();
     if (g.stage === 'playoffs') {
       run.startPlayoffs();
-      const poDue = (rounds) => { while (ai < g.actions.length && (g.actions[ai].po ?? 0) <= rounds) apply(g.actions[ai++]); };
-      poDue(0);
-      for (let i = 0; i < g.poRounds; i++) { run.playoffRound(); poDue(i + 1); }
+      // pg(치른 경기 수)가 붙은 조작은 그 경기 수에, 옛 저장의 조작(po만 있음)은 그 라운드 수에 맞춰 적용한다
+      const poDue = () => {
+        const po = run.playoffs;
+        while (ai < g.actions.length && (g.actions[ai].pg != null ? g.actions[ai].pg <= po.gamesPlayed : (g.actions[ai].po ?? 0) <= po.round)) apply(g.actions[ai++]);
+      };
+      poDue();
+      if (g.poGames != null) for (let i = 0; i < g.poGames; i++) { run.playoffGame(); poDue(); } // 한 경기씩(예전 저장은 poGames가 없어 아래에서 라운드씩)
+      else { for (let i = 0; i < g.poRounds; i++) { run.playoffRound(); poDue(); } g.poGames = run.playoffs.gamesPlayed; }
     }
   }
 
   /** 플레이오프 중의 조작에 붙이는 표시: 지금까지 치른 라운드 수(복원할 때 그 시점에 다시 적용한다) */
-  #poMark() { return this.state.stage === 'playoffs' ? { po: this.state.poRounds } : {}; }
+  #poMark() { return this.state.stage === 'playoffs' ? { po: this.state.poRounds, pg: this.state.poGames ?? 0 } : {}; }
 
   #need(...stages) {
     if (!stages.includes(this.state.stage)) throw new Error(`지금(${this.state.stage})은 할 수 없는 일입니다`);

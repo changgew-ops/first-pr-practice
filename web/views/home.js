@@ -7,6 +7,7 @@ import { getNews } from '../lib/news-view.js';
 import { moodCard } from './news.js';
 import { financeCard } from './finance-card.js';
 import { goalsCard } from './goals-card.js';
+import { alertsCard } from './season.js';
 import { staffLine } from '../lib/tactics-view.js';
 
 export function recentRanks(hist, teamId, n = 16) {
@@ -83,6 +84,7 @@ export function render(ctx) {
   const body = h('div', { class: 'stack' },
     h('div', { class: 'topbar' }, h('div', { class: 'title' }, emblem(my, { size: 44, label: team.name }), h('div', h('div', { class: 'crumb' }, `${gm} 단장`), h('h1', team.name)))),
     heroCard(ctx, season, lastSeason, lastRow),
+    ctx.session.stage === 'regular' ? alertsCard(ctx) : null, // 아직 해소되지 않은 중요 사건(주전 중상·인원 부족 등)
     goalsCard(ctx),
     staffLine(ctx),
     newsCard(ctx),

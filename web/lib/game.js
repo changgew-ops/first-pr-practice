@@ -293,7 +293,12 @@ export function gameRecordRows(game, playerId, session = null) {
   const rows = (game?.log ?? []).flatMap((e) => entryRows(e, playerId));
   if (session && (session.stage === 'regular' && session.day > 0 || session.stage === 'playoffs')) {
     const run = session.run;
-    if (run) rows.push(...liveRows(`${seasonLabel(session.season)}`, run.splits, run.playoffs?.series, playerId, session.data.rules.playoffs.rounds.at(-1).name));
+    if (run) {
+      // 한 경기씩 진행 중인 시리즈의 지금까지의 경기도 기록에 넣는다(끝난 시리즈 + 진행 중 시리즈)
+      const po = run.playoffs;
+      const poSeries = po ? [...po.series, ...po.current.filter((x) => !x.winnerId && x.games.length)] : undefined;
+      rows.push(...liveRows(`${seasonLabel(session.season)}`, run.splits, poSeries, playerId, session.data.rules.playoffs.rounds.at(-1).name));
+    }
   }
   return rows;
 }
