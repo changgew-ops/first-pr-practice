@@ -2,7 +2,7 @@
 """초록 배경 캐릭터·소품 시트(source/sheet~sheet4.webp) → assets/atlas.png, assets/props.png, assets/atlas.json
 사용: python3 office/make-atlas.py   (인자 없이 한 번에 재생성)
 컷 번호는 cutout.components 결과(위→아래, 왼→오른쪽 정렬)이고, CHARS/BOSS/PROP_COMPS 등은 시트를 눈으로 보고 정한 목록이다.
-'sN' 표기는 시트 번호(s1=sheet, s2=sheet2, s3=sheet3, s4=sheet4)이고, 컷 번호 또는 좌표(x0,y0,x1,y1)를 쓴다.
+'sN' 표기는 시트 번호(s1=sheet, s2=sheet2, s3=sheet3, s4=sheet4, s5=sheet5)이고, 컷 번호 또는 좌표(x0,y0,x1,y1)를 쓴다.
 """
 import sys, os, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -14,6 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'source', 'sheet.webp')
 SRC2 = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, 'source', 'sheet2.webp')  # 전설의 포켓몬·굼바 변형이 들어 있는 두 번째 시트
 SRC3 = os.path.join(HERE, 'source', 'sheet3.webp')                                         # 세 번째 시트(76.webp): 루나아라·아르세우스·제크로무·카멕·키노피오·잉어킹·신규 직원 종이 있다
+SRC5 = os.path.join(HERE, 'source', 'sheet5.webp')                                         # 다섯 번째 시트(79.webp): 가디·고오스·푸린·피츄·마릴 등 신규 종, 키노피오(서 있는 컷)·뻐끔플라워·코인·버섯, 냉장고·자판기·프린터 등 소품
 SRC4 = os.path.join(HERE, 'source', 'sheet4.webp')                                         # 네 번째 시트(78.webp): 팝고래·뜨아거 등 신규 종과 사무 소품이 있다
 
 # (id, 한글 이름, 컷 번호, 초록 몸 여부)
@@ -58,7 +59,12 @@ EXTRA = [('solgaleo', '솔가레오풍', ('s2', 53)), ('necrozma', '네크로즈
          ('palkia', '펄기아풍', ('s2', (1189, 243, 1272, 324))), ('dialga', '디아루가풍', ('s3', (824, 462, 920, 557))),
          ('goomba_a', '굼바(정면)', ('s2', 21)), ('goomba_b', '굼바(걸음)', ('s2', 27)), ('kingboo2', '부끄왕', ('s2', 23)),
          ('lunala', '루나아라', ('s3', 47)), ('arceus', '아르세우스', ('s3', 61)), ('zekrom', '제크로무', ('s3', 58)), ('kamek', '카멕', ('s3', 21)),
-         ('toad', '키노피오', ('s3', 23)), ('piranha', '뻐끔플라워(화분)', ('s3', (983, 124, 1064, 206))), ('magikarp', '잉어킹', ('s3', 84))]
+         ('toad', '키노피오(서 있음)', ('s5', 19)), ('piranha', '뻐끔플라워(화분)', ('s3', (983, 124, 1064, 206))), ('magikarp', '잉어킹', ('s3', 84)),
+         # --- 5차(sheet5): 키노피오 서 있는 컷 3종(toad=정면, toad_b=손 흔들기, toad_c=걷기), 앉은 컷은 toad_sit로 보존, 뻐끔플라워 둘째 컷, 토관·코인·버섯, 굼바 변형
+         ('toad_sit', '키노피오(앉음)', ('s3', 23)), ('toad_b', '키노피오(손 흔들기)', ('s5', 20)), ('toad_c', '키노피오(걷기)', ('s5', 24)),
+         ('piranha_b', '뻐끔플라워(입 벌림)', ('s5', 25)), ('pipe', '토관', ('s5', 36)), ('coin', '코인', ('s5', (1301, 163, 1346, 203))),
+         ('mushroom_red', '빨간 버섯', ('s5', (1301, 45, 1346, 84))), ('mushroom_green', '초록 버섯', ('s5', (1301, 85, 1346, 122))),
+         ('mushroom_orange', '주황 버섯', ('s5', (1301, 123, 1346, 162))), ('goomba_c', '굼바(화난 얼굴)', ('s5', 23))]
 # 에이전트 종 추가(CHARS 뒤에 이어 붙인다 — SPR 인덱스가 순서에 의존하므로 기존 순서는 바꾸지 않는다): (id, 한글 이름, (시트, 컷), 초록 몸 여부)
 NEWCHARS = [('psyduck', '고라파덕(책상)', ('s3', 73), False), ('machamp', '근육몬', ('s3', (104, 550, 193, 650)), False),
             ('golem', '딱구리', ('s3', (194, 550, 286, 650)), False), ('magneton', '레어코일', ('s3', (287, 552, 370, 650)), False),
@@ -69,12 +75,33 @@ NEWCHARS = [('psyduck', '고라파덕(책상)', ('s3', 73), False), ('machamp', 
             ('popplio', '누리공', ('s4', 96), True), ('fuecoco', '뜨아거', ('s4', 97), True), ('grookey', '흥나숭', ('s4', 98), True),
             ('scorbunny', '염버니', ('s4', 99), False), ('sobble', '울머기', ('s4', 100), False), ('sudowoodo', '꼬지모', ('s4', 103), False),
             ('smeargle', '루브도', ('s4', 104), False)]
+# 5차 신규 종(sheet5): 기존 NEWCHARS 뒤에 이어 붙인다(순서 불변)
+NEWCHARS5 = [('growlithe', '가디', ('s5', 67), False), ('growlithe_desk', '가디(책상)', ('s5', 73), False), ('gastly', '고오스', ('s5', 71), False),
+             ('jigglypuff', '푸린', ('s5', (197, 563, 281, 650)), False), ('pichu', '피츄', ('s5', 77), False),
+             ('pichu_box', '피츄(상자)', ('s5', (17, 561, 98, 650)), False), ('cleffa', '삐', ('s5', 79), False), ('igglybuff', '푸푸린', ('s5', 80), False),
+             ('marill', '마릴', ('s5', 82), False), ('vulpix', '식스테일', ('s5', 84), False), ('cubone', '탄돈', ('s5', 86), False),
+             ('psyduck_stand', '고라파덕(서 있음)', ('s5', 74), False), ('snowball', '눈뭉치', ('s5', 90), False)]
 # 소품 추가(sheet4): (id, 한글 이름, (시트, 컷 번호 또는 좌표))
 PROP_NEW = [('chair_red', '빨간 의자', ('s4', 89)), ('chair_blue', '파란 의자', ('s4', 90)), ('chair_black', '검정 의자', ('s4', 106)),
             ('bonsai_a', '분재 A', ('s4', 91)), ('bonsai_b', '분재 B', ('s4', 92)), ('bonsai_c', '분재 C', ('s4', 93)), ('aloe', '알로에 화분', ('s4', 94)),
             ('desk_l', 'ㄱ자 책상', ('s4', 107)), ('desk_gray', '회색 책상', ('s4', 108)), ('binders', '바인더 선반', ('s4', 109)),
             ('calculator', '계산기', ('s4', 110)), ('stapler', '스테이플러', ('s4', 111)), ('microwave', '전자레인지', ('s4', 112)),
             ('fan_rotom', '선풍기 로토무', ('s4', (1098, 327, 1160, 382))), ('fridge_rotom', '냉장고 로토무', ('s4', (1160, 327, 1223, 382)))]
+
+# 5차 소품(sheet5 우하단 소품 격자): 좌표 컷. 칸 안쪽으로 살짝 줄여 시트 격자선이 걸리지 않게 한다
+PROP_NEW5 = [('fridge', '유리 냉장고', ('s5', (826, 661, 904, 754))), ('vending_big', '큰 자판기', ('s5', (919, 562, 996, 655))),
+             ('water_jug', '여분 물통', ('s5', (828, 570, 868, 654))), ('coffee_machine', '커피머신(검정)', ('s5', (921, 660, 957, 704))),
+             ('coffee_maker', '커피메이커', ('s5', (965, 660, 1002, 704))), ('printer', '프린터', ('s5', (1098, 710, 1136, 754))),
+             ('copier', '복합기', ('s5', (1141, 710, 1180, 754))), ('cabinet', '서류 캐비닛', ('s5', (1190, 660, 1222, 704))),
+             ('pc_tower', 'PC 본체', ('s5', (1235, 660, 1265, 704))), ('server_tower', '서버 타워', ('s5', (1279, 660, 1358, 754))),
+             ('desk_small_a', '작은 책상 A', ('s5', (1007, 571, 1046, 604))), ('desk_small_b', '작은 책상 B', ('s5', (1049, 571, 1090, 604))),
+             ('desk_wood_a', '나무 책상 A', ('s5', (1007, 616, 1046, 650))), ('desk_wood_b', '나무 책상 B', ('s5', (1049, 616, 1090, 650))),
+             ('mon_color', '컬러 모니터', ('s5', (1096, 565, 1136, 604))), ('mon_blue_a', '파란 모니터 A', ('s5', (1231, 565, 1269, 604))),
+             ('mon_blue_b', '파란 모니터 B', ('s5', (1276, 565, 1314, 604))), ('mon_chart', '차트 모니터', ('s5', (1096, 614, 1136, 652))),
+             ('plant_blue', '푸른 화분', ('s5', (921, 710, 953, 754))), ('plant_fern', '고사리 화분', ('s5', (965, 710, 1002, 754))),
+             ('plant_pot_c', '잎 화분', ('s5', (1009, 710, 1043, 754))), ('plant_palm', '야자 화분', ('s5', (1009, 661, 1044, 704))),
+             ('mug', '머그컵 화분', ('s5', (1146, 661, 1176, 704))), ('laptop', '노트북', ('s5', (1054, 661, 1088, 704))),
+             ('tray', '서류 트레이', ('s5', (1054, 710, 1090, 754))), ('mon_doc', '문서 모니터', ('s5', (1096, 661, 1136, 704)))]
 
 def trim(rgba):
     al = rgba[..., 3]
@@ -188,18 +215,23 @@ def same_canvas(arrs):
     return out
 
 def main():
-    S = {'s1': Sheet(SRC), 's2': Sheet(SRC2), 's3': Sheet(SRC3), 's4': Sheet(SRC4)}
+    S = {'s1': Sheet(SRC), 's2': Sheet(SRC2), 's3': Sheet(SRC3), 's4': Sheet(SRC4), 's5': Sheet(SRC5)}
     def get(ref, green=False):
         return S[ref[0]].get(ref[1], green)
-    extra = [(eid, enhance(get(ref))) for eid, _, ref in EXTRA]
-    chars = [(cid, enhance(S['s1'].cut(i, g))) for cid, _, i, g in CHARS] + [(cid, enhance(defringe(get(ref, g), kill=cid.startswith('rotom') or cid == 'fuecoco') if g else get(ref, g))) for cid, _, ref, g in NEWCHARS]
+    def extra_cut(eid, ref):
+        g = eid in ('mushroom_green', 'pipe')                     # 초록 몸은 despill의 green 모드(초록을 지우지 않는다)
+        a = get(ref, g)
+        if eid.startswith('toad') or eid in ('goomba_c', 'mushroom_red', 'mushroom_orange', 'coin'): a = defringe(a)   # 윤곽의 올리브색 번짐 제거
+        return enhance(a)
+    extra = [(eid, extra_cut(eid, ref)) for eid, _, ref in EXTRA]
+    chars = [(cid, enhance(S['s1'].cut(i, g))) for cid, _, i, g in CHARS] + [(cid, enhance(defringe(get(ref, g), kill=cid.startswith('rotom') or cid == 'fuecoco' or cid == 'gastly') if (g or cid == 'gastly') else get(ref, g))) for cid, _, ref, g in NEWCHARS + NEWCHARS5]
     bcuts = {bid: keep_main(enhance(get(ref))) for bid, _, ref in BOSS}
     same = same_canvas([bcuts[k] for k in BOSS_SAME])
     for k, arr in zip(BOSS_SAME, same): bcuts[k] = arr
     boss = [(bid, bcuts[bid]) for bid, _, _ in BOSS]
     atlas, apos = pack(chars + boss + extra, 1280)
     s1 = S['s1']
-    props = [(pid, s1.cut(i)) for pid, _, i in PROP_COMPS] + [(pid, s1.rect(r)) for pid, _, r in PROP_RECTS] + [(pid, prop_fix(pid, get(ref, pid.startswith(('bonsai', 'aloe', 'chair'))))) for pid, _, ref in PROP_NEW]
+    props = [(pid, s1.cut(i)) for pid, _, i in PROP_COMPS] + [(pid, s1.rect(r)) for pid, _, r in PROP_RECTS] + [(pid, prop_fix(pid, get(ref, pid.startswith(('bonsai', 'aloe', 'chair', 'plant_', 'mug'))))) for pid, _, ref in PROP_NEW + PROP_NEW5]
     psheet, ppos = pack(props, 640)
     out = os.path.join(HERE, 'assets'); os.makedirs(out, exist_ok=True)
     # 용량 줄이기: 팔레트 PNG(알파 포함)
@@ -209,11 +241,11 @@ def main():
     atlas.save(os.path.join(out, 'atlas.png'), optimize=True); save(psheet, 'props.png')
     meta = {
         'atlas': {'file': 'atlas.png', 'w': atlas.width, 'h': atlas.height, 'up': UP,
-                  'chars': [{'id': cid, 'name': n, 'rect': apos[cid]} for cid, n, _, _ in CHARS] + [{'id': cid, 'name': n, 'rect': apos[cid]} for cid, n, _, _ in NEWCHARS],
+                  'chars': [{'id': cid, 'name': n, 'rect': apos[cid]} for cid, n, _, _ in CHARS] + [{'id': cid, 'name': n, 'rect': apos[cid]} for cid, n, _, _ in NEWCHARS + NEWCHARS5],
                   'boss': [{'id': bid, 'name': n, 'rect': apos[bid]} for bid, n, _ in BOSS],
                   'extra': [{'id': eid, 'name': n, 'rect': apos[eid]} for eid, n, _ in EXTRA]},
         'props': {'file': 'props.png', 'w': psheet.width, 'h': psheet.height,
-                  'items': [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_COMPS] + [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_RECTS] + [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_NEW]}}
+                  'items': [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_COMPS] + [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_RECTS] + [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_NEW + PROP_NEW5]}}
     # 점수판: 숫자 자리(그림에 구워진 "6 1 0 62")를 찾아 게임이 위에 칠하고 실제 숫자를 쓸 수 있게 위치를 적는다
     sx, sy, sw, sh = ppos['score']
     arr = np.array(psheet.convert('RGBA')).astype(int)[sy:sy + sh, sx:sx + sw]

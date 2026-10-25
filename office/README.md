@@ -96,3 +96,12 @@
 
 ### 소품 추가(`props` 끝에 이어 붙임 — 기존 id·위치는 그대로)
 `chair_red` `chair_blue` `chair_black`(의자 3), `bonsai_a` `bonsai_b` `bonsai_c`(분재), `aloe`, `desk_l`(ㄱ자 책상), `desk_gray`, `binders`(바인더 선반), `calculator`, `stapler`, `microwave` = sheet4 89~94·106~112번, `fan_rotom` `fridge_rotom` = sheet4 좌표 (1098,327)-(1160,382)·(1160,327)-(1223,382).
+
+### 5차(sheet5, 79.webp) 추가 컷
+`make-atlas.py`의 `NEWCHARS5`(에이전트 종, chars 인덱스 57~69), `EXTRA`(5차 줄), `PROP_NEW5`에 있다. 컷 번호는 sheet5의 연결 성분(위→아래, 왼→오른쪽) 또는 좌표다. 건물 직원·장식 id는 **같은 id로 컷만 바뀐 것**이 있다: `toad`는 이제 서 있는 컷(앉은 컷은 `toad_sit`).
+
+| 구분 | id | 시트 컷 |
+|---|---|---|
+| chars 57~69 | growlithe(가디, 컷67), growlithe_desk(컷73), gastly(71), jigglypuff(좌표), pichu(77), pichu_box(좌표), cleffa(79), igglybuff(80), marill(82), vulpix(84), cubone(86), psyduck_stand(74), snowball(90) | 가디 둘째 컷(68)·야돈·로토무 등 중복은 넣지 않았다 |
+| extra | toad(컷19 정면), toad_b(20 손 흔들기), toad_c(24 걷기), toad_sit(sheet3 23 앉음), piranha_b(25), pipe(36), coin·mushroom_red/green/orange(좌표), goomba_c(23 화난 굼바) | `piranha`는 그대로 |
+| props | fridge, vending_big, water_jug, coffee_machine, coffee_maker, printer, copier, cabinet, pc_tower, server_tower, desk_small_a/b, desk_wood_a/b, mon_color, mon_blue_a/b, mon_chart, mon_doc, plant_blue/fern/pot_c/palm, mug, laptop, tray | 소품 격자 좌표 컷 |
