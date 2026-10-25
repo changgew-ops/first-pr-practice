@@ -1,5 +1,5 @@
 // 저장 슬롯: 자동 저장 + 직접 저장 3칸. 저장·불러오기·삭제, 용량 표시, 파일로 내보내기·가져오기.
-import { h } from '../lib/dom.js';
+import { h, ask } from '../lib/dom.js';
 import { listSlots, deleteSlot, SLOTS, QUOTA, storageStatus, capacityNotice, oldestManualSlot, buildExport, parseImport, importToSlot } from '../lib/save.js';
 import { Session } from '../lib/session.js';
 
@@ -75,7 +75,7 @@ export function render(ctx) {
     if (!parsed.ok) { msg = { kind: 'bad', text: `가져오지 못했습니다: ${parsed.error}` }; return draw(); }
     try { new Session(ctx.data, parsed.game); } catch (e) { msg = { kind: 'bad', text: `가져오지 못했습니다: 게임을 다시 돌려 보니 열리지 않습니다(${e.message})` }; return draw(); }
     const taken = listSlots().find((s) => s.slot === slot)?.meta;
-    if (taken && !window.confirm(`${label(slot)}에는 이미 저장이 있습니다. 덮어쓸까요?`)) return;
+    if (taken && !await ask(`${label(slot)}에는 이미 저장이 있습니다. 덮어쓸까요?`, { ok: '덮어쓰기' })) return;
     if (!importToSlot(slot, parsed.game)) { msg = { kind: 'bad', text: '저장 공간이 부족해 가져오지 못했습니다. 오래된 슬롯을 지우고 다시 시도하세요.' }; return draw(); }
     msg = { kind: 'ok', text: `${label(slot)}에 가져왔습니다 — ${ctx.name(parsed.meta.teamId)} · ${parsed.meta.season} · ${parsed.meta.seasonsPlayed}시즌 완료` };
     draw();

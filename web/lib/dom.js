@@ -21,6 +21,23 @@ export function h(tag, attrs, ...children) {
   return el;
 }
 
+/** 화면 안 확인 창(Promise<boolean>). 결과물(iframe)에서는 window.confirm이 막혀 있어서 직접 그린다 */
+export function ask(text, { ok = '확인', cancel = '취소' } = {}) {
+  return new Promise((resolve) => {
+    const prev = document.activeElement;
+    const done = (v) => { back.remove(); document.removeEventListener('keydown', onKey, true); prev?.focus?.(); resolve(v); };
+    const onKey = (e) => { if (e.key === 'Escape') { e.preventDefault(); done(false); } };
+    const okBtn = h('button', { type: 'button', class: 'btn primary', onclick: () => done(true) }, ok);
+    const back = h('div', { class: 'ask-back', onclick: (e) => { if (e.target === back) done(false); } },
+      h('div', { class: 'ask-box', role: 'alertdialog', 'aria-modal': 'true', 'aria-label': text },
+        h('p', { class: 'ask-text' }, String(text).split('\n').flatMap((t, i) => (i ? [h('br'), t] : [t]))),
+        h('div', { class: 'row ask-btns' }, h('button', { type: 'button', class: 'btn', onclick: () => done(false) }, cancel), okBtn)));
+    document.body.append(back);
+    document.addEventListener('keydown', onKey, true);
+    okBtn.focus();
+  });
+}
+
 const NS = 'http://www.w3.org/2000/svg';
 export function svg(tag, attrs, ...children) {
   const el = document.createElementNS(NS, tag);

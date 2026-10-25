@@ -6,7 +6,7 @@
 //   actions: 시즌 중 단장의 조작 [{ day, type: 'lineup', starters, bench } | { day, type: 'focus', playerId, stat } | { day, type: 'trade', trade } | { day, type: 'program', playerId, program('dleague'|'abroad'|null), stat }]
 // 시즌 진행 상태(하루 결과·박스스코어·플레이오프 진행 등)는 저장하지 않는다. 시드와 조작 기록으로 처음부터 다시 돌려 복원한다(결정적이다).
 // 오프시즌도 같다: 지금까지 내린 결정(decisions)으로 같은 시드의 오프시즌을 다시 돌리고, 결정이 필요한 곳에서 멈춘다(pending).
-import { createLeague } from '../../src/league.mjs';
+import { createLeague, reserveFreeAgents } from '../../src/league.mjs';
 import { baseRosterFor } from '../../src/synergy.mjs';
 import { beginSeason, settleYear } from '../../src/season-run.mjs';
 import { runOffseasonWith } from '../../src/decisions.mjs';
@@ -45,9 +45,10 @@ export class Session {
   static create(data, { managerId, gmName, seed = Date.now() % 1e9, protagonist = false }) {
     if (!data.teams.some((t) => t.id === managerId)) throw new Error(`알 수 없는 구단: ${managerId}`);
     const { baseRoster: _marker, ...base } = createLeague(data.players, data.rules, { history: data.history, teamData: data.teams, labelStart: true }); // 시작 로스터 표식은 저장하지 않는다(data.players에서 파생)
+    const reserve = reserveFreeAgents(data.rules, seed, base.usedNames); // 새 게임에만: 첫 시즌 FA 시장을 채우는 가상 선수(옛 저장은 league에 이미 값이 있어 그대로 열린다)
     const game = {
       version: VERSION, seed, managerId, gm: { name: gmName?.trim() || '단장' },
-      league: { ...base, funds: initialFunds(data.teams, data.rules) }, log: [],
+      league: { ...base, freeAgents: reserve.freeAgents, usedNames: reserve.usedNames, funds: initialFunds(data.teams, data.rules) }, log: [],
       stage: 'regular', day: 0, actions: [], poRounds: 0, poGames: 0, seasonEnd: null, decisions: {}
     };
     if (protagonist) game.protagonist = true; // 새 게임의 "초보 도움"(단장 보정, rules.protagonist). 없으면 꺼짐(옛 저장)

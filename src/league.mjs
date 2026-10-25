@@ -4,6 +4,9 @@ import { runOffseason } from './offseason.mjs';
 import { seedLegacy } from './legacy.mjs';
 import { beginSeason, settleYear } from './season-run.mjs';
 import { cardName, cardYearLabel } from './cards.mjs';
+import { createFactory, rarityOf, POSITIONS } from './factory.mjs';
+import { calcOvr, calcCost } from './rating.mjs';
+import { mulberry32, hashString } from './rng.mjs';
 
 /** labelStart: 시작 로스터의 실제 선수를 그 시즌 카드로 표기한다("허웅" → "26 허웅", 원래 이름은 baseName). 게임 화면용 */
 export function createLeague(players, rules, { history = null, teamData = null, labelStart = false } = {}) {
@@ -20,6 +23,33 @@ export function createLeague(players, rules, { history = null, teamData = null, 
     nextId: 1,
     usedNames: startPlayers.map((p) => p.name)
   };
+}
+
+/**
+ * 새 게임의 시즌 중 FA 시장을 채울 가상 무소속 선수. 실제 선수 자료에는 "시즌 중 무소속으로 남은 선수"를 가리는 근거가 없어(등록선수 화면에 없는 선수는 은퇴·군 복무·방출을 구분할 수 없다) 실존 선수를 넣지 않고,
+ * 오프시즌의 신인급 보충(src/offseason.mjs)과 같은 방식으로 시드에서 만든 가상 선수(real:false)를 소수 둔다. rules.inSeason.fa.reserve = { perPosition, ovrs: [OVR 목표...] }. 규칙이 없으면 빈 배열.
+ * 같은 시드·같은 규칙이면 같은 선수가 나온다. 반환 { freeAgents, usedNames }
+ */
+export function reserveFreeAgents(rules, seed, usedNames = []) {
+  const cfg = rules.inSeason?.fa?.reserve;
+  if (!cfg) return { freeAgents: [], usedNames };
+  const rng = mulberry32((hashString(`reserve-fa:${seed}`) ^ 0x5fa) >>> 0);
+  const names = new Set(usedNames);
+  const f = createFactory(rng, rules, names);
+  const freeAgents = [];
+  let n = 1;
+  for (const position of POSITIONS) {
+    for (const target of cfg.ovrs.slice(0, cfg.perPosition)) {
+      const stats = f.makeStats(position, target);
+      const ovr = calcOvr(position, stats);
+      freeAgents.push({
+        id: `fa0-${String(n++).padStart(4, '0')}`, name: f.uniqueName('domestic'), real: false, virtual: true, position, age: f.randInt(22, 30), number: 0,
+        rarity: rarityOf(ovr, ovr), stats, ovr, cost: calcCost(ovr), potential: ovr, origin: 'domestic', teamId: null,
+        contract: { yearsLeft: 0 }, assets: { portrait: null, model: null }, ovrWas: ovr, statsWas: { ...stats }
+      });
+    }
+  }
+  return { freeAgents, usedNames: [...names] };
 }
 
 /**

@@ -40,6 +40,7 @@ export function render(ctx, [teamParam]) {
   draw();
   const body = h('div', { class: 'stack' },
     h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, mine ? '로스터' : '다른 구단 로스터'), h('h1', `${ctx.name(teamId)} 로스터`)),
+      mine && game.stage === 'regular' ? h('button', { type: 'button', class: 'btn', onclick: () => document.getElementById('mk-fa')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }, 'FA 영입 ↓') : null,
       h('select', { 'aria-label': '구단 선택', onchange: (e) => ctx.go(`roster/${e.target.value === game.managerId ? '' : e.target.value}`) }, data.teams.map((t) => h('option', { value: t.id, selected: t.id === teamId }, t.name)))),
     h('div', { class: 'grid g4' },
       stat('선수단', `${roster.length}명`, `국내 ${pay.counts.domestic} · 외국 ${pay.counts.foreign} · 아시아쿼터 ${pay.counts.asia}`),

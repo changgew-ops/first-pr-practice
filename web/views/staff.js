@@ -1,5 +1,5 @@
 // 감독·코치: 우리 구단 스태프(감독 1 + 코치 3), 영입 후보, 리그 감독 현황. 해임하고 영입하면 남은 계약 전부가 위약금으로 시즌 정산에 나간다.
-import { h, eok, bar } from '../lib/dom.js';
+import { h, eok, bar, ask } from '../lib/dom.js';
 import { ROLES, ROLE_LABEL, payOf, avgSkill, buyoutEok } from '../../src/coaching.mjs';
 import { colorOf } from '../lib/team-ui.js';
 
@@ -40,10 +40,10 @@ export function render(ctx) {
     const cur = mine[role];
     const covered = rules.coaching.covered * (rules.econ?.index ?? 1);
     const total = ROLES.reduce((sum, r) => sum + payOf(mine[r], rules), 0);
-    const hire = (cand) => {
+    const hire = async (cand) => {
       const chk = s.staffCheck(role, cand.id, ui.years);
       if (!chk.ok) { ctx.toast(chk.reason); return; }
-      if (!window.confirm(`${ROLE_LABEL[role]} ${cur.name}을(를) 해임하고 ${cand.name}을(를) ${ui.years}년 계약으로 영입합니다.\n해임 위약금 ${eok(chk.buyout, 2)}(남은 계약 ${cur.yrs}년 전부)는 시즌 정산에서 나가고, 새 연봉은 ${eok(chk.pay, 2)}입니다. 진행할까요?`)) return;
+      if (!await ask(`${ROLE_LABEL[role]} ${cur.name}을(를) 해임하고 ${cand.name}을(를) ${ui.years}년 계약으로 영입합니다.\n해임 위약금 ${eok(chk.buyout, 2)}(남은 계약 ${cur.yrs}년 전부)는 시즌 정산에서 나가고, 새 연봉은 ${eok(chk.pay, 2)}입니다. 진행할까요?`, { ok: '해임하고 영입' })) return;
       const r = s.replaceStaff(role, cand.id, ui.years);
       if (!r.ok) { ctx.toast(r.errors[0]); return; }
       ctx.toast(`${cand.name} ${ROLE_LABEL[role]} 영입`);

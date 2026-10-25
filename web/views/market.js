@@ -73,7 +73,7 @@ const faUi = { pos: 'all', open: false };
 
 function faPanel(ctx) {
   const s = ctx.session, rules = ctx.data.rules, my = s.managerId;
-  const host = h('div', { class: 'card mk-fa' });
+  const host = h('div', { class: 'card mk-fa', id: 'mk-fa' });
   const draw = () => {
     const market = s.faMarket();
     const domestic = domesticOf(s.players, my).length;
@@ -82,20 +82,41 @@ function faPanel(ctx) {
     const shown = market.filter((m) => faUi.pos === 'all' || m.player.position === faUi.pos).slice(0, 15);
     const chip = (val, label) => h('button', { type: 'button', class: `btn ${faUi.pos === val ? 'primary' : ''}`, onclick: () => { faUi.pos = val; draw(); } }, label);
     const rows = shown.map(({ player: p, asking }) => h('tr', { class: 'mk-row' },
-      h('td', nameButton(p)), h('td', h('span', { class: 'pos' }, p.position)), h('td', { class: 'r' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.potential), h('td', { class: 'r' }, eok(asking)),
-      h('td', { class: 'r' }, h('button', { class: 'btn mk-btn primary', type: 'button', disabled: full, title: full ? `국내 선수가 이미 ${rules.roster.domestic}명입니다. 로스터 표에서 한 명을 먼저 방출하세요` : `${p.name} 영입 협상`, 'aria-label': `${p.name} 영입`, onclick: () => openSignDialog(ctx, p, asking, draw) }, '영입'))));
+      h('td', nameButton(p), p.virtual ? h('span', { class: 'tag', title: '실제 선수 자료에 근거가 없어 시드에서 만든 가상 선수입니다', style: { marginLeft: '6px' } }, '가상 선수') : null), h('td', h('span', { class: 'pos' }, p.position)), h('td', { class: 'r' }, p.age), h('td', { class: 'r' }, ovrChip(p)), h('td', { class: 'r' }, p.potential), h('td', { class: 'r' }, eok(asking)),
+      h('td', { class: 'r' }, h('button', { class: 'btn mk-btn primary', type: 'button', title: full ? `국내 선수가 이미 ${rules.roster.domestic}명입니다. 한 명을 방출해야 영입할 수 있습니다` : `${p.name} 영입 협상`, 'aria-label': full ? `${p.name} 방출하고 영입` : `${p.name} 영입`, onclick: () => (full ? openReleaseDialog(ctx, p, asking, draw) : openSignDialog(ctx, p, asking, draw)) }, full ? '방출하고 영입' : '영입'))));
     host.replaceChildren(...[
       h('div', { class: 'mk-head' }, h('h2', { style: { margin: 0 } }, '시즌 중 FA 시장'),
         h('span', { class: 'note' }, `국내 선수 ${domestic}/${rules.roster.domestic}명 · 국내 연봉 ${eok(pay)} / 캡 ${eok(rules.salaryCap.domesticEok, 0)} · 시장 ${market.length}명`)),
-      h('p', { class: 'note', style: { margin: '4px 0 0' } }, `오프시즌 FA에서 계약하지 못한 선수와 시즌 중 방출된 선수가 남아 있습니다(실제 규정은 이런 선수의 시즌 중 계약을 막지만 게임은 확장했습니다). 요구 연봉은 오프시즌 요구액의 ${Math.round(rules.inSeason.fa.askingFactor * 100)}%이고 최저 연봉(${rules.salaryCap.minSalaryEok}억) 아래로는 내려가지 않습니다. 계약은 이번 시즌 포함 ${faYearsRange(rules).join('~')}년이며, 보수는 합류한 날부터 경기 비율만큼만 정산합니다.${full ? ' 국내 선수 자리가 모두 찼습니다. 영입하려면 먼저 방출하세요.' : ''}`),
+      h('p', { class: 'note', style: { margin: '4px 0 0' } }, `오프시즌 FA에서 계약하지 못한 선수와 시즌 중 방출된 선수가 남아 있습니다(실제 규정은 이런 선수의 시즌 중 계약을 막지만 게임은 확장했습니다). 새 게임의 첫 시즌에는 실존 선수가 모두 구단 소속이라, 비어 보이지 않도록 '가상 선수'(시드에서 만든 신인급)가 몇 명 있습니다. 요구 연봉은 오프시즌 요구액의 ${Math.round(rules.inSeason.fa.askingFactor * 100)}%이고 최저 연봉(${rules.salaryCap.minSalaryEok}억) 아래로는 내려가지 않습니다. 계약은 이번 시즌 포함 ${faYearsRange(rules).join('~')}년이며, 보수는 합류한 날부터 경기 비율만큼만 정산합니다.${full ? ' 국내 선수 자리가 모두 찼습니다. "방출하고 영입"을 누르면 내보낼 선수를 고른 뒤 계약 창이 열립니다.' : ''}`),
       h('div', { class: 'mk-filters' }, chip('all', '모든 포지션'), POS_ORDER.map((p) => chip(p, p))),
       shown.length
         ? h('div', { class: 'table-wrap' }, h('table', h('thead', h('tr', ['선수', '포지션', '나이', 'OVR', 'POT', '요구 연봉', ''].map((t, i) => h('th', { class: i >= 2 && i < 6 ? 'r' : '' }, t)))), h('tbody', rows)))
-        : h('p', { class: 'muted' }, market.length ? '조건에 맞는 선수가 없습니다.' : '시장에 남은 선수가 없습니다.'),
+        : h('p', { class: 'muted' }, market.length ? '조건에 맞는 선수가 없습니다.' : '지금 시장에 남은 선수가 없습니다. 실존 선수는 전원 구단 소속이라, 시즌 중에는 오프시즌 FA에서 계약하지 못한 선수와 시즌 중 방출된 선수만 이곳에 나옵니다. 다른 구단 선수가 필요하면 트레이드를, 새 얼굴은 오프시즌 FA 5라운드와 드래프트를 이용하세요.'),
       market.length > shown.length ? h('p', { class: 'note' }, `가치가 높은 순으로 ${shown.length}명만 보입니다(포지션 필터로 좁혀 보세요).`) : null].filter(Boolean)); // replaceChildren은 null을 글자로 바꾸므로 걸러 낸다
   };
   draw();
   return host;
+}
+
+/** 자리가 가득 찼을 때: 내보낼 국내 선수를 고르면 방출(되돌릴 수 없음)한 뒤 영입 창을 연다 */
+function openReleaseDialog(ctx, cand, asking, onDone) {
+  const s = ctx.session;
+  const mineRows = domesticOf(s.players, s.managerId).sort((a, b) => a.ovr - b.ovr || a.id.localeCompare(b.id)).map((p) => {
+    const c = s.releaseCheck(p.id);
+    return h('tr', {},
+      h('td', nameButton(p)), h('td', h('span', { class: 'pos' }, p.position)), h('td', { class: 'r' }, p.age), h('td', { class: 'r' }, ovrChip(p)),
+      h('td', { class: 'r' }, eok(p.contract.salaryEok ?? 0)), h('td', { class: 'r' }, c.ok ? eok(c.cost?.severance ?? 0) : '—'),
+      h('td', { class: 'r' }, h('button', { class: 'btn', type: 'button', disabled: !c.ok, title: c.ok ? `${p.name} 방출` : c.reason, onclick: () => {
+        const r = s.releasePlayer(p.id);
+        if (!r.ok) { ctx.toast(r.errors[0]); return; }
+        ctx.toast(`${p.name} 방출`); current?.close(); onDone(); ctx.refresh();
+        if (s.faCheck(cand.id, { salaryEok: asking, years: 1 }).ok || s.faMarket().some((m) => m.player.id === cand.id)) openSignDialog(ctx, cand, asking, onDone);
+      } }, '방출'))); });
+  return openModal(`mk-rel-${cand.id}`, `${cand.name} 영입 — 내보낼 선수 선택`, `${cand.position} · ${cand.age}세 · OVR ${cand.ovr}`,
+    h('div', { class: 'stack' },
+      h('p', { class: 'note' }, '국내 선수 자리가 가득 차서 한 명을 방출해야 합니다. 방출은 되돌릴 수 없고, 남은 보수는 시즌 정산에서 해지 비용으로 나갑니다(웨이버 규칙이 켜져 있으면 먼저 공시됩니다). 방출한 뒤 영입 창이 열립니다.'),
+      h('div', { class: 'table-wrap' }, h('table', h('thead', h('tr', ['선수', '포지션', '나이', 'OVR', '연봉', '해지 비용', ''].map((t, i) => h('th', { class: i >= 2 ? 'r' : '' }, t)))), h('tbody', mineRows)))),
+    (close) => [h('button', { class: 'btn', type: 'button', onclick: close }, '취소')]);
 }
 
 function openSignDialog(ctx, p, asking, onDone) {
