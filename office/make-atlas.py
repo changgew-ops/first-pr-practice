@@ -12,6 +12,7 @@ import cutout
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'source', 'sheet.webp')
 SRC2 = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, 'source', 'sheet2.webp')  # 전설의 포켓몬·굼바 변형이 들어 있는 두 번째 시트
+SRC3 = os.path.join(HERE, 'source', 'sheet3.webp')                                         # 세 번째 시트(76.webp): 루나아라·아르세우스·제크로무·카멕이 있다
 
 # (id, 한글 이름, 컷 번호, 초록 몸 여부)
 CHARS = [
@@ -49,6 +50,12 @@ PROP_RECTS = [('mon_gantt', '일정 모니터', (824, 355, 930, 416)), ('mon_sco
 EXTRA2 = [('solgaleo', '솔가레오풍', 53), ('necrozma', '네크로즈마풍', 54),
           ('palkia', '펄기아풍', (1189, 243, 1272, 324)), ('dialga', '디아루가풍', (1276, 240, 1318, 324)),
           ('goomba_a', '굼바(정면)', 21), ('goomba_b', '굼바(걸음)', 27), ('kingboo2', '부끄왕', 23)]
+
+# 세 번째 시트(sheet3.webp = 76.webp)에서 가져오는 컷: (id, 한글 이름, 컷 번호). 번호는 cutout.components를 (round(y/60), x)로 정렬한 순서
+#  - 루나아라: "Legendary Pokémon Employees" 첫 줄 오른쪽 끝 칸(모니터를 든 컷)   - 아르세우스: 같은 영역 둘째 줄 오른쪽 끝 칸
+#  - 제크로무: 같은 영역 둘째 줄 첫 칸(검은 용; 시트에 기라티나 컷이 없어 이 자리를 대신한다)
+#  - 카멕: "Mario Characters" 영역 오른쪽의 큰 칸(파란 마법사 거북)
+EXTRA3 = [('lunala', '루나아라', 47), ('arceus', '아르세우스', 61), ('zekrom', '제크로무', 58), ('kamek', '카멕', 21)]
 
 def trim(rgba):
     al = rgba[..., 3]
@@ -133,7 +140,15 @@ def main():
         g = out[..., 1].astype(int); m = np.maximum(out[..., 0], out[..., 2]).astype(int)
         out = out.copy(); out[ring & (g > m + 25), 3] = 0
         return trim(out)
-    extra = [(eid, enhance(rect2(c) if isinstance(c, tuple) else cut2(c))) for eid, _, c in EXTRA2]
+    a3 = cutout.load(SRC3); rgb3, alpha3 = cutout.keyed(a3)
+    comps3 = cutout.components(alpha3, minpix=120, dil=3)
+    comps3.sort(key=lambda c: (round(c[1] / 60), c[0]))
+    def cut3(idx):
+        x0, y0, x1, y1, mask = comps3[idx]; pad = 3
+        sl = (slice(max(0, y0 - pad), y1 + pad), slice(max(0, x0 - pad), x1 + pad))
+        al = np.where(mask[sl], alpha3[sl], 0)
+        return trim(cutout.despill(rgb3[sl], al, False))
+    extra = [(eid, enhance(rect2(c) if isinstance(c, tuple) else cut2(c))) for eid, _, c in EXTRA2] + [(eid, enhance(cut3(c))) for eid, _, c in EXTRA3]
     chars = [(cid, enhance(cut(i, g))) for cid, _, i, g in CHARS]
     boss = [(bid, enhance(cut(i))) for bid, _, i in BOSS]
     atlas, apos = pack(chars + boss + extra, 1280)
@@ -149,7 +164,7 @@ def main():
         'atlas': {'file': 'atlas.png', 'w': atlas.width, 'h': atlas.height, 'up': UP,
                   'chars': [{'id': cid, 'name': n, 'rect': apos[cid]} for cid, n, _, _ in CHARS],
                   'boss': [{'id': bid, 'name': n, 'rect': apos[bid]} for bid, n, _ in BOSS],
-                  'extra': [{'id': eid, 'name': n, 'rect': apos[eid]} for eid, n, _ in EXTRA2]},
+                  'extra': [{'id': eid, 'name': n, 'rect': apos[eid]} for eid, n, _ in EXTRA2 + EXTRA3]},
         'props': {'file': 'props.png', 'w': psheet.width, 'h': psheet.height,
                   'items': [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_COMPS] + [{'id': pid, 'name': n, 'rect': ppos[pid]} for pid, n, _ in PROP_RECTS]}}
     # 점수판: 숫자 자리(그림에 구워진 "6 1 0 62")를 찾아 게임이 위에 칠하고 실제 숫자를 쓸 수 있게 위치를 적는다

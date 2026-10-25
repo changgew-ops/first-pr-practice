@@ -4,6 +4,10 @@
  "generated": "2026-10-25",
  "seeds": 200,
  "rebuildSeeds": 100,
+ "protagonist": {
+  "on": true,
+  "edge": 0.7
+ },
  "bots": {
   "auto": "무개입(자동 편성·추천 전술)",
   "basic": "기본 운영(휴식 로테이션 + 훈련 집중 + 기본 자동 단장)"

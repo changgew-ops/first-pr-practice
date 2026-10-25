@@ -3,6 +3,7 @@
 //        node tools/strategy-lab.mjs report <실험>      (저장된 원자료로 표만 다시 만든다)
 //        실험: rest | tactic | acquire | capfix | staff | longrun
 // 원자료는 --out(기본 /tmp/claude-0/x/lab/raw)에 JSON으로 저장하고 표는 같은 폴더의 <실험>.md로도 쓴다. 엔진은 읽기 전용이다.
+// LAB_RULES='{"salaryCap.soft.maxOverRatio":0.15}' 처럼 점 경로로 규칙 값을 덮어쓰고 쟀다(tools/lab-bots.mjs patchRules, 저장소 data는 그대로). 전략 비교는 단장 보정을 끈 채(protagonist=false)로 돈다.
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
