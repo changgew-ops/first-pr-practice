@@ -57,6 +57,7 @@ canvas { display: block; width: 100%; height: auto; image-rendering: auto; touch
 .bub::after { content: ""; position: absolute; left: 50%; bottom: -7px; margin-left: -4px; border: 4px solid transparent; border-top: 5px solid #231b2e; }
 .bub.good { background: #c9f5dc; } .bub.warn { background: #ff5a5a; color: #fff; } .bub.mail { background: #ffe9a8; } .bub.think { border-radius: 10px; background: #eef3ff; }
 .bub.t { text-overflow: ellipsis; overflow: hidden; }
+.coinc { font: 400 .75rem/1 var(--game); color: #b8860b; background: color-mix(in srgb, #ffd23f 22%, transparent); padding: 1px 5px; border-radius: 8px; margin: 0; }
 .ntag { font: 400 calc(10px * var(--k, 1))/1 var(--game); color: #fff; background: #10162f; border: 1px solid #36447a; border-left-width: 4px; padding: 2px 5px; white-space: nowrap; z-index: 2; }
 .panel { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
@@ -119,7 +120,7 @@ canvas { display: block; width: 100%; height: auto; image-rendering: auto; touch
 /* =====================================================================
    고정 상수·팔레트 (건물 그림은 테마와 무관한 고정 색)
    ===================================================================== */
-const W = 438, TOP = 24;
+const W = 400, TOP = 24;
 const FL = ['ceo', 'plan', 'dev', 'lounge', 'ui', 'ops'];
 const NF = FL.length;
 const FHS = [80, 80, 80, 112, 80, 80];                 // 층 높이(논리 px). 휴게·회의실은 로프트(복층)라 더 높다
@@ -130,8 +131,8 @@ const OPS = FL.indexOf('ops'), LNG = FL.indexOf('lounge');
 const FLOOR_NAME = { ceo: '6F 사장실', plan: '5F 기획·규칙실', dev: '4F 개발실', lounge: '3F 휴게·회의실', ui: '2F 화면·디자인실', ops: '1F 데이터·검수·배포' };
 const FLOOR_SHORT = { ceo: '사장실', plan: '기획실', dev: '개발실', lounge: '휴게실', ui: '화면실', ops: '1층' };
 const fTop = (i) => TOP + FOFF[i], fFeet = (i) => TOP + FOFF[i] + FHS[i] - 10;
-const DOOR_X = 364, QUEUE_X = 330, SHAFT_L = 345, SHAFT_R = 425;   // 엘리베이터 샤프트 2개(A: 345~383, B: 387~425). DOOR_X는 A카 문 앞(편지 경로용), 층 쪽 줄 서는 곳은 QUEUE_X
-const SHAFTS = [{ l: 345, r: 383, cx: 364 }, { l: 387, r: 425, cx: 406 }];
+const DOOR_X = 364, QUEUE_X = 330, SHAFT_L = 345, SHAFT_R = 383;   // 엘리베이터 샤프트 1개(345~383). 층 쪽 줄 서는 곳은 QUEUE_X
+const SHAFTS = [{ l: 345, r: 383, cx: 364 }];
 const DESK_X = [168, 198, 228, 258, 288, 318];
 // 왼쪽 계단(엘리베이터가 꽉 찼을 때 쓰는 층간 계단): 한 층을 지그재그 두 번으로 오른다. 층 바닥 쪽 입구는 x=STX1, 중간 참(꺾이는 곳)은 x=STX0
 const STX0 = 12, STX1 = 46;
@@ -1031,8 +1032,8 @@ class Actor {
   say(text, kind = 'say', ms = 1600) { this.bub = { text, kind, until: performance.now() + ms / SPEED }; }
 }
 function carYForFloor(f) { return fFeet(f) - 52; }
-// 엘리베이터 2대(A·B): 각자 자기 샤프트·문·대기열(q)을 가진다. 호출은 가까운/덜 바쁜 카가 받는다
-const CARS = SHAFTS.map((sh, i) => ({ i, name: 'AB'[i], cx: sh.cx, l: sh.l, r: sh.r, f: i ? 2 : OPS, y: carYForFloor(i ? 2 : OPS), door: 1, doorT: 1, move: null, k: 1, vy: 0, q: Promise.resolve(), pend: 0 }));
+// 엘리베이터 1대: 샤프트·문·대기열(q)을 가진다(여러 대로 늘릴 수 있게 CARS 배열 구조는 남겨 둔다)
+const CARS = SHAFTS.map((sh, i) => ({ i, name: '', cx: sh.cx, l: sh.l, r: sh.r, f: OPS, y: carYForFloor(OPS), door: 1, doorT: 1, move: null, k: 1, vy: 0, q: Promise.resolve(), pend: 0 }));
 const car = CARS[0];                                 // 옛 이름(디버그 훅 호환)
 function moveCar(c, f) { return new Promise((res) => { if (Math.abs(c.y - carYForFloor(f)) < 0.5) { c.f = f; return res(); } c.move = { f, res }; }); }
 const sk = (c, ms) => sleep(ms / (c.k ?? 1));       // 출퇴근 무리가 탈 때는 카도 문도 빨라진다(c.k)
@@ -1123,7 +1124,7 @@ async function goFloor(a, f, x, loft = false) {
   if (a.loft && (a.floor !== fi || !loft)) { await a.walkTo(STAIR_BOT + 2); a.loft = false; }   // 로프트에서 내려올 때는 계단으로 걸어 내려온다(발 높이는 계단 위치로 이어진다)
   if (a.floor !== fi) {
     const waiting = [...actors.values()].filter((q) => q !== a && q.floor === a.floor && q.waitQ && !q.carMode && !q.climb).length;   // 이 층에서 엘리베이터를 기다리는 사람
-    if (!a.noStairs && waiting >= CAR_CAP * 2) await takeStairs(a, fi);   // 두 카가 모두 꽉 찼을 때(줄이 정원 2대분)만 계단
+    if (!a.noStairs && waiting >= CAR_CAP) await takeStairs(a, fi);   // 카 정원만큼 이미 줄 서 있으면 계단
     else { a.waitQ = true; await a.walkTo(QUEUE_X - Math.min(waiting, 7) * 7); await ride(a, fi); a.waitQ = false; }   // 줄 서는 자리는 조금씩 비켜 서서 겹치지 않는다
   }
   if (loft && !a.loft) { await a.walkTo(STAIR_BOT + 2); a.loft = true; }                            // 로프트로 갈 때는 계단을 올라간다
@@ -1668,24 +1669,27 @@ const coinFx = [];
 const spawnCoin = (o) => coinFx.push({ t: 0, ...o });
 const throwCoin = (x0, y0, a) => new Promise((res) => spawnCoin({ kind: 'fly', sx: x0, sy: y0, a, dur: 0.8, res }));
 const dropCoin = (a, h = 40) => new Promise((res) => spawnCoin({ kind: 'drop', a, h, dur: 0.75, res }));
-function coinCatch(a) { const now = performance.now(); a.coins = (a.coins ?? 0) + 1; a.exc = now + 900 / SPEED; a.glit = now + 1600 / SPEED; spawnCoin({ kind: 'pop', a, dur: 1.2, res: () => {} }); }
+let coinsDirty = 0;
+function coinsChanged() { clearTimeout(coinsDirty); coinsDirty = setTimeout(() => { try { renderDom(); } catch (e) { /* 화면 갱신 실패는 무시 */ } }, 300); }   // 코인 개수가 바뀌면 직원 목록의 🪙 표시를 다시 그린다
+function coinCatch(a) { const now = performance.now(); a.coins = (a.coins ?? 0) + 1; coinsChanged(); a.exc = now + 900 / SPEED; a.glit = now + 1600 / SPEED; spawnCoin({ kind: 'pop', a, dur: 1.2, res: () => {} }); }
 function updateCoins(dt) {
   for (let i = coinFx.length - 1; i >= 0; i--) {
     const c = coinFx[i]; c.t += dt * SPEED / c.dur; const u = Math.min(1, c.t), a = c.a;
     if (c.kind === 'fly') { c.x = c.sx + (a.x - c.sx) * u; c.y = c.sy + (a.feet - 18 - c.sy) * u - Math.sin(u * Math.PI) * 20; }
     else if (c.kind === 'drop') { c.x = a.x + Math.sin(c.t * 9) * 1.5; c.y = (a.feet - 18 - c.h * 2) + (c.h * 2) * u * u; }
+    else if (c.kind === 'ins') { c.x = c.sx + (c.tx - c.sx) * u; c.y = c.sy + (c.ty - c.sy) * u - Math.sin(u * Math.PI) * 9; }   // 자판기 투입구로 빨려 들어간다
     else { c.x = a.x; c.y = a.feet - Math.max(30, a.sh + 3) - 4 - u * 14; }
-    if (u >= 1) { coinFx.splice(i, 1); if (c.kind !== 'pop') { coinCatch(a); c.res(); } }
+    if (u >= 1) { coinFx.splice(i, 1); if (c.kind === 'ins') c.res(); else if (c.kind !== 'pop') { coinCatch(a); c.res(); } }
   }
 }
 function drawCoins() {
   for (const c of coinFx) {
     const sp = reduce ? 1 : Math.abs(Math.cos(T * 9 + c.x * 0.2)), s0 = NPCSPR.coin;
-    ctx.save(); ctx.globalAlpha = c.kind === 'pop' ? Math.max(0, 1 - Math.max(0, c.t - 0.55) * 2.2) : 1; ctx.translate(Math.round(c.x), Math.round(c.y));
+    ctx.save(); ctx.globalAlpha = c.kind === 'pop' ? (c.neg ? 0 : Math.max(0, 1 - Math.max(0, c.t - 0.55) * 2.2)) : c.kind === 'ins' ? Math.max(0.2, 1 - Math.max(0, c.t - 0.7) * 3) : 1; ctx.translate(Math.round(c.x), Math.round(c.y)); if (c.kind === 'ins') ctx.scale(1.7, 1.7);   // 투입 코인은 눈에 띄게 조금 크게
     if (s0) { ctx.scale(Math.max(0.2, sp), 1); ctx.drawImage(s0.c, -s0.w / 2, -s0.h / 2, s0.w, s0.h); }
     else { ctx.fillStyle = '#a87a10'; ctx.beginPath(); ctx.ellipse(0, 0, 4 * Math.max(0.25, sp), 4.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#ffd23f'; ctx.beginPath(); ctx.ellipse(0, 0, 3 * Math.max(0.25, sp), 3.6, 0, 0, Math.PI * 2); ctx.fill(); R(ctx, -1, -2, 1, 4, '#fff2a0'); }
     ctx.restore();
-    if (c.kind === 'pop' && !reduce) { ctx.globalAlpha = Math.max(0, 1 - Math.max(0, c.t - 0.4) * 1.8); ctx.fillStyle = '#fff2a0'; ctx.font = '6px "Press Start 2P", monospace'; ctx.fillText('+1', Math.round(c.x) + 6, Math.round(c.y) + 3); ctx.globalAlpha = 1; }
+    if (c.kind === 'pop' && !reduce) { ctx.globalAlpha = Math.max(0, 1 - Math.max(0, c.t - 0.4) * 1.8); ctx.fillStyle = '#fff2a0'; ctx.font = '6px "Press Start 2P", monospace'; ctx.fillText(c.neg ? '-1' : '+1', Math.round(c.x) + 6, Math.round(c.y) + 3); ctx.globalAlpha = 1; }
   }
 }
 async function bossBonus(list, big) {   // 사장님이 코인을 던져(또는 쏟아부어) 준다
@@ -1696,6 +1700,43 @@ async function bossBonus(list, big) {   // 사장님이 코인을 던져(또는 
   for (const a of list.slice(0, 4)) a.say(pick(['코인이다!', '와! 보너스!', '감사합니다 사장님!', '야호~!']), 'good', 1400);
   await sleep(1500);
 }
+
+/* ---- 코인으로 음료 사 먹기: 쉬는 직원이 휴게실(위층)에서 가끔 자판기에 코인을 넣고 캔 음료를 뽑아 마신다. 코인이 없으면 "코인이 없네…" 하고 냉장고의 공짜 음료로 간다 ---- */
+const VEND_X = 134, FRIDGE_X = 162;
+let buying = null;
+const insertCoin = (a) => new Promise((res) => spawnCoin({ kind: 'ins', sx: a.x - 5, sy: a.feet - 20, tx: VEND_X + 3, ty: a.feet - 27, a, dur: 0.5, res }));
+async function useVending(a) {   // 자판기 앞(VEND_X+14, 자판기를 보는 방향)에 선 직원이 쓴다. 사 먹었으면 true
+  if ((a.coins ?? 0) > 0) {
+    a.say(pick(['코인 넣고…', '음료수 사야지', '내 보너스로!']), 'think', 900); await sleep(800);
+    a.coins--; coinsChanged(); await insertCoin(a);
+    a.say('딸깍!', 'good', 800); spawnCoin({ kind: 'pop', a, neg: true, dur: 1.0, res: () => {} }); announce(`${a.name}이(가) 코인으로 음료수를 샀습니다.`); await sleep(900);
+    a.pose = 'drink'; a.say(pick(['덜컹! 나왔다', '시원하다~']), 'good', 1400); await sleep(2800);
+    a.pose = 'stand'; a.say(pick(['캬~ 코인 쓴 보람 있네', '후… 충전 완료', '맛있다!']), 'good', 1300); await sleep(600);
+    return true;
+  }
+  a.say('코인이 없네…', 'warn', 1600); a.sweat = performance.now() + 1500 / SPEED; await sleep(1800); return false;
+}
+async function drinkTrip(a) {
+  buying = a; a.busy = true; a.nextBuy = performance.now() + (a.coins > 2 ? 22 : 55) * 1000 / SPEED;
+  try {
+    await a.job(async () => { await goFloor(a, LNG, VEND_X + 14, true); a.face = -1; });
+    if (!await useVending(a)) {
+      await a.job(async () => { await a.walkTo(FRIDGE_X + 8); a.face = -1; a.pose = 'drink'; });
+      a.say(pick(['냉장고 음료는 공짜!', '이거라도 마셔야지']), 'think', 1500); await sleep(2600);
+      a.pose = 'stand'; a.say('캬~', 'good', 1000); await sleep(500);
+    }
+    await sendHome(a);
+  } finally { a.busy = false; buying = null; }
+}
+function coinSpendTick() {   // 휴게실 위층에서 쉬는 직원 중 코인이 있는 사람이 가끔 음료를 사러 간다(한 번에 한 명)
+  if (document.hidden || running || buying || modeNight() || power.k > 0.5) return;
+  const now = performance.now();
+  const c = [...actors.values()].filter((a) => restOk(a) && a.floor === LNG && a.loft && now >= (a.nextBuy ?? 0));
+  const rich = c.filter((a) => (a.coins ?? 0) > 0);
+  const a = rich.length ? pick(rich) : (c.length && Math.random() < 0.12 ? pick(c) : null);
+  if (a) drinkTrip(a);
+}
+setInterval(coinSpendTick, 2500);
 
 /* ---- 간부 회의(6F, 낮): 사장님이 전설 직원들을 소집한다. 책상 앞에 반원으로 모여 한 명씩 보고하고, 사장님은 고개를 끄덕이다 가끔 화를 낸다(경호 뻐끔플라워가 불을 쏜다) ---- */
 const LEG_LINES = {
@@ -1867,8 +1908,8 @@ async function sceneBreak() {
   await Promise.all(ppl.map((a, i) => a.job(async () => { await sleep(i * 400); await goFloor(a, LNG, QX[i], true); a.face = -1; if (i > 0) a.say('줄 서 있네…', 'think', 1100); })));
   for (let i = 0; i < ppl.length; i++) {
     const a = ppl[i]; await a.job(async () => { await a.walkTo(spot.x + 8); a.face = -1; a.pose = spot.pose; });
-    a.say(pick(spot.line), 'good', 1400); await sleep(2400);
-    a.pose = 'stand'; a.say(pick(['캬~ 살겠다', '후… 충전 완료', '맛있다!']), 'good', 1200);
+    if (kind === 'vending') await useVending(a);   // 코인이 있으면 넣고 음료를 뽑고, 없으면 "코인이 없네…"
+    else { a.say(pick(spot.line), 'good', 1400); await sleep(2400); a.pose = 'stand'; a.say(pick(['캬~ 살겠다', '후… 충전 완료', '맛있다!']), 'good', 1200); }
     ppl.slice(i + 1).forEach((b, j) => { b.job(async () => { await b.walkTo(QX[j]); b.face = -1; }); });   // 한 칸씩 앞으로
     await sleep(700);
   }
@@ -2136,7 +2177,7 @@ function update(dt) {
   eveK = clampStep(eveK, tt === 'eve' && !nightDemo ? 1 : 0, dt / CYC.fade);
   power.k = clampStep(power.k, power.target, dt * 2.2);   // 정전·복구는 실제 시간으로 서서히
   for (const g of allGhosts()) { g.alpha = clampStep(g.alpha, ghostAlphaTarget(g), dtS * 1.1); moveFly(g, dtS); }
-  // 엘리베이터 카(2대): 출발은 서서히 빨라지고 도착은 서서히 멈춘다
+  // 엘리베이터 카: 출발은 서서히 빨라지고 도착은 서서히 멈춘다
   for (const c of CARS) {
     if (c.move) {
       const ty = carYForFloor(c.move.f), dy = ty - c.y, d = Math.abs(dy), want = Math.min(78, Math.sqrt(2 * 90 * d) + 3);
@@ -2287,10 +2328,10 @@ function drawElevator() {
     R(ctx, L, TOP + 2, Wd, BH - 4, '#0a0e24');
     for (let f = 0; f < NF; f++) { R(ctx, L - 2, fTop(f) + FHS[f] - 8, Wd + 4, 3, '#27336a'); R(ctx, L + 12, fTop(f) + 6, 12, 5, '#10163a'); R(ctx, L + 14, fTop(f) + 7, 8, 3, c.f === f && !c.move ? '#3ecf8e' : '#2d3860'); }
     R(ctx, cx - 1, TOP + 2, 2, c.y - TOP, '#4a5a98');
-    // 샤프트 위쪽 층 표시판: 카 이름(A/B)과 지금 층
+    // 샤프트 위쪽 층 표시판: 지금 층
     R(ctx, L + 5, TOP + 3, Wd - 10, 9, '#10163a'); R(ctx, L + 5, TOP + 3, Wd - 10, 1, '#36447a');
     let nf = c.f; if (c.move) { let bd = 1e9; for (let f = 0; f < NF; f++) { const d = Math.abs(carYForFloor(f) - c.y); if (d < bd) { bd = d; nf = f; } } }
-    ctx.fillStyle = c.move ? '#ffb35c' : '#3ecf8e'; ctx.font = '7px "Press Start 2P", monospace'; ctx.fillText(`${c.name}${NF - nf}`, L + 8, TOP + 10.5);
+    ctx.fillStyle = c.move ? '#ffb35c' : '#3ecf8e'; ctx.font = '7px "Press Start 2P", monospace'; ctx.fillText(`${NF - nf}F`, L + 8, TOP + 10.5);
     const cy = c.y, cw = 30; R(ctx, cx - cw / 2, cy, cw, 54, '#2a3869'); R(ctx, cx - cw / 2 + 2, cy + 3, cw - 4, 49, '#1a2250'); R(ctx, cx - cw / 2 + 2, cy + 3, cw - 4, 2, '#ff8a2b'); R(ctx, cx - cw / 2 + 2, cy + 50, cw - 4, 2, '#0a0e24');
   }
 }
@@ -2522,7 +2563,7 @@ function overlays() {
     else if (a.doc.state === 'working' && a.sitting && !a.walk && !a.inCar && !(spotA && spotA.floor === a.floor && a !== spotA)) b = { text: '…', kind: 'think', dots: true };
     else if (meetA === a) b = { text: MEET_LINES[Math.floor(T / 3.3) % MEET_LINES.length], kind: 'think' };
     if (b && b.text) { const e = el('b' + a.id, 'bub'); e.className = `bub ${b.kind ?? 'say'}${b.dots ? '' : ' t'}`; const t = b.dots ? ['·', '··', '···'][Math.floor(T * 2.5) % 3] : b.text; if (e.textContent !== t) e.textContent = t; e.style.maxWidth = `${Math.round(150)}px`; bubs.push({ e, x: sx, y: sy - 2, floor: a.floor, pri: b === a.bub ? ({ warn: 4, say: 3, good: 3, mail: 3 }[b.kind] ?? 2) : b.dots ? 0 : 1, t }); }
-    if (sel === a || a.hover || (a.walk && !a.npc)) { const e = el('n' + a.id, 'ntag'); e.textContent = a.name; e.style.borderLeftColor = a.color; place(e, sx, a.feet - Math.max(28, a.sh + 1), '-50%,-100%'); }
+    if (sel === a || a.hover || (a.walk && !a.npc)) { const e = el('n' + a.id, 'ntag'); e.textContent = a.name + (a.coins ? ` 🪙${a.coins}` : ''); e.style.borderLeftColor = a.color; place(e, sx, a.feet - Math.max(28, a.sh + 1), '-50%,-100%'); }
   }
   if (snack.show > now) { const e = el('snk', 'bub think'); e.textContent = `간식 ${'■'.repeat(snack.n)}${'□'.repeat(3 - snack.n)}`; bubs.push({ e, x: 134, y: loftY(LNG) - 52, floor: LNG, pri: 5, t: e.textContent }); }
   if (ghost.bub && now < ghost.bub.until && ghost.alpha > 0.1) { const e = el('ghostb', 'bub ' + (ghost.bub.kind ?? 'say')); e.className = `bub ${ghost.bub.kind ?? 'say'}`; e.textContent = ghost.bub.text; bubs.push({ e, x: ghost.x, y: ghost.y - SPR_BOO.h - 4, floor: ghostFloor(), pri: 4, t: ghost.bub.text }); }
@@ -2567,7 +2608,7 @@ function renderDom() {
     return `<div class="flr">${esc(FLOOR_NAME[f])}</div>` + L.map((a) => {
       const st = hasFix(a) && a.state === 'working' ? 'fix' : a.state;
       const label = { working: '일하는 중', done: '휴식', idle: '대기', fix: '수정 중' }[st] ?? a.state;
-      return `<button type="button" class="agent" data-id="${esc(a.id)}" aria-pressed="${selectedId === a.id}"><span class="row"><b>${esc(a.name)}</b><span class="chip ${st}">${label}</span></span><span class="st">${esc(a.status ?? a.role ?? '')}</span>${(a.items ?? []).length ? `<span class="pieces">${a.items.map((it) => `<span class="pc ${itemState(it)}">${esc(it.label ?? it.code)} ${STATE[itemState(it)]}</span>`).join('')}</span>` : ''}</button>`;
+      return `<button type="button" class="agent" data-id="${esc(a.id)}" aria-pressed="${selectedId === a.id}"><span class="row"><b>${esc(a.name)}</b>${actors.get(a.id)?.coins ? `<span class="coinc" title="사장님 보너스 코인">🪙${actors.get(a.id).coins}</span>` : ''}<span class="chip ${st}">${label}</span></span><span class="st">${esc(a.status ?? a.role ?? '')}</span>${(a.items ?? []).length ? `<span class="pieces">${a.items.map((it) => `<span class="pc ${itemState(it)}">${esc(it.label ?? it.code)} ${STATE[itemState(it)]}</span>`).join('')}</span>` : ''}</button>`;
     }).join('');
   }).join('') || '<p class="note">에이전트가 아직 없습니다.</p>';
   document.getElementById('feed').innerHTML = feedDocs.slice(0, 12).map((f) => { const k = kindOf(f); return `<li><span class="k ${k}">${KIND[k]}</span><span>${esc(f.text)}<time>${f.at ? new Date(f.at).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''}</time></span></li>`; }).join('') || '<li class="note">아직 소식이 없습니다.</li>';
@@ -2586,7 +2627,7 @@ function renderStaff() {
     [`전설 직원 ${LEGENDS.length}마리`, `${LEGENDS.map((L) => L.name).join('·')}. 근무조 교대 없이 낮밤 내내 사장실 자리를 지킵니다(야근). 틈틈이 서류를 넘기고 고개를 돌리며, 낮에는 사장님이 소집하는 간부 회의에서 한 명씩 보고합니다(사장님이 화내면 경호 뻐끔플라워가 불덩이를 쏩니다). ${NO_CUT.length ? `${NO_CUT.join('·')}: 컷 없음(시트에 없어 제크로무가 그 자리를 맡습니다). ` : ''}${noImg.length ? `${noImg.join('·')}은(는) 이미지를 못 불러 원형 아이콘으로 표시합니다. ` : ''}${idleOffice ? '일거리가 없어 심심해합니다.' : '일이 생기면 벌떡 일어납니다.'}`],
     ['3층 휴게실(위)·회의실(아래)', `위층(로프트)이 휴게실입니다: 소파·커피머신·자판기·냉장고, 단골 피카츄·이브이${HAS_PIRANHA ? ', 뻐끔플라워 3송이(굼바를 가끔 잡아먹었다 뱉고, 사장님이 분노하면 동그란 불덩이를 쏩니다)' : ''}. 쉬는 직원은 주로 위층에서 대기하고 커피·간식·음료를 뽑습니다. 아래층은 회의실입니다(회의 테이블${HAS_TANK ? ', 잉어킹 수조' : ''}, 3층 소회의).`],
     ['사장님 · 주간 회의', '사장님(뮤츠)은 책상 옆에 서 있고, 낮에 한 번 책상을 비우고 엘리베이터로 층을 돌며 놀고 있는 직원을 혼냅니다. 10% 확률로 주간 회의가 열리면 전원이 사장실에 모여(엘리베이터 정원 8명, 넘치면 "휴…" 하고 왼쪽 계단) 좁다고 투덜거립니다.'],
-    ['엘리베이터 2대와 계단', `엘리베이터 A·B 두 대(각 정원 ${CAR_CAP}명, 층마다 서며 내려 주고 지붕 아래에 지금 층이 표시됩니다). 가까운/덜 바쁜 카가 호출에 응답하고, 한 층에 줄이 ${CAR_CAP * 2}명(두 대분)을 넘으면 뒤에 온 직원은 "휴…" 하고 왼쪽 계단으로 걸어서 오르내립니다.`],
+    ['엘리베이터와 계단', `엘리베이터 1대(정원 ${CAR_CAP}명, 층마다 서며 내려 주고 샤프트 위에 지금 층이 표시됩니다). 한 층에 줄이 ${CAR_CAP}명을 넘으면 뒤에 온 직원은 "휴…" 하고 왼쪽 계단으로 걸어서 오르내립니다.`],
     ['킹부끄 · 저녁·밤 방문자', ghost.vis ? `${gf}에서 몰래 노는 중(분신 ${clones.filter((c) => c.vis).length}마리도 돌아다닙니다). 걸리면 "으악 들켰다!" 하고 벽을 뚫고 도망갑니다(가끔 사장님께 이르러 가기도 합니다).` : isDark() ? '곧 나타납니다. 혼자 일하는 층에서는 늘 보이고, 2명 이상 일하는 층에서는 보이지 않습니다.' : '낮에는 나타나지 않습니다. 저녁이 되면 분신술로 여러 층을 돌아다닙니다.']
   ];
   document.getElementById('staff').innerHTML = `<div class="feed">${rows.map(([n, d]) => `<div class="staffrow"><b>${esc(n)}</b><span>${esc(d)}</span></div>`).join('')}</div>`;
@@ -2692,7 +2733,7 @@ async function boot() {
   document.getElementById('b-day').addEventListener('click', runDayDemo);
   document.getElementById('b-replay').addEventListener('click', replayRecent);
   window.__framesOf = framesOf; window.__hidden = () => ({ ...HIDDEN });
-  window.__office = { setAgents: applyAgents, exec: sceneExec, bonus: bossBonus, fire: fireAt, plants: PLANTS, guard: GUARD, inspect: kamekInspect, extra: (k) => enqueue({ kind: k }), power, weather, printer, cake, coinFx, fireballs, isRunning: () => running, actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, cars: CARS, boss, ghost, npc: NPC, legends: () => LEGENDS, goombas: () => GOOMBAS, kameks: () => KAMEKS, regulars: () => REGULARS, bossP: () => BOSSP, clones, ghostVisit, ghostCatch, setNight: (v) => setTodMode(v), tod, gameClock, freezeClock, plant, fish, toads: () => TOADS, chomp, meetingSlots, takeStairs, stairPos, CAR_CAP, setPhase, cyc: CYC, phase: cycPhase, isDark, nightK: () => nightK, visiting, visitState, VISIT, layout, slotOf, runDayDemo, snack, REPORT_X, BOSS_X, workersOn, setSpeed: (n) => { SPEED = n; }, play: (kind, o = {}) => enqueue({ kind, ...o }) };
+  window.__office = { setAgents: applyAgents, exec: sceneExec, bonus: bossBonus, fire: fireAt, plants: PLANTS, guard: GUARD, inspect: kamekInspect, extra: (k) => enqueue({ kind: k }), power, weather, printer, cake, coinFx, fireballs, drink: drinkTrip, coinCatch, isRunning: () => running, actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, cars: CARS, boss, ghost, npc: NPC, legends: () => LEGENDS, goombas: () => GOOMBAS, kameks: () => KAMEKS, regulars: () => REGULARS, bossP: () => BOSSP, clones, ghostVisit, ghostCatch, setNight: (v) => setTodMode(v), tod, gameClock, freezeClock, plant, fish, toads: () => TOADS, chomp, meetingSlots, takeStairs, stairPos, CAR_CAP, setPhase, cyc: CYC, phase: cycPhase, isDark, nightK: () => nightK, visiting, visitState, VISIT, layout, slotOf, runDayDemo, snack, REPORT_X, BOSS_X, workersOn, setSpeed: (n) => { SPEED = n; }, play: (kind, o = {}) => enqueue({ kind, ...o }) };
   setInterval(wander, 9000); setInterval(renderStaff, 2500);
   initNpcs(); renderStaff();
   renderDom(); requestAnimationFrame(frame); connect();
