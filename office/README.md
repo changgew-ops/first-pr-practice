@@ -5,7 +5,7 @@
 - `assets/atlas.png` `props.png` `atlas.json` — 사용자가 만든 캐릭터·소품 시트(`source/sheet.webp`, 초록 배경)에서 잘라 낸 컷아웃. 캐릭터 컷(`atlas.png`)은 원본(약 60~90px)을 2배(`atlas.json`의 `up`)로 키우고 선명하게 다듬은 것이다. 게임이 화면 픽셀 해상도의 캔버스에 줄여 그리므로 흐려지지 않는다(원본을 1.3~1.6배 늘려 그리던 때가 흐려 보이던 원인).
 - `make-atlas.py`, `cutout.py` — 시트 → 에셋 변환(크로마키 제거, 초록 번짐 제거, 연결 성분 분리, 패킹). `python3 office/make-atlas.py`
   - 컷 번호(`CHARS`, `BOSS`, `PROP_COMPS`)는 시트를 눈으로 보고 정한 목록이다. 시트를 바꾸면 `/tmp`에 번호 표시 이미지를 만들어 다시 확인한다.
-- `source/sheet.webp`, `source/building-ref.webp` — 사용자가 올린 시트와 완성 건물 참고 이미지(시안). `source/sheet2.webp`, `source/building-ref2.webp` — 전설 포켓몬·굼바·부끄왕이 든 두 번째 시트와 6층 시안. `source/sheet3.webp`(76.webp) — 루나아라·아르세우스·제크로무·카멕이 든 세 번째 시트(`source/sheet4.webp`는 78.webp 사본, 지금은 쓰지 않는다). `make-atlas.py`가 세 시트를 한 아틀라스로 합친다(`atlas.json`의 `extra`).
+- `source/sheet.webp`, `source/building-ref.webp` — 사용자가 올린 시트와 완성 건물 참고 이미지(시안). `source/sheet2.webp`, `source/building-ref2.webp` — 전설 포켓몬·굼바·부끄왕이 든 두 번째 시트와 6층 시안. `source/sheet3.webp`(76.webp) — 루나아라·아르세우스·제크로무·카멕이 든 세 번째 시트(`source/sheet4.webp`(78.webp)는 팝고래·뜨아거 등 신규 종 컷과 의자·분재 같은 사무 소품이 든 네 번째 시트). `make-atlas.py`가 네 시트를 한 아틀라스로 합친다(`atlas.json`의 `extra`).
 
 ## 다시 게시하기
 `Artifact` 도구로 같은 주소에 게시한다(캔버스 앱이라 db 읽기만 쓴다. capabilities는 생략하면 `db`가 유지된다).
@@ -50,13 +50,40 @@
 |---|---|---|---|
 | 솔가레오 | `source/sheet2.webp` | 전설 직원 영역 | 53번 |
 | 네크로즈마 | `source/sheet2.webp` | 같은 영역 | 54번 |
-| 펄기아 | `source/sheet2.webp` | 전설 직원 영역(오른쪽 묶음) | 좌표 (1189,243)-(1272,324) |
-| 디아루가 | `source/sheet2.webp` | 전설 직원 영역(오른쪽 묶음) | 좌표 (1276,240)-(1318,324) |
+| 펄기아 | `source/sheet2.webp` | 전설 직원 영역(오른쪽 묶음) | 좌표 (1189,243)-(1272,324) — sheet3의 펄기아는 꼬리가 칸 경계에서 잘려 있어 쓰지 않는다 |
+| 디아루가 | `source/sheet3.webp` | "Legendary Pokémon Employees" 3줄째 왼쪽 | 좌표 (824,462)-(920,557) — 예전 sheet2 컷은 오른쪽이 옆 칸 의자에 가려 잘려서 교체했다 |
 | 루나아라 | `source/sheet3.webp`(76.webp) | "Legendary Pokémon Employees" 첫 줄 오른쪽 끝(모니터를 든 컷) | 47번 |
 | 아르세우스 | `source/sheet3.webp`(76.webp) | 같은 영역 둘째 줄 오른쪽 끝 | 61번 |
 | 제크로무(기라티나 자리) | `source/sheet3.webp`(76.webp) | 같은 영역 둘째 줄 첫 칸(검은 용) | 58번 |
 | 카멕(마귀 A·B) | `source/sheet3.webp`(76.webp) | "Mario Characters" 영역 오른쪽의 큰 칸 | 21번 |
 | 굼바(층별 6마리) | `source/sheet2.webp` | "Mario Characters" 영역 굼바 2종(정면·걸음) | 21번·27번 |
 | 킹부끄 | `source/sheet2.webp` | 같은 영역 | 23번 |
-| 이브이·피카츄(휴게실 단골) | `source/sheet.webp` | 캐릭터 목록 | 37번·52번 |
-| 기라티나 | — | 77·78 시트에도 없음 | **컷 없음** |
+| 키노피오(`toad`) | `source/sheet3.webp` | "Mario Characters" 영역 아랫줄 | 23번 |
+| 뻐끔플라워 화분(`piranha`) | `source/sheet3.webp` | 같은 영역 아랫줄(부끄왕 칸 바로 아래; 부끄왕과 연결 성분이 합쳐져 좌표로 오린다) | 좌표 (983,124)-(1064,206) |
+| 잉어킹(`magikarp`) | `source/sheet3.webp` | 맨 아랫줄 둘째 칸(거품 포함) | 84번 |
+
+### 사장님(뮤츠) 전신 컷
+`boss_*`는 모두 **전신**이다(예전의 상반신 컷 대신). `sheet3.webp` 맨 윗줄의 같은 자세 4컷(표정만 다름)을 상태에 맞게 배정하고, 6개를 같은 캔버스(146×187, 아래 중앙 기준)에 맞춰 상태가 바뀌어도 키와 발 위치가 같다.
+`boss_awake`·`boss_full` = 10번(차분히 눈 뜸), `boss_sleep` = 11번(눈 반쯤 감음), `boss_happy` = 12번(눈썹 올림), `boss_angry`·`boss_angry2` = 13번(찌푸린 눈), `boss_think` = "Legendary" 칸의 전신(43번, 팔을 내린 다른 자세라 크기가 조금 다르다). 발밑에 붙던 시트 격자선 조각은 지웠다.
+
+### 에이전트 종 추가(`atlas.chars` 끝에 이어 붙임 — 기존 36종의 순서·id는 그대로)
+| id | 이름 | 시트 · 컷 |
+|---|---|---|
+| `psyduck` | 고라파덕(책상) | sheet3 73번 |
+| `machamp` | 근육몬 | sheet3 좌표 (104,550)-(193,650) |
+| `golem` | 딱구리(ATM) | sheet3 좌표 (194,550)-(286,650) |
+| `magneton` | 레어코일 | sheet3 좌표 (287,552)-(370,650) |
+| `lucario_desk` | 루카리오(책상) | sheet3 좌표 (371,552)-(461,650) |
+| `rotom_a` `rotom_b` `rotom_c` | 로토무 3종 | sheet3 76·78·79번 |
+| `gardevoir` | 가디안 | sheet3 77번 |
+| `vaporeon` `sylveon` | 샤미드·님피아 | sheet3 83·85번 |
+| `lucario` | 루카리오 | sheet3 86번 |
+| `garchomp` | 한카리아스 | sheet3 87번 |
+| `arcanine` | 윈디(가디 컷이 없어 진화형을 쓴다) | sheet3 좌표 (549,657)-(639,757) |
+| `popplio` `fuecoco` `grookey` `scorbunny` `sobble` | 누리공·뜨아거·흥나숭·염버니·울머기 | sheet4 96~100번 |
+| `sudowoodo` `smeargle` | 꼬지모·루브도 | sheet4 103·104번 |
+
+시트에 있어도 쓰지 않은 컷: 같은 종의 다른 자세(꼬부기·이상해씨·파이리·로왕·해피너스 간호 컷 등).
+
+### 소품 추가(`props` 끝에 이어 붙임 — 기존 id·위치는 그대로)
+`chair_red` `chair_blue` `chair_black`(의자 3), `bonsai_a` `bonsai_b` `bonsai_c`(분재), `aloe`, `desk_l`(ㄱ자 책상), `desk_gray`, `binders`(바인더 선반), `calculator`, `stapler`, `microwave` = sheet4 89~94·106~112번, `fan_rotom` `fridge_rotom` = sheet4 좌표 (1098,327)-(1160,382)·(1160,327)-(1223,382).
