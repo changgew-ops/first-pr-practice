@@ -60,7 +60,8 @@ export function checkLineup(players, managerId, lineup, rules) {
  */
 export function beginSeason(league, teamData, rules, rng, options = {}) {
   rules = rulesFor(rules, league.season); // 그 시즌의 물가 지수를 곱한 규칙(src/economy.mjs)
-  const { manager = null, inSeasonUpdates = true, keepGames = false, protagonist = false } = options; // protagonist: 우리 구단에 단장 보정(rules.protagonist)을 주는가(새 게임의 "초보 도움" 옵션)
+  const { manager = null, inSeasonUpdates = true, keepGames = false, protagonist = false } = options;
+  const baseRoster = options.baseRoster ?? league.baseRoster ?? null; // 시너지에서 빼는 시작 로스터 표식(세션: data.players에서 파생, AI 시뮬: createLeague가 league에 둔다) // protagonist: 우리 구단에 단장 보정(rules.protagonist)을 주는가(새 게임의 "초보 도움" 옵션)
   let players = league.players;
   const start = new Map(players.map((p) => [p.id, { ...p.stats }])); // 시즌 시작 능력치
   const totals = new Map();
@@ -174,7 +175,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   /** 팀마다 전술·감독·컨디션 보정(team.mods)을 붙인다. 셋 다 꺼져 있으면 붙이지 않는다. 계산은 src/effective.mjs(화면의 유효 전력과 같은 함수) */
   function attachMods(teams) {
     if (!coachingEnabled && !tacticsEnabled && !condEnabled && !modsExtraOn) return;
-    const { mods, refs } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null, protagonist });
+    const { mods, refs } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null, protagonist, baseRoster });
     tacticRefs = refs; // 플레이오프에서는 진출한 팀들끼리의 평균과 견준다(탈락한 팀의 푹 쉰 컨디션이 평균을 올리지 않게: meanIds)
     for (const t of teams) t.mods = mods.get(t.id);
   }
@@ -562,7 +563,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     effectiveIf(teamId, hypothetical) {
       const now = poTeams ?? new Map(regular.teams.map((t) => [t.id, t]));
       const teams = [...now.values()].map((t) => ({ id: t.id, lineup: t.id === teamId ? hypothetical : t.lineup }));
-      const { mods } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null, protagonist });
+      const { mods } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null, protagonist, baseRoster });
       return { lineup: hypothetical, ...effectiveOf(hypothetical, mods.get(teamId), rules) };
     },
     get playoffs() { return playoffs; },

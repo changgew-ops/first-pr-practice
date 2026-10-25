@@ -30,12 +30,13 @@ export const pointsPerPower = (rules) => (rules.effective?.qPerPower ?? 1.83) * 
  * teams: [{ id, lineup: { starters, bench } }]
  * ctx: { rules, staff(구단 id → { head, … } 또는 null), manager(우리 구단 id), tacticChoice(우리 구단이 고른 전술 id 또는 null),
  *        condition(컨디션 보정을 지금 적용하는가), cond(Map 선수 id → 컨디션), meanIds(컨디션 평균을 낼 구단 id 집합, 없으면 전체),
- *        protagonist(우리 구단에 단장 보정을 주는가: 새 게임의 "초보 도움" 옵션, 옛 저장은 꺼짐) }
+ *        protagonist(우리 구단에 단장 보정을 주는가: 새 게임의 "초보 도움" 옵션, 옛 저장은 꺼짐),
+ *        baseRoster(시작 로스터 표식 id → 시작 소속 구단: 시너지에서 시작 멤버를 빼는 데 쓴다, src/synergy.mjs) }
  * 반환: { mods: Map(구단 id → { pace, three, reb, to, oppTo, drain, edge, parts: { coach, tactic, cond }, tactic?, fit? }), refs(전술 기준 점수 또는 null) }
  * 감독·전술·컨디션이 모두 꺼져 있으면 mods는 비어 있다(경기 계산이 보정 도입 전과 같다).
  */
 export function computeTeamMods(teams, ctx) {
-  const { rules, staff = null, manager = null, tacticChoice = null, condition = false, cond = new Map(), meanIds = null, protagonist = false } = ctx;
+  const { rules, staff = null, manager = null, tacticChoice = null, condition = false, cond = new Map(), meanIds = null, protagonist = false, baseRoster = null } = ctx;
   const coachingEnabled = Boolean(rules.coaching?.enabled && staff), tacticsEnabled = Boolean(rules.tactics?.enabled), condEnabled = Boolean(rules.condition?.enabled);
   const out = new Map();
   const protagonistEdge = protagonist && manager && rules.protagonist?.enabled ? rules.protagonist.edge ?? 0 : 0;
@@ -58,7 +59,7 @@ export function computeTeamMods(teams, ctx) {
     if (scores) parts.cond = condEdge(scores.get(t.id), mean, rules);
     if (t.id === manager && protagonistEdge) parts.manager = protagonistEdge;
     if (synergyEnabled) {
-      const slots = synergyOf([...t.lineup.starters, ...t.lineup.bench], rules);
+      const slots = synergyOf([...t.lineup.starters, ...t.lineup.bench], rules, baseRoster);
       Object.assign(parts, synergyParts(slots));
       mods.synergy = slots;
     }

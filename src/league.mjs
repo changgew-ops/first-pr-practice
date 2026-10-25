@@ -1,4 +1,5 @@
 // 리그 1년 진행: 정규리그(시즌 중 능력치 갱신·훈련 포함) → 플레이오프 → 시즌 종료 처리.
+import { baseRosterOf } from './synergy.mjs';
 import { runOffseason } from './offseason.mjs';
 import { seedLegacy } from './legacy.mjs';
 import { beginSeason, settleYear } from './season-run.mjs';
@@ -15,6 +16,7 @@ export function createLeague(players, rules, { history = null, teamData = null, 
     // ovrWas·statsWas: OVR 변화 표시의 기준(시작 값). 오프시즌 성장·노화 때 노화 직전 값으로 다시 기록된다
     players: startPlayers.map((p) => ({ ...p, stats: { ...p.stats }, contract: { ...p.contract }, ovrWas: p.ovr, statsWas: { ...p.stats } })),
     freeAgents: [],
+    baseRoster: baseRosterOf(players), // 시너지에서 빼는 "시작 로스터 표식"(id → 시작 소속 구단). 세션은 저장하지 않고 data.players에서 다시 만든다
     nextId: 1,
     usedNames: startPlayers.map((p) => p.name)
   };
