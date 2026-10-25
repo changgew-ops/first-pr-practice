@@ -685,7 +685,7 @@ const LETTER = (() => { const c = document.createElement('canvas'); c.width = 9;
 const IMGA = { ok: false };
 const NPCSPR = { legendBy: {}, kamek: null, goomba: null, goombaB: null, boo: null };
 let SPID = [];                                           // atlas 캐릭터 id 목록(SPR과 같은 순서)
-const SPRES = new Set();                                 // 에이전트에게 주지 않는 종(휴게실 단골 피카츄·이브이)
+const SPRES = new Set();                                 // 에이전트에게 주지 않는 종(휴게실 단골 피카츄·이브이, 굼바, 킹부끄)
 const PROP = {};          // id → { c(원본 크기 캔버스), w, h(원본 크기), meta }
 const CS = 0.42, CMAXW = 30, CMAXH = 37; // 캐릭터: 원본 픽셀 → 논리 픽셀(몸 크기 차이는 살리되 휴게 자리 간격 안에 들어오게 상한)
 const BS2 = 0.45;        // 사장님 상반신: 예전(0.6)의 75%. 4상태 모두 같은 배율·같은 바닥 기준으로 그린다
@@ -712,7 +712,7 @@ async function loadAssets() {
     NPCSPR.kamek = X('kamek', 28, 30, 0.3); NPCSPR.goomba = X('goomba_a', 28, 28, 0.3); NPCSPR.goombaB = X('goomba_b', 28, 28, 0.3); NPCSPR.boo = X('kingboo2', 34, 32, 0.3);
     for (const it of meta.props.items) PROP[it.id] = { c: cropTo(pi, it.rect), w: it.rect[2], h: it.rect[3], meta: it.numbers ?? null };
     SPR = chars.map((c) => c.frames); SPNAMES = chars.map((c) => c.name); SPID = chars.map((c) => c.id);
-    for (const id of ['pikachu', 'eevee']) if (SPID.includes(id)) SPRES.add(SPID.indexOf(id));
+    for (const id of ['pikachu', 'eevee', 'goomba', 'kingboo']) if (SPID.includes(id)) SPRES.add(SPID.indexOf(id));   // 단골·건물 직원(굼바·킹부끄) 컷은 에이전트에게 주지 않는다
     BOSS = newBoss; MEW = { c: mewC, w: mewC.width * MEWS / UPF, h: mewC.height * MEWS / UPF };
     VAR_CACHE.clear(); IMGA.ok = true;
   } catch (e) { console.warn('이미지 에셋을 불러오지 못해 코드로 그린 그림을 씁니다:', e.message); }
@@ -1176,9 +1176,16 @@ async function janitorLoop(j, f, off) {
 const needsHelp = (a) => !a.npc && a.vis && a.doc.state === 'working' && a.sitting && !a.walk && !a.inCar && !a.helper
   && (a.stuck || hasFix(a.doc) || STUCK_RE.test(a.doc.status ?? '') || performance.now() < (a.stuckUntil ?? 0))
   && performance.now() - (a.helped ?? -1e9) > 120000 / SPEED;
+// 마귀는 순간이동으로 다닌다: "이동!"을 외치고 반짝이며 사라졌다가 목적지에서 나타난다(엘리베이터를 타지 않는다)
+async function kamekWarp(k, f, x) {
+  if (k.floor === f && Math.abs(k.x - x) < 24) { await k.walkTo(x); return; }
+  k.say('이동!', 'good', 900); k.spark = performance.now() + 700 / SPEED; await sleep(500);
+  k.alphaT = 0; await sleep(450);
+  k.floor = f; k.loft = false; k.walk = null; k.x = x; k.spark = performance.now() + 700 / SPEED; k.alphaT = 1; await sleep(450);
+}
 async function kamekHelp(k, a) {
   a.helper = k; announce(`마귀가 ${a.name}을(를) 도우러 갑니다.`);
-  await k.job(async () => { k.say('모르는 게 있나요?', 'say', 1500); await goFloor(k, a.floor, Math.max(40, a.x - 16)); k.face = a.x >= k.x ? 1 : -1; });
+  await k.job(async () => { k.say('모르는 게 있나요?', 'say', 1500); await kamekWarp(k, a.floor, Math.max(40, a.x - 16)); k.face = a.x >= k.x ? 1 : -1; });
   k.cast = performance.now() + 2200 / SPEED; k.castTo = a; k.say('이렇게 해 보세요!', 'good', 1800); a.say('아하! 이제 알겠어요', 'good', 1800); await sleep(2300);
   k.cast = 0; k.castTo = null; a.stuck = false; a.stuckUntil = 0; a.helped = performance.now(); a.helper = null; a.sweat = 0;
   announce(`${a.name}의 막힌 부분이 풀렸습니다.`);
@@ -1194,7 +1201,7 @@ async function kamekLoop(k, idx) {
     const f = KROUTE[(idx ? KROUTE.length - 1 - (step % KROUTE.length) : step % KROUTE.length)]; step++;
     await k.job(async () => {
       if (running) return;
-      await goFloor(k, f, 40 + hash(step * 5 + idx) * 30);
+      await kamekWarp(k, f, 40 + hash(step * 5 + idx) * 30);
       if (running) return;
       k.say(['순찰 중~', '이상 없음!', '다들 잘 하고 있나?'][step % 3], 'think', 1500);
       await k.walkTo(130 + hash(step * 7 + idx) * 30); await sleep(1500);
