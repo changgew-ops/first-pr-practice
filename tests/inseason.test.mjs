@@ -39,7 +39,7 @@ test('시즌 중 FA 판정: 로스터 12명, 최저 연봉, 요구 연봉, 계�
   const salary = Math.max(ask, 2);
   const payroll = payrollEok(rich, 'A');
   const over = rules.salaryCap.domesticEok - payroll < salary;
-  if (over) { assert.equal(ok(rich, { salaryEok: salary, years: 1 }).ok, false); assert.equal(ok(rich, { salaryEok: salary, years: 1 }, true).ok, payroll + salary <= rules.salaryCap.domesticEok * 1.2); }
+  if (over) { assert.equal(ok(rich, { salaryEok: salary, years: 1 }).ok, false); assert.equal(ok(rich, { salaryEok: salary, years: 1 }, true).ok, payroll + salary <= rules.salaryCap.domesticEok * (1 + rules.salaryCap.soft.maxOverRatio) + 1e-9); }
   assert.equal(ok(eleven, { salaryEok: rules.salaryCap.domesticEok * 2, years: 1 }, true).ok, false, '하드 한도 초과');
 });
 

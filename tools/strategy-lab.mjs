@@ -39,7 +39,8 @@ export const EXPERIMENTS = {
     bal: null,
     'ace(캡 준수)': { offseason: { ...ACE, capMode: 'cap' } },
     'ace(캡 초과)': { offseason: { ...ACE, capMode: 'over' } },
-    'depth(고른 선수층)': { offseason: { value: 'linear', priceMul: 2.0, keepTop: 12, capMode: 'cap' } }
+    'depth(고른 선수층)': { offseason: { value: 'linear', priceMul: 2.0, keepTop: 12, capMode: 'cap' } },
+    'depth(캡 소진)': { offseason: { value: 'linear', priceMul: 0.5, keepTop: 12, capMode: 'cap' } } // 가격에 덜 민감해 캡을 끝까지 쓰는 고른 선수층(연봉을 ace와 맞춘 비교)
   } },
   staff: { seasons: 5, seeds: 30, base: 'none', strategies: { none: null, '감독·코치 최고 영입': { season: { staff: true } } } },
   longrun: { seasons: 30, seeds: 10, base: 'auto', strategies: { auto: null }, kind: 'longrun' }

@@ -42,7 +42,7 @@ export function tagOf(first, r = RULES) {
 /** 엔진 지문: 규칙 파일의 경기·재정·성장에 영향을 주는 키들과 시작 로스터의 해시 */
 export function engineFingerprint(root = ROOT) {
   const rules = JSON.parse(readFileSync(join(root, 'data/league-rules.json'), 'utf8'));
-  const KEYS = ['simulation', 'effective', 'tactics', 'condition', 'coaching', 'injuries', 'lineup', 'salaryCap', 'roster', 'transactions', 'offseason', 'economy', 'aging', 'revenue', 'playoffs', 'ratingModel', 'devProgram', 'fans', 'inSeason', 'waivers'];
+  const KEYS = ['protagonist', 'synergy', 'simulation', 'effective', 'tactics', 'condition', 'coaching', 'injuries', 'lineup', 'salaryCap', 'roster', 'transactions', 'offseason', 'economy', 'aging', 'revenue', 'playoffs', 'ratingModel', 'devProgram', 'fans', 'inSeason', 'waivers'];
   const pick = Object.fromEntries(KEYS.filter((k) => k in rules).map((k) => [k, rules[k]]));
   const sha = (text) => createHash('sha1').update(text).digest('hex').slice(0, 12);
   const players = readFileSync(join(root, 'data/players.json'), 'utf8');
@@ -55,7 +55,7 @@ const pct = (a, p) => { const s = [...a].sort((x, y) => x - y); return s[Math.mi
 
 function runWorker(jobFile, outFile) {
   const jobs = JSON.parse(readFileSync(jobFile, 'utf8'));
-  const out = jobs.map((j) => ({ ...j, rows: runCareer({ teamId: j.team, seed: j.seed, seasons: j.seasons, strat: BOTS[j.bot] }) }));
+  const out = jobs.map((j) => ({ ...j, rows: runCareer({ teamId: j.team, seed: j.seed, seasons: j.seasons, strat: BOTS[j.bot], protagonist: true }) })); // 새 게임의 기본(초보 도움 켬)과 같은 조건
   writeFileSync(outFile, JSON.stringify(out));
 }
 
@@ -116,7 +116,8 @@ async function main() {
       top3Within5: +(rows.filter((r) => r.some((x) => x.rank <= 3)).length / n).toFixed(3)
     };
   }
-  const out = { _note: '생성물: tools/build-difficulty.mjs(npm run build:difficulty)로만 바꾼다. 구단마다 첫 시즌을 반복 시뮬레이션한 결과와 그것으로 정한 난이도·목표 태그.', version: 1, generated: new Date().toISOString().slice(0, 10), seeds, rebuildSeeds, bots: { auto: '무개입(자동 편성·추천 전술)', basic: '기본 운영(휴식 로테이션 + 훈련 집중 + 기본 자동 단장)' }, rules: RULES, engineFingerprint: { ...engineFingerprint(), date: new Date().toISOString().slice(0, 10) }, teams: {} };
+  const out = { _note: '생성물: tools/build-difficulty.mjs(npm run build:difficulty)로만 바꾼다. 구단마다 첫 시즌을 반복 시뮬레이션한 결과와 그것으로 정한 난이도·목표 태그.', version: 1, generated: new Date().toISOString().slice(0, 10), seeds, rebuildSeeds, protagonist: { on: true, edge: JSON.parse(readFileSync(join(ROOT, 'data/league-rules.json'), 'utf8')).protagonist?.edge ?? 0 }, // 새 게임 기본(초보 도움 켬)으로 돌렸다: 구단마다 "우리 구단"으로 보정을 받으므로 구단별 우승 확률의 합이 1보다 클 수 있다
+  bots: { auto: '무개입(자동 편성·추천 전술)', basic: '기본 운영(휴식 로테이션 + 훈련 집중 + 기본 자동 단장)' }, rules: RULES, engineFingerprint: { ...engineFingerprint(), date: new Date().toISOString().slice(0, 10) }, teams: {} };
   for (const team of teams) {
     const f = first[team].basic;
     const level = levelOf(f), tag = tagOf(f);

@@ -43,9 +43,9 @@ test('difficulty.json: 형식과 값 범위, 모든 구단 포함', { skip: diff
       assert.ok(t.rebuild.po5 >= Math.max(...t.rebuild.poBySeason) - 1e-9, '5시즌 안의 PO 진출 비율은 시즌별 비율의 최대 이상');
     }
   }
-  // 우승 확률의 합은 1에 가깝다(우리가 우승한 비율을 구단별로 모으면 한 시즌에 한 팀만 우승)
+  // 우승 확률의 합은 1에 가깝다(우리가 우승한 비율을 구단별로 모으면 한 시즌에 한 팀만 우승). 단장 보정을 켜고 구단마다 따로 돌렸으면 각 구단이 보정을 받으므로 합이 더 크다(약 1.3까지)
   const sum = Object.values(diff.teams).reduce((a, t) => a + t.first.auto.champ, 0);
-  assert.ok(sum > 0.8 && sum < 1.2, `무개입 우승 확률 합 ${sum.toFixed(2)}`);
+  assert.ok(sum > 0.8 && sum < (diff.protagonist?.on ? 1.5 : 1.2), `무개입 우승 확률 합 ${sum.toFixed(2)}`);
 });
 
 test('engineFingerprint: 현재 엔진과 다르면 경고만 낸다(난이도가 낡았을 수 있다)', { skip: diff ? false : '파일 없음' }, () => {

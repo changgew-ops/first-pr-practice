@@ -82,7 +82,7 @@ test('단장 보정: 켠 새 게임만 우리 구단 경기 보정에 더해진�
   const on = Session.create(data, { managerId: MY, gmName: 'P', seed: 8, protagonist: true });
   const off = Session.create(data, { managerId: MY, gmName: 'P', seed: 8 });
   const eOn = on.teamPower(MY), eOff = off.teamPower(MY);
-  assert.ok(eOn.edge - eOff.edge > 0.39 && eOn.edge - eOff.edge < 0.41, `단장 보정 ${rules.protagonist.edge}`);
+  assert.ok(Math.abs(eOn.edge - eOff.edge - rules.protagonist.edge) < 0.011, `단장 보정 ${rules.protagonist.edge}`);
   const other = data.teams.find((t) => t.id !== MY).id;
   assert.equal(on.teamPower(other).edge, off.teamPower(other).edge, '다른 구단은 그대로');
 });

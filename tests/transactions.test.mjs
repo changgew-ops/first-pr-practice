@@ -137,7 +137,9 @@ test('트레이드 검증: 캡을 넘는 구단은 연봉이 늘어나는 거래
   const boosted = { ...l, players: l.players.map((p) => (p.id === sk[0].id ? { ...p, contract: { ...p.contract, salaryEok: p.contract.salaryEok + bump } } : p)) };
   assert.ok(payrollEok(boosted.players, 'seoul-sk') > rules.salaryCap.domesticEok);
   const cheap = [...sk].filter((p) => p.id !== sk[0].id).sort((a, b) => a.contract.salaryEok - b.contract.salaryEok)[0];
-  const pricey = dom(boosted, MGR).sort((a, b) => b.contract.salaryEok - a.contract.salaryEok)[0];
+  // 받는 연봉이 보내는 연봉보다 조금만(하드 한도 안에서) 큰 선수: 한도를 넘는 거래가 아니라 "캡 초과 상태의 연봉 증가" 규칙을 시험한다
+  const room = hardLimitEok(rules) - payrollEok(boosted.players, 'seoul-sk');
+  const pricey = dom(boosted, MGR).filter((p) => p.contract.salaryEok > cheap.contract.salaryEok + 0.05 && p.contract.salaryEok - cheap.contract.salaryEok < room - 0.05).sort((a, b) => b.contract.salaryEok - a.contract.salaryEok)[0];
   const bad = { teamA: 'seoul-sk', teamB: MGR, giveA: [cheap.id], giveB: [pricey.id] };
   assert.ok(pricey.contract.salaryEok > cheap.contract.salaryEok, '받는 연봉이 보내는 연봉보다 커야 시험이 성립한다');
   const r = validateTrade(boosted, bad, rules);

@@ -241,9 +241,9 @@ export function leagueMetrics(s) {
 export const slim = (r) => { const { entry, ...rest } = r; return rest; };
 
 /** 전략 하나로 n시즌을 돌려 시즌별 기록을 돌려준다. opts.metrics가 true면 매 시즌 시작에 리그 지표도 담는다 */
-export function runCareer({ teamId, seed, seasons = 1, strat = null, metrics = false, keepEntries = false }) {
+export function runCareer({ teamId, seed, seasons = 1, strat = null, metrics = false, keepEntries = false, protagonist = false }) {
   const base = loadBase();
-  const s = Session.create(base, { managerId: teamId, gmName: 'LAB', seed });
+  const s = Session.create(base, { managerId: teamId, gmName: 'LAB', seed, protagonist });
   const out = [];
   for (let i = 0; i < seasons; i++) {
     const lm = metrics ? leagueMetrics(s) : null;

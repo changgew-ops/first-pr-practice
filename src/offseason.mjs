@@ -309,7 +309,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   players = market.players; pool = market.pool; funds = market.funds;
   report.signings = market.signings; report.compensations = market.compensations; report.faOffers = market.offerResults;
 
-  // 5) 신인 드래프트: 순번 추첨 → 뱀 순서로 라운드마다 지명, 3라운드부터 포기 가능 (신인 계약은 캡 면제, 한도는 캡 × 1.2)
+  // 5) 신인 드래프트: 순번 추첨 → 뱀 순서로 라운드마다 지명, 3라운드부터 포기 가능 (신인 계약은 캡 면제, 한도는 캡 × (1 + soft.maxOverRatio))
   const takenNumbers = (teamId) => new Set(players.filter((p) => p.teamId === teamId).map((p) => p.number));
   const freeNumber = (teamId) => {
     const used = takenNumbers(teamId);

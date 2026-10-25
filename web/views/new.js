@@ -29,7 +29,7 @@ export function simDifficulty(difficulty, teamId) {
   const rb = t.rebuild;
   return {
     level: t.level, label: LEVEL4[t.level], stars: STARS4(t.level), tag: t.tag,
-    line: `시뮬레이션 ${n}시즌 기준: 우승 ${pct0(f.champ)} · PO 진출 ${pct0(f.po)}`,
+    line: `시뮬레이션 ${n}시즌 기준: 우승 ${pct0(f.champ)} · PO 진출 ${pct0(f.po)}${difficulty.protagonist?.on ? ' (초보 도움 켠 기준)' : ''}`,
     recovery: rb && Array.isArray(rb.poBySeason) ? `${rb.seasons}시즌 안에 PO 진출 ${pct0(rb.po5)} · 우승 ${pct0(rb.champ5)} (3시즌째 PO ${pct0(rb.poBySeason[2])})` : null
   };
 }

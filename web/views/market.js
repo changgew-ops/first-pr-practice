@@ -130,7 +130,7 @@ function openSignDialog(ctx, p, asking, onDone) {
         h('label', { for: `mk-sal-${p.id}` }, h('span', { class: 'note' }, '연봉(억)'), salaryIn),
         h('label', { for: `mk-yr-${p.id}` }, h('span', { class: 'note' }, '계약 기간(이번 시즌 포함)'), yearsIn)),
       status, preview, info,
-      h('p', { class: 'note' }, '요구 연봉 이상이면 선수는 바로 수락합니다. 샐러리캡을 넘기면 소프트캡 규정에 따라 초과분의 일부를 시즌 말 기금으로 내며, 한도(캡의 120%)를 넘는 계약은 할 수 없습니다.')),
+      h('p', { class: 'note' }, '요구 연봉 이상이면 선수는 바로 수락합니다. 샐러리캡을 넘기면 소프트캡 규정에 따라 초과분의 일부를 시즌 말 기금으로 내며, 한도(캡의 115%)를 넘는 계약은 할 수 없습니다.')),
     (close) => [h('button', { class: 'btn', type: 'button', onclick: close }, '취소'), ok]);
   update();
   return dlg;
