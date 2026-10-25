@@ -67,6 +67,11 @@ export function render(ctx) {
     h('div', { class: 'st-id-band' }, h('span', 'KBL GM'), h('span', '단장증')),
     h('div', { class: 'st-id-body' }, h('div', { class: 'st-id-photo', 'aria-hidden': 'true' }, h('span', { html: '<svg viewBox="0 0 40 40"><circle cx="20" cy="15" r="8"/><path d="M4 40c0-10 7-16 16-16s16 6 16 16z"/></svg>' })), h('div', idName, idTeam, idNo)));
 
+  // 초보 도움: 우리 구단 경기 보정에 rules.protagonist.edge점을 더한다(새 게임에서만, 기본 켬). 옛 저장은 꺼진 채 이어진다.
+  const helpEdge = data.rules.protagonist?.enabled ? data.rules.protagonist.edge : 0;
+  const helpBox = h('input', { type: 'checkbox', id: 'gm-help', checked: true });
+  const helpRow = helpEdge ? h('label', { class: 'st-help', for: 'gm-help' }, helpBox, h('span', h('b', '초보 도움(단장 보정)'), h('span', { class: 'note' }, ` 우리 구단 경기 보정 +${helpEdge}점. 약한 구단으로 시작해도 첫 시즌이 너무 막막하지 않게 돕는 작은 보정입니다. 끄면 순수 실력으로만 겨룹니다.`))) : null;
+
   const go = h('button', { class: 'btn primary big', disabled: true }, '단장 취임');
   const goNote = h('p', { class: 'note st-go-note' });
   const cards = [];
@@ -86,7 +91,7 @@ export function render(ctx) {
     } else goNote.textContent = '구단 카드를 눌러 선택하세요. 전력이 약한 구단일수록 어렵지만 키울 재미가 큽니다.';
   };
   name.addEventListener('input', sync);
-  go.addEventListener('click', () => ctx.newGame({ gmName: name.value.trim(), teamId, seed: Number(seed.value) }));
+  go.addEventListener('click', () => ctx.newGame({ gmName: name.value.trim(), teamId, seed: Number(seed.value), protagonist: Boolean(helpRow && helpBox.checked) }));
 
   const suggest = h('button', { type: 'button', class: 'btn', onclick: () => {
     const pool = SUGGEST.filter((s) => s !== name.value);
@@ -120,7 +125,8 @@ export function render(ctx) {
       h('div', { class: 'st-name-form stack' },
         h('label', { for: 'gm-name', class: 'field-label' }, '단장님의 이름은?'),
         h('div', { class: 'row' }, name, suggest),
-        h('p', { class: 'note', id: 'gm-hint' }, '게임 안에서 "OOO 단장"으로 불립니다. 나중에 바꿀 수 없습니다.')),
+        h('p', { class: 'note', id: 'gm-hint' }, '게임 안에서 "OOO 단장"으로 불립니다. 나중에 바꿀 수 없습니다.'),
+        helpRow),
       idCard),
     h('div', h('h2', '맡을 구단'), h('p', { class: 'note' }, '전력이 약한 구단일수록 어렵지만 키울 재미가 큽니다. 순서는 지금 로스터의 전력순입니다. 난이도와 목표 태그는 구단마다 첫 시즌을 반복 시뮬레이션한 결과(기본 운영 기준)입니다. 시뮬레이션 자료가 없으면 전력 순위·캡 여유·전통 점수에서 자동으로 뽑은 안내를 보여 줍니다.'), list),
     h('div', { class: 'card st-go' }, goNote, h('div', { class: 'row' }, go))) };

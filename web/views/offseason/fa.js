@@ -36,7 +36,7 @@ export function render(ctx, pending) {
       const [text, cls] = PLAN[st];
       const p = pool.find((x) => x.id === id);
       const wasOpen = r.prev.querySelector('details')?.open;
-      r.prev.replaceChildren(signingPreviewDetails(signingImpact({ roster: state.players, cand: p, offer: offers[id], rules, teamId: my, check: { ok: st === 'ok', reason: text } }), { ctx, open: wasOpen, note: '이 선수 한 명만 영입했을 때 기준입니다(다른 제안은 반영하지 않음). 모두 합친 결과는 위 요약을 보세요.' }));
+      r.prev.replaceChildren(signingPreviewDetails(signingImpact({ roster: state.players, cand: p, offer: offers[id], rules, teamId: my, baseRoster: ctx.session.baseRoster, check: { ok: st === 'ok', reason: text } }), { ctx, open: wasOpen, note: '이 선수 한 명만 영입했을 때 기준입니다(다른 제안은 반영하지 않음). 모두 합친 결과는 위 요약을 보세요.' }));
       const v = offerScore(p, offers[id].salaryEok, my, roster, ectx, rules, round);
       r.badge.className = `os-status ${st === 'ok' ? (v.accept ? 'good' : 'warn') : cls}`;
       r.badge.textContent = st === 'ok' ? (v.accept ? '이 선수는 수락할 조건' : '조건 부족(거절 예상)') : text;

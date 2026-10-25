@@ -29,7 +29,7 @@ export function render(ctx, pending) {
     const full = mine.length >= rules.roster.domestic + 2;
     const over = pay + salaryEok > hardLimitEok(rules) + 1e-9;
     const check = full ? { ok: false, reason: `국내 선수가 이미 ${mine.length}명이라 지명할 수 없습니다` } : over ? { ok: false, reason: '캡 한도를 넘어 지명할 수 없습니다' } : { ok: true };
-    return signingPreviewCard(signingImpact({ roster: players, cand: p, offer: { salaryEok, years }, rules, teamId: my, check }), { ctx, title: '지명하면', blockedLabel: '지명 불가', note: `신인 보수는 지명 순번(전체 ${overall}번째 칸) 기준 ${salaryEok.toFixed(2)}억, ${years}년입니다. 드래프트로는 국내 정원보다 2명까지 더 지명할 수 있습니다.` });
+    return signingPreviewCard(signingImpact({ roster: players, cand: p, offer: { salaryEok, years }, rules, teamId: my, baseRoster: ctx.session.baseRoster, check }), { ctx, title: '지명하면', blockedLabel: '지명 불가', note: `신인 보수는 지명 순번(전체 ${overall}번째 칸) 기준 ${salaryEok.toFixed(2)}억, ${years}년입니다. 드래프트로는 국내 정원보다 2명까지 더 지명할 수 있습니다.` });
   };
 
   function draw() {

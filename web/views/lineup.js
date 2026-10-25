@@ -8,7 +8,7 @@
 // 적용한 편성은 시즌이 끝날 때까지 쓰이고(선수가 팀을 떠나면 자동으로 돌아간다), 새 시즌에는 자동 편성으로 초기화된다.
 import { h, svg, ovrChip, stat, radar, signed, STAT_KEYS, ORIGIN_LABEL } from '../lib/dom.js';
 import { openPlayerInfo, positionAverages, statRows } from '../lib/player-info.js';
-import { modChip, modText, fmtPts } from '../lib/mods-view.js';
+import { modChip, modText, fmtPts, synergyCard } from '../lib/mods-view.js';
 import { avatarEl } from '../lib/avatar.js';
 import { colorOf } from '../lib/team-ui.js';
 import { injuryMap, injuryTag, injuryCard } from '../lib/injury-view.js';
@@ -389,7 +389,8 @@ export function render(ctx, [preselect] = []) {
         h('div', { class: 'lu-cmp-grid' },
           h('div', h('div', { class: 'note' }, '현재 편집'), h('div', { class: 'lu-big' }, shownPower(e, eff).toFixed(1)), h('div', { class: 'note eff-sub' }, `기본 ${e.power.toFixed(1)}`, eff ? modChip(eff) : null), eff ? h('div', { class: 'note' }, `${modText(eff)}${eff.tactic ? '' : ''}`) : null),
           h('div', h('div', { class: 'note' }, '자동 편성'), h('div', { class: 'lu-big' }, shownPower(autoEval, effAuto).toFixed(1)), h('div', { class: 'note eff-sub' }, `기본 ${autoEval.power.toFixed(1)}`, effAuto ? modChip(effAuto) : null), effAuto ? h('div', { class: 'note' }, modText(effAuto)) : null),
-          h('div', h('div', { class: 'note' }, '차이'), h('div', { class: `lu-big ${diff > 0.05 ? 'good' : diff < -0.05 ? 'bad' : ''}` }, `${diff > 0 ? '+' : ''}${diff.toFixed(1)}`), h('div', { class: 'note' }, live ? '유효 전력(기본 전력 + 경기 보정)' : '스타팅 70% + 벤치 30%'))))].filter(Boolean));
+          h('div', h('div', { class: 'note' }, '차이'), h('div', { class: `lu-big ${diff > 0.05 ? 'good' : diff < -0.05 ? 'bad' : ''}` }, `${diff > 0 ? '+' : ''}${diff.toFixed(1)}`), h('div', { class: 'note' }, live ? '유효 전력(기본 전력 + 경기 보정)' : '스타팅 70% + 벤치 30%')))),
+      synergyCard(eff ?? s.teamPower(s.managerId), { names: nameOf })].filter(Boolean));
   };
   draw();
   return { title: '라인업', body: h('div', { class: 'stack lineup-view' },

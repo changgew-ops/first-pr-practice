@@ -6,6 +6,14 @@ import { ROLE_TEXT } from './preview-signing.js';
 const man = (usd) => `${Math.round(usd / 10000).toLocaleString('ko-KR')}만 달러`;
 const arrow = (a, b) => `${a} → ${b}`;
 
+/** 시너지 칸이 달라질 때만 한 줄: "같은 구단·같은 해 0단계 → 1단계(+0.3점)" */
+const synergyRow = (imp) => {
+  const rows = imp.synergy?.changed ? imp.synergy.rows.filter((r) => r.before !== r.after) : [];
+  return rows.length
+    ? h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '시너지'), h('span', rows.map((r, i) => h('b', { class: r.after > r.before ? 'good' : 'bad' }, i ? ' · ' : '', `${r.label} ${r.before}단계 → ${r.after}단계`, h('span', { class: 'note' }, ` (${r.edgeAfter - r.edgeBefore >= 0 ? '+' : '−'}${Math.abs(r.edgeAfter - r.edgeBefore).toFixed(1)}점)`)))), h('span', { class: 'note' }, ' 자동 편성 기준'))
+    : null;
+};
+
 function capLines(imp) {
   if (imp.domestic) {
     const d = imp.domestic;
@@ -49,6 +57,7 @@ export function signingPreviewCard(imp, { title = '영입하면', note = null, c
     ...capLines(imp),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '예상 역할'), h('b', imp.role.before && imp.role.before !== imp.role.after ? arrow(roleBefore, roleAfter) : roleAfter), h('span', { class: 'note' }, '자동 편성 기준')),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '같은 포지션 경쟁'), h('span', comps)),
+    synergyRow(imp),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '로스터'), h('b', rosterText)),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '다음 시즌 확정 지출'),
       h('b', eok(imp.next.eok)), h('span', { class: 'note' }, imp.next.thisContractContinues ? `이 계약 포함(${imp.next.years}년)` : '이 계약은 올해로 끝')),
@@ -73,6 +82,7 @@ export function tradePreviewCard(imp, { ctx = undefined, note = null } = {}) {
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '국내 캡 여유'), h('b', { class: d.roomAfter < 0 ? 'bad' : '' }, arrow(eok(d.roomBefore), eok(d.roomAfter))), h('span', { class: 'note' }, `연봉 ${arrow(eok(d.before), eok(d.after))} / 캡 ${eok(d.cap, 0)}${d.over > 0 ? ` · 초과 기금 약 ${eok(d.penaltyAfter)}` : ''}`)),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '받는 선수 역할'), h('span', who(imp.incoming))),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '보내는 선수 지금 역할'), h('span', who(imp.outgoing))),
+    synergyRow(imp),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '로스터'), h('b', arrow(imp.roster.before, imp.roster.after))),
     h('div', { class: 'sp-row' }, h('span', { class: 'sp-k' }, '다음 시즌 확정 지출'), h('b', eok(imp.next.eok)), h('span', { class: 'note' }, `거래 전 ${eok(imp.next.before)}`)),
     note ? h('p', { class: 'note sp-note' }, note) : null);

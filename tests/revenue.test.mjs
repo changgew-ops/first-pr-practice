@@ -141,8 +141,8 @@ test('리그 관중 규모: 시작 1.0, 장기적으로 완만한 상승, 상한
   assert.ok(mid > first && last > mid, `증가 추세 ${first} → ${mid} → ${last}`);
   assert.ok(last / first > 1.3 && last / first < 1.9, `30시즌 뒤 배율 ${(last / first).toFixed(2)}`);
   for (const row of tot) for (const v of row) assert.ok(v > 600000 && v < 1700000, `총 관중 ${v}`);
-  // 구단 자금: 30시즌 뒤에도 크게 무너진 구단이 없다(구단·시즌별 편차가 커서 하한은 넉넉히 -60억. 음수 구단-시즌 수는 시드당 평균 14로 변경 전후 같다)
-  for (const s of leagues) for (const v of Object.values(s.league.funds)) assert.ok(v > -60);
+  // 구단 자금: 30시즌 뒤에도 크게 무너진 구단이 없다(구단·시즌별 편차가 커서 하한은 넉넉히 -80억(소프트캡 기금을 규정 30/40/50%에서 60/100/150%로 올린 뒤 시드 3개의 최저가 -42 → -62). 음수 구단-시즌 수는 시드당 평균 14로 변경 전후 같다)
+  for (const s of leagues) for (const v of Object.values(s.league.funds)) assert.ok(v > -80);
 });
 
 test('이전 저장 호환: att 상태가 없는 league로도 정산되고 다음 상태를 만든다', () => {

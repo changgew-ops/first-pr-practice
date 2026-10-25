@@ -7,6 +7,7 @@
 // 시즌 진행 상태(하루 결과·박스스코어·플레이오프 진행 등)는 저장하지 않는다. 시드와 조작 기록으로 처음부터 다시 돌려 복원한다(결정적이다).
 // 오프시즌도 같다: 지금까지 내린 결정(decisions)으로 같은 시드의 오프시즌을 다시 돌리고, 결정이 필요한 곳에서 멈춘다(pending).
 import { createLeague } from '../../src/league.mjs';
+import { baseRosterFor } from '../../src/synergy.mjs';
 import { beginSeason, settleYear } from '../../src/season-run.mjs';
 import { runOffseasonWith } from '../../src/decisions.mjs';
 import { createManagerBot } from '../../src/manager-bot.mjs';
@@ -43,7 +44,7 @@ export class Session {
 
   static create(data, { managerId, gmName, seed = Date.now() % 1e9, protagonist = false }) {
     if (!data.teams.some((t) => t.id === managerId)) throw new Error(`알 수 없는 구단: ${managerId}`);
-    const base = createLeague(data.players, data.rules, { history: data.history, teamData: data.teams, labelStart: true });
+    const { baseRoster: _marker, ...base } = createLeague(data.players, data.rules, { history: data.history, teamData: data.teams, labelStart: true }); // 시작 로스터 표식은 저장하지 않는다(data.players에서 파생)
     const game = {
       version: VERSION, seed, managerId, gm: { name: gmName?.trim() || '단장' },
       league: { ...base, funds: initialFunds(data.teams, data.rules) }, log: [],
@@ -52,6 +53,9 @@ export class Session {
     if (protagonist) game.protagonist = true; // 새 게임의 "초보 도움"(단장 보정, rules.protagonist). 없으면 꺼짐(옛 저장)
     return new Session(data, game);
   }
+
+  /** 시너지에서 빼는 시작 로스터 표식(id → 시작 소속 구단). 저장하지 않고 data.players에서 파생한다(src/synergy.mjs) */
+  get baseRoster() { return baseRosterFor(this.data.players); }
 
   /** 상태가 바뀔 때마다 부른다(자동 저장·화면 갱신용). 해제 함수를 돌려준다 */
   onChange(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
@@ -588,7 +592,7 @@ export class Session {
     this.dayResults = [];
     if (g.stage === 'offseason') { this.run = null; this.runOffseason(); return; }
     const rng = mulberry32(hashString(`${g.seed}:${g.league.season}`));
-    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null, protagonist: Boolean(g.protagonist) });
+    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null, protagonist: Boolean(g.protagonist), baseRoster: baseRosterFor(this.data.players) });
     this.run = run;
     let ai = 0;
     const apply = (a) => {

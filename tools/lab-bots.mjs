@@ -22,11 +22,22 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => JSON.parse(readFileSync(join(root, 'data', p), 'utf8'));
 const round1 = (v) => Math.round(v * 10) / 10;
 
+// LAB_RULES='{"simulation.usageExp":3.2,"salaryCap.maxOverRatio":0.15}' — 점 경로로 규칙 값을 덮어쓰고 실험한다(저장소의 data는 바꾸지 않는다)
+function patchRules(rules) {
+  const patch = process.env.LAB_RULES ? JSON.parse(process.env.LAB_RULES) : {};
+  for (const [path, v] of Object.entries(patch)) {
+    const keys = path.split('.');
+    let o = rules;
+    for (const k of keys.slice(0, -1)) o = o[k];
+    o[keys.at(-1)] = v;
+  }
+  return rules;
+}
 let BASE = null;
 export function loadBase() {
   if (BASE) return BASE;
   const cards = { domestic: read('cards/domestic.json').rows.map(expandCard), foreign: read('cards/foreign.json').rows.map(expandCard) };
-  BASE = { rules: read('league-rules.json'), teams: read('teams.json'), players: read('players.json'), history: loadHistory(), profiles: read('players/profiles.json'), cards };
+  BASE = { rules: patchRules(read('league-rules.json')), teams: read('teams.json'), players: read('players.json'), history: loadHistory(), profiles: read('players/profiles.json'), cards };
   return BASE;
 }
 

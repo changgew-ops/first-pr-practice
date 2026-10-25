@@ -27,3 +27,21 @@ export const modText = (e) => modLines(e).map(([n, v]) => `${n} ${fmtPts(v)}`).j
 
 /** 유효 전력 표기: "63.8" (기본 63.3 + 경기 보정) */
 export const effText = (e) => `${e.effective.toFixed(1)}`;
+
+/**
+ * 시너지 카드: 칸마다 단계(●●○)·모인 인원·다음 단계까지 필요한 인원. e = effectiveOf 결과(synergy 배열 포함)
+ * 시작 로스터의 26 선수는 구단을 옮기기 전까지 세지 않는다(src/synergy.mjs).
+ */
+export function synergyCard(e, { names = null } = {}) {
+  const slots = e?.synergy;
+  if (!slots?.length) return null;
+  const pips = (s) => h('span', { class: 'syn-pips', 'aria-label': `${s.level}단계 / ${s.max}단계` }, Array.from({ length: s.max }, (_, i) => h('i', { class: i < s.level ? 'on' : '' })));
+  const row = (s) => h('li', { class: `syn-row ${s.level ? 'on' : ''}` },
+    h('div', { class: 'syn-head' }, h('b', s.label), pips(s), h('span', { class: `mod-chip ${s.level ? 'good' : ''}` }, fmtPts(s.edge))),
+    h('div', { class: 'note' }, s.level >= s.max ? `최대 단계 · ${s.count}명이 모였습니다` : `${s.count ? `${s.count}명 모임` : '아직 없음'} · ${s.need}명 더 모으면 ${s.level + 1}단계(${s.thresholds.join('·')}명이면 1·2·3단계)`),
+    s.count && names ? h('div', { class: 'note syn-names' }, s.players.map((id) => names(id)).filter(Boolean).join(', ')) : null);
+  return h('div', { class: 'card syn-card' },
+    h('h2', { style: { margin: 0 } }, '시너지'),
+    h('p', { class: 'note', style: { margin: '4px 0 8px' } }, '엔트리(스타팅 + 벤치)에 같은 구단·같은 해 카드, 또는 같은 해 카드 선수가 모이면 단계가 오르고 경기 보정이 붙습니다(최대 3단계). 게임 시작 때의 26 선수는 구단을 옮기기 전까지 세지 않고, 나중에 드래프트·FA로 다시 데려온 카드는 셉니다.'),
+    h('ul', { class: 'syn-list' }, slots.map(row)));
+}

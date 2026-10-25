@@ -101,3 +101,8 @@
 .ts-skip { position: fixed; right: 12px; bottom: 10px; background: rgba(8,14,32,.6); color: rgba(244,241,232,.8); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; padding: 4px 10px; font: inherit; font-size: .78rem; cursor: pointer; }
 .ts-skip:hover, .ts-skip:focus-visible { background: rgba(255,255,255,.18); color: #fff; }
 .st-sim { font-size: .78rem; color: var(--muted); line-height: 1.4; border-top: 1px dashed var(--line); padding-top: 6px; }
+
+/* 초보 도움(단장 보정) 선택 */
+.st-help { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line, #2a3340); border-radius: 8px; cursor: pointer; line-height: 1.5; }
+.st-help input { margin-top: 4px; width: 18px; height: 18px; flex: none; }
+.st-help b { margin-right: 4px; }

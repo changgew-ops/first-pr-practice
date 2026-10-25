@@ -14,6 +14,7 @@ import { slotsFromDraft, draftFromSlots, clearSlot, arrangeSeats, autoDraft } fr
 import { powerOfLineup } from '../web/lib/game.js';
 import { payrollEok } from '../src/valuation.mjs';
 import { computeTeamMods, effectiveOf, pointsPerPower } from '../src/effective.mjs';
+import { baseRosterFor } from '../src/synergy.mjs';
 import { recommend } from '../src/tactics.mjs';
 import { effectiveTable } from '../web/lib/game.js';
 
@@ -527,7 +528,7 @@ test('플레이오프 중 옛 저장(poGames·pg 없음, 라운드 수만 있음
 function recomputeMods(s) {
   const teams = s.data.teams.map((t) => ({ id: t.id, lineup: s.lineupOf(t.id) }));
   const staff = s.staff;
-  return computeTeamMods(teams, { rules: s.rules, staff, manager: s.managerId, tacticChoice: s.tactics?.choice ?? null, condition: s.stage === 'regular' || s.rules.playoffs.condition?.enabled !== false, cond: s.conditions, meanIds: null }).mods;
+  return computeTeamMods(teams, { rules: s.rules, staff, manager: s.managerId, tacticChoice: s.tactics?.choice ?? null, condition: s.stage === 'regular' || s.rules.playoffs.condition?.enabled !== false, cond: s.conditions, meanIds: null, protagonist: Boolean(s.game.protagonist), baseRoster: baseRosterFor(s.data.players) }).mods;
 }
 
 test('유효 전력: 임의의 날 5곳에서 엔진이 실제로 쓴 보정 = effective 모듈 값, 화면 전력 = 기본 + 보정÷pointsPerPower', () => {

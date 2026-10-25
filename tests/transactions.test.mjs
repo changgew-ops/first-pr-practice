@@ -27,12 +27,16 @@ const fresh = () => createLeague(players, rules);
 const dom = (league, teamId) => domesticOf(league.players, teamId);
 
 // ---------- 가치·캡·자금 ----------
-test('소프트캡 기금: 초과 구간에 따라 30/40/50%', () => {
-  assert.equal(softCapPenaltyEok(29, rules), 0);
+test('소프트캡 기금: 초과 구간에 따라 비율이 오른다(규정 30/40/50%, 게임 값은 밸런스 조정으로 60/100/150%)', () => {
+  const real = { ...rules, salaryCap: { ...rules.salaryCap, soft: { ...rules.salaryCap.soft, penaltyTiers: [[0.1, 0.3], [0.2, 0.4], [1000, 0.5]] } } };
+  assert.equal(softCapPenaltyEok(29, real), 0);
+  assert.equal(softCapPenaltyEok(30, real), 0);
+  assert.equal(softCapPenaltyEok(31.5, real), 0.45); // 5% 초과 → 30%
+  assert.equal(softCapPenaltyEok(34, real), 1.6); // 13.3% 초과 → 40%
+  assert.equal(softCapPenaltyEok(38, real), 4); // 26.7% 초과 → 50%
+  // 게임 값(data/league-rules.json): 같은 구간에서 규정보다 크다
   assert.equal(softCapPenaltyEok(30, rules), 0);
-  assert.equal(softCapPenaltyEok(31.5, rules), 0.45); // 5% 초과 → 30%
-  assert.equal(softCapPenaltyEok(34, rules), 1.6); // 13.3% 초과 → 40%
-  assert.equal(softCapPenaltyEok(38, rules), 4); // 26.7% 초과 → 50%
+  for (const pay of [31.5, 34, 38]) assert.ok(softCapPenaltyEok(pay, rules) > softCapPenaltyEok(pay, real));
 });
 
 test('요구 연봉: 능력이 높을수록 오르고, 어린 유망주는 더 받고, 노장은 덜 받는다', () => {

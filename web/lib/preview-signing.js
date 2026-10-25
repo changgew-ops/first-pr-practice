@@ -3,10 +3,22 @@
 // src/lineup.mjs buildLineup)를 그대로 부르고, 영입 가능 여부(check)는 엔진의 검증 결과(세션 faCheck·foreignCheck·오프시즌 faPlan)를 받아 보여 준다.
 import { payrollEok, asiaPayrollEok, foreignPayrollUsd, softCapPenaltyEok, hardLimitEok } from '../../src/valuation.mjs';
 import { buildLineup } from '../../src/lineup.mjs';
+import { synergyOf, synergyOn } from '../../src/synergy.mjs';
 
 const r2 = (v) => Math.round(v * 100) / 100;
 
 const roleIn = (lineup, id) => (!lineup ? null : lineup.starters.some((p) => p.id === id) ? 'starter' : lineup.bench.some((p) => p.id === id) ? 'bench' : 'out');
+/** 시너지 변화: 자동 편성 엔트리 기준으로 영입·거래 전후의 칸 단계. 칸이 없으면 null. baseRoster = 시작 로스터 표식(없으면 모두 센다) */
+function synergyChange(before, after, rules, baseRoster) {
+  if (!synergyOn(rules)) return null;
+  const bw = rules.simulation?.benchWeight ?? 0.45;
+  const slots = (list) => { try { const l = buildLineup(list, rules, bw); return synergyOf([...l.starters, ...l.bench], rules, baseRoster); } catch { return null; } };
+  const b = slots(before), a = slots(after);
+  if (!b || !a) return null;
+  const rows = a.map((x, i) => ({ id: x.id, label: x.label, before: b[i].level, after: x.level, max: x.max, edgeBefore: b[i].edge, edgeAfter: x.edge, count: x.count, need: x.need }));
+  return { rows, changed: rows.some((r) => r.before !== r.after) };
+}
+
 export const ROLE_TEXT = { starter: '스타팅', bench: '벤치', out: '엔트리 밖' };
 
 /**
@@ -19,7 +31,7 @@ export const ROLE_TEXT = { starter: '스타팅', bench: '벤치', out: '엔트�
  *    role: { before, after }, competitors: [{ player, diff(OVR: 영입 선수 − 경쟁자) }], roster: { before, after, max },
  *    next: { eok(다음 시즌 확정 지출: 남은 계약이 이어지는 선수 + 이 계약), years } }
  */
-export function signingImpact({ roster, cand, offer, rules, teamId, releaseId = null, check = null, nextCounts = false }) {
+export function signingImpact({ roster, cand, offer, rules, teamId, releaseId = null, check = null, nextCounts = false, baseRoster = null }) {
   const origin = cand.origin ?? 'domestic';
   const salaryEok = origin === 'foreign' ? (offer.salaryUsd ?? 0) * (rules.transactions?.funds?.foreignUsdToEok ?? 0) : offer.salaryEok;
   const signed = { ...cand, teamId, contract: { ...(cand.contract ?? {}), ...(origin === 'foreign' ? { salaryUsd: offer.salaryUsd } : { salaryEok: offer.salaryEok }), yearsLeft: offer.years } };
@@ -52,6 +64,7 @@ export function signingImpact({ roster, cand, offer, rules, teamId, releaseId = 
   const eokOf = (p) => (p.origin === 'foreign' ? (p.contract?.salaryUsd ?? 0) * (rules.transactions?.funds?.foreignUsdToEok ?? 0) : p.contract?.salaryEok ?? 0);
   const cont = after.filter((p) => (p.contract?.yearsLeft ?? 0) > 1);
   out.next = { eok: r2(cont.reduce((s, p) => s + eokOf(p), 0)), thisContractContinues: offer.years > 1, years: offer.years, domesticEok: r2(cont.filter((p) => p.origin === 'domestic').reduce((s, p) => s + p.contract.salaryEok, 0)) };
+  out.synergy = synergyChange(before, after, rules, baseRoster);
   out.salaryEok = r2(salaryEok);
   return out;
 }
@@ -60,7 +73,7 @@ export function signingImpact({ roster, cand, offer, rules, teamId, releaseId = 
  * 트레이드 영향: 우리가 give(보내는 선수)를 내보내고 get(받는 선수)을 받으면.
  * check는 엔진 검증(validateTrade)의 결과 { ok, errors }. 반환은 signingImpact와 같은 모양의 일부.
  */
-export function tradeImpact({ roster, give, get, rules, teamId, check = null }) {
+export function tradeImpact({ roster, give, get, rules, teamId, check = null, baseRoster = null }) {
   const before = roster.filter((p) => p.teamId === teamId);
   const giveIds = new Set(give.map((p) => p.id));
   const after = [...before.filter((p) => !giveIds.has(p.id)), ...get.map((p) => ({ ...p, teamId }))];
@@ -76,6 +89,7 @@ export function tradeImpact({ roster, give, get, rules, teamId, check = null }) 
     incoming: get.map((p) => ({ player: p, role: roleIn(la, p.id) })),
     outgoing: give.map((p) => ({ player: p, role: roleIn(lb, p.id) })),
     roster: { before: before.length, after: after.length },
+    synergy: synergyChange(before, after, rules, baseRoster),
     next: { eok: r2(cont(before) - cont(before.filter((p) => giveIds.has(p.id))) + cont(get)), before: r2(cont(before)) }
   };
 }

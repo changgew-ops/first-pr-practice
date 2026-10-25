@@ -50,7 +50,7 @@ export function render(ctx, pending) {
       if (state[p.id].on) {
         const wasOpen = r.prev.querySelector('details')?.open;
         const others = expiring.filter((x) => x.id !== p.id && plan.byId.get(x.id)?.status === 'ok').map((x) => ({ ...x, contract: { ...x.contract, salaryEok: offers[x.id].salaryEok, yearsLeft: offers[x.id].years } }));
-        r.prev.replaceChildren(signingPreviewDetails(signingImpact({ roster: [...staying, ...others], cand: { ...p, teamId: null }, offer: offers[p.id], rules, teamId: my, check: { ok: st.status === 'ok', reason: text } }), { ctx, open: wasOpen, title: '재계약하면', blockedLabel: '재계약 불가', note: '재계약이 끝난 선수(계약 남은 선수 + 수락 예상 재계약) 로스터 기준이고, 아직 FA·드래프트·외국인 영입은 반영하지 않았습니다.' }));
+        r.prev.replaceChildren(signingPreviewDetails(signingImpact({ roster: [...staying, ...others], cand: { ...p, teamId: null }, offer: offers[p.id], rules, teamId: my, baseRoster: ctx.session.baseRoster, check: { ok: st.status === 'ok', reason: text } }), { ctx, open: wasOpen, title: '재계약하면', blockedLabel: '재계약 불가', note: '재계약이 끝난 선수(계약 남은 선수 + 수락 예상 재계약) 로스터 기준이고, 아직 FA·드래프트·외국인 영입은 반영하지 않았습니다.' }));
       } else r.prev.replaceChildren();
       if (st.status === 'refuse') {
         const min = minAcceptSalary(p, my, domesticOf(staying, my), ectx, rules);

@@ -1,6 +1,7 @@
 // 화면이 쓰는 게임 상태와 규칙 호출. 브라우저 API를 쓰지 않는 순수 모듈이라 node에서도 테스트한다.
 // 상태(game)는 JSON으로 저장할 수 있다: { version, seed, managerId, league, log: [시즌 결과 …] }
 import { createLeague, playLeagueYear } from '../../src/league.mjs';
+import { baseRosterFor } from '../../src/synergy.mjs';
 import { compactRegular, compactPlayoffs, entryRows, liveRows } from '../../src/player-record.mjs';
 import { createManagerBot } from '../../src/manager-bot.mjs';
 import { mulberry32, hashString } from '../../src/rng.mjs';
@@ -46,7 +47,7 @@ export function effectiveTable(game, data) {
   const rules = data.rules;
   const teams = data.teams.map((t) => ({ id: t.id, lineup: buildLineup(rosterOf(game, t.id), rules, rules.simulation.benchWeight) }));
   const staff = coachingOn(rules) ? staffOf(game.league, data.teams, rules) : null;
-  const { mods } = computeTeamMods(teams, { rules, staff, manager: game.managerId, tacticChoice: null, condition: false, cond: new Map(), meanIds: null, protagonist: Boolean(game.protagonist) });
+  const { mods } = computeTeamMods(teams, { rules, staff, manager: game.managerId, tacticChoice: null, condition: false, cond: new Map(), meanIds: null, protagonist: Boolean(game.protagonist), baseRoster: baseRosterFor(data.players) });
   const table = new Map(teams.map((t) => [t.id, { lineup: t.lineup, ...effectiveOf(t.lineup, mods.get(t.id), rules) }]));
   tableMemo.set(key, { rules: data.rules, table });
   return table;

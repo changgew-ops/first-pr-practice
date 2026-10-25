@@ -141,7 +141,7 @@ test('해임·영입: 후보만 가능하고 위약금은 정산에서 나가며
 });
 
 test('꺼 두면 경기 결과가 이전과 같다: 세 기능이 모두 꺼진 규칙은 팀 보정이 붙지 않는다', () => {
-  const off = { ...rules, coaching: { ...rules.coaching, enabled: false }, tactics: { ...rules.tactics, enabled: false }, condition: { ...rules.condition, enabled: false } };
+  const off = { ...rules, coaching: { ...rules.coaching, enabled: false }, tactics: { ...rules.tactics, enabled: false }, condition: { ...rules.condition, enabled: false }, protagonist: { ...rules.protagonist, enabled: false }, synergy: { ...rules.synergy, enabled: false } };
   const league = createLeague(players, off, { teamData: teams });
   const run = beginSeason(league, teams, off, mulberry32(7), { manager: MY, seed: 7 });
   assert.equal(run.staff, null);

@@ -1,5 +1,5 @@
 import { h, stat, bar, ovrChip, rankChart, link, eok, table } from '../lib/dom.js';
-import { fmtPts } from '../lib/mods-view.js';
+import { fmtPts, synergyCard } from '../lib/mods-view.js';
 import { emblem } from '../lib/emblem.js';
 import { playerLink } from '../lib/player-info.js';
 import { seasonLabel, powerRanking, payrollInfo, prestigeOf, fundsOf, rosterOf, fullHistory } from '../lib/game.js';
@@ -97,6 +97,7 @@ export function render(ctx) {
       stat('전통 점수', pr.score.toFixed(2), `통산 우승 ${pr.titles}회 · 정규 1위 ${pr.regularTitles}회`)),
     h('div', { class: 'card' }, h('div', { class: 'row between' }, h('span', { class: 'note' }, '캡 사용률'), h('span', { class: 'note' }, `${(capRatio * 100).toFixed(0)}%`)), bar(Math.min(pay.domestic, pay.hardLimit), pay.hardLimit, { cls: capRatio > 1 ? 'warn' : '', label: `소프트캡 ${pay.cap}억, 한도 ${pay.hardLimit.toFixed(1)}억` }),
       h('p', { class: 'note', style: { margin: '6px 0 0' } }, capNote(data, pay.cap, game.stage === 'offseason'))),
+    synergyCard(ctx.session.teamPower(my), { names: (id) => ctx.session.players.find((p) => p.id === id)?.name }),
     h('div', { class: 'grid split' },
       h('div', { class: 'card' }, h('h2', '최근 순위 흐름'), rankChart(recentRanks(hist, my)), h('p', { class: 'note' }, '노란 점은 우승. 2019-20은 코로나로 조기 종료, 이후 시즌은 게임에서 진행한 결과가 이어집니다.')),
       h('div', { class: 'card' }, h('h2', '핵심 선수'), h('ul', { class: 'plain' }, top.map((p) => h('li', ovrChip(p), h('span', { class: 'grow' }, playerLink(p.id, p.name)), h('span', { class: 'pos' }, p.position), h('span', { class: 'note' }, `${p.age}세`)))), h('p', {}, link('#/roster', '로스터 전체 보기 →')))),
