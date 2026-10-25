@@ -112,7 +112,7 @@ export function render(ctx, [preselect] = []) {
   const byId = new Map(roster.map((p) => [p.id, p]));
   const live = s.stage === 'regular' || s.stage === 'playoffs';
   const key = `${s.game.seed}:${s.season}`;
-  const hurt = injuryMap(s); // 결장 중인 선수: 자동 편성에서 빠진다
+  const hurt = new Map([...injuryMap(s)].filter(([id]) => byId.has(id))); // 우리 구단에서 결장 중인 선수(리그 전체 부상은 제외): 자동 편성에서 빠진다
   const condOf = s.stage === 'regular' || s.stage === 'playoffs' ? conditionOf(s, rules) : null; // 컨디션(시즌 중·플레이오프)
   const restIds = new Set(s.rest); // 다음 경기에서 쉬게 한 선수: 엔진도 이 경기만 결장한 것처럼 자동 편성에서 뺀다(src/season-run.mjs buildTeams)
   const sig = roster.map((p) => `${p.id}:${p.ovr}:${hurt.has(p.id) ? 'x' : ''}${restIds.has(p.id) ? 'r' : ''}`).join(',');
