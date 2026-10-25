@@ -41,7 +41,8 @@ export const EXPERIMENTS = {
     'ace(캡 준수)': { offseason: { ...ACE, capMode: 'cap' } },
     'ace(캡 초과)': { offseason: { ...ACE, capMode: 'over' } },
     'depth(고른 선수층)': { offseason: { value: 'linear', priceMul: 2.0, keepTop: 12, capMode: 'cap' } },
-    'depth(캡 소진)': { offseason: { value: 'linear', priceMul: 0.5, keepTop: 12, capMode: 'cap' } } // 가격에 덜 민감해 캡을 끝까지 쓰는 고른 선수층(연봉을 ace와 맞춘 비교)
+    // 연봉을 ace와 맞춘 고른 선수층: keepTop 12는 베테랑 재계약으로 슬롯이 다 차 FA 시장에서 쓸 자리가 없어 연봉이 21~28억에 머문다(원인). 재계약을 6명으로 줄이면 매년 슬롯이 비어 가격 민감도 0.3으로 캡 근처까지 쓴다
+    'depth(캡 소진)': { offseason: { value: 'linear', priceMul: 0.3, keepTop: 6, capMode: 'cap' } }
   } },
   staff: { seasons: 5, seeds: 30, base: 'none', strategies: { none: null, '감독·코치 최고 영입': { season: { staff: true } } } },
   longrun: { seasons: 30, seeds: 10, base: 'auto', strategies: { auto: null }, kind: 'longrun' }
@@ -145,8 +146,8 @@ function tableSeasons(expName, data) {
   const slices = exp.seasons === 1 ? [['1시즌', (r) => r]] : exp.seasons >= 10 ? [['1~3시즌', (r) => early(r)], ['8~10시즌', (r) => late(r)], ['전체 10시즌', (r) => r]] : [['1~2시즌', (r) => early(r, 2)], ['4~5시즌', (r) => late(r, 2)], ['전체', (r) => r]];
   for (const [label, pick] of slices) {
     lines.push(`\n#### ${label}\n`);
-    lines.push('| 전략 | 구단 | n | 승수 | 승수 차(기준 대비, 95% 구간) | PO 진출 | 우승 | 평균 순위 | 순이익(억) | 구단 자금(끝) | 소프트캡 기금(억) | 부상 건수 | 결장 경기 |');
-    lines.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|');
+    lines.push('| 전략 | 구단 | n | 승수 | 승수 차(기준 대비, 95% 구간) | PO 진출 | 우승 | 평균 순위 | 순이익(억) | 구단 자금(끝) | 소프트캡 기금(억) | 국내 연봉(억) | 시즌 시작 유효 전력 | 부상 건수 | 결장 경기 |');
+    lines.push('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
     for (const team of [...data.teams, '전체']) {
       for (const st of strats) {
         const keys = [], baseVals = [], vals = [];
@@ -161,7 +162,7 @@ function tableSeasons(expName, data) {
         const selAll = (k) => { const out = []; for (const key of keys) { const [t, seed] = key.split('|'); out.push(...pick(idx.get(`${t}|${seed}|${st}`)).map((r) => r[k])); } return out; };
         const champ = mean(selAll('champ').map(Number)) * 100, po = mean(selAll('po').map((x) => (x ? 1 : 0))) * 100;
         const lastFunds = keys.map((key) => { const [t, seed] = key.split('|'); const rr = pick(idx.get(`${t}|${seed}|${st}`)); return rr.at(-1).funds; }).filter((x) => x != null);
-        lines.push(`| ${st} | ${team} | ${vals.length} | ${pm(vals)} | ${c ? sig(c) : '(기준)'} | ${f(po, 0)}% | ${f(champ, 1)}% | ${f(mean(sel('rank')), 2)} | ${f(mean(sel('net')), 1)} | ${f(mean(lastFunds), 0)} | ${f(mean(sel('penalty')), 2)} | ${f(mean(sel('inj')), 1)} | ${f(mean(sel('injGames')), 0)} |`);
+        lines.push(`| ${st} | ${team} | ${vals.length} | ${pm(vals)} | ${c ? sig(c) : '(기준)'} | ${f(po, 0)}% | ${f(champ, 1)}% | ${f(mean(sel('rank')), 2)} | ${f(mean(sel('net')), 1)} | ${f(mean(lastFunds), 0)} | ${f(mean(sel('penalty')), 2)} | ${f(mean(sel('domPay')), 1)} | ${f(mean(sel('power')), 2)} | ${f(mean(sel('inj')), 1)} | ${f(mean(sel('injGames')), 0)} |`);
       }
     }
   }
