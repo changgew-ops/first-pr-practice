@@ -73,7 +73,7 @@ export function render(ctx, pending) {
       const hint = h('span', { class: 'note' });
       const prev = h('div', { class: 'sp-host' });
       const row = h('div', { class: 'os-fa-row' },
-        h('div', { class: 'os-resign-head' }, h('label', { for: `fa-on-${p.id}`, class: 'os-check' }, on, playerLine(p)), badge),
+        h('div', { class: 'os-resign-head' }, h('label', { for: `fa-on-${p.id}`, class: 'os-check' }, on, playerLine(p), p.virtual ? h('span', { class: 'tag', title: '실제 선수 자료에 근거가 없어 시드에서 만든 가상 선수입니다', style: { marginLeft: '6px' } }, '가상 선수') : null), badge),
         h('div', { class: 'os-resign-body' },
           h('div', { class: 'os-fact' }, h('span', { class: 'note' }, 'POT'), h('b', p.potential)),
           h('div', { class: 'os-fact', title: pastCard(p) ? '과거 시즌 기록으로 만든 카드: 그 시즌 능력치 그대로이고 원소속 구단이 없어 FA 보상이 없습니다' : null }, h('span', { class: 'note' }, pastCard(p) ? '과거 카드' : '이전'), h('b', pastCard(p) ? `${p.card.season}${p.card.teamId ? ` ${ctx.name(p.card.teamId)}` : ''}` : p.prevTeamId ? ctx.name(p.prevTeamId) : '-')),
