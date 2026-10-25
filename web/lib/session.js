@@ -41,7 +41,7 @@ export class Session {
     this.syncMeta(false);
   }
 
-  static create(data, { managerId, gmName, seed = Date.now() % 1e9 }) {
+  static create(data, { managerId, gmName, seed = Date.now() % 1e9, protagonist = false }) {
     if (!data.teams.some((t) => t.id === managerId)) throw new Error(`알 수 없는 구단: ${managerId}`);
     const base = createLeague(data.players, data.rules, { history: data.history, teamData: data.teams, labelStart: true });
     const game = {
@@ -49,6 +49,7 @@ export class Session {
       league: { ...base, funds: initialFunds(data.teams, data.rules) }, log: [],
       stage: 'regular', day: 0, actions: [], poRounds: 0, poGames: 0, seasonEnd: null, decisions: {}
     };
+    if (protagonist) game.protagonist = true; // 새 게임의 "초보 도움"(단장 보정, rules.protagonist). 없으면 꺼짐(옛 저장)
     return new Session(data, game);
   }
 
@@ -587,7 +588,7 @@ export class Session {
     this.dayResults = [];
     if (g.stage === 'offseason') { this.run = null; this.runOffseason(); return; }
     const rng = mulberry32(hashString(`${g.seed}:${g.league.season}`));
-    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null });
+    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null, protagonist: Boolean(g.protagonist) });
     this.run = run;
     let ai = 0;
     const apply = (a) => {

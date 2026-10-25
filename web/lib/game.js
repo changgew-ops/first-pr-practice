@@ -46,7 +46,7 @@ export function effectiveTable(game, data) {
   const rules = data.rules;
   const teams = data.teams.map((t) => ({ id: t.id, lineup: buildLineup(rosterOf(game, t.id), rules, rules.simulation.benchWeight) }));
   const staff = coachingOn(rules) ? staffOf(game.league, data.teams, rules) : null;
-  const { mods } = computeTeamMods(teams, { rules, staff, manager: game.managerId, tacticChoice: null, condition: false, cond: new Map(), meanIds: null });
+  const { mods } = computeTeamMods(teams, { rules, staff, manager: game.managerId, tacticChoice: null, condition: false, cond: new Map(), meanIds: null, protagonist: Boolean(game.protagonist) });
   const table = new Map(teams.map((t) => [t.id, { lineup: t.lineup, ...effectiveOf(t.lineup, mods.get(t.id), rules) }]));
   tableMemo.set(key, { rules: data.rules, table });
   return table;

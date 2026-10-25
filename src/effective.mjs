@@ -4,13 +4,15 @@
 // 용어(화면 표기도 이 구분을 따른다):
 //   baseOvr  기본 전력: 실제 출전 편성(직접 편성·휴식·부상 대체 반영)의 OVR 합성(스타팅 평균 70% + 벤치 평균 30%). 능력치가 만든 값이다.
 //   mods     이번 경기에만 적용되는 보정(점수): coach(감독의 로테이션 운영), tactic(전술 적합도 × 감독의 전술 이해), cond(컨디션 손실, 리그 평균과의 차이).
-//            edge = 세 값의 합. 그 팀의 기대 득점에 더해지는 점수라 선수의 성장 변화(ovrWas 대비 "(+N)")와는 다른 종류다.
+//            manager(단장 보정: 우리 구단에만, rules.protagonist), synergyTeam·synergyYear(시너지 칸, src/synergy.mjs: 모든 구단).
+//            edge = 모든 항목의 합. 그 팀의 기대 득점에 더해지는 점수라 선수의 성장 변화(ovrWas 대비 "(+N)")와는 다른 종류다.
 //   effective 유효 전력 = baseOvr + edge ÷ pointsPerPower. edge(득점 점수)를 OVR 전력과 같은 눈금으로 옮긴 값이다.
 //   pointsPerPower: 전력 1이 경기 득점 차이로 몇 점인지. 편성의 (공격+수비) 점수가 전력 1당 qPerPower만큼 오르고 득점 차이는 ratingScale × 그 값이라 qPerPower × ratingScale(규칙값 effective, 게임용 보정값).
 // 순수 함수만 둔다(파일·브라우저 API 없음).
 import { leagueRefs, chooseAuto, tacticMods, tacticList } from './tactics.mjs';
 import { lineupCondScore, condEdge } from './condition.mjs';
 import { rotationEdge, tacMult } from './coaching.mjs';
+import { synergyOf, synergyOn, synergyParts } from './synergy.mjs';
 
 const round2 = (v) => Math.round(v * 100) / 100;
 
@@ -27,15 +29,18 @@ export const pointsPerPower = (rules) => (rules.effective?.qPerPower ?? 1.83) * 
  * 모든 팀의 경기 보정을 한 번에 계산한다(엔진의 attachMods와 같은 식: 전술 적합도 기준은 리그 평균이라 팀 전체가 함께 필요하다).
  * teams: [{ id, lineup: { starters, bench } }]
  * ctx: { rules, staff(구단 id → { head, … } 또는 null), manager(우리 구단 id), tacticChoice(우리 구단이 고른 전술 id 또는 null),
- *        condition(컨디션 보정을 지금 적용하는가), cond(Map 선수 id → 컨디션), meanIds(컨디션 평균을 낼 구단 id 집합, 없으면 전체) }
+ *        condition(컨디션 보정을 지금 적용하는가), cond(Map 선수 id → 컨디션), meanIds(컨디션 평균을 낼 구단 id 집합, 없으면 전체),
+ *        protagonist(우리 구단에 단장 보정을 주는가: 새 게임의 "초보 도움" 옵션, 옛 저장은 꺼짐) }
  * 반환: { mods: Map(구단 id → { pace, three, reb, to, oppTo, drain, edge, parts: { coach, tactic, cond }, tactic?, fit? }), refs(전술 기준 점수 또는 null) }
  * 감독·전술·컨디션이 모두 꺼져 있으면 mods는 비어 있다(경기 계산이 보정 도입 전과 같다).
  */
 export function computeTeamMods(teams, ctx) {
-  const { rules, staff = null, manager = null, tacticChoice = null, condition = false, cond = new Map(), meanIds = null } = ctx;
+  const { rules, staff = null, manager = null, tacticChoice = null, condition = false, cond = new Map(), meanIds = null, protagonist = false } = ctx;
   const coachingEnabled = Boolean(rules.coaching?.enabled && staff), tacticsEnabled = Boolean(rules.tactics?.enabled), condEnabled = Boolean(rules.condition?.enabled);
   const out = new Map();
-  if (!coachingEnabled && !tacticsEnabled && !condEnabled) return { mods: out, refs: null };
+  const protagonistEdge = protagonist && manager && rules.protagonist?.enabled ? rules.protagonist.edge ?? 0 : 0;
+  const synergyEnabled = synergyOn(rules);
+  if (!coachingEnabled && !tacticsEnabled && !condEnabled && !protagonistEdge && !synergyEnabled) return { mods: out, refs: null };
   const refs = tacticsEnabled ? leagueRefs(teams.map((t) => t.lineup), rules) : null;
   const scores = condition ? new Map(teams.map((t) => [t.id, lineupCondScore(t.lineup, cond, rules)])) : null;
   const meanOf = scores && meanIds ? teams.filter((t) => meanIds.has(t.id)) : teams;
@@ -51,7 +56,13 @@ export function computeTeamMods(teams, ctx) {
       if (tm) { Object.assign(mods, { pace: tm.pace, three: tm.three, reb: tm.reb, to: tm.to, oppTo: tm.oppTo }); mods.drain = tacticList(rules).find((x) => x.id === tm.id)?.drain ?? 1; mods.tactic = tm.id; mods.fit = tm.fit; parts.tactic = tm.edge; }
     }
     if (scores) parts.cond = condEdge(scores.get(t.id), mean, rules);
-    mods.edge = Math.round((parts.coach + parts.tactic + parts.cond) * 100) / 100;
+    if (t.id === manager && protagonistEdge) parts.manager = protagonistEdge;
+    if (synergyEnabled) {
+      const slots = synergyOf([...t.lineup.starters, ...t.lineup.bench], rules);
+      Object.assign(parts, synergyParts(slots));
+      mods.synergy = slots;
+    }
+    mods.edge = Math.round(Object.values(parts).reduce((a, v) => a + v, 0) * 100) / 100;
     mods.parts = parts;
     out.set(t.id, mods);
   }
@@ -64,7 +75,8 @@ export function effectiveOf(lineup, mods, rules) {
   const edge = mods?.edge ?? 0;
   const ppp = pointsPerPower(rules);
   return {
-    baseOvr: round2(baseOvr), edge, parts: { coach: mods?.parts?.coach ?? 0, tactic: mods?.parts?.tactic ?? 0, cond: mods?.parts?.cond ?? 0 },
+    baseOvr: round2(baseOvr), edge, parts: { coach: mods?.parts?.coach ?? 0, tactic: mods?.parts?.tactic ?? 0, cond: mods?.parts?.cond ?? 0, ...Object.fromEntries(Object.entries(mods?.parts ?? {}).filter(([k]) => k !== 'coach' && k !== 'tactic' && k !== 'cond')) },
+    synergy: mods?.synergy ?? [],
     tactic: mods?.tactic ?? null, fit: mods?.fit ?? 0, pointsPerPower: round2(ppp),
     effective: round2(baseOvr + edge / ppp)
   };

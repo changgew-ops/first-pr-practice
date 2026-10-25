@@ -1,7 +1,7 @@
 // 전략 실험실: 같은 구단·같은 시드에서 전략 봇을 여러 개 돌려 승수·순위·플레이오프·우승·재정을 비교한다(docs/BALANCE.md).
 // 사용:  node tools/strategy-lab.mjs run <실험> [--seeds N] [--teams a,b,c] [--procs 4] [--out 폴더]
 //        node tools/strategy-lab.mjs report <실험>      (저장된 원자료로 표만 다시 만든다)
-//        실험: rest | tactic | acquire | staff | longrun
+//        실험: rest | tactic | acquire | capfix | staff | longrun
 // 원자료는 --out(기본 /tmp/claude-0/x/lab/raw)에 JSON으로 저장하고 표는 같은 폴더의 <실험>.md로도 쓴다. 엔진은 읽기 전용이다.
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
@@ -33,6 +33,13 @@ export const EXPERIMENTS = {
     'youth(유망주+D리그)': { season: { programs: true }, offseason: { value: 'youth', draft: 'youth', capMode: 'cap' } },
     'vet(베테랑)': { offseason: { value: 'vet', draft: 'vet', capMode: 'cap' } },
     'bal(캡 초과)': { offseason: { value: 'linear', capMode: 'over' } }
+  } },
+  // 우월 전략 수정 재측정용(소프트캡 기금·에이스 집중 조정 뒤 같은 실험의 부분 집합)
+  capfix: { seasons: 10, seeds: 24, base: 'bal', strategies: {
+    bal: null,
+    'ace(캡 준수)': { offseason: { ...ACE, capMode: 'cap' } },
+    'ace(캡 초과)': { offseason: { ...ACE, capMode: 'over' } },
+    'depth(고른 선수층)': { offseason: { value: 'linear', priceMul: 2.0, keepTop: 12, capMode: 'cap' } }
   } },
   staff: { seasons: 5, seeds: 30, base: 'none', strategies: { none: null, '감독·코치 최고 영입': { season: { staff: true } } } },
   longrun: { seasons: 30, seeds: 10, base: 'auto', strategies: { auto: null }, kind: 'longrun' }

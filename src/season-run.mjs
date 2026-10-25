@@ -3,6 +3,7 @@
 import { rulesFor } from './economy.mjs';
 import { buildLineup, validateLineup, buildLineupHealthy, substituteInjured } from './lineup.mjs';
 import { computeTeamMods, effectiveOf } from './effective.mjs';
+import { synergyOn } from './synergy.mjs';
 import { coachingOn, staffOf, staffIds, candidatePool, rotationEdge, tacMult, trainMul, recoveryMul, buyoutEok, seasonCharge, extraCharge, rollStaff, payOf, ROLES, ROLE_LABEL } from './coaching.mjs';
 import { chooseAuto, tacticMods, leagueRefs, recommend, tacticList, BALANCED } from './tactics.mjs';
 import { conditionOn, startCondition, nextCondition, lineupCondScore, condEdge, fatigueStreak } from './condition.mjs';
@@ -59,7 +60,7 @@ export function checkLineup(players, managerId, lineup, rules) {
  */
 export function beginSeason(league, teamData, rules, rng, options = {}) {
   rules = rulesFor(rules, league.season); // 그 시즌의 물가 지수를 곱한 규칙(src/economy.mjs)
-  const { manager = null, inSeasonUpdates = true, keepGames = false } = options;
+  const { manager = null, inSeasonUpdates = true, keepGames = false, protagonist = false } = options; // protagonist: 우리 구단에 단장 보정(rules.protagonist)을 주는가(새 게임의 "초보 도움" 옵션)
   let players = league.players;
   const start = new Map(players.map((p) => [p.id, { ...p.stats }])); // 시즌 시작 능력치
   const totals = new Map();
@@ -101,6 +102,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
 
   // 감독·코치(src/coaching.mjs)·전술(src/tactics.mjs)·컨디션(src/condition.mjs). 켜져 있지 않으면 경기 계산이 이전과 똑같다.
   const coachingEnabled = coachingOn(rules), tacticsEnabled = Boolean(rules.tactics?.enabled), condEnabled = conditionOn(rules);
+  const modsExtraOn = Boolean((protagonist && manager && rules.protagonist?.enabled) || synergyOn(rules)); // 단장 보정·시너지 칸이 있으면 경기 보정을 만든다
   const staff = coachingEnabled ? staffOf(league, teamData, rules) : null; // 구단 → { head, off, def, cond }. 우리 구단은 시즌 중에 바꿀 수 있다
   const staffHired = {}; // 우리 구단이 이번 시즌 새로 들인 역할 → 합류한 날(그 비율만 인건비를 낸다)
   let staffBuyouts = 0; // 우리 구단이 해임하며 낸 위약금(억 원)
@@ -171,8 +173,8 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   };
   /** 팀마다 전술·감독·컨디션 보정(team.mods)을 붙인다. 셋 다 꺼져 있으면 붙이지 않는다. 계산은 src/effective.mjs(화면의 유효 전력과 같은 함수) */
   function attachMods(teams) {
-    if (!coachingEnabled && !tacticsEnabled && !condEnabled) return;
-    const { mods, refs } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null });
+    if (!coachingEnabled && !tacticsEnabled && !condEnabled && !modsExtraOn) return;
+    const { mods, refs } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null, protagonist });
     tacticRefs = refs; // 플레이오프에서는 진출한 팀들끼리의 평균과 견준다(탈락한 팀의 푹 쉰 컨디션이 평균을 올리지 않게: meanIds)
     for (const t of teams) t.mods = mods.get(t.id);
   }
@@ -560,7 +562,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
     effectiveIf(teamId, hypothetical) {
       const now = poTeams ?? new Map(regular.teams.map((t) => [t.id, t]));
       const teams = [...now.values()].map((t) => ({ id: t.id, lineup: t.id === teamId ? hypothetical : t.lineup }));
-      const { mods } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null });
+      const { mods } = computeTeamMods(teams, { rules, staff, manager, tacticChoice, condition: condActive(), cond, meanIds: inPlayoffs && poSeeds ? poSeeds : null, protagonist });
       return { lineup: hypothetical, ...effectiveOf(hypothetical, mods.get(teamId), rules) };
     },
     get playoffs() { return playoffs; },
