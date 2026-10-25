@@ -34,13 +34,14 @@ import * as achievementsView from './views/achievements.js';
 import * as codexView from './views/codex.js';
 import * as previewView from './views/preview.js';
 import * as staffView from './views/staff.js';
+import * as championView from './views/champion.js';
 import { ACHIEVEMENT_BY_ID } from '../src/achievements.mjs';
 
 const root = document.getElementById('app');
-const FREE = { title: titleView, intro: introView, new: newView, save: saveView }; // 세션 없이도 여는 화면
+const FREE = { title: titleView, intro: introView, new: newView, save: saveView, champion: championView }; // 세션 없이도 여는 화면
 const ROUTES = {
   home: homeView, news: newsView, season: seasonView, roster: rosterView, player: playerView, lineup: lineupView, training: trainingView, trades: tradesView,
-  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, preview: previewView, staff: staffView, save: saveView
+  offseason: offseasonView, league: leagueView, history: historyView, report: reportView, achievements: achievementsView, codex: codexView, preview: previewView, staff: staffView, save: saveView, champion: championView
 };
 // 사이드 메뉴 묶음: 앞쪽이 자주 쓰는 화면. 제목이 null인 묶음은 제목 없이 맨 위에 둔다.
 const NAV_GROUPS = [
@@ -79,7 +80,7 @@ function attach(session) {
   });
 }
 /** 새 게임: { gmName, teamId, seed } */
-ctx.newGame = ({ gmName, teamId, seed }) => { attach(Session.create(ctx.data, { gmName, managerId: teamId, seed })); writeSlot('auto', ctx.session.game); ctx.go('home'); };
+ctx.newGame = ({ gmName, teamId, seed, protagonist }) => { attach(Session.create(ctx.data, { gmName, managerId: teamId, seed, protagonist })); writeSlot('auto', ctx.session.game); ctx.go('home'); };
 ctx.loadSlot = (slot) => {
   const game = readSlot(slot);
   if (!game) { ctx.toast('불러올 수 없는 저장입니다'); return false; }

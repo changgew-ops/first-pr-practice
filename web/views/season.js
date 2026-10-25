@@ -7,6 +7,7 @@ import { seasonLabel } from '../lib/game.js';
 import { injuryCard, injuryTag, injuryMap } from '../lib/injury-view.js';
 import { conditionCard, condBar, conditionOf } from '../lib/tactics-view.js';
 import { tacticList } from '../../src/tactics.mjs';
+import { maybeCelebrate, openCelebration } from './champion.js';
 import {
   standingsRows, formChips, streak, gameRow, boxTotals, bracketModel, seriesGameRows, seriesScore, advanceChoices, homeOrdinal, attendanceCalc, attendanceText
 } from '../lib/season-view.js';
@@ -279,7 +280,10 @@ function playoffsView(ctx) {
     const champ = po.result().championId;
     parts.push(h('div', { class: `card sv-champ ${champ === my ? 'mine' : ''}` },
       h('div', { class: 'note' }, `${seasonLabel(s.season)} 시즌 챔피언`), h('h2', { style: { margin: '4px 0 12px' } }, ctx.name(champ)),
-      h('button', { class: 'btn primary big', onclick: () => act(ctx, () => { s.endSeason(); ctx.go('offseason'); }) }, '시즌 마무리 → 오프시즌')));
+      h('div', { class: 'row' },
+        h('button', { class: 'btn primary big', onclick: () => act(ctx, () => { s.endSeason(); ctx.go('offseason'); }) }, '시즌 마무리 → 오프시즌'),
+        champ === my ? h('button', { class: 'btn', type: 'button', onclick: () => openCelebration(ctx) }, '우승 축하 다시 보기') : null)));
+    if (champ === my) setTimeout(() => maybeCelebrate(ctx), 0); // 우승 직후 한 번만 자동으로 뜬다
   }
 
   const played = model.filter((m) => m.played || m.partial);

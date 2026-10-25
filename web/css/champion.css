@@ -1,0 +1,23 @@
+/* 우승 축하 창·화면 (ch- 접두) */
+.ch { position: relative; display: grid; gap: 10px; overflow: hidden; padding: 4px; }
+.ch-kicker { color: var(--team, var(--accent)); font-weight: 700; letter-spacing: .04em; font-size: .9rem; }
+.ch-head { font-size: 1.5rem; line-height: 1.25; }
+.ch-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ch-photo { width: 100%; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #0b1022; line-height: 0; }
+.ch-photo > svg { display: block; width: 100%; height: auto; }
+.ch-quotes { display: grid; gap: 8px; }
+.ch-quote, .ch-next { margin: 0; padding-left: 10px; border-left: 3px solid var(--team, var(--accent)); }
+.ch-next { color: var(--muted); border-left-color: var(--line); }
+.ch-note { margin: 0; }
+.ch-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.ch-page .ch { max-width: 960px; margin: 0 auto; }
+.ch-dialog { width: min(980px, calc(100vw - 20px)); max-height: calc(100vh - 20px); overflow: auto; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--text); }
+.ch-dialog::backdrop { background: rgba(5, 8, 18, .72); }
+
+/* 색종이: 모션을 줄이는 설정이면 보이지 않는다 */
+.ch-conf { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.ch-conf i { position: absolute; top: -12px; left: calc(var(--i) * 4.2%); width: 8px; height: 14px; border-radius: 2px; opacity: .85;
+  background: hsl(calc(var(--i) * 47) 85% 60%); animation: ch-fall calc(2.6s + (var(--i) % 5) * .5s) linear calc((var(--i) % 7) * .25s) 2 both; }
+@keyframes ch-fall { to { transform: translateY(520px) rotate(540deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ch-conf { display: none; } }
+@media (max-width: 640px) { .ch-head { font-size: 1.2rem; } .ch-dialog { padding: 10px; } .ch-actions .btn { flex: 1 1 8em; } }

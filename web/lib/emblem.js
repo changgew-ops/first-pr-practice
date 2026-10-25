@@ -31,6 +31,8 @@ function shade(hex, k) {
 
 const LOGO_IDS = new Set(Object.keys(CODE));
 const logoUrl = (id) => new URL(`../assets/emblems/${id}.png`, import.meta.url).href;
+/** 로고 이미지 주소(로고가 없는 구단이면 null) */
+export const logoHref = (id) => (LOGO_IDS.has(id) ? logoUrl(id) : null);
 
 /** 구단 엠블럼. 로고 이미지가 있으면 <span><img></span>(높이 size, 폭은 비율대로), 없으면 SVG 배지. size: 화면 px */
 export function emblem(id, { size = 22, label = null } = {}) {
