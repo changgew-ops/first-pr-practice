@@ -6,7 +6,7 @@
 //   5) 신인 드래프트
 //   6) 로스터 확정               (인원 정리·보충)
 // 단장(options.manager)의 결정은 options.policy 콜백으로 받고, 콜백이 없으면 AI와 같은 자동 규칙을 쓴다.
-import { STAT_KEYS, calcOvr, calcCost } from './rating.mjs';
+import { STAT_KEYS, calcOvr, calcCost, legacyOvr, ovrPlus, ovrGap } from './rating.mjs';
 import { createFactory, FOREIGN_POSITIONS, POSITIONS, rarityOf, clamp } from './factory.mjs';
 import {
   domesticOf, foreignOf, asiaOf, payrollEok, valueOf, demandEok, needBonus, hardLimitEok
@@ -62,7 +62,7 @@ export function progressPlayer(p, rules, rng, devBonus = 0) {
   const a = rules.aging;
   const age = p.age + 1;
   const stats = { ...p.stats };
-  const gap = Math.max(0, p.potential - p.ovr);
+  const gap = ovrGap(p); // 예전 OVR 눈금으로 잰 성장 여지(눈금을 늘려도 성장 속도는 그대로)
   const ri = (lo, hi) => lo + Math.floor(rng() * (hi - lo + 1));
   const pt = a.playingTime;
   const mpg = p.lastGp > 0 ? p.lastMin / p.lastGp : null;
@@ -242,7 +242,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
         const d = decisions[p.id];
         if (d) offer = { salaryEok: d.salaryEok, years: d.years ?? preferredYears(p) };
       } else {
-        const wantProb = clamp(off.renewBase + (p.ovr - 50) * off.renewPerOvr, off.renewMin, off.renewMax);
+        const wantProb = clamp(off.renewBase + (legacyOvr(p.ovr) - 50) * off.renewPerOvr, off.renewMin, off.renewMax);
         if (rng() < wantProb) offer = { salaryEok: demandEok(p, rules), years: f.randInt(off.contractYears[0], off.contractYears[1]) };
       }
       if (!offer) { toPool(p, team.id); continue; }
@@ -330,7 +330,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
     const target = clamp(dr.topOvr - i * dr.ovrDropPerPick + f.rand(-3, 3), 38, 66);
     const stats = f.makeStats(position, target);
     const ovr = calcOvr(position, stats);
-    const potential = clamp(ovr + f.randInt(dr.potentialBonus[0], dr.potentialBonus[1]) + Math.round((dr.poolSize - i) * 0.15), ovr, rules.stats.max);
+    const potential = ovrPlus(ovr, f.randInt(dr.potentialBonus[0], dr.potentialBonus[1]) + Math.round((dr.poolSize - i) * 0.15));
     prospects.push({
       id: newId(), name: f.uniqueName('domestic'), real: false, position, age, number: 0,
       rarity: rarityOf(ovr, potential), stats, ovr, cost: calcCost(ovr), potential, origin: 'domestic', teamId: null,
@@ -372,7 +372,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
       if (idx === undefined || idx < 0) {
         let bestScore = -Infinity;
         prospects.forEach((p, i) => {
-          const score = p.potential * 0.6 + p.ovr * 0.4 + needBonus(mine, p.position);
+          const score = legacyOvr(p.potential) * 0.6 + legacyOvr(p.ovr) * 0.4 + needBonus(mine, p.position);
           if (score > bestScore) { bestScore = score; idx = i; }
         });
       }
@@ -428,7 +428,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
 
   // 외국 선수: 부족하면 새로 영입 (리그 외국 선수 평균 수준, 샐러리캡 안에서)
   const foreignAll = players.filter((p) => p.origin === 'foreign');
-  const foreignMean = foreignAll.length ? avg(foreignAll, (p) => p.ovr) : 70;
+  const foreignMean = foreignAll.length ? avg(foreignAll, (p) => legacyOvr(p.ovr)) : 70; // 능력치 목표로 쓰므로 예전 OVR 눈금
   // 시즌 카드: 과거 시즌의 외국인 선수가 영입 후보로 나온다. 하위 팀부터 빈 자리를 고르고, 단장은 policy.foreign으로 직접 고른다.
   if (cardRng && cards.foreign) {
     const present = presentKbl();
@@ -466,7 +466,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
           chosen = options.find((o) => o.player.id === pick) ?? null;
         }
         if (!options.length) break;
-        chosen ??= [...options].sort((a, b) => (b.player.ovr - b.usd / 50000) - (a.player.ovr - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0];
+        chosen ??= [...options].sort((a, b) => (legacyOvr(b.player.ovr) - b.usd / 50000) - (legacyOvr(a.player.ovr) - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0];
         offered.splice(offered.indexOf(chosen.player), 1);
         const p = { ...chosen.player, teamId, number: freeNumber(teamId), contract: { salaryUsd: chosen.usd, yearsLeft: f.randInt(1, 2) } };
         players.push(p);
@@ -501,7 +501,7 @@ export function runOffseason(league, standings, teamData, rules, rng, options = 
   // 아시아쿼터: 비어 있는 구단은 확률적으로 새로 영입한다(구단당 0~1명, 국내 연봉 캡 밖). 연봉·국적은 게임용 가정
   const aq = rules.asiaQuota;
   const asiaAll = players.filter((p) => p.origin === 'asia');
-  const asiaMean = asiaAll.length ? avg(asiaAll, (p) => p.ovr) : 60;
+  const asiaMean = asiaAll.length ? avg(asiaAll, (p) => legacyOvr(p.ovr)) : 60;
   for (const team of teamData) {
     if (asiaOf(players, team.id).length >= aq.max || rng() >= aq.signProbability) continue;
     const position = f.pick(aq.positions);

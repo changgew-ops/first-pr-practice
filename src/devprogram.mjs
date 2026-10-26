@@ -2,7 +2,7 @@
 //   D리그: 선수는 시즌 중 우리 구단 등록 명단(라인업 후보)에서 빠지고 훈련 경험치를 배수로 받는다. 언제든 소환할 수 있다.
 //   유학:  시즌이 시작되기 전에만 보낼 수 있고, 시즌 내내 명단에서 빠졌다가 시즌 종료 처리에서 큰 폭의 성장을 안고 돌아온다.
 // 순수 함수만 둔다(난수는 호출하는 쪽이 넘긴다).
-import { STAT_KEYS } from './rating.mjs';
+import { STAT_KEYS, ovrPlus } from './rating.mjs';
 import { trainPlayer, trainingThreshold } from './training.mjs';
 
 export const PROGRAMS = ['dleague', 'abroad'];
@@ -58,7 +58,7 @@ export function abroadGrowth(p, stat, checkpoints, rules, rng) {
   const potRoll = rng();
   if (outcome === 'success' && potRoll < cfg.potentialChance) {
     const [lo, hi] = cfg.potentialGain;
-    potential = Math.min(rules.stats.max, potential + lo + Math.floor(rng() * (hi - lo + 1)));
+    potential = ovrPlus(potential, lo + Math.floor(rng() * (hi - lo + 1))); // 상승폭은 예전 OVR 눈금 기준
   }
   potential = Math.max(potential, trained.ovr);
   return { player: { ...trained, potential }, outcome, statDelta: trained.stats[stat] - p.stats[stat] };

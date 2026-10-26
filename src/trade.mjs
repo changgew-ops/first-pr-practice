@@ -1,6 +1,7 @@
 // 트레이드: 규칙 검증, AI 구단의 가치 판단, 단장에게 오는 제안 생성, 실행.
 // 규칙은 게임용 단순화다. KBL 트레이드 세부 규정은 공식 확인 전이므로 league-rules.json의 transactions.trade로 조정한다.
 import { shuffle } from './rng.mjs';
+import { legacyOvr } from './rating.mjs';
 import {
   domesticOf, payrollEok, hardLimitEok, worthOf, valueOf, strategyOf, demandEok, POSITION_TARGET
 } from './valuation.mjs';
@@ -62,7 +63,7 @@ export function teamWorth(p, teamId, league, ctx, rules) {
   const strategy = strategyOf(ctx.ranks.get(teamId) ?? 5, ctx.teamCount ?? 10);
   let w = worthOf(p, rules);
   if (strategy === 'rebuild') w *= p.age <= 24 ? 1.35 : p.age >= 29 ? 0.65 : 1;
-  else if (strategy === 'contend') w *= p.ovr >= 65 ? 1.15 : p.age <= 22 ? 0.85 : 1;
+  else if (strategy === 'contend') w *= legacyOvr(p.ovr) >= 65 ? 1.15 : p.age <= 22 ? 0.85 : 1;
   if (p.contract.yearsLeft <= 0) {
     const staying = roster.filter((x) => x.contract.yearsLeft > 0 && x.id !== p.id);
     const canKeep = payrollEok(staying, teamId) + demandEok(p, rules) <= rules.salaryCap.domesticEok;

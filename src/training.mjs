@@ -1,6 +1,6 @@
 // 육성(훈련): 선수마다 집중 능력치 하나를 정하면 훈련 횟수만큼 경험치가 쌓이고,
 // 임계값을 넘을 때마다 능력치가 +1 오른다. 난수를 쓰지 않는 결정적 계산이다.
-import { STAT_KEYS, POSITION_WEIGHTS, calcOvr, calcCost } from './rating.mjs';
+import { STAT_KEYS, POSITION_WEIGHTS, calcOvr, calcCost, ovrGap } from './rating.mjs';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
@@ -11,7 +11,7 @@ export function ageMultiplier(age, cfg) {
 
 // 잠재력(POT)과 현재 OVR의 차이가 클수록 빠르고, 한계에 가까우면 거의 늘지 않는다
 export function potentialMultiplier(p, cfg) {
-  const room = (p.potential - p.ovr) / cfg.potentialRoomRef;
+  const room = ovrGap(p) / cfg.potentialRoomRef; // 예전 OVR 눈금으로 잰 성장 여지
   return clamp(room, cfg.minPotentialMultiplier, cfg.maxPotentialMultiplier);
 }
 

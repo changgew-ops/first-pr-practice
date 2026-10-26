@@ -1,6 +1,6 @@
 // 가상 선수 생성에 쓰는 공용 도구 (선수 데이터 생성기와 드래프트 신인 생성이 함께 쓴다).
 // rng를 주입받으므로 같은 시드와 같은 호출 순서면 같은 결과가 나온다.
-import { STAT_KEYS } from './rating.mjs';
+import { STAT_KEYS, legacyOvr, ovrPlus } from './rating.mjs';
 
 const SURNAMES = ['김', '이', '박', '최', '정', '강', '조', '윤', '장', '임', '한', '오', '서', '신', '권', '황', '안', '송', '류', '홍'];
 const GIVEN_A = ['민', '준', '현', '재', '성', '우', '진', '도', '승', '태', '지', '동', '영', '건', '찬', '시'];
@@ -24,11 +24,12 @@ export const ARCHETYPE = {
 
 export const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
+// 임계값은 예전 OVR 눈금(raw) 기준이다(src/rating.mjs의 legacyOvr): 눈금을 늘려도 희귀도 분포는 그대로다
 export function rarityOf(ovr, pot) {
-  const m = Math.max(ovr, pot);
-  if (m >= 82) return 'legend';
-  if (m >= 74) return 'ace';
-  if (m >= 66) return 'rare';
+  const m = legacyOvr(Math.max(ovr, pot));
+  if (m >= 81.5) return 'legend';
+  if (m >= 73.5) return 'ace';
+  if (m >= 65.5) return 'rare';
   return 'common';
 }
 
@@ -36,7 +37,8 @@ export function rarityOf(ovr, pot) {
 // 상한 8억, OVR 65 약 2억, OVR 70 약 3억, OVR 77 이상 8억 (2025-26 KBL 최고 보수 8억대를 참고).
 // 생성기는 구단 캡에 맞춰 비례 축소하고, 재계약·FA 협상은 이 값을 기준 요구액으로 쓴다.
 export const MAX_SALARY_EOK = 8;
-export const rawSalaryEok = (ovr) => Math.min(MAX_SALARY_EOK, 0.3 + 20 * Math.pow(Math.max(0, (ovr - 45) / 40), 3.5));
+// 곡선은 예전 OVR 눈금 기준이라 지금 눈금의 OVR을 legacyOvr로 되돌려 넣는다(OVR 77은 지금 눈금 90에 해당).
+export const rawSalaryEok = (ovr) => Math.min(MAX_SALARY_EOK, 0.3 + 20 * Math.pow(Math.max(0, (legacyOvr(ovr) - 45) / 40), 3.5));
 
 export function createFactory(rng, rules, usedNames = new Set()) {
   const rand = (min, max) => min + rng() * (max - min);
@@ -73,7 +75,7 @@ export function createFactory(rng, rules, usedNames = new Set()) {
     else if (age <= 26) bonus = randInt(1, 8);
     else if (age <= 30) bonus = randInt(0, 3);
     else bonus = 0;
-    return clamp(ovr + bonus, ovr, rules.stats.max);
+    return ovrPlus(ovr, bonus); // 보너스는 예전 눈금 기준(src/rating.mjs): 스타도 같은 폭만큼 성장 여지를 갖는다
   }
 
   return { rand, randInt, pick, uniqueName, makeStats, makePotential, usedNames };

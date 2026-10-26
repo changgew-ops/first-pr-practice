@@ -53,7 +53,7 @@ export function rankStandings(records) {
  * 진행기: { schedule, day, done, playDay() → { day, games }, setTeams(teams, baseline?), standings(), finish() }
  */
 export function createRegularSeason(teams, baseline, sim, rng, options = {}) {
-  const { keepGames = false, onGame, checkpointEvery, onCheckpoint } = options;
+  const { keepGames = false, onGame, checkpointEvery, onCheckpoint, exKey = null } = options; // exKey: 극단 득점 경기 판정용 시즌 키(없으면 판정 없음, src/game.mjs)
   let current = teams;
   let base = baseline;
   let byId = new Map(current.map((t) => [t.id, t]));
@@ -77,7 +77,7 @@ export function createRegularSeason(teams, baseline, sim, rng, options = {}) {
       if (dayIdx >= schedule.length) throw new Error('정규리그가 끝났습니다');
       const played = [];
       for (const g of shuffle(schedule[dayIdx], rng)) {
-        const r = simulateGame(byId.get(g.homeId), byId.get(g.awayId), base, sim, rng);
+        const r = simulateGame(byId.get(g.homeId), byId.get(g.awayId), base, sim, rng, exKey ? { key: `${exKey}:d${dayIdx + 1}:${g.homeId}`, playoff: false } : null);
         const hr = records.get(r.homeId);
         const ar = records.get(r.awayId);
         hr.pointsFor += r.homePts; hr.pointsAgainst += r.awayPts;
@@ -134,7 +134,8 @@ export function playSeries(higher, lower, bestOf, pattern, baseline, sim, rng) {
  * { seeds, round(끝난 라운드 수), done, gamesPlayed(치른 경기 수), series(끝난 시리즈들),
  *   current(지금 라운드의 시리즈 상태들: 안 끝난 것 포함), peek()(다음 경기 정보), playGame(), playRound(), result() }
  */
-export function createPlayoffs(rankedIds, teamsById, rules, baseline, sim, rng) {
+export function createPlayoffs(rankedIds, teamsById, rules, baseline, sim, rng, options = {}) {
+  const exKey = options.exKey ?? null;
   const { qualify, rounds, homePattern } = rules.playoffs;
   if (qualify !== 6) throw new Error('현재 대진표는 6팀 진출만 지원합니다');
   const baselineOf = typeof baseline === 'function' ? baseline : () => baseline;
@@ -183,7 +184,7 @@ export function createPlayoffs(rankedIds, teamsById, rules, baseline, sim, rng) 
       const sr = nextSeries();
       if (!sr) throw new Error('플레이오프가 끝났습니다');
       const [homeId, awayId] = sides(sr);
-      const r = simulateGame(teamsById.get(homeId), teamsById.get(awayId), baselineOf(), sim, rng);
+      const r = simulateGame(teamsById.get(homeId), teamsById.get(awayId), baselineOf(), sim, rng, exKey ? { key: `${exKey}:po${gamesPlayed + 1}:${homeId}`, playoff: true } : null);
       sr.wins[r.winnerId]++;
       sr.games.push(r);
       gamesPlayed++;

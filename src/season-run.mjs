@@ -60,7 +60,7 @@ export function checkLineup(players, managerId, lineup, rules) {
  */
 export function beginSeason(league, teamData, rules, rng, options = {}) {
   rules = rulesFor(rules, league.season); // 그 시즌의 물가 지수를 곱한 규칙(src/economy.mjs)
-  const { manager = null, inSeasonUpdates = true, keepGames = false, protagonist = false } = options;
+  const { manager = null, inSeasonUpdates = true, keepGames = false, protagonist = false, extreme = false } = options;
   const baseRoster = options.baseRoster ?? league.baseRoster ?? null; // 시너지에서 빼는 시작 로스터 표식(세션: data.players에서 파생, AI 시뮬: createLeague가 league에 둔다) // protagonist: 우리 구단에 단장 보정(rules.protagonist)을 주는가(새 게임의 "초보 도움" 옵션)
   let players = league.players;
   const start = new Map(players.map((p) => [p.id, { ...p.stats }])); // 시즌 시작 능력치
@@ -224,8 +224,9 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
   };
 
   const initial = buildTeams();
+  const exKey = extreme && rules.simulation.extreme?.enabled ? `ex:${injSeed}:${league.season}` : null; // 극단 득점 경기(새 게임만): 경기 난수와 별개의 키
   const regular = createRegularSeason(initial.teams, initial.baseline, rules.simulation, rng, {
-    keepGames,
+    keepGames, exKey,
     onGame: (g) => { addBox(totals, g.box.home); addBox(totals, g.box.away); addRecordOnly(totals, g.box.home); addRecordOnly(totals, g.box.away); addGameToSplits(splits, g); trackStreaks(g); },
     checkpointEvery: rules.ratingModel.checkpointDays,
     onCheckpoint: () => { applyUpdates(); applyTraining(); return buildTeams(); }
@@ -911,7 +912,7 @@ export function beginSeason(league, teamData, rules, rng, options = {}) {
       const reg = regular.finish();
       poTeams = new Map(reg.teams.map((t) => [t.id, t]));
       poBaseline = reg.baseline;
-      playoffs = createPlayoffs(reg.standings.map((r) => r.id), poTeams, rules, () => poBaseline, rules.simulation, rng);
+      playoffs = createPlayoffs(reg.standings.map((r) => r.id), poTeams, rules, () => poBaseline, rules.simulation, rng, { exKey });
       return playoffs;
     },
     /**

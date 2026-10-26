@@ -3,7 +3,7 @@
 // 이 파일은 브라우저와 node가 함께 쓰므로 파일 읽기를 하지 않는다(읽고 쓰는 일은 tools/build-cards.mjs).
 import { emptyTotals } from './stats.mjs';
 import { ratingsFromRows } from './stats-import.mjs';
-import { calcOvr, calcCost } from './rating.mjs';
+import { calcOvr, calcCost, legacyOvr, fromLegacyOvr, OVR_MAX } from './rating.mjs';
 import { rarityOf } from './factory.mjs';
 import { inferPosition } from './position.mjs';
 import { positionFromRegistry, ageOn } from './real-players.mjs';
@@ -104,8 +104,9 @@ export function cardPotential(card, ovr, careerHigh, potRules, age) {
   const rnd = mulberry32(hashString(`pot:${card.kblId}:${card.season}`));
   const bonus = row[1] + Math.floor(rnd() * (row[2] - row[1] + 1));
   const gap = (potRules.highGap.find(([maxAge]) => age <= maxAge) ?? [99, 99])[1];
-  const anchor = gap >= 99 ? 0 : careerHigh - gap;
-  return Math.max(ovr, Math.min(99, Math.max(ovr + bonus, anchor)));
+  // 보너스·highGap은 예전 OVR 눈금 기준이라 되돌려 계산한 뒤 지금 눈금으로 옮긴다(스타도 같은 폭의 성장 여지)
+  const anchor = gap >= 99 ? 0 : legacyOvr(careerHigh) - gap;
+  return Math.max(ovr, Math.min(OVR_MAX, fromLegacyOvr(Math.max(legacyOvr(ovr) + bonus, anchor))));
 }
 
 /**
@@ -144,13 +145,13 @@ export function weightedSample(items, weightOf, n, rng, keyOf = null) {
 }
 
 /** OVR 가중치: OVR이 mid 이하면 1, 넘으면 scale마다 e배씩 줄어든다(scale > 0: 높은 카드가 드물게). scale이 음수면 거꾸로 e배씩 늘어난다(높은 카드 우대) */
-export const ovrWeight = (ovr, { weightMid, weightScale }) => Math.exp(-Math.max(0, ovr - weightMid) / weightScale);
+export const ovrWeight = (ovr, { weightMid, weightScale }) => Math.exp(-Math.max(0, legacyOvr(ovr) - weightMid) / weightScale); // mid·scale은 예전 OVR 눈금 기준
 
 /** 카드의 OVR(포지션 가중 평균) */
 export const cardOvr = (card) => calcOvr(card.position, { shooting: card.shooting, passing: card.passing, defense: card.defense, rebound: card.rebound, athletic: card.athletic, stamina: card.stamina });
 
 /** 외국인 카드의 요구 연봉(달러): OVR이 lo면 min, hi면 max, 그 사이는 직선. 만 달러 단위 */
 export function foreignPriceUsd(ovr, { min, max, ovrLow, ovrHigh }) {
-  const t = Math.max(0, Math.min(1, (ovr - ovrLow) / (ovrHigh - ovrLow)));
+  const t = Math.max(0, Math.min(1, (legacyOvr(ovr) - ovrLow) / (ovrHigh - ovrLow))); // ovrLow·ovrHigh는 예전 OVR 눈금 기준
   return Math.round((min + (max - min) * t) / 10000) * 10000;
 }

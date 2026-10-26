@@ -2,6 +2,7 @@
 // 외국선수 교체는 외국선수 관리규정 제3조·제8~10조, 값은 data/league-rules.json `inSeason`·`injuries`(게임용 단순화는 _note에 적혀 있다).
 // 아시아쿼터 선수에게도 같은 구조를 쓴다: 제공된 규정에 아시아쿼터 교체 조항이 없어서 "외국인 선수와 같게" 해 달라는 사용자 지시를 따르는 게임용 가정이다(`inSeason.asia`).
 import { mulberry32, hashString } from './rng.mjs';
+import { legacyOvr } from './rating.mjs';
 import { domesticOf, foreignOf, asiaOf, payrollEok, demandEok } from './valuation.mjs';
 import { capAllows } from './freeagency.mjs';
 import { cardPlayer, cardOvr, weightedSample, ovrWeight, foreignPriceUsd, careerHighIndex } from './cards.mjs';
@@ -86,7 +87,7 @@ export const ORIGIN_TEXT = { foreign: '외국인 선수', asia: '아시아쿼터
 export function asiaPriceEok(ovr, rules) {
   const { priceOvrLow: lo, priceOvrHigh: hi } = rules.inSeason.asia;
   const [min, max] = rules.asiaQuota.salaryEok;
-  const t = Math.max(0, Math.min(1, (ovr - lo) / (hi - lo)));
+  const t = Math.max(0, Math.min(1, (legacyOvr(ovr) - lo) / (hi - lo))); // priceOvrLow·High는 예전 OVR 눈금 기준
   return Math.round((min + (max - min) * t) * 10) / 10;
 }
 
@@ -174,5 +175,5 @@ export function signedAsia(cand, { teamId, number, years, temp = null, day = 0 }
 export function aiForeignChoice(pool, check, rules = null) {
   // 외국인은 5만 달러당 1, 아시아쿼터는 같은 값을 억 원으로 환산해 쓴다(5만 달러 = 0.7억). rules 없이 부르면 외국인 기준
   const price = (c) => (c.eok != null ? c.eok / (50000 * (rules?.transactions.funds.foreignUsdToEok ?? 0.000014)) : c.usd / 50000);
-  return [...pool].filter((c) => check(c).ok).sort((a, b) => (b.player.ovr - price(b)) - (a.player.ovr - price(a)) || a.player.id.localeCompare(b.player.id))[0] ?? null;
+  return [...pool].filter((c) => check(c).ok).sort((a, b) => (legacyOvr(b.player.ovr) - price(b)) - (legacyOvr(a.player.ovr) - price(a)) || a.player.id.localeCompare(b.player.id))[0] ?? null;
 }

@@ -62,6 +62,13 @@
     "ratingScale": 0.85,
     "pointsSd": 9,
     "homeAdvantage": 1.5,
+    "extreme": {
+      "_note": "극단 득점 경기(새 게임만 켜짐: game.ex). 경기마다 별도 시드(시즌 시드+날짜+홈 구단)에서 뽑아 기존 난수 흐름을 바꾸지 않는다. 걸리면 양 팀 기대 득점 합계를 shift 범위만큼 올리거나(shootout) 내린다(defensive).",
+      "enabled": true,
+      "prob": 0.015,
+      "playoffMul": 0.4,
+      "shift": [25, 35]
+    },
     "overtimeMinutes": 5,
     "minutesStarters": [
       33,
@@ -743,7 +750,7 @@
       "none": -2
     },
     "star": {
-      "ovr": 74,
+      "ovr": 81,
       "perStar": 1,
       "max": 3
     },
@@ -853,7 +860,7 @@
   "achievements": {
     "_note": "업적 판정에 쓰는 기준값(게임용 가정). 업적 목록·조건은 src/achievements.mjs.",
     "stars": {
-      "ovr": 80
+      "ovr": 95
     },
     "cards": {
       "pastCardPlayers": 5

@@ -27,8 +27,8 @@
       "athletic": 69,
       "stamina": 87
     },
-    "ovr": 71,
-    "cost": 8,
+    "ovr": 76,
+    "cost": 10,
     "ratedFromSample": true
   },
   {
@@ -60,8 +60,8 @@
       "athletic": 63,
       "stamina": 82
     },
-    "ovr": 71,
-    "cost": 8,
+    "ovr": 76,
+    "cost": 10,
     "ratedFromSample": true
   },
   {
@@ -92,8 +92,8 @@
       "athletic": 79,
       "stamina": 77
     },
-    "ovr": 76,
-    "cost": 10,
+    "ovr": 85,
+    "cost": 13,
     "ratedFromSample": true
   },
   {
@@ -126,8 +126,8 @@
       "athletic": 69,
       "stamina": 84
     },
-    "ovr": 76,
-    "cost": 10,
+    "ovr": 85,
+    "cost": 13,
     "ratedFromSample": true
   },
   {
@@ -158,8 +158,8 @@
       "athletic": 79,
       "stamina": 76
     },
-    "ovr": 75,
-    "cost": 9,
+    "ovr": 83,
+    "cost": 12,
     "ratedFromSample": true
   },
   {
@@ -190,8 +190,8 @@
       "athletic": 56,
       "stamina": 77
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -222,8 +222,8 @@
       "athletic": 54,
       "stamina": 79
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -255,7 +255,7 @@
       "athletic": 58,
       "stamina": 78
     },
-    "ovr": 68,
+    "ovr": 70,
     "cost": 7,
     "ratedFromSample": true
   },
@@ -291,8 +291,8 @@
       "athletic": 81,
       "stamina": 81
     },
-    "ovr": 76,
-    "cost": 10,
+    "ovr": 86,
+    "cost": 14,
     "ratedFromSample": true
   },
   {
@@ -326,8 +326,8 @@
       "athletic": 78,
       "stamina": 73
     },
-    "ovr": 72,
-    "cost": 8,
+    "ovr": 77,
+    "cost": 10,
     "ratedFromSample": true
   },
   {
@@ -363,8 +363,8 @@
       "athletic": 61,
       "stamina": 76
     },
-    "ovr": 71,
-    "cost": 8,
+    "ovr": 76,
+    "cost": 10,
     "ratedFromSample": true
   },
   {
@@ -398,8 +398,8 @@
       "athletic": 84,
       "stamina": 73
     },
-    "ovr": 81,
-    "cost": 12,
+    "ovr": 97,
+    "cost": 19,
     "ratedFromSample": true
   },
   {
@@ -431,8 +431,8 @@
       "athletic": 80,
       "stamina": 74
     },
-    "ovr": 74,
-    "cost": 9,
+    "ovr": 82,
+    "cost": 12,
     "ratedFromSample": true
   },
   {
@@ -467,8 +467,8 @@
       "athletic": 52,
       "stamina": 72
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -501,8 +501,8 @@
       "athletic": 79,
       "stamina": 69
     },
-    "ovr": 73,
-    "cost": 8,
+    "ovr": 79,
+    "cost": 11,
     "ratedFromSample": true
   },
   {
@@ -606,8 +606,8 @@
       "athletic": 56,
       "stamina": 72
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -639,8 +639,8 @@
       "athletic": 75,
       "stamina": 69
     },
-    "ovr": 72,
-    "cost": 8,
+    "ovr": 77,
+    "cost": 10,
     "ratedFromSample": true
   },
   {
@@ -673,7 +673,7 @@
       "athletic": 63,
       "stamina": 70
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -706,8 +706,8 @@
       "athletic": 68,
       "stamina": 69
     },
-    "ovr": 70,
-    "cost": 7,
+    "ovr": 74,
+    "cost": 9,
     "ratedFromSample": true
   },
   {
@@ -743,7 +743,7 @@
       "athletic": 68,
       "stamina": 71
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -780,8 +780,8 @@
       "athletic": 67,
       "stamina": 68
     },
-    "ovr": 69,
-    "cost": 7,
+    "ovr": 72,
+    "cost": 8,
     "ratedFromSample": true
   },
   {
@@ -844,8 +844,8 @@
       "athletic": 81,
       "stamina": 66
     },
-    "ovr": 75,
-    "cost": 9,
+    "ovr": 83,
+    "cost": 12,
     "ratedFromSample": true
   },
   {
@@ -914,8 +914,8 @@
       "athletic": 59,
       "stamina": 71
     },
-    "ovr": 63,
-    "cost": 5,
+    "ovr": 64,
+    "cost": 6,
     "ratedFromSample": true
   },
   {
@@ -979,7 +979,7 @@
       "athletic": 62,
       "stamina": 66
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -1017,7 +1017,7 @@
       "athletic": 60,
       "stamina": 75
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -1090,8 +1090,8 @@
       "athletic": 60,
       "stamina": 70
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -1124,7 +1124,7 @@
       "athletic": 53,
       "stamina": 67
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -1161,8 +1161,8 @@
       "athletic": 75,
       "stamina": 64
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -1199,8 +1199,8 @@
       "athletic": 56,
       "stamina": 72
     },
-    "ovr": 68,
-    "cost": 7,
+    "ovr": 71,
+    "cost": 8,
     "ratedFromSample": true
   },
   {
@@ -1237,8 +1237,8 @@
       "athletic": 72,
       "stamina": 80
     },
-    "ovr": 71,
-    "cost": 8,
+    "ovr": 76,
+    "cost": 10,
     "ratedFromSample": true
   },
   {
@@ -1271,8 +1271,8 @@
       "athletic": 82,
       "stamina": 66
     },
-    "ovr": 73,
-    "cost": 8,
+    "ovr": 79,
+    "cost": 11,
     "ratedFromSample": true
   },
   {
@@ -1374,7 +1374,7 @@
       "athletic": 64,
       "stamina": 62
     },
-    "ovr": 62,
+    "ovr": 63,
     "cost": 5,
     "ratedFromSample": true
   },
@@ -1412,7 +1412,7 @@
       "athletic": 62,
       "stamina": 74
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -1485,8 +1485,8 @@
       "athletic": 65,
       "stamina": 68
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -1555,8 +1555,8 @@
       "athletic": 71,
       "stamina": 60
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 70,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -1628,7 +1628,7 @@
       "athletic": 66,
       "stamina": 63
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -1699,8 +1699,8 @@
       "athletic": 71,
       "stamina": 67
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -1879,7 +1879,7 @@
       "athletic": 62,
       "stamina": 63
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -1917,8 +1917,8 @@
       "athletic": 71,
       "stamina": 68
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 70,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -2129,8 +2129,8 @@
       "athletic": 75,
       "stamina": 62
     },
-    "ovr": 68,
-    "cost": 7,
+    "ovr": 71,
+    "cost": 8,
     "ratedFromSample": true
   },
   {
@@ -2199,8 +2199,8 @@
       "athletic": 71,
       "stamina": 58
     },
-    "ovr": 69,
-    "cost": 7,
+    "ovr": 72,
+    "cost": 8,
     "ratedFromSample": true
   },
   {
@@ -2273,8 +2273,8 @@
       "athletic": 68,
       "stamina": 65
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -2344,7 +2344,7 @@
       "athletic": 73,
       "stamina": 61
     },
-    "ovr": 68,
+    "ovr": 70,
     "cost": 7,
     "ratedFromSample": true
   },
@@ -2459,7 +2459,7 @@
       "athletic": 63,
       "stamina": 66
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -2566,7 +2566,7 @@
       "athletic": 67,
       "stamina": 59
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -2711,7 +2711,7 @@
       "athletic": 70,
       "stamina": 61
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -2778,8 +2778,8 @@
       "athletic": 66,
       "stamina": 58
     },
-    "ovr": 63,
-    "cost": 5,
+    "ovr": 64,
+    "cost": 6,
     "ratedFromSample": true
   },
   {
@@ -3005,8 +3005,8 @@
       "athletic": 70,
       "stamina": 54
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -3118,7 +3118,7 @@
       "athletic": 66,
       "stamina": 54
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -3191,8 +3191,8 @@
       "athletic": 74,
       "stamina": 52
     },
-    "ovr": 69,
-    "cost": 7,
+    "ovr": 72,
+    "cost": 8,
     "ratedFromSample": true
   },
   {
@@ -3307,7 +3307,7 @@
       "athletic": 69,
       "stamina": 58
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": true
   },
@@ -3343,8 +3343,8 @@
       "athletic": 69,
       "stamina": 56
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -3563,8 +3563,8 @@
       "athletic": 66,
       "stamina": 54
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -3641,8 +3641,8 @@
       "athletic": 57,
       "stamina": 61
     },
-    "ovr": 63,
-    "cost": 5,
+    "ovr": 64,
+    "cost": 6,
     "ratedFromSample": true
   },
   {
@@ -3718,8 +3718,8 @@
       "athletic": 68,
       "stamina": 61
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": true
   },
   {
@@ -3758,7 +3758,7 @@
       "athletic": 69,
       "stamina": 57
     },
-    "ovr": 68,
+    "ovr": 70,
     "cost": 7,
     "ratedFromSample": true
   },
@@ -4113,8 +4113,8 @@
       "athletic": 67,
       "stamina": 55
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -4192,8 +4192,8 @@
       "athletic": 67,
       "stamina": 57
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -4314,7 +4314,7 @@
       "athletic": 67,
       "stamina": 59
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -4420,7 +4420,7 @@
       "athletic": 64,
       "stamina": 69
     },
-    "ovr": 65,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -4526,8 +4526,8 @@
       "athletic": 69,
       "stamina": 68
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -4637,8 +4637,8 @@
       "athletic": 67,
       "stamina": 64
     },
-    "ovr": 68,
-    "cost": 7,
+    "ovr": 71,
+    "cost": 8,
     "ratedFromSample": false
   },
   {
@@ -4869,8 +4869,8 @@
       "athletic": 67,
       "stamina": 62
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -4940,7 +4940,7 @@
       "athletic": 68,
       "stamina": 63
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -4970,7 +4970,7 @@
       "athletic": 69,
       "stamina": 63
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5000,7 +5000,7 @@
       "athletic": 67,
       "stamina": 63
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5112,7 +5112,7 @@
       "athletic": 65,
       "stamina": 65
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5142,8 +5142,8 @@
       "athletic": 70,
       "stamina": 63
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -5224,8 +5224,8 @@
       "athletic": 63,
       "stamina": 60
     },
-    "ovr": 63,
-    "cost": 5,
+    "ovr": 64,
+    "cost": 6,
     "ratedFromSample": false
   },
   {
@@ -5306,7 +5306,7 @@
       "athletic": 61,
       "stamina": 61
     },
-    "ovr": 61,
+    "ovr": 62,
     "cost": 5,
     "ratedFromSample": false
   },
@@ -5336,8 +5336,8 @@
       "athletic": 66,
       "stamina": 61
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 69,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -5377,7 +5377,7 @@
       "athletic": 65,
       "stamina": 59
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5499,7 +5499,7 @@
       "athletic": 64,
       "stamina": 57
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5529,7 +5529,7 @@
       "athletic": 68,
       "stamina": 62
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5570,8 +5570,8 @@
       "athletic": 65,
       "stamina": 60
     },
-    "ovr": 63,
-    "cost": 5,
+    "ovr": 64,
+    "cost": 6,
     "ratedFromSample": false
   },
   {
@@ -5611,8 +5611,8 @@
       "athletic": 65,
       "stamina": 60
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -5641,7 +5641,7 @@
       "athletic": 63,
       "stamina": 64
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5794,7 +5794,7 @@
       "athletic": 65,
       "stamina": 59
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5835,7 +5835,7 @@
       "athletic": 63,
       "stamina": 62
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -5876,8 +5876,8 @@
       "athletic": 65,
       "stamina": 60
     },
-    "ovr": 67,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -6111,7 +6111,7 @@
       "athletic": 63,
       "stamina": 63
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6152,7 +6152,7 @@
       "athletic": 64,
       "stamina": 63
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6193,7 +6193,7 @@
       "athletic": 64,
       "stamina": 65
     },
-    "ovr": 65,
+    "ovr": 66,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6234,7 +6234,7 @@
       "athletic": 64,
       "stamina": 63
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6264,8 +6264,8 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
-    "cost": 6,
+    "ovr": 68,
+    "cost": 7,
     "ratedFromSample": false
   },
   {
@@ -6305,7 +6305,7 @@
       "athletic": 64,
       "stamina": 64
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6346,7 +6346,7 @@
       "athletic": 65,
       "stamina": 63
     },
-    "ovr": 62,
+    "ovr": 63,
     "cost": 5,
     "ratedFromSample": false
   },
@@ -6428,7 +6428,7 @@
       "athletic": 65,
       "stamina": 63
     },
-    "ovr": 62,
+    "ovr": 63,
     "cost": 5,
     "ratedFromSample": false
   },
@@ -6469,7 +6469,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6633,7 +6633,7 @@
       "athletic": 64,
       "stamina": 63
     },
-    "ovr": 64,
+    "ovr": 65,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6674,7 +6674,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -6797,7 +6797,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -7166,7 +7166,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -7207,7 +7207,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -7483,7 +7483,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -7554,7 +7554,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -7677,7 +7677,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },
@@ -7718,7 +7718,7 @@
       "athletic": 64,
       "stamina": 60
     },
-    "ovr": 66,
+    "ovr": 67,
     "cost": 6,
     "ratedFromSample": false
   },

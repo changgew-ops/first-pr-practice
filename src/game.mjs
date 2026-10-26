@@ -143,18 +143,39 @@ function withTurnoversFouls(lines, players, sim, toMul = 1) {
 }
 
 /**
+ * 극단 득점 경기 판정(순수 함수): ex.key로 만든 별도 난수에서 뽑는다. 걸리면 { kind: 'shootout'|'defensive', shift(두 팀 합계에 더할 점수, 음수면 수비전) }.
+ * sim.extreme = { enabled, prob, playoffMul, shift: [최소, 최대] }. 없거나 꺼져 있으면 null.
+ */
+export function extremeKind(ex, sim) {
+  const cfg = sim.extreme;
+  if (!cfg?.enabled) return null;
+  const r = mulberry32(hashString(String(ex.key)));
+  r(); // 비슷한 키의 첫 값이 닮지 않게 한 번 버린다
+  const roll = r(), side = r(), amt = r();
+  const p = cfg.prob * (ex.playoff ? cfg.playoffMul : 1);
+  if (roll >= p) return null;
+  const [lo, hi] = cfg.shift;
+  const size = Math.round(lo + (hi - lo) * amt);
+  return side < 0.5 ? { kind: 'shootout', shift: size } : { kind: 'defensive', shift: -size };
+}
+
+/**
  * 한 경기 시뮬레이션 (순수 함수: 같은 입력과 같은 rng 상태면 같은 결과).
  * home / away: { id, lineup: { starters, bench }, mods? }
+ * ex(선택): { key, playoff } — 극단 득점 경기 판정. 경기 난수(rng)와 따로 key에서 뽑는 별도 난수라서 rng를 더 쓰지 않는다(걸리지 않은 경기는 ex가 없을 때와 똑같다).
+ *   걸리면 sim.extreme.shift만큼 두 팀 기대 득점 합계를 올리거나('shootout') 내린다('defensive'). 결과에 ex 필드가 붙는다.
  * mods(전술·감독·컨디션, src/tactics.mjs·coaching.mjs·condition.mjs): { edge(그 팀 기대 득점에 더하는 점수), pace(두 팀 평균이 기대 득점에 곱해짐),
  *   three·reb·to·oppTo(박스스코어 기록 열 배수) }. 없거나 모두 중립이면 결과가 mods를 넣기 전과 똑같다(난수를 더 쓰지 않는다).
  */
-export function simulateGame(home, away, baseline, sim, rng) {
+export function simulateGame(home, away, baseline, sim, rng, ex = null) {
   const hr = teamRatings(home.lineup, sim);
   const ar = teamRatings(away.lineup, sim);
   const hm = home.mods ?? null, am = away.mods ?? null;
   const pace = hm || am ? ((hm?.pace ?? 1) + (am?.pace ?? 1)) / 2 : 1;
-  const hExp = expectedPoints(hr, ar, baseline, sim, true) * pace + (hm?.edge ?? 0);
-  const aExp = expectedPoints(ar, hr, baseline, sim, false) * pace + (am?.edge ?? 0);
+  let hExp = expectedPoints(hr, ar, baseline, sim, true) * pace + (hm?.edge ?? 0);
+  let aExp = expectedPoints(ar, hr, baseline, sim, false) * pace + (am?.edge ?? 0);
+  const exKind = ex ? extremeKind(ex, sim) : null;
+  if (exKind) { hExp += exKind.shift / 2; aExp += exKind.shift / 2; }
 
   let h = Math.max(40, Math.round(hExp + sim.pointsSd * normal(rng)));
   let a = Math.max(40, Math.round(aExp + sim.pointsSd * normal(rng)));
@@ -172,6 +193,7 @@ export function simulateGame(home, away, baseline, sim, rng) {
     awayPts: a,
     winnerId: h > a ? home.id : away.id,
     overtimes,
+    ...(exKind ? { ex: exKind.kind } : {}),
     box: {
       home: boxScore(home.lineup, h, sim, rng, hm || am ? { three: hm?.three, reb: hm?.reb, toMul: (hm?.to ?? 1) * (am?.oppTo ?? 1) } : null),
       away: boxScore(away.lineup, a, sim, rng, hm || am ? { three: am?.three, reb: am?.reb, toMul: (am?.to ?? 1) * (hm?.oppTo ?? 1) } : null)

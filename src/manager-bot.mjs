@@ -1,6 +1,7 @@
 // 자동 단장: 사람이 단장일 때 내리는 결정(트레이드 수락, 재계약, FA 제안, 보상 선택, 드래프트)을
 // 단순한 규칙으로 대신한다. 엔진의 단장 콜백(policy)이 실제로 동작하는지 검증하고, 화면 없이 효과를 비교하는 데 쓴다.
 import { teamWorth } from './trade.mjs';
+import { legacyOvr, ovrGap } from './rating.mjs';
 import { capAllows, compensationFor } from './freeagency.mjs';
 import { domesticOf, payrollEok, valueOf, demandEok, needBonus } from './valuation.mjs';
 
@@ -27,7 +28,7 @@ export function createManagerBot(teamId, rules, { tradeMargin = 1.05 } = {}) {
       let payroll = payrollEok(mine.filter((p) => p.contract.yearsLeft > 0), teamId);
       const out = {};
       for (const p of [...expiring].sort((a, b) => valueOf(b) - valueOf(a))) {
-        const keep = rank.get(p.id) <= 9 || (p.age <= 24 && p.potential >= p.ovr + 6);
+        const keep = rank.get(p.id) <= 9 || (p.age <= 24 && ovrGap(p) >= 6);
         const salary = round1(demandEok(p, rules) * 1.02);
         if (keep && capAllows(payroll, salary, rules)) {
           out[p.id] = { salaryEok: salary, years: p.age <= 26 ? 3 : 2 };
@@ -59,14 +60,14 @@ export function createManagerBot(teamId, rules, { tradeMargin = 1.05 } = {}) {
 
     // 외국인 카드: AI와 같은 기준(OVR − 가격/5만 달러)으로 가장 좋은 후보
     foreign({ candidates }) {
-      return [...candidates].filter((c) => c.ok !== false).sort((a, b) => (b.player.ovr - b.usd / 50000) - (a.player.ovr - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0]?.player.id;
+      return [...candidates].filter((c) => c.ok !== false).sort((a, b) => (legacyOvr(b.player.ovr) - b.usd / 50000) - (legacyOvr(a.player.ovr) - a.usd / 50000) || a.player.id.localeCompare(b.player.id))[0]?.player.id;
     },
 
     // 3라운드부터는 로스터가 이미 찼으면 지명을 포기한다
     draft({ available, team, round = 1, roster = null }) {
       const mine = roster ?? domesticOf([], team);
       if (round >= 3 && mine.length >= rules.roster.domestic) return 'pass';
-      return [...available].sort((a, b) => (b.potential * 0.6 + b.ovr * 0.4 + needBonus(mine, b.position)) - (a.potential * 0.6 + a.ovr * 0.4 + needBonus(mine, a.position)))[0]?.id;
+      return [...available].sort((a, b) => (legacyOvr(b.potential) * 0.6 + legacyOvr(b.ovr) * 0.4 + needBonus(mine, b.position)) - (legacyOvr(a.potential) * 0.6 + legacyOvr(a.ovr) * 0.4 + needBonus(mine, a.position)))[0]?.id;
     }
   };
 }

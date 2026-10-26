@@ -51,6 +51,7 @@ export class Session {
       league: { ...base, freeAgents: reserve.freeAgents, usedNames: reserve.usedNames, funds: initialFunds(data.teams, data.rules) }, log: [],
       stage: 'regular', day: 0, actions: [], poRounds: 0, poGames: 0, seasonEnd: null, decisions: {}
     };
+    game.ex = true; // 새 게임은 극단 득점 경기(rules.simulation.extreme)가 켜진다. 없으면 꺼짐(옛 저장: 지난 시즌 점수가 그대로여야 한다)
     if (protagonist) game.protagonist = true; // 새 게임의 "초보 도움"(단장 보정, rules.protagonist). 없으면 꺼짐(옛 저장)
     return new Session(data, game);
   }
@@ -593,7 +594,7 @@ export class Session {
     this.dayResults = [];
     if (g.stage === 'offseason') { this.run = null; this.runOffseason(); return; }
     const rng = mulberry32(hashString(`${g.seed}:${g.league.season}`));
-    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null, protagonist: Boolean(g.protagonist), baseRoster: baseRosterFor(this.data.players) });
+    const run = beginSeason(g.league, teams, rules, rng, { manager: g.managerId, keepGames: true, seed: g.seed, cards: this.data.cards ?? null, protagonist: Boolean(g.protagonist), extreme: Boolean(g.ex), baseRoster: baseRosterFor(this.data.players) });
     this.run = run;
     let ai = 0;
     const apply = (a) => {

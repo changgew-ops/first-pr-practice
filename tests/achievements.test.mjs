@@ -73,8 +73,8 @@ test('수상 업적: 우리 선수만 센다(선수 시즌 줄 13번째 칸이 �
 
 test('로스터·도감·신뢰도·팬 열기 업적', () => {
   const p = (ovr, card) => ({ ovr, teamId: MY, ...(card ? { card: { season: card } } : {}) });
-  assert.ok(ids(ctx([], { roster: [p(80)] })).includes('star80'));
-  assert.ok(!ids(ctx([], { roster: [p(79)] })).includes('star80'));
+  assert.ok(ids(ctx([], { roster: [p(95)] })).includes('star80'));
+  assert.ok(!ids(ctx([], { roster: [p(94)] })).includes('star80'));
   const past = Array.from({ length: 5 }, () => p(60, '2018-19'));
   assert.ok(ids(ctx([], { roster: past })).includes('pastCards'));
   assert.ok(!ids(ctx([], { roster: [...past.slice(0, 4), p(60, '2026-27')] })).includes('pastCards'), '시작 시즌 카드는 과거 카드가 아니다');

@@ -36,7 +36,7 @@ export const ACHIEVEMENTS = [
   { id: 'mvp', tier: 'gold', name: '우리 팀 MVP', desc: '우리 선수가 정규시즌 MVP를 받는다', check: (c) => c.log.some((e) => myAward(e, c.my, 'mvp') > 0) },
   { id: 'rookieAward', tier: 'silver', name: '신인상 배출', desc: '우리 선수가 신인상을 받는다', check: (c) => c.log.some((e) => myAward(e, c.my, 'rookie') > 0) },
   { id: 'best5x2', tier: 'silver', name: '베스트5 듀오', desc: '한 시즌에 우리 선수 2명이 베스트5에 든다', check: (c) => c.log.some((e) => myAward(e, c.my, 'best5') >= 2) },
-  { id: 'star80', tier: 'silver', name: '슈퍼스타 보유', desc: 'OVR 80 이상 선수를 보유한다', check: (c) => (c.roster ?? []).some((p) => p.ovr >= c.rules.achievements.stars.ovr) },
+  { id: 'star80', tier: 'silver', name: '슈퍼스타 보유', desc: 'OVR 95 이상 선수를 보유한다', check: (c) => (c.roster ?? []).some((p) => p.ovr >= c.rules.achievements.stars.ovr) },
   { id: 'pastCards', tier: 'bronze', name: '타임머신 로스터', desc: '과거 시즌 카드 선수를 5명 이상 보유한다', check: (c) => (c.roster ?? []).filter((p) => p.card && p.card.season !== c.startSeason).length >= c.rules.achievements.cards.pastCardPlayers },
   { id: 'trade1', tier: 'bronze', name: '첫 트레이드', desc: '트레이드를 성사시킨다', check: (c) => c.log.some((e) => (e.report?.trades?.length ?? 0) > 0) },
   { id: 'goalsAll', tier: 'silver', name: '모기업의 흡족', desc: '한 시즌의 모기업 목표를 모두 달성한다', check: (c) => c.log.some((e) => e.eval?.goals?.length && e.eval.goals.every((g) => g.met)) },
