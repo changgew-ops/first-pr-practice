@@ -491,6 +491,95 @@ export const PLAN = {
   draft_my: PLAN_OFF, draft_top: PLAN_OFF, cap_over: [['lead'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']], funds_plus: [['lead'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']], funds_minus: [['lead'], ['of_last_f', 'of_team_f', 'of_cap_f'], ['of_outlook']]
 };
 
+// ---------- 극단 득점 경기·라이벌·친정팀·인터뷰·가성비 영입 ----------
+// 근거는 모두 게임 상태(경기 결과·시즌 기록·KBL 공식 시즌 기록·플레이오프 이력)다. 인터뷰는 "게임이 만든 가상 코멘트"라고 기사에 밝히고 실존 인물 이름을 붙이지 않는다.
+const EX_PLAN = [['lead', 'ex_star'], ['ex_rec', 'ex_avg'], ['ex_ctx']];
+Object.assign(TEMPLATES, {
+  extreme_shootout: {
+    h: ['난타전! {winner:이/가} {loser:을/를} {wScore}-{lScore}로 꺾은 {total}점 폭발 경기', '[속보] 합계 {total}점… {home}-{away}전에 점수판이 쉴 틈이 없었다', '양 팀 합계 {total}점, 리그 평균보다 {over}점 많은 고득점 경기', '{day}일차 화제의 경기: {winner} {wScore}-{lScore} {loser}, 점수판이 바빴다', '{recordWord} 경신… {home}-{away}전 합계 {total}점'],
+    b: ['{day}일차 {home:와/과} {away}의 경기는 {winner} {wScore}-{lScore} 승리로 끝났다. 양 팀 합계 {total}점은 이번 시즌 리그 경기 평균 {avgTotal}점을 {over}점 웃돈다.', '{winner:은/는} {day}일차 {loser:을/를} {wScore}-{lScore}로 이겼다. 두 팀이 합쳐 {total}점을 넣은 이 경기는 올 시즌 평균 {avgTotal}점보다 {over}점 많다.', '점수가 쉴 새 없이 오간 하루였다. {home} {hp}점, {away} {ap}점으로 합계 {total}점이 나왔고 리그 평균({avgTotal}점)을 {over}점 넘었다.', '{day}일차 {home}-{away}전의 최종 스코어는 {hp}-{ap}였다. 합계 {total}점으로 평균 {avgTotal}점을 {over}점 웃도는 고득점 경기다.']
+  },
+  extreme_defense: {
+    h: ['수비전의 날… {winner:이/가} {loser:을/를} {wScore}-{lScore}로 누른 합계 {total}점 경기', '[속보] 합계 {total}점뿐… {home}-{away}전은 철벽 수비전이었다', '양 팀 합계 {total}점, 리그 평균보다 {under}점 적은 저득점 경기', '{day}일차 저득점 경기: {winner} {wScore}-{lScore} {loser}, 점수판이 조용했다', '{recordWord} 기록… {home}-{away}전 합계 {total}점'],
+    b: ['{day}일차 {home:와/과} {away}의 경기는 {winner} {wScore}-{lScore} 승리로 끝났다. 양 팀 합계 {total}점은 이번 시즌 리그 경기 평균 {avgTotal}점보다 {under}점 적다.', '{winner:은/는} {day}일차 {loser:을/를} {wScore}-{lScore}로 이겼다. 두 팀이 합쳐 {total}점에 그친 이 경기는 올 시즌 평균 {avgTotal}점보다 {under}점 적다.', '점수가 좀처럼 나지 않은 하루였다. {home} {hp}점, {away} {ap}점으로 합계 {total}점이 나왔고 리그 평균({avgTotal}점)을 {under}점 밑돌았다.', '{day}일차 {home}-{away}전의 최종 스코어는 {hp}-{ap}였다. 합계 {total}점으로 평균 {avgTotal}점에 {under}점 모자란 저득점 경기다.']
+  },
+  rival_pre: {
+    h: ['라이벌 {opp} 만난다… {team}의 {nextDay}일차 상대', '{team}, {nextVenue}에서 {opp:과/와} 라이벌전', '맞대결 예고, {team} 대 {opp}', '{opp}전을 앞둔 {team}, 이력이 말해 주는 것'],
+    b: ['{team:은/는} {nextDay}일차 {nextVenue} 경기에서 {opp:을/를} 만난다. {rivalWhy}.', '{nextDay}일차 {team}의 상대는 {opp}이다. {rivalWhy}.', '{team:이/가} {nextDay}일차에 {opp:과/와} 맞붙는다. {rivalWhy}.', '다음 경기는 {opp}전({nextVenue})이다. {rivalWhy}.']
+  },
+  rival_win: {
+    h: ['라이벌 {opp:을/를} {score:으로/로} 꺾은 {team}', '{team:은/는} 라이벌전에서 웃었다, {opp}에 {score}', '{opp}전 승리… {team}, 상대 전적 {h2h}', '{day}일차 라이벌전은 {team}의 몫'],
+    b: ['{team:이/가} {day}일차 {opp:을/를} {score:으로/로} 이겼다. {rivalWhy}.', '{team:은/는} {venue}에서 열린 {opp}전을 {score:으로/로} 가져갔다. {rivalWhy}.', '{day}일차 라이벌전에서 {team:이/가} {opp}에게 {score:으로/로} 이겼다. {rivalWhy}.', '{opp}를 만난 {team:은/는} {score:으로/로} 승리했다. {rivalWhy}.']
+  },
+  rival_loss: {
+    h: ['라이벌 {opp}에 {score}로 진 {team}', '{team:은/는} 라이벌전에서 웃지 못했다, {opp}에 {score}', '{opp}전 패배… {team}, 상대 전적 {h2h}', '{day}일차 라이벌전은 {opp}의 몫'],
+    b: ['{team:이/가} {day}일차 {opp}에 {score:으로/로} 졌다. {rivalWhy}.', '{team:은/는} {venue}에서 열린 {opp}전을 {score:으로/로} 내줬다. {rivalWhy}.', '{day}일차 라이벌전에서 {team:은/는} {opp}에 {score:으로/로} 무릎을 꿇었다. {rivalWhy}.', '{opp}를 만난 {team:은/는} {score:으로/로} 패했다. {rivalWhy}.']
+  },
+  former_my: {
+    h: ['{player}, 이전 소속팀 {opp} 상대로 첫 맞대결', '옛 팀 {opp:을/를} 만나는 {player}', '{team} {player}에게 특별한 {nextDay}일차', '{opp} 출신 {player}의 맞대결 이야기'],
+    b: ['{team}의 {player}({pPos})는 {nextDay}일차 이전 소속팀 {opp:을/를} 상대한다. KBL 공식 기록에 따르면 {player:은/는} {opp}에서 {stSeasons}시즌 동안 {stGp}경기에 나섰다.', '{nextDay}일차 {nextVenue} 경기는 {player}에게 옛 팀과의 만남이다. {player:은/는} {opp}에서 {stSeasons}시즌, 통산 {stGp}경기를 뛰었다.', '{team} 소속 {player}가 {opp:과/와} 맞붙는다. 기록상 {opp}에서 {stSeasons}시즌 동안 {stGp}경기를 소화한 선수다.', '{player}({pPos})에게 {opp}전은 이전 소속팀을 상대하는 경기다. {opp}에서의 기록은 {stSeasons}시즌 {stGp}경기다.']
+  },
+  former_opp: {
+    h: ['{opp} {player}, 이전 소속팀 {team} 상대로 출전 예고', '옛 팀 {team:을/를} 만나는 {player}', '{opp} {player}, {team}과의 이색 맞대결', '{team} 출신 {player}가 상대 팀으로 온다'],
+    b: ['{opp}의 {player}({pPos})는 {nextDay}일차 이전 소속팀 {team:을/를} 상대한다. KBL 공식 기록에 따르면 {player:은/는} {team}에서 {stSeasons}시즌 동안 {stGp}경기에 나섰다.', '{nextDay}일차 {nextVenue} 경기에서 {team:은/는} 옛 식구를 만난다. {opp} 소속 {player}는 {team}에서 {stSeasons}시즌, 통산 {stGp}경기를 뛰었다.', '{opp} 소속 {player}가 {team:과/와} 맞붙는다. 기록상 {team}에서 {stSeasons}시즌 동안 {stGp}경기를 소화한 선수다.', '{player}({pPos})에게 {team}전은 이전 소속팀을 상대하는 경기다. {team}에서의 기록은 {stSeasons}시즌 {stGp}경기다.']
+  },
+  interview_up: {
+    h: ['[가상 인터뷰] "{opp} 상대 전적 {h2h}, 방심은 없다"', '상대 전적 {h2h}… {team} 관계자 "{opp}전은 늘 새 경기"', '{opp}와의 맞대결 {n}번째, {team}이 말하는 상대 전적', '[가상 인터뷰] 상대 전적 앞선 {team}의 한마디'],
+    b: ['올 시즌 {team}과 {opp}의 상대 전적은 {h2h}이다. {opp}와의 {n}번째 맞대결을 마친 뒤 가상 인터뷰가 이어졌다.', '{team:은/는} {opp}를 상대로 올 시즌 {h2h}를 기록 중이다. {n}번째 맞대결 뒤 인터뷰 형식의 가상 코멘트가 나왔다.', '{day}일차 {opp}전까지 올 시즌 맞대결은 {n}번, 전적은 {h2h}다. 경기 뒤 가상 인터뷰를 정리했다.', '{opp}와의 상대 전적 {h2h}에 대한 {team} 쪽의 가상 인터뷰다. 맞대결은 이번이 {n}번째였다.']
+  },
+  interview_down: {
+    h: ['[가상 인터뷰] "{opp} 상대 전적 {h2h}, 달라질 겁니다"', '상대 전적 {h2h}… {team} 관계자 "{opp}전 숙제로 남았다"', '{opp}와의 맞대결 {n}번째, {team}이 말하는 상대 전적', '[가상 인터뷰] 상대 전적 밀리는 {team}의 한마디'],
+    b: ['올 시즌 {team}과 {opp}의 상대 전적은 {h2h}이다. {opp}와의 {n}번째 맞대결을 마친 뒤 가상 인터뷰가 이어졌다.', '{team:은/는} {opp}를 상대로 올 시즌 {h2h}를 기록 중이다. {n}번째 맞대결 뒤 인터뷰 형식의 가상 코멘트가 나왔다.', '{day}일차 {opp}전까지 올 시즌 맞대결은 {n}번, 전적은 {h2h}다. 경기 뒤 가상 인터뷰를 정리했다.', '{opp}와의 상대 전적 {h2h}에 대한 {team} 쪽의 가상 인터뷰다. 맞대결은 이번이 {n}번째였다.']
+  },
+  value_best: {
+    h: ['가성비 영입 베스트: {topName}({topTeam}), 연봉 대비 활약 1위', '몸값 대비 최고의 계약은? {topName} 등 가성비 영입 {n}명', '{season} 가성비 영입 순위… 1위 {topName}', '지난 오프시즌 영입 성적표: 연봉 대비 활약 1위는 {topName}'],
+    b: ['지난 오프시즌 영입한 선수 가운데 연봉 대비 활약이 가장 좋았던 선수는 {topTeam}의 {topName}({topSource})이다. 연봉 {topSalary}억에 경기당 {topLine}을 기록했다.', '{season} 시즌 결과로 본 가성비 영입 1위는 {topTeam}의 {topName}이다. 연봉 {topSalary}억으로 경기당 {topLine}의 활약을 보였다.', '연봉 1억당 활약으로 줄을 세우면 {topTeam}의 {topName}({topSource})이 가장 앞선다. 연봉 {topSalary}억, 경기당 {topLine}이다.', '몸값 대비 가장 알찬 영입은 {topTeam}의 {topName}이었다. {topSource}로 합류해 연봉 {topSalary}억에 경기당 {topLine}을 올렸다.']
+  },
+  value_worst: {
+    h: ['기대에 못 미친 영입은? 연봉 대비 활약이 낮았던 계약 {n}건', '{season} 영입 성적표 아랫줄: {topName}({topTeam}) 외 {m}명', '몸값 대비 활약이 아쉬웠던 영입, {topName}이 가장 낮았다', '지난 오프시즌 영입 중 연봉 대비 활약이 낮았던 사례'],
+    b: ['지난 오프시즌 영입한 선수 가운데 연봉 대비 활약이 가장 낮았던 선수는 {topTeam}의 {topName}({topSource})이다. 연봉 {topSalary}억에 경기당 {topLine}이었다.', '{season} 시즌 결과로 본 연봉 대비 활약 최하위는 {topTeam}의 {topName}이다. 연봉 {topSalary}억으로 경기당 {topLine}을 기록했다.', '연봉 1억당 활약으로 줄을 세우면 {topTeam}의 {topName}({topSource})이 가장 아래에 있다. 연봉 {topSalary}억, 경기당 {topLine}이다.', '몸값 대비 아쉬움이 가장 컸던 영입은 {topTeam}의 {topName}이었다. {topSource}로 합류해 연봉 {topSalary}억에 경기당 {topLine}을 올렸다.']
+  },
+  value_my: {
+    h: ['우리 팀 영입 성적표: {myBest}, 연봉 대비 활약 으뜸', '{team}의 영입 평가, 가성비 1위는 {myBest}', '{season} {team} 영입 결산: {myBest}이 몸값을 해냈다', '지난 오프시즌 {team} 영입 중 연봉 대비 활약 1위는 {myBest}'],
+    b: ['{team}이 지난 오프시즌 영입한 선수 가운데 연봉 대비 활약이 가장 좋았던 선수는 {myBest}({myBestSource})이다. 연봉 {myBestSalary}억에 경기당 {myBestLine}을 기록했다.', '{season} 시즌 {team}의 영입 평가에서 가성비 1위는 {myBest}이다. 연봉 {myBestSalary}억으로 경기당 {myBestLine}을 올렸다.', '{myBest}({myBestSource})이 {team}의 영입 가운데 연봉 대비 활약이 가장 좋았다. 연봉 {myBestSalary}억, 경기당 {myBestLine}이다.', '{team}의 지난 영입 중 몸값을 가장 잘 해낸 선수는 {myBest}다. 연봉 {myBestSalary}억에 경기당 {myBestLine}의 성적이다.']
+  }
+});
+Object.assign(SENT, {
+  ex_star: ['이 경기 최다 득점은 {starTeam}의 {star}으로, {starLine}이다.', '{starTeam}의 {star}이 {starLine}으로 이 경기 개인 최다 득점을 기록했다.', '개인 기록으로는 {starTeam} {star}의 {starLine}이 가장 눈에 띈다.', '{star}({starTeam})이 {starLine}으로 이 경기 가장 많은 점수를 넣었다.'],
+  ex_rec: ['{rankText}', '{rankText} 올 시즌 한 경기 합계 득점은 최다 {seasonMax}점, 최소 {seasonMin}점이다.', '시즌 기록으로 보면 {rankText}', '{rankText} 여기까지 한 경기 합계는 최다 {seasonMax}점, 최소 {seasonMin}점이다.'],
+  ex_avg: ['이날까지 리그 경기당 합계 득점 평균은 {avgTotal}점이다.', '리그 평균 합계 득점은 {avgTotal}점으로 집계된다.', '이날까지 치른 {gamesSoFar}경기의 평균 합계는 {avgTotal}점이다.', '올 시즌 지금까지 경기당 평균 합계는 {avgTotal}점이다.'],
+  ex_ctx: ['이날 경기로 {winner:은/는} {winRec}, {loser:은/는} {loseRec:이/가} 됐다.', '경기 뒤 전적은 {winner} {winRec}, {loser} {loseRec}다.', '이날 결과로 {winner}({winRec})와 {loser}({loseRec})의 시즌 전적이 바뀌었다.', '현재 시즌 전적은 {winner} {winRec}, {loser} {loseRec}이다.'],
+  rv_po: ['역대 플레이오프 시리즈 전적은 {team} {poW}승 {oppName} {poL}승이고, 가장 최근 맞대결은 {poLast}이다.', '플레이오프 시리즈에서는 {team} {poW}승 {oppName} {poL}승으로, 가장 최근에는 {poLast}에 만났다.', '두 구단의 플레이오프 시리즈 이력은 {poN}차례이고 {team}이 {poW}승 {poL}패다. 가장 최근은 {poLast}이다.', '{poLast}이 두 구단의 가장 최근 플레이오프 맞대결이며, 통산 시리즈 전적은 {team} {poW}승 {poL}패다.'],
+  rv_hist: ['{h2hSeasons}의 정규리그 상대 전적은 {team} {hW}승 {hL}패다.', '기록이 남은 {h2hSeasons}에서 {team}은 {oppName}에 {hW}승 {hL}패였다.', '{h2hSeasons} 정규리그 맞대결은 {team} 기준 {hW}승 {hL}패다.', '정규리그 상대 전적({h2hSeasons})은 {team} {hW}승 {hL}패로 집계된다.'],
+  rv_now: ['올 시즌 두 팀의 상대 전적은 {h2h}이다.', '이번 시즌 맞대결 전적은 {team} 기준 {h2h}다.', '올 시즌 {team}의 {oppName}전 전적은 {h2h}이다.', '지금까지 올 시즌 {oppName}와는 {h2h}를 기록했다.'],
+  rv_first: ['올 시즌 첫 맞대결이다.{firstMeet}', '두 팀은 올 시즌 이번이 첫 만남이다.{firstMeet}', '이번 시즌 처음 마주하는 경기다.{firstMeet}', '시즌 첫 맞대결이 열린다.{firstMeet}'],
+  rv_form: ['{team}의 최근 5경기 전적은 {l5}이고, {oppName}는 현재 {oppRank}위({oppRec})다.', '{oppName}는 지금 {oppRank}위({oppRec})에 올라 있고 {team}은 최근 5경기 {l5}이다.', '{team}은 최근 5경기 {l5}, 상대 {oppName}는 {oppRank}위({oppRec})다.', '현재 순위는 {oppName} {oppRank}위({oppRec}), {team}은 최근 5경기에서 {l5}를 기록했다.'],
+  rv_left: ['두 팀은 올 시즌 이 경기 뒤로 {leftMeet}번 더 맞붙는다.', '이번 맞대결 이후에도 {leftMeet}번의 만남이 남아 있다.', '시즌 안에 {leftMeet}번의 맞대결이 더 잡혀 있다.', '일정상 이 경기 말고도 {leftMeet}번 더 마주친다.'],
+  rv_why2: ['{rivalWhy}.', '{rivalWhy}는 점이 이 경기의 배경이다.', '이 경기의 배경은 이렇다. {rivalWhy}.', '{rivalWhy}.'],
+  fm_line: ['{opp} 시절 기록은 경기당 평균 {stLine}이다.', '{opp}에서는 경기당 평균 {stLine}을 기록했다.', '당시 기록은 경기당 평균 {stLine}이다.', '{opp} 소속이던 시기 경기당 평균은 {stLine}이다.'],
+  fm_now: ['올 시즌 기록은 {avgNow}이다.', '이번 시즌에는 {avgNow}을 기록 중이다.', '올해 성적은 {avgNow}이다.', '지금 시즌 평균은 {avgNow}이다.'],
+  fm_next: ['{oppName}는 현재 {oppRank}위({oppRec})이고, 이 경기는 {nextVenue} 경기다.', '이 경기는 {nextVenue}에서 열리며 {oppName}는 지금 {oppRank}위({oppRec})다.', '{nextVenue} 경기이고 상대 {oppName}의 순위는 {oppRank}위({oppRec})다.', '상대 {oppName}는 {oppRank}위({oppRec})이며, 경기는 {nextVenue}에서 치른다.'],
+  iv_coach_up: ['— 감독 인터뷰(가상): "{h2h}라는 숫자는 숫자일 뿐입니다. {opp}는 다음에 더 강하게 나올 겁니다."', '— 감독 인터뷰(가상): "상대 전적이 앞서도 달라질 건 없습니다. 다음 경기를 새로 준비하겠습니다."', '— 감독 인터뷰(가상): "{opp}는 좋은 팀입니다. {h2h}에 안주하지 않겠습니다."', '— 감독 인터뷰(가상): "선수들이 준비한 대로 해 줬습니다. 다음 맞대결도 같은 마음으로 나가겠습니다."'],
+  iv_coach_down: ['— 감독 인터뷰(가상): "{h2h}로 밀리고 있지만 시즌은 깁니다. 다음 맞대결에서 달라진 모습을 보이겠습니다."', '— 감독 인터뷰(가상): "{opp}전은 숙제로 남아 있습니다. 어디가 부족했는지 영상으로 다시 확인하겠습니다."', '— 감독 인터뷰(가상): "상대 전적에 흔들리지 않겠습니다. 한 경기씩 풀어 가겠습니다."', '— 감독 인터뷰(가상): "{opp}에 계속 막히고 있다는 걸 압니다. 준비를 더 하겠습니다."'],
+  iv_player_up: ['— 선수단 대표 인터뷰(가상): "{opp}만 만나면 더 집중하게 됩니다. 다음에도 같은 자세로 나가겠습니다."', '— 선수단 대표 인터뷰(가상): "이기고 있어도 방심하면 바로 뒤집힌다는 걸 압니다."', '— 선수단 대표 인터뷰(가상): "팬들께 좋은 소식을 드릴 수 있어서 기쁩니다. 아직 갈 길이 멉니다."', '— 선수단 대표 인터뷰(가상): "상대 전적보다 오늘 경기 내용이 더 중요합니다."'],
+  iv_player_down: ['— 선수단 대표 인터뷰(가상): "{opp}전은 꼭 되갚고 싶습니다. 남은 맞대결에서 보여 드리겠습니다."', '— 선수단 대표 인터뷰(가상): "아쉬운 결과였지만 고개를 숙이기엔 이릅니다."', '— 선수단 대표 인터뷰(가상): "상대 전적이 좋지 않다는 걸 선수들도 알고 있습니다. 더 준비하겠습니다."', '— 선수단 대표 인터뷰(가상): "한 번은 이길 수 있다는 마음으로 다음 경기를 기다리고 있습니다."'],
+  iv_note: ['※ 이 인터뷰는 게임이 만든 가상 코멘트이며 실제 발언이 아닙니다.', '※ 위 코멘트는 게임이 만든 가상의 인터뷰 형식 문구입니다. 실제 인물의 발언이 아닙니다.', '※ 인터뷰 속 말은 모두 게임이 지어낸 가상 코멘트입니다.', '※ 인터뷰 형식의 코멘트는 게임이 만든 가상 콘텐츠입니다.'],
+  iv_next: ['{team}과 {opp}는 {leftMeet}번 더 만난다.', '두 팀의 다음 맞대결은 일정상 아직 {leftMeet}번 남아 있다.', '시즌 안에 {opp}와의 맞대결이 {leftMeet}번 더 있다.', '남은 맞대결은 {leftMeet}번이다.'],
+  vb_how: ['활약은 경기당 득점+리바운드×1.2+어시스트×1.5+(스틸+블록)×2로 환산하고 연봉 1억당 값으로 줄을 세웠다. 15경기 이상 뛴 선수만 비교했다.', '순위는 경기당 환산 활약(득점+리바운드×1.2+어시스트×1.5+(스틸+블록)×2)을 연봉으로 나눈 값이다. 15경기 이상 출전한 선수가 대상이다.', '환산 방식은 득점+리바운드×1.2+어시스트×1.5+(스틸+블록)×2이고, 연봉 1억당 값으로 비교했다. 15경기 미만 출전은 제외했다.', '연봉 대비 활약은 경기당 환산 활약(득점, 리바운드, 어시스트, 스틸·블록 가중 합)을 연봉으로 나눈 수치다. 15경기 이상 뛴 선수만 담았다.'],
+  vb_note: ['숫자로만 비교한 결과이며 선수 개인의 가치나 팀 기여를 모두 반영한 평가는 아니다.', '이 순위는 기록과 연봉만 본 것으로, 수비·리더십 같은 기여는 담지 못했다.', '기록과 연봉만으로 만든 순위라 선수의 가치를 단정하기는 어렵다.', '출전 시간과 팀 사정이 다르니 참고용 수치로 읽는 것이 좋다.'],
+  vw_how: ['연봉 3억 이상 계약 가운데 경기당 환산 활약을 연봉으로 나눈 값이 낮은 순으로 골랐다. 15경기 이상 뛴 선수가 대상이다.', '환산 활약(득점+리바운드×1.2+어시스트×1.5+(스틸+블록)×2)을 연봉으로 나눈 값이 낮은 순서다. 연봉 3억 이상, 15경기 이상 출전한 선수만 포함했다.', '연봉 3억 이상 영입 중 연봉 1억당 환산 활약이 낮은 사례를 모았다. 15경기 미만 출전은 제외했다.', '연봉 대비 환산 활약이 낮은 순으로 줄을 세웠다. 연봉 3억 이상, 15경기 이상 출전한 선수가 대상이다.'],
+  vm_worst: ['반대로 연봉 대비 활약이 가장 낮았던 영입은 {myWorst}({myWorstSource})으로, 연봉 {myWorstSalary}억에 경기당 {myWorstLine}이었다.', '아쉬움이 남는 쪽은 {myWorst}({myWorstSource})이다. 연봉 {myWorstSalary}억에 경기당 {myWorstLine}을 기록했다.', '가장 낮은 평가를 받은 영입은 {myWorst}({myWorstSource}), 연봉 {myWorstSalary}억에 경기당 {myWorstLine}이다.', '비교 대상 중 연봉 대비 활약이 가장 낮았던 선수는 {myWorst}로, 연봉 {myWorstSalary}억에 경기당 {myWorstLine}이었다.'],
+  vm_how: ['환산 활약(득점+리바운드×1.2+어시스트×1.5+(스틸+블록)×2)을 연봉으로 나눈 값으로 비교했고, 15경기 이상 뛴 {myCount}명이 대상이다.', '15경기 이상 출전한 영입 선수 {myCount}명을 경기당 환산 활약 ÷ 연봉으로 비교했다.', '비교 대상은 15경기 이상 뛴 영입 선수 {myCount}명이고, 기준은 연봉 1억당 환산 활약이다.', '연봉 1억당 환산 활약으로 {myCount}명의 영입을 비교한 결과다. 15경기 이상 뛴 선수만 담았다.']
+});
+Object.assign(PLAN, {
+  extreme_shootout: EX_PLAN, extreme_defense: EX_PLAN,
+  rival_pre: [['lead', 'rv_po', 'rv_hist'], ['rv_first', 'rv_now', 'rv_form'], ['rv_left']],
+  rival_win: [['lead', 'rv_now'], ['rv_po', 'rv_hist'], ['rv_left']], rival_loss: [['lead', 'rv_now'], ['rv_po', 'rv_hist'], ['rv_left']],
+  former_my: [['lead', 'fm_line'], ['fm_now', 'fm_next']], former_opp: [['lead', 'fm_line'], ['fm_now', 'fm_next']],
+  interview_up: [['lead', 'rv_po'], ['iv_coach_up', 'iv_player_up'], ['iv_note', 'iv_next']], interview_down: [['lead', 'rv_po'], ['iv_coach_down', 'iv_player_down'], ['iv_note', 'iv_next']],
+  value_best: [['lead', 'vb_how'], ['vb_note']], value_worst: [['lead', 'vw_how'], ['vb_note']], value_my: [['lead', 'vm_worst'], ['vm_how', 'vb_note']]
+});
+
 // 같은 말이 매 기사에 되풀이되지 않게, 일부 칸은 확률적으로만 넣는다(시드로 정해져 같은 입력이면 같다)
 const SLOT_PROB = { of_last: 0.7, of_team: 0.85, of_cap: 0.85, pl_rank: 0.9, lastSeason: 0.35, spot_career: 0.55, h2h: 0.85, spot_opp: 0.7, spot_avg: 0.8, team_leader: 0.75, pl_career: 0.8, st_career: 0.8 };
 

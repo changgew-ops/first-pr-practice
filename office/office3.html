@@ -1627,10 +1627,10 @@ function drawGhost() {
    하루 일과(db와 무관한 연출 장면): 밤낮 교대·간식 사건·순시·마귀의 지원, 그리고 가끔 휴게실에 다녀오는 직원들
    모두 가속 주기(CYC) 위상으로 건다. 장면은 한 번에 하나씩, 주문·보고 같은 실제 장면 뒤에 끼지 않고 앞에 선다.
    ===================================================================== */
-const AMBIENT = new Set(['snack', 'patrol', 'meeting', 'kamek', 'exec', 'extra', 'blackout', 'printer', 'cake', 'rain', 'minimeet', 'break', 'dept']);
-const AMB_KS = { dept: 2.2, blackout: 1.5, printer: 1.8, cake: 2, rain: 2, minimeet: 2.2, break: 2.2, exec: 2.4, extra: 2 };   // 이벤트별 배속(정전·비는 눈으로 볼 수 있게 천천히)
+const AMBIENT = new Set(['snack', 'patrol', 'meeting', 'kamek', 'exec', 'extra', 'blackout', 'printer', 'cake', 'rain', 'minimeet', 'break', 'dept', 'rounds']);
+const AMB_KS = { rounds: 2.4, dept: 2.2, blackout: 1.5, printer: 1.8, cake: 2, rain: 2, minimeet: 2.2, break: 2.2, exec: 2.4, extra: 2 };   // 이벤트별 배속(정전·비는 눈으로 볼 수 있게 천천히)
 const AMB_K = 2.8;                                   // 일과 장면은 낮 52초 안에 끝나도록 이 배속 이상으로 돌린다(순시 약 20초 + 간식 사건 약 17초)
-const SCHED = [{ id: 'patrol', at: 4, kind: 'patrol', wait: 20 }, { id: 'meeting', at: 18, kind: 'meeting', chance: 0.1, wait: 26 }, { id: 'exec', at: 26, kind: 'exec', chance: 0.75, wait: 20 }, { id: 'dept', at: 33, kind: 'dept', chance: 0.4, wait: 16 }, { id: 'snack', at: 38, kind: 'snack', wait: 20 }, { id: 'extra', at: 48, kind: 'extra', chance: 0.8, wait: 14 }];   // 낮 구간(초): 아침 출근이 끝난 뒤 순시, 10% 확률로 주간 회의, 그 뒤 간식 사건
+const SCHED = [{ id: 'patrol', at: 4, kind: 'patrol', wait: 20 }, { id: 'meeting', at: 18, kind: 'meeting', chance: 0.1, wait: 26 }, { id: 'exec', at: 26, kind: 'exec', chance: 0.75, wait: 20 }, { id: 'rounds', at: 22, kind: 'rounds', chance: 0.5, wait: 18 }, { id: 'dept', at: 33, kind: 'dept', chance: 0.4, wait: 16 }, { id: 'snack', at: 38, kind: 'snack', wait: 20 }, { id: 'extra', at: 48, kind: 'extra', chance: 0.8, wait: 14 }];   // 낮 구간(초): 아침 출근이 끝난 뒤 순시, 10% 확률로 주간 회의, 그 뒤 간식 사건
 const snack = { n: 3, show: 0 };
 async function sceneAmbient(ev) {
   const sp0 = SPEED; ambientCur = ev.kind; SPEED = Math.max(SPEED, reduce ? 3 : ev.demo ? 2.2 : (AMB_KS[ev.kind] ?? AMB_K)); renderStaff();   // 일과 데모는 눈으로 따라갈 수 있게 조금 천천히
@@ -1641,6 +1641,7 @@ async function sceneAmbient(ev) {
     else if (ev.kind === 'kamek') await sceneKamek(ev);
     else if (ev.kind === 'exec') await sceneExec(ev);
     else if (ev.kind === 'dept') await sceneDept(ev);
+    else if (ev.kind === 'rounds') await sceneRounds(ev);
     else if (ev.kind === 'extra' || EXTRA_KINDS.includes(ev.kind)) await sceneExtra(ev);
   } finally { ambientCur = null; SPEED = sp0; renderStaff(); }
 }
@@ -1814,6 +1815,54 @@ async function sceneDept(ev) {
   for (const a of list.slice(0, 5)) a.say(pick(['보너스다!', '사장님 최고!', '이번 분기 열심히 했지~', '+2! 야호']), 'good', 1500);
   await sleep(1500);
   bossSet('sleep');
+}
+
+/* ---- 전설 직원의 일(1): 지각 단속. 직원이 늦게 헐레벌떡 출근하면(LATE.p, 기본 직원별·낮 시작마다 0.5%) 전설 한 마리가 엘리베이터로 1층 입구까지 내려와 갈구고 사장실로 돌아간다 ---- */
+const LATE = { p: 0.005, force: new Set() };
+async function legendScoldLate(ac) {
+  const L = ['dialga', 'palkia', 'arceus', 'solgaleo', 'zekrom', 'necrozma'].map((id) => LEGENDS.find((q) => q.leg.id === id)).find((q) => q && q.vis && q.floor === 0 && !q.walk && !q.busy);
+  if (!L) { ac.say('죄송해요…', 'think', 1300); await sleep(1300); return; }
+  announce(`${ac.name}이(가) 지각했습니다. 전설 직원 ${L.name}이(가) 입구로 내려갑니다.`);
+  L.busy = true; L.commute = true; L.rowLay = 0; L.say('지각 보고가 들어왔다…', 'warn', 1300); L.exc = performance.now() + 1500 / SPEED; await sleep(1200);
+  await L.job(async () => { await goFloor(L, OPS, 46); L.face = -1; });
+  L.exc = performance.now() + 2600 / SPEED; L.say('지각이다!', 'warn', 1800); ac.sweat = performance.now() + 3000 / SPEED; ac.exc = performance.now() + 1200 / SPEED; await sleep(1500);
+  ac.say('죄송합니다!', 'think', 1500); await sleep(1500);
+  L.say(pick(['다음엔 제시간에 와라!', '시계 좀 보고 다녀라!']), 'warn', 1700); await sleep(1500);
+  L.job(async () => { await goFloor(L, 0, LSEAT[L.leg.seat]); L.face = 1; L.rowLay = L.seatLay; L.commute = false; L.busy = false; });   // 기다리지 않고 올라간다
+}
+function lateDemo(id) {   // 디버그/데모: 지금 이 직원(없으면 아무나)이 지각해서 헐레벌떡 들어오게 한다
+  const ac = (id && actors.get(id)) ?? [...actors.values()].find((q) => !q.npc && q.vis && !q.walk && !q.coming && !q.leaving);
+  if (!ac) return null; LATE.force.add(ac.id); ac.gone = true; comeJob(ac, 300); return ac;
+}
+
+/* ---- 전설 직원의 일(2): 층 순회와 중간 보고. 전설 2~3마리가 순번제로 한 층씩 맡아 직원들을 둘러보고(걷고 말을 건다), 사장실로 올라와 "중간 보고"를 한다 ---- */
+const ROUND_ORDER = ['solgaleo', 'palkia', 'dialga', 'arceus', 'zekrom', 'necrozma', 'lunala'];
+let roundsPtr = 0;
+async function sceneRounds(ev) {
+  const free = (id) => LEGENDS.find((q) => q.leg.id === id && q.vis && q.floor === 0 && !q.walk && !q.busy);
+  const picked = []; const nWant = 2 + Math.floor(Math.random() * 2);
+  for (let k = 0; k < ROUND_ORDER.length && picked.length < nWant; k++) { const L = free(ROUND_ORDER[(roundsPtr + k) % ROUND_ORDER.length]); if (L) picked.push(L); }
+  roundsPtr = (roundsPtr + nWant) % ROUND_ORDER.length;
+  if (picked.length < 2) return;
+  const floors = shuffled([1, 2, 4, 5]).slice(0, picked.length);
+  announce(`전설 직원 ${picked.map((L) => L.name).join('·')}이(가) 층을 둘러보러 내려갑니다.`);
+  picked.forEach((L) => { L.busy = true; L.commute = true; L.rowLay = 0; L.say('오늘은 내가 둘러볼게', 'think', 1300); }); await sleep(1300);
+  const reports = [];
+  await Promise.all(picked.map((L, i) => L.job(async () => {
+    const f = floors[i], staff = [...actors.values()].filter((a) => !a.npc && a.vis && a.floor === f && !a.inCar && !a.gone);
+    const working = staff.filter((a) => a.doc.state === 'working'), fix = staff.some((a) => hasFix(a.doc));
+    await goFloor(L, f, 150); L.face = 1;
+    L.say(pick(['어디 보자…', '다들 잘 하고 있나']), 'think', 1400);
+    for (const x of [200, 260]) { await L.walkTo(x); L.face = 1; const a = staff.find((q) => Math.abs(q.x - x) < 34); if (a) { L.say(pick(['진행은 잘 되나?', '막힌 건 없고?']), 'say', 1400); a.say(pick(['넵! 순조롭습니다', '열심히 하고 있습니다']), 'good', 1300); } await sleep(900); }
+    reports.push({ L, f, text: `${FLOOR_SHORT[FL[f]]} ${fix ? '막힌 곳 있음' : working.length ? '진행 양호' : '한가함'}` });
+    await goFloor(L, 0, LSEAT[L.leg.seat]); L.face = 1; L.rowLay = L.seatLay;
+  })));
+  bossSet('awake', 4200);
+  for (const r of reports) { r.L.exc = performance.now() + 1200 / SPEED; r.L.say(`중간 보고: ${r.text}`, 'say', 2000); await sleep(1500); }
+  const bad = reports.some((r) => /막힌|한가/.test(r.text));
+  bossSay(bad ? '음… 챙겨 보도록' : '좋아, 계속 진행해', bad ? 'warn' : 'good', 1700); if (!bad) bossSet('happy', 1800); await sleep(1800);
+  picked.forEach((L) => { L.commute = false; L.busy = false; });
+  if (!idleOffice) bossSet('awake'); else bossSet('sleep');
 }
 
 /* ---- 코인으로 음료 사 먹기: 쉬는 직원이 휴게실(위층)에서 가끔 자판기에 코인을 넣고 캔 음료를 뽑아 마신다. 코인이 없으면 "코인이 없네…" 하고 냉장고의 공짜 음료로 간다 ---- */
@@ -2211,10 +2260,13 @@ function leaveJob(ac) {
 }
 function comeJob(ac, delay) {
   Object.assign(ac, { gone: false, coming: true, commute: true, floor: OPS, loft: false, walk: null, x: 12, sitting: false, pose: 'stand', v: 0, face: 1, fx: 1, sink: 0, vis: false, alpha: 0, alphaT: 0 });
+  const late = LATE.force.delete(ac.id) || Math.random() < LATE.p;   // 지각: 직원별로 낮이 시작될 때마다 LATE.p(기본 0.5%) 확률
   ac.job(async () => {
-    await sleep(delay); ac.vis = true; ac.alphaT = 1; if (hash(hue(ac.id) % 311) < 0.4) ac.say(pick(['출근했습니다!', '좋은 아침!', '오늘도 힘내자']), 'good', 1500); await sleep(300);
+    await sleep(late ? delay + 9000 : delay); ac.vis = true; ac.alphaT = 1; if (late) { ac.rush = true; ac.say('헉헉… 늦었다!', 'warn', 1600); ac.sweat = performance.now() + 4000 / SPEED; await sleep(900); await legendScoldLate(ac); }
+    else if (hash(hue(ac.id) % 311) < 0.4) ac.say(pick(['출근했습니다!', '좋은 아침!', '오늘도 힘내자']), 'good', 1500);
+    await sleep(300);
     const d = layout().get(ac.id); if (d && !d.gone) { await goFloor(ac, fIdx(d.floor), d.x, d.loft); ac.setPose(d); }
-    ac.commute = false; ac.coming = false;
+    ac.rush = false; ac.commute = false; ac.coming = false;
   }).then(() => settleAll(false));
 }
 // 현재 배치와 다른 캐릭터는 조용히 제자리로 보낸다(장면이 없는 변화용)
@@ -2490,9 +2542,9 @@ function drawTank() {
   ctx.globalAlpha = 0.28; R(ctx, x0 + 2, y0 + 4, 3, h - 8, '#ffffff'); ctx.globalAlpha = 1;      // 유리 반사
   R(ctx, x0, y0 + 2, 1, h - 1, '#9ab4d8'); R(ctx, x0 + w - 1, y0 + 2, 1, h - 1, '#9ab4d8'); R(ctx, x0, y1 - 1, w, 2, '#6e4526');             // 틀·받침
 }
-/* ---- 뻐끔플라워: 휴게실(로프트)에 3송이, 사장실에 경호용 1송이. 굼바를 가끔 잡아먹었다 뱉고, 사장님이 분노하면 마리오처럼 동그란 불덩이를 쏜다 ---- */
+/* ---- 뻐끔플라워: 휴게실(로프트)에 2송이, 사장실에 경호용 1송이. 굼바를 가끔 잡아먹었다 뱉고, 사장님이 분노하면 마리오처럼 동그란 불덩이를 쏜다 ---- */
 const mkPlant = (x, fy, flip) => ({ x, fy, flip, mode: 'idle', t0: 0, dur: 0 });
-const PLANTS = [236, 262, 288].map((x, i) => Object.assign(mkPlant(x, 0, 1), { i }));
+const PLANTS = [250, 282].map((x, i) => Object.assign(mkPlant(x, 0, 1), { i }));
 const GUARD = Object.assign(mkPlant(218, 0, -1), { i: 3, guard: true });
 const plant = PLANTS[0];                                   // 옛 이름(디버그 훅 호환)
 const PLANT_X = 236;
@@ -2734,9 +2786,10 @@ const nightModeKey = () => todForce ?? 'auto';
 function renderStaff() {
   const gc = gameClock(), gf = ghost.vis ? FLOOR_SHORT[FL[ghostFloor()]] : '';
   const noImg = LEGENDS.filter((L) => L.temp).map((L) => L.name);
-  const AMB_NAME = { snack: '간식 사건', patrol: '사장님 순시', meeting: '주간 회의', kamek: '마귀의 지원', exec: '간부 회의', dept: '부서 보너스', extra: '기타 이벤트', blackout: '정전', printer: '프린터 종이 걸림', cake: '생일 케이크', rain: '비', minimeet: '3층 소회의', break: '휴게실 쉬는 시간' };
+  const sa = (id) => SCHED.find((e) => e.id === id)?.at;
+  const AMB_NAME = { snack: '간식 사건', patrol: '사장님 순시', meeting: '주간 회의', kamek: '마귀의 지원', exec: '간부 회의', dept: '부서 보너스', rounds: '전설 층 순회', extra: '기타 이벤트', blackout: '정전', printer: '프린터 종이 걸림', cake: '생일 케이크', rain: '비', minimeet: '3층 소회의', break: '휴게실 쉬는 시간' };
   const rows = [
-    ['시계', `${gc.label} ${String(gc.hh).padStart(2, '0')}:${String(gc.mm).padStart(2, '0')} · 낮 ${CYC.day}초 + 저녁 ${CYC.eve}초 + 밤 ${CYC.night}초(${cycLen()}초) 주기. 낮에는 순시(${SCHED[0].at}초)·주간 회의(10% 확률, ${SCHED[1].at}초)·6층 간부 회의(${SCHED[2].at}초)·부서 일괄 보너스(40% 확률, ${SCHED[3].at}초)·간식 사건(${SCHED[4].at}초)·기타 이벤트(${SCHED[5].at}초: 정전·프린터 고장·생일 케이크·비·3층 소회의·휴게실 줄서기), 저녁에는 직원이 아직 있는 채로 킹부끄가 나타나고, 밤에는 일하지 않는 직원이 퇴근하고 일하는 직원은 야근합니다. ${ambientCur ? '지금 장면: ' + (AMB_NAME[ambientCur] ?? '') : ''}`],
+    ['시계', `${gc.label} ${String(gc.hh).padStart(2, '0')}:${String(gc.mm).padStart(2, '0')} · 낮 ${CYC.day}초 + 저녁 ${CYC.eve}초 + 밤 ${CYC.night}초(${cycLen()}초) 주기. 낮에는 순시(${sa('patrol')}초)·전설 층 순회(50% 확률, ${sa('rounds')}초)·주간 회의(10% 확률, ${sa('meeting')}초)·6층 간부 회의(${sa('exec')}초)·부서 일괄 보너스(40% 확률, ${sa('dept')}초)·간식 사건(${sa('snack')}초)·기타 이벤트(${sa('extra')}초: 정전·프린터 고장·생일 케이크·비·3층 소회의·휴게실 줄서기), 저녁에는 직원이 아직 있는 채로 킹부끄가 나타나고, 밤에는 일하지 않는 직원이 퇴근하고 일하는 직원은 야근합니다. ${ambientCur ? '지금 장면: ' + (AMB_NAME[ambientCur] ?? '') : ''}`],
     [`굼바 ${GOOMBAS.length}마리 · 층별 청소`, GOOMBAS.map((j) => `${FLOOR_SHORT[FL[j.floor]]}: ${j.mopping ? '닦는 중' : j.walk ? '이동' : '쉬는 중'}`).join(' · ') || '층마다 한 마리씩 바닥을 닦습니다.'],
     [`키노피오 ${TOADS.length}마리 · 경리·비서`, TOADS.length ? `${TOADS.map((t) => `${t.name.replace('키노피오 · ', '')}: ${t.vis ? (t.job2 || '대기') : '퇴근'}`).join(' · ')}. 낮에 근무하며 간식 자판기와 정수기 물통을 채우고, 사장님께 서류를 가져다줍니다. 간식 사건 뒤에는 간식을 다시 채웁니다.` : '이미지를 불러오지 못해 쉬는 중입니다.'],
     [`마귀 ${KAMEKS.length}마리 · 순찰·지원`, `${KAMEKS.map((k) => `${k.name}: ${FLOOR_SHORT[FL[k.floor]]}${k.castTo ? '에서 지원 중' : ''}`).join(' · ')}. 엘리베이터 없이 "이동!" 하고 순간이동하며 층을 돌다가 일이 막힌 직원(수정 중·막힘·반려 직후)을 도와주고, 일하지 않고 졸거나 휴게실에서 늘어진 직원은 지팡이로 가리키며 꾸짖습니다(같은 직원은 150초 안에 다시 혼내지 않고, 일하는 직원은 가끔 칭찬합니다).`],
@@ -2826,7 +2879,7 @@ function runDayDemo() {
   if (running) return;
   settleAll(true);
   const w = agents.find((a) => a.state === 'working' && FL.slice(1).includes(floorOf(a)) && floorOf(a) !== 'lounge');
-  const seq = [{ kind: 'snack', demo: true }, { kind: 'patrol', demo: true }, ...(w ? [{ kind: 'kamek', demo: true, agent: w.id }] : []), { kind: 'exec', demo: true }, { kind: 'dept', demo: true }, { kind: 'blackout', demo: true }, { kind: 'meeting', demo: true }, { kind: 'ghost', text: '데모: 저녁의 킹부끄' }];
+  const seq = [{ kind: 'snack', demo: true }, { kind: 'patrol', demo: true }, ...(w ? [{ kind: 'kamek', demo: true, agent: w.id }] : []), { kind: 'exec', demo: true }, { kind: 'rounds', demo: true }, { kind: 'dept', demo: true }, { kind: 'blackout', demo: true }, { kind: 'meeting', demo: true }, { kind: 'ghost', text: '데모: 저녁의 킹부끄' }];
   const prev = SPEED; demoRun = true; pendFire.length = 0; seq.forEach((e) => scenes.push(e));
   runScenes().then(() => { demoRun = false; nightDemo = false; SPEED = prev; settleAll(false); });
 }
@@ -2849,7 +2902,7 @@ async function boot() {
   document.getElementById('b-day').addEventListener('click', runDayDemo);
   document.getElementById('b-replay').addEventListener('click', replayRecent);
   window.__framesOf = framesOf; window.__hidden = () => ({ ...HIDDEN });
-  window.__office = { dept: sceneDept, setAgents: applyAgents, exec: sceneExec, bonus: bossBonus, fire: fireAt, plants: PLANTS, guard: GUARD, inspect: kamekInspect, extra: (k) => enqueue({ kind: k }), power, weather, printer, cake, coinFx, fireballs, drink: drinkTrip, coinCatch, isRunning: () => running, actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, cars: CARS, boss, ghost, npc: NPC, legends: () => LEGENDS, goombas: () => GOOMBAS, kameks: () => KAMEKS, regulars: () => REGULARS, bossP: () => BOSSP, clones, ghostVisit, ghostCatch, setNight: (v) => setTodMode(v), tod, gameClock, freezeClock, plant, fish, toads: () => TOADS, chomp, meetingSlots, takeStairs, stairPos, CAR_CAP, setPhase, cyc: CYC, phase: cycPhase, isDark, nightK: () => nightK, visiting, visitState, VISIT, layout, slotOf, runDayDemo, snack, REPORT_X, BOSS_X, workersOn, setSpeed: (n) => { SPEED = n; }, play: (kind, o = {}) => enqueue({ kind, ...o }) };
+  window.__office = { late: lateDemo, LATE, rounds: sceneRounds, dept: sceneDept, setAgents: applyAgents, exec: sceneExec, bonus: bossBonus, fire: fireAt, plants: PLANTS, guard: GUARD, inspect: kamekInspect, extra: (k) => enqueue({ kind: k }), power, weather, printer, cake, coinFx, fireballs, drink: drinkTrip, coinCatch, isRunning: () => running, actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, cars: CARS, boss, ghost, npc: NPC, legends: () => LEGENDS, goombas: () => GOOMBAS, kameks: () => KAMEKS, regulars: () => REGULARS, bossP: () => BOSSP, clones, ghostVisit, ghostCatch, setNight: (v) => setTodMode(v), tod, gameClock, freezeClock, plant, fish, toads: () => TOADS, chomp, meetingSlots, takeStairs, stairPos, CAR_CAP, setPhase, cyc: CYC, phase: cycPhase, isDark, nightK: () => nightK, visiting, visitState, VISIT, layout, slotOf, runDayDemo, snack, REPORT_X, BOSS_X, workersOn, setSpeed: (n) => { SPEED = n; }, play: (kind, o = {}) => enqueue({ kind, ...o }) };
   setInterval(wander, 9000); setInterval(renderStaff, 2500);
   initNpcs(); renderStaff();
   renderDom(); requestAnimationFrame(frame); connect();
