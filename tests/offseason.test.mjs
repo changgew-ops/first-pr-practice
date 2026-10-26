@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { progressPlayer, retireProbability, runOffseason } from '../src/offseason.mjs';
 import { createLeague } from '../src/league.mjs';
-import { calcOvr } from '../src/rating.mjs';
+import { calcOvr, legacyOvr } from '../src/rating.mjs';
 import { mulberry32 } from '../src/rng.mjs';
 import { invariants } from './helpers.mjs';
 
@@ -39,9 +39,9 @@ test('progressPlayer: 젊고 잠재력이 크면 오르고, 나이가 들면 내
   const rng = mulberry32(3);
   let youngDelta = 0, oldDelta = 0, peakDelta = 0;
   for (let i = 0; i < 300; i++) {
-    const y = progressPlayer(mk(20, 55, 80), rules, rng); youngDelta += y.ovr - 55;
-    const o = progressPlayer(mk(34, 70, 70), rules, rng); oldDelta += o.ovr - 70;
-    const m = progressPlayer(mk(27, 70, 70), rules, rng); peakDelta += m.ovr - 70;
+    const y = progressPlayer(mk(20, 55, 80), rules, rng); youngDelta += legacyOvr(y.ovr) - 55;
+    const o = progressPlayer(mk(34, 70, 70), rules, rng); oldDelta += legacyOvr(o.ovr) - 70;
+    const m = progressPlayer(mk(27, 70, 70), rules, rng); peakDelta += legacyOvr(m.ovr) - 70; // 예전 OVR 눈금으로 잰 변화(src/rating.mjs)
   }
   assert.ok(youngDelta / 300 >= 1.5, `젊은 선수 평균 +${(youngDelta / 300).toFixed(2)}`);
   assert.ok(oldDelta / 300 <= -1, `노장 평균 ${(oldDelta / 300).toFixed(2)}`);
@@ -107,7 +107,7 @@ test('runOffseason: 8년 연속 진행해도 규칙이 깨지지 않고 평균 �
     league = runOffseason(league, standings, teamData, rules, rng).league;
     invariants(league, `Y${y + 1}`);
   }
-  const avg = league.players.reduce((s, p) => s + p.ovr, 0) / league.players.length;
+  const avg = league.players.reduce((s, p) => s + legacyOvr(p.ovr), 0) / league.players.length; // 예전 OVR 눈금(src/rating.mjs)으로 잰 평균
   const age = league.players.reduce((s, p) => s + p.age, 0) / league.players.length;
   assert.ok(avg >= 56 && avg <= 68, `평균 OVR ${avg.toFixed(1)}`);
   assert.ok(age >= 22 && age <= 30, `평균 나이 ${age.toFixed(1)}`);

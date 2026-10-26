@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { expandCard, cardPlayer, cardYearLabel, cardName, weightedSample, ovrWeight, cardOvr, foreignPriceUsd } from '../src/cards.mjs';
+import { fromLegacyOvr } from '../src/rating.mjs';
 import { buildAll } from '../tools/build-cards.mjs';
 import { parseBirthsCsv } from '../src/real-players.mjs';
 import { createLeague, playLeagueYear } from '../src/league.mjs';
@@ -90,8 +91,8 @@ test('가중 추출: 같은 시드면 같은 결과, 중복 없음, OVR이 높�
 test('외국인 요구 연봉: OVR에 비례하고 한도 안', () => {
   const cfg = rules.cards.foreignUsd;
   assert.equal(foreignPriceUsd(cfg.ovrLow - 10, cfg), cfg.min);
-  assert.equal(foreignPriceUsd(cfg.ovrHigh + 10, cfg), cfg.max);
-  assert.ok(foreignPriceUsd(72, cfg) > cfg.min && foreignPriceUsd(72, cfg) < cfg.max);
+  assert.equal(foreignPriceUsd(fromLegacyOvr(cfg.ovrHigh + 10), cfg), cfg.max); // ovrLow·ovrHigh는 예전 OVR 눈금(src/rating.mjs)
+  assert.ok(foreignPriceUsd(fromLegacyOvr(72), cfg) > cfg.min && foreignPriceUsd(fromLegacyOvr(72), cfg) < cfg.max);
   assert.ok(cfg.max <= rules.salaryCap.foreignUsdPerPlayer);
 });
 

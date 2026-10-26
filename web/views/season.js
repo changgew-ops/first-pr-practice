@@ -183,7 +183,7 @@ function resultsPanel(ctx) {
       const open = ui.box && ui.box.day === dayRes.day && ui.box.i === i;
       return h('button', { type: 'button', class: `sv-game ${r.mine ? 'mine' : ''}`, 'aria-pressed': String(Boolean(open)), onclick: () => { ui.box = open ? null : { day: dayRes.day, i }; ctx.refresh(); } },
         h('span', { class: `sv-team ${r.homeWon ? 'won' : ''}` }, ctx.name(r.awayId)),
-        h('span', { class: 'sv-score' }, h('b', { class: r.homeWon ? '' : 'won' }, r.awayPts), ' : ', h('b', { class: r.homeWon ? 'won' : '' }, r.homePts), r.ot ? h('small', ` 연장${r.ot > 1 ? r.ot : ''}`) : null),
+        h('span', { class: 'sv-score' }, h('b', { class: r.homeWon ? '' : 'won' }, r.awayPts), ' : ', h('b', { class: r.homeWon ? 'won' : '' }, r.homePts), r.ot ? h('small', ` 연장${r.ot > 1 ? r.ot : ''}`) : null, g.ex ? h('span', { class: `sv-ex ${g.ex}`, title: g.ex === 'shootout' ? '양 팀 합계 득점이 평소보다 훨씬 많은 난타전' : '양 팀 합계 득점이 평소보다 훨씬 적은 수비전' }, g.ex === 'shootout' ? '난타전' : '수비전') : null),
         h('span', { class: `sv-team right ${r.homeWon ? 'won' : ''}` }, ctx.name(r.homeId), h('small', ' (홈)')),
         h('span', { class: 'sv-att' }, attendanceText(gameAtt(i))));
     })));
@@ -416,7 +416,7 @@ function seriesDetail(ctx, m) {
     },
       h('td', `${g.n}차전`),
       h('td', { class: g.winnerId === g.awayId ? 'won' : '' }, ctx.name(g.awayId)),
-      h('td', { class: 'r' }, h('b', `${g.awayPts} : ${g.homePts}`), g.ot ? h('small', ' 연장') : null),
+      h('td', { class: 'r' }, h('b', `${g.awayPts} : ${g.homePts}`), g.ot ? h('small', ' 연장') : null, g.ex ? h('span', { class: `sv-ex ${g.ex}` }, g.ex === 'shootout' ? '난타전' : '수비전') : null),
       h('td', { class: `r ${g.winnerId === g.homeId ? 'won' : ''}` }, ctx.name(g.homeId), h('small', ' (홈)')),
       h('td', { class: 'r sv-att' }, attendanceText(poAtt(g, g.n)).replace('관중 ', ''))))))),
     openGame?.box ? boxScore(ctx, openGame, () => { ui.poBox = null; ctx.refresh(); }, poAtt(openGame, openN)) : null);

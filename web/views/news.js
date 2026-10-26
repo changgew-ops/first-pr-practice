@@ -1,6 +1,6 @@
 // 뉴스: 게임이 만든 가상 기사와 팬 커뮤니티 반응. 저장하지 않고 세션 상태에서 매번 같은 결과로 만든다(web/lib/news-view.js).
 import { h, tabs, svg } from '../lib/dom.js';
-import { getNews, filterItems, communityPosts, TABS, MOOD_TONE } from '../lib/news-view.js';
+import { getNews, filterItems, communityPosts, pinnedBig, TABS, MOOD_TONE } from '../lib/news-view.js';
 import { colorOf } from '../lib/team-ui.js';
 import { nameButton } from '../lib/player-info.js';
 
@@ -64,12 +64,12 @@ function commentEl(c) {
 function article(ctx, it, i) {
   const open = ui.open.has(it.id);
   const cmt = it.comments.length;
-  return h('article', { class: `news-item ${it.scope === 'my' || it.scope === 'move' ? 'mine' : ''} tone-${it.tone}`, style: { '--team': colorOf(ctx.session.managerId) } },
+  return h('article', { class: `news-item ${it.scope === 'my' || it.scope === 'move' ? 'mine' : ''} ${it.big ? 'big' : ''} tone-${it.tone}`, style: { '--team': colorOf(ctx.session.managerId) } },
     h('button', {
       class: 'news-head', 'aria-expanded': String(open), 'aria-controls': `news-body-${i}`,
       onclick: () => { if (open) ui.open.delete(it.id); else ui.open.add(it.id); ctx.refresh(); }
     },
-    h('span', { class: 'news-meta' }, h('span', it.when), h('span', { class: 'dim' }, ' · '), h('span', it.outlet), it.tags.map((t) => h('span', { class: 'tag' }, t))),
+    h('span', { class: 'news-meta' }, it.big ? h('span', { class: 'tag news-big' }, '대서특필') : null, h('span', it.when), h('span', { class: 'dim' }, ' · '), h('span', it.outlet), it.tags.map((t) => h('span', { class: 'tag' }, t))),
     h('span', { class: 'news-title' }, it.headline),
     open ? null : h('span', { class: 'news-summary' }, it.summary),
     h('span', { class: 'news-sub note' }, open ? '접기' : `전문 보기 · 댓글 ${cmt}`)),
@@ -89,7 +89,9 @@ function community(ctx, items) {
 export function render(ctx) {
   const news = getNews(ctx.session, ctx.data);
   const items = filterItems(news.items, ui.tab);
-  const shown = items.slice(0, ui.shown);
+  const pin = ui.tab === 'all' || ui.tab === 'league' || ui.tab === 'my' ? pinnedBig(ctx.session, news) : null;
+  const pinned = pin && items.includes(pin) ? pin : null; // 최근 대서특필 기사는 목록 맨 위에 고정한다
+  const shown = (pinned ? [pinned, ...items.filter((it) => it !== pinned)] : items).slice(0, ui.shown);
   const body = h('div', { class: 'stack news' },
     h('div', { class: 'topbar' }, h('div', { class: 'title' }, h('span', { class: 'swatch' }), h('div', h('div', { class: 'crumb' }, '소식'), h('h1', '뉴스·커뮤니티')))),
     h('p', { class: 'callout news-disclaimer' }, DISCLAIMER),

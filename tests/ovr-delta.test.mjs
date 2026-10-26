@@ -6,6 +6,7 @@ import { createLeague, playLeagueYear } from '../src/league.mjs';
 import { progressPlayer, runOffseason } from '../src/offseason.mjs';
 import { expandCard, cardPlayer } from '../src/cards.mjs';
 import { mulberry32 } from '../src/rng.mjs';
+import { legacyOvr } from '../src/rating.mjs';
 import { Session } from '../web/lib/session.js';
 import { loadHistory } from '../src/history.mjs';
 
@@ -90,7 +91,7 @@ test('FA 시장에 과거 시즌 카드가 나온다: 수·중복·나이·보�
 test('카드 균형: 12시즌 뒤에도 리그 국내 평균 OVR이 시작보다 3 넘게 오르지 않고 카드 선수가 상위권에 섞인다', () => {
   const rng = mulberry32(31);
   let league = createLeague(players, rules);
-  const avg = (l) => { const d = l.players.filter((p) => p.origin === 'domestic'); return d.reduce((s, p) => s + p.ovr, 0) / d.length; };
+  const avg = (l) => { const d = l.players.filter((p) => p.origin === 'domestic'); return d.reduce((s, p) => s + legacyOvr(p.ovr), 0) / d.length; }; // 예전 OVR 눈금으로 잰 평균(src/rating.mjs)
   const start = avg(league);
   for (let y = 0; y < 12; y++) league = playLeagueYear(league, teams, rules, rng, { cards }).league;
   assert.ok(avg(league) - start < 3, `평균 OVR ${start.toFixed(1)} → ${avg(league).toFixed(1)}`);

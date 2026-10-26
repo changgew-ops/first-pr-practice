@@ -162,20 +162,28 @@ export function extremeKind(ex, sim) {
 /**
  * 한 경기 시뮬레이션 (순수 함수: 같은 입력과 같은 rng 상태면 같은 결과).
  * home / away: { id, lineup: { starters, bench }, mods? }
- * ex(선택): { key, playoff } — 극단 득점 경기 판정. 경기 난수(rng)와 따로 key에서 뽑는 별도 난수라서 rng를 더 쓰지 않는다(걸리지 않은 경기는 ex가 없을 때와 똑같다).
- *   걸리면 sim.extreme.shift만큼 두 팀 기대 득점 합계를 올리거나('shootout') 내린다('defensive'). 결과에 ex 필드가 붙는다.
+ * ex(선택): { key, playoff } — 극단 득점 경기 판정(key에서 만든 별도 난수). 걸리지 않은 경기는 ex가 없을 때와 똑같다.
+ *   걸리면 평소처럼 한 번 치러 경기 난수(rng)를 똑같이 쓴 뒤(뒤따르는 경기가 달라지지 않게), 별도 난수로 두 팀 기대 득점 합계를
+ *   sim.extreme.shift만큼 올리거나('shootout') 내려('defensive') 다시 치른 결과를 돌려준다. 결과에 ex 필드가 붙는다.
  * mods(전술·감독·컨디션, src/tactics.mjs·coaching.mjs·condition.mjs): { edge(그 팀 기대 득점에 더하는 점수), pace(두 팀 평균이 기대 득점에 곱해짐),
  *   three·reb·to·oppTo(박스스코어 기록 열 배수) }. 없거나 모두 중립이면 결과가 mods를 넣기 전과 똑같다(난수를 더 쓰지 않는다).
  */
 export function simulateGame(home, away, baseline, sim, rng, ex = null) {
+  const exKind = ex ? extremeKind(ex, sim) : null;
+  const base = playOnce(home, away, baseline, sim, rng, 0); // 극단 경기라도 경기 난수는 평소 경기와 똑같이 쓴다(뒤따르는 경기의 결과가 달라지지 않게)
+  if (!exKind) return base;
+  // 걸린 경기만 key에서 만든 별도 난수로 다시 치른다(두 팀 기대 득점 합계를 이동)
+  return { ...playOnce(home, away, baseline, sim, mulberry32(hashString(`${ex.key}:game`)), exKind.shift), ex: exKind.kind };
+}
+
+function playOnce(home, away, baseline, sim, rng, shift) {
   const hr = teamRatings(home.lineup, sim);
   const ar = teamRatings(away.lineup, sim);
   const hm = home.mods ?? null, am = away.mods ?? null;
   const pace = hm || am ? ((hm?.pace ?? 1) + (am?.pace ?? 1)) / 2 : 1;
   let hExp = expectedPoints(hr, ar, baseline, sim, true) * pace + (hm?.edge ?? 0);
   let aExp = expectedPoints(ar, hr, baseline, sim, false) * pace + (am?.edge ?? 0);
-  const exKind = ex ? extremeKind(ex, sim) : null;
-  if (exKind) { hExp += exKind.shift / 2; aExp += exKind.shift / 2; }
+  if (shift) { hExp += shift / 2; aExp += shift / 2; }
 
   let h = Math.max(40, Math.round(hExp + sim.pointsSd * normal(rng)));
   let a = Math.max(40, Math.round(aExp + sim.pointsSd * normal(rng)));
@@ -193,7 +201,6 @@ export function simulateGame(home, away, baseline, sim, rng, ex = null) {
     awayPts: a,
     winnerId: h > a ? home.id : away.id,
     overtimes,
-    ...(exKind ? { ex: exKind.kind } : {}),
     box: {
       home: boxScore(home.lineup, h, sim, rng, hm || am ? { three: hm?.three, reb: hm?.reb, toMul: (hm?.to ?? 1) * (am?.oppTo ?? 1) } : null),
       away: boxScore(away.lineup, a, sim, rng, hm || am ? { three: am?.three, reb: am?.reb, toMul: (am?.to ?? 1) * (hm?.oppTo ?? 1) } : null)

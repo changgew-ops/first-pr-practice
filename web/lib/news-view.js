@@ -24,6 +24,18 @@ function careerLookup(data, players) {
   };
 }
 
+/** 선수의 KBL 공식 정규시즌 기록 줄(시즌·소속·경기·득점 합계 포함, 없으면 []) */
+function careerRowsLookup(data, players) {
+  const memo = new Map();
+  return (id) => {
+    if (memo.has(id)) return memo.get(id);
+    const kbl = players.get(id)?.kblId;
+    const rows = kbl && data.careers?.[kbl] ? careerRows(data.careers[kbl], ['r']) : [];
+    memo.set(id, rows);
+    return rows;
+  };
+}
+
 /** 세션의 지금 상태에서 뉴스 생성기 입력을 만든다 */
 export function newsSource(session, data) {
   const g = session.game;
@@ -44,7 +56,8 @@ export function newsSource(session, data) {
   const teams = data.teams.map((t) => t.id);
   const name = new Map(data.teams.map((t) => [t.id, t.name]));
   return {
-    history: fullHistory(session.view, data).seasons.map((x) => ({ startYear: x.startYear, teams: x.teams, championId: x.championId })),
+    history: fullHistory(session.view, data).seasons.map((x) => ({ startYear: x.startYear, season: x.season, teams: x.teams, championId: x.championId, playoffs: x.playoffs, headToHead: x.headToHead })), // 라이벌 근거: 역대 플레이오프 대진·기록이 남은 시즌의 상대 전적
+    careerRowsOf: careerRowsLookup(data, players), // 이전 소속팀 근거: KBL 공식 시즌 기록의 소속 이력
     careerOf: careerLookup(data, players),
     players, schedule: session.stage === 'offseason' ? dayMemo.schedule : (session.run?.schedule ?? null), seasonLabelOf: seasonLabel,
     prestige: prestigeOf(session.view, data), teamInfo: Object.fromEntries(data.teams.map((t) => [t.id, { city: t.city, arena: t.arena }])),
@@ -70,6 +83,13 @@ export function getNews(session, data) {
   const news = buildNews(newsSource(session, data));
   cache = { key, news };
   return news;
+}
+
+/** 홈·뉴스 상단에 고정할 대서특필 기사: 이번 시즌 정규리그 진행 중 최근 3경기일 안의 극단 득점 경기(없으면 null) */
+export function pinnedBig(session, news) {
+  if (session.stage !== 'regular') return null;
+  const label = seasonLabel(session.season);
+  return news.items.find((it) => it.big && it.season === label && it.day != null && session.day - it.day <= 3) ?? null;
 }
 
 export const TABS = [['all', '전체'], ['my', '우리 팀'], ['league', '리그'], ['move', '이적'], ['community', '커뮤니티']];

@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { OVR_MAX } from '../src/rating.mjs';
 import { Session, serialize, restore } from '../web/lib/session.js';
 import { loadHistory } from '../src/history.mjs';
 import { checkpointsPerSeason, eligibility, abroadGrowth, abroadSessions, programCost, preview } from '../src/devprogram.mjs';
@@ -43,7 +44,7 @@ test('유학 성장: 시드가 같으면 같고, 적응 실패는 성장이 작�
   const b = abroadGrowth(p, 'shooting', 5, rules, mulberry32(7));
   assert.deepEqual(a, b);
   const outcomes = new Map();
-  for (let i = 0; i < 400; i++) { const g = abroadGrowth(p, 'shooting', 5, rules, mulberry32(i)); outcomes.set(g.outcome, [...(outcomes.get(g.outcome) ?? []), g]); assert.ok(g.player.potential >= g.player.ovr); assert.ok(g.player.potential <= rules.stats.max); }
+  for (let i = 0; i < 400; i++) { const g = abroadGrowth(p, 'shooting', 5, rules, mulberry32(i)); outcomes.set(g.outcome, [...(outcomes.get(g.outcome) ?? []), g]); assert.ok(g.player.potential >= g.player.ovr); assert.ok(g.player.potential <= OVR_MAX); }
   const avg = (list, f) => list.reduce((s, x) => s + f(x), 0) / list.length;
   assert.ok(outcomes.get('struggle').length > 10 && outcomes.get('success').length > 100);
   assert.ok(avg(outcomes.get('struggle'), (g) => g.statDelta) < avg(outcomes.get('success'), (g) => g.statDelta) * 0.6);

@@ -4,7 +4,7 @@ import { emblem } from '../lib/emblem.js';
 import { playerLink } from '../lib/player-info.js';
 import { seasonLabel, powerRanking, payrollInfo, prestigeOf, fundsOf, rosterOf, fullHistory } from '../lib/game.js';
 import { colorOf } from '../lib/team-ui.js';
-import { getNews } from '../lib/news-view.js';
+import { getNews, pinnedBig } from '../lib/news-view.js';
 import { moodCard } from './news.js';
 import { financeCard } from './finance-card.js';
 import { goalsCard } from './goals-card.js';
@@ -53,9 +53,11 @@ function heroCard(ctx, season, lastSeason, lastRow) {
 function newsCard(ctx) {
   try {
     const news = getNews(ctx.session, ctx.data);
+    const pin = pinnedBig(ctx.session, news);
     return h('div', { class: 'card news-home' },
+      pin ? h('a', { class: 'news-pin', href: '#/news', title: pin.summary }, h('span', { class: 'tag news-big' }, '대서특필'), h('b', pin.headline), h('span', { class: 'note' }, pin.when)) : null,
       h('div', h('div', { class: 'row between' }, h('h2', { style: { margin: 0 } }, '최근 뉴스'), link('#/news', '뉴스 전체 →')),
-        h('ul', { style: { marginTop: '10px' } }, news.items.slice(0, 3).map((it) => h('li', h('span', { class: 'note' }, it.when), link('#/news', it.headline), h('span', { class: 'news-sum' }, it.summary))))),
+        h('ul', { style: { marginTop: '10px' } }, news.items.filter((it) => it !== pin).slice(0, 3).map((it) => h('li', h('span', { class: 'note' }, it.when), link('#/news', it.headline), h('span', { class: 'news-sum' }, it.summary))))),
       moodCard(news.mood, { compact: true }));
   } catch (e) { console.error(e); return null; }
 }

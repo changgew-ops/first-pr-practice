@@ -5,6 +5,7 @@ import { progressPlayer } from '../src/offseason.mjs';
 import { cardPlayer, cardPotential, careerHighIndex, expandCard, cardOvr } from '../src/cards.mjs';
 import { createLeague, playLeagueYear } from '../src/league.mjs';
 import { mulberry32 } from '../src/rng.mjs';
+import { fromLegacyOvr, OVR_MAX } from '../src/rating.mjs';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../data/${p}`, import.meta.url), 'utf8'));
 const rules = read('league-rules.json'), teams = read('teams.json'), players = read('players.json');
@@ -22,14 +23,16 @@ test('카드 잠재력: 어린 카드는 여지를 받고, 커리어 하이가 �
   const pot = cardPotential(young, ovr, ovr, pr, young.age);
   assert.ok(pot >= ovr + pr.bonus[0][1] && pot <= ovr + pr.bonus[0][2], `포텐 ${pot} (OVR ${ovr})`);
   assert.equal(cardPotential(young, ovr, ovr, pr, young.age), pot, '같은 카드는 같은 잠재력');
-  assert.equal(cardPotential(young, ovr, 80, pr, 20), 80, '21세 이하는 커리어 하이까지');
-  assert.equal(cardPotential(young, ovr, 80, pr, 24), 79, '24세 이하는 커리어 하이 − 1');
-  assert.equal(cardPotential(young, ovr, 80, pr, 28), ovr, '27세 이상은 잠재력이 OVR로 수렴');
+  // 기준점(highGap)은 예전 OVR 눈금 기준이라 예전 눈금 80·79를 지금 눈금으로 옮긴 값과 견준다(src/rating.mjs)
+  const high = fromLegacyOvr(80);
+  assert.equal(cardPotential(young, ovr, high, pr, 20), high, '21세 이하는 커리어 하이까지');
+  assert.ok(Math.abs(cardPotential(young, ovr, high, pr, 24) - fromLegacyOvr(79)) <= 1, '24세 이하는 커리어 하이 − 1(예전 눈금, 반올림 ±1)');
+  assert.equal(cardPotential(young, ovr, high, pr, 28), ovr, '27세 이상은 잠재력이 OVR로 수렴');
   // 실제 카드 한 명: 어릴 때 카드의 포텐이 이후 커리어 하이를 넘지 않고 하이 근처다
   const highs = careerHighIndex(cards);
   const c = cards.domestic.find((x) => x.age != null && x.age <= 21 && highs.get(x.kblId) - cardOvr(x) >= 5);
   const p = cardPlayer(c, { id: 'c1', potentialRules: pr, careerHigh: highs.get(c.kblId) });
-  assert.ok(p.potential >= highs.get(c.kblId) && p.potential <= 99);
+  assert.ok(p.potential >= highs.get(c.kblId) && p.potential <= OVR_MAX);
   // 규칙을 주지 않으면 이전처럼 포텐 = OVR
   assert.equal(cardPlayer(c, { id: 'c2' }).potential, cardPlayer(c, { id: 'c2' }).ovr);
 });
