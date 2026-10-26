@@ -462,7 +462,7 @@ test('플레이오프 컨디션: 경기마다 두 팀 선수만 지치고 라운
   assert.ok(s.players.every((p) => (s.conditions.get(p.id) ?? start) === start), '플레이오프는 모두 회복해서 시작한다');
   const r = s.playoffStep();
   const g = r.mine.game;
-  const playing = new Set([g.homeId, g.awayId]);
+  const playing = new Set([g.homeId, g.awayId, ...(r.games ?? []).flatMap((x) => [x.game?.homeId, x.game?.awayId])]); // 같은 날 다른 시리즈도 한 경기씩 치른다
   for (const p of s.players) {
     const c = s.conditions.get(p.id) ?? start;
     if (!playing.has(p.teamId)) assert.equal(c, start, '경기를 안 치른 팀의 컨디션은 그대로');

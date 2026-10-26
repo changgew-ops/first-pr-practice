@@ -172,8 +172,25 @@ export function simulateGame(home, away, baseline, sim, rng, ex = null) {
   const exKind = ex ? extremeKind(ex, sim) : null;
   const base = playOnce(home, away, baseline, sim, rng, 0); // 극단 경기라도 경기 난수는 평소 경기와 똑같이 쓴다(뒤따르는 경기의 결과가 달라지지 않게)
   if (!exKind) return base;
-  // 걸린 경기만 key에서 만든 별도 난수로 다시 치른다(두 팀 기대 득점 합계를 이동)
-  return { ...playOnce(home, away, baseline, sim, mulberry32(hashString(`${ex.key}:game`)), exKind.shift), ex: exKind.kind };
+  // 걸린 경기만 key에서 만든 별도 난수로 다시 치른다(두 팀 기대 득점 합계를 이동). 잡음 때문에 평소와 다를 게 없는 점수가 나오면
+  // 같은 별도 난수로 다시 치러(최대 30번) 합계가 기대 합계에서 이동량의 70% 이상 벗어난 경기만 쓴다.
+  const sub = mulberry32(hashString(`${ex.key}:game`));
+  const exp = expectedTotal(home, away, baseline, sim);
+  let res = null;
+  for (let i = 0; i < 30; i++) {
+    res = playOnce(home, away, baseline, sim, sub, exKind.shift);
+    const dev = res.homePts + res.awayPts - exp;
+    if (exKind.shift > 0 ? dev >= exKind.shift * 0.7 : dev <= exKind.shift * 0.7) break;
+  }
+  return { ...res, ex: exKind.kind };
+}
+
+/** 두 팀의 기대 득점 합계(경기 보정 포함, 극단 경기 이동 전) */
+function expectedTotal(home, away, baseline, sim) {
+  const hr = teamRatings(home.lineup, sim), ar = teamRatings(away.lineup, sim);
+  const hm = home.mods ?? null, am = away.mods ?? null;
+  const pace = hm || am ? ((hm?.pace ?? 1) + (am?.pace ?? 1)) / 2 : 1;
+  return expectedPoints(hr, ar, baseline, sim, true) * pace + (hm?.edge ?? 0) + expectedPoints(ar, hr, baseline, sim, false) * pace + (am?.edge ?? 0);
 }
 
 function playOnce(home, away, baseline, sim, rng, shift) {

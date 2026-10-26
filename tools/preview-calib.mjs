@@ -10,7 +10,7 @@ import { effectiveTable } from '../web/lib/game.js';
 const read = (p) => JSON.parse(readFileSync(new URL(`../data/${p}`, import.meta.url), 'utf8'));
 const rules = read('league-rules.json'), teams = read('teams.json'), players = read('players.json');
 const seeds = Number(process.argv[2] ?? 8), years = Number(process.argv[3] ?? 10);
-const data = { rules, teams };
+const data = { rules, teams, players };
 const rows = { base: [], eff: [] };
 for (let seed = 1; seed <= seeds; seed++) {
   const rng = mulberry32(seed * 7919); let league = createLeague(players, rules, { history: loadHistory(), teamData: teams });

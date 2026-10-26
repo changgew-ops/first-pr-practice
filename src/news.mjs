@@ -496,12 +496,12 @@ export const PLAN = {
 const EX_PLAN = [['lead', 'ex_star'], ['ex_rec', 'ex_avg'], ['ex_ctx']];
 Object.assign(TEMPLATES, {
   extreme_shootout: {
-    h: ['난타전! {winner:이/가} {loser:을/를} {wScore}-{lScore:으로/로} 꺾은 {total}점 폭발 경기', '[속보] 합계 {total}점… {home}-{away}전에 점수판이 쉴 틈이 없었다', '양 팀 합계 {total}점, 리그 평균보다 {over}점 많은 고득점 경기', '{day}일차 화제의 경기: {winner} {wScore}-{lScore} {loser}, 점수판이 바빴다', '{recordWord} 경신… {home}-{away}전 합계 {total}점'],
-    b: ['{day}일차 {home:과/와} {away}의 경기는 {winner} {wScore}-{lScore} 승리로 끝났다. 양 팀 합계 {total}점은 이번 시즌 리그 경기 평균 {avgTotal}점을 {over}점 웃돈다.', '{winner:은/는} {day}일차 {loser:을/를} {wScore}-{lScore:으로/로} 이겼다. 두 팀이 합쳐 {total}점을 넣은 이 경기는 올 시즌 평균 {avgTotal}점보다 {over}점 많다.', '점수가 쉴 새 없이 오간 하루였다. {home} {hp}점, {away} {ap}점으로 합계 {total}점이 나왔고 리그 평균({avgTotal}점)을 {over}점 넘었다.', '{day}일차 {home}-{away}전의 최종 스코어는 {hp}-{ap}였다. 합계 {total}점으로 평균 {avgTotal}점을 {over}점 웃도는 고득점 경기다.']
+    h: ['난타전! {winner:이/가} {loser:을/를} {wScore}-{lScore:으로/로} 꺾은 {total}점 폭발 경기', '[속보] 합계 {total}점… {home}-{away}전에 점수판이 쉴 틈이 없었다', '양 팀 합계 {total}점, 리그 평균보다 {over}점 많은 고득점 경기', '{day}일차 화제의 경기: {winner} {wScore}-{lScore} {loser}, 점수판이 바빴다', '{recordWord} 경신… {home}-{away}전 합계 {total}점', '[속보] {home}-{away}전 {hp}-{ap}, 점수가 쉴 새 없이 오간 난타전'],
+    b: ['{day}일차 {home:과/와} {away}의 경기는 {winner} {wScore}-{lScore} 승리로 끝났다. 양 팀 합계 {total}점은 이번 시즌 리그 경기 평균 {avgTotal}점을 {over}점 웃돈다.', '{day}일차 {home}-{away}전은 {hs:으로/로} 끝났다. 두 팀이 합쳐 {total}점을 넣은 난타전이었고 승자는 {winner}이다.', '{winner:은/는} {day}일차 {loser:을/를} {wScore}-{lScore:으로/로} 이겼다. 두 팀이 합쳐 {total}점을 넣은 이 경기는 올 시즌 평균 {avgTotal}점보다 {over}점 많다.', '점수가 쉴 새 없이 오간 하루였다. {home} {hp}점, {away} {ap}점으로 합계 {total}점이 나왔고 리그 평균({avgTotal}점)을 {over}점 넘었다.', '{day}일차 {home}-{away}전의 최종 스코어는 {hp}-{ap}였다. 합계 {total}점으로 평균 {avgTotal}점을 {over}점 웃도는 고득점 경기다.']
   },
   extreme_defense: {
-    h: ['수비전의 날… {winner:이/가} {loser:을/를} {wScore}-{lScore:으로/로} 누른 합계 {total}점 경기', '[속보] 합계 {total}점뿐… {home}-{away}전은 철벽 수비전이었다', '양 팀 합계 {total}점, 리그 평균보다 {under}점 적은 저득점 경기', '{day}일차 저득점 경기: {winner} {wScore}-{lScore} {loser}, 점수판이 조용했다', '{recordWord} 기록… {home}-{away}전 합계 {total}점'],
-    b: ['{day}일차 {home:과/와} {away}의 경기는 {winner} {wScore}-{lScore} 승리로 끝났다. 양 팀 합계 {total}점은 이번 시즌 리그 경기 평균 {avgTotal}점보다 {under}점 적다.', '{winner:은/는} {day}일차 {loser:을/를} {wScore}-{lScore:으로/로} 이겼다. 두 팀이 합쳐 {total}점에 그친 이 경기는 올 시즌 평균 {avgTotal}점보다 {under}점 적다.', '점수가 좀처럼 나지 않은 하루였다. {home} {hp}점, {away} {ap}점으로 합계 {total}점이 나왔고 리그 평균({avgTotal}점)을 {under}점 밑돌았다.', '{day}일차 {home}-{away}전의 최종 스코어는 {hp}-{ap}였다. 합계 {total}점으로 평균 {avgTotal}점에 {under}점 모자란 저득점 경기다.']
+    h: ['수비전의 날… {winner:이/가} {loser:을/를} {wScore}-{lScore:으로/로} 누른 합계 {total}점 경기', '[속보] 합계 {total}점뿐… {home}-{away}전은 철벽 수비전이었다', '양 팀 합계 {total}점, 리그 평균보다 {under}점 적은 저득점 경기', '{day}일차 저득점 경기: {winner} {wScore}-{lScore} {loser}, 점수판이 조용했다', '{recordWord} 기록… {home}-{away}전 합계 {total}점', '[속보] {home}-{away}전 {hp}-{ap}, 점수가 좀처럼 나지 않은 수비전'],
+    b: ['{day}일차 {home:과/와} {away}의 경기는 {winner} {wScore}-{lScore} 승리로 끝났다. 양 팀 합계 {total}점은 이번 시즌 리그 경기 평균 {avgTotal}점보다 {under}점 적다.', '{day}일차 {home}-{away}전은 {hs:으로/로} 끝났다. 두 팀이 합쳐 {total}점에 그친 수비전이었고 승자는 {winner}이다.', '{winner:은/는} {day}일차 {loser:을/를} {wScore}-{lScore:으로/로} 이겼다. 두 팀이 합쳐 {total}점에 그친 이 경기는 올 시즌 평균 {avgTotal}점보다 {under}점 적다.', '점수가 좀처럼 나지 않은 하루였다. {home} {hp}점, {away} {ap}점으로 합계 {total}점이 나왔고 리그 평균({avgTotal}점)을 {under}점 밑돌았다.', '{day}일차 {home}-{away}전의 최종 스코어는 {hp}-{ap}였다. 합계 {total}점으로 평균 {avgTotal}점에 {under}점 모자란 저득점 경기다.']
   },
   rival_pre: {
     h: ['라이벌 {opp} 만난다… {team}의 {nextDay}일차 상대', '{team}, {nextVenue}에서 {opp:과/와} 라이벌전', '맞대결 예고, {team} 대 {opp}', '{opp}전을 앞둔 {team}, 이력이 말해 주는 것'],
@@ -901,11 +901,11 @@ export function buildNews(src) {
       const lines = [...(g.box?.home ?? []).map((l) => [l, g.homeId]), ...(g.box?.away ?? []).map((l) => [l, g.awayId])].filter(([l]) => l.minutes).sort((a, b) => b[0].points - a[0].points);
       const topL = lines[0];
       const seasonMax = Math.max(...lgTotals); const seasonMin = Math.min(...lgTotals);
-      const isRec = rankN === 1 && lgTotals.length >= 10;
+      const isRec = rankN === 1 && lgTotals.length >= 25; // 시즌 초반(몇 경기뿐)에는 최다·최소 표현을 쓰지 않는다
       const mineIn = g.homeId === my || g.awayId === my;
       const vars = {
-        home: nameOf(g.homeId), away: nameOf(g.awayId), hp: g.homePts, ap: g.awayPts, total: tot, day: d.day, winner: nameOf(winId), loser: nameOf(loseId), wScore: wS, lScore: lS, wl: `${wS}-${lS}`, avgTotal: fmt1(avgT), gamesSoFar: lgTotals.length,
-        ...(shoot ? { over: diff } : { under: diff }), seasonMax, seasonMin,
+        home: nameOf(g.homeId), away: nameOf(g.awayId), hp: g.homePts, ap: g.awayPts, total: tot, day: d.day, winner: nameOf(winId), loser: nameOf(loseId), wScore: wS, lScore: lS, wl: `${wS}-${lS}`, hs: `${g.homePts}-${g.awayPts}`, avgTotal: fmt1(avgT), gamesSoFar: lgTotals.length,
+        ...(shoot ? (tot > avgT ? { over: diff } : {}) : (tot < avgT ? { under: diff } : {})), seasonMax, seasonMin,
         rankText: `이날까지 치른 ${lgTotals.length}경기 가운데 합계 득점이 ${shoot ? '많은' : '적은'} 순서로 ${rankN}위에 해당한다.`,
         ...(isRec ? { recordWord: shoot ? '올 시즌 최다 합계 득점' : '올 시즌 최소 합계 득점' } : {}),
         winRec: ofRec(winId), loseRec: ofRec(loseId),
@@ -1184,7 +1184,7 @@ export function buildNews(src) {
       add({ key: `${y}:awards`, t: base(y) + 205, season: label, when: `${label} 시즌 어워드`, kind: 'awards', scope: myAwards ? 'my' : 'league', tags: myAwards ? ['우리 팀', '어워드'] : ['리그', '어워드'], tone: myAwards ? 'good' : 'neutral', delta: myAwards ? 1 : 0, comments: 2, playerComment: !!myAwards, vars });
     }
     // 가성비 영입: 지난 오프시즌(보고서)에 영입한 선수의 이번 시즌 활약을 연봉으로 나눈다. FA는 계약 연봉, 드래프트·트레이드는 지금 계약 연봉(없으면 제외)
-    const prevRep = prevEntry(y)?.report;
+    const prevRep = latest ? prevEntry(y)?.report : null; // 가장 최근 시즌만: 저장을 줄이면(src: save.keepSeasonsDetail) 오래된 시즌의 보고서는 지워진다
     if (prevRep && entry.lines) {
       const cands = [];
       for (const sg of prevRep.signings ?? []) cands.push({ id: sg.id, teamId: sg.teamId, salary: sg.salaryEok, source: 'FA', name: sg.name });
