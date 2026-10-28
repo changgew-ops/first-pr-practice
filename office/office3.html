@@ -1930,7 +1930,7 @@ function drawDinnerFx() {   // 3F 아래층 회의 테이블 위의 음식과 �
 }
 async function sceneDinner() {
   const ppl = [...dinner.ids].map((id) => actors.get(id)).filter((a) => a && a.vis && !a.gone && !a.leaving && !a.coming);
-  if (ppl.length < 2) { endDinner(); return; }
+  if (ppl.length < 2 || cycPhase() > CYC.day + CYC.eve + CYC.night * 0.4) { endDinner(); return; }   // 너무 늦었으면(밤 40%가 지났으면) 회식은 취소하고 퇴근한다
   ppl.forEach((a) => { a.busy = true; }); announce(`저녁 회식입니다. ${ppl.length}명이 3층 회의실에 모입니다.`);
   const spots = [168, 192, 216, 240, 264];
   await Promise.all(ppl.map((a, i) => a.job(async () => { await sleep(i * 300); a.say(pick(['회식이다~!', '오늘은 달리자!', '뭐 시킬까요?']), 'good', 1300); await goFloor(a, LNG, spots[i], false); a.face = i < ppl.length / 2 ? 1 : -1; })));

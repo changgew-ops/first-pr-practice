@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 node_modules/
 dist/
+
+# 실사 선수 사진 페이스팩은 저장소에 올리지 않는다(사용자가 별도 폴더로 제공, facepack/README 참고)
+facepack/faces/
+facepack/originals/
