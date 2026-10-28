@@ -14,6 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, 'source', 'sheet.webp')
 SRC2 = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, 'source', 'sheet2.webp')  # 전설의 포켓몬·굼바 변형이 들어 있는 두 번째 시트
 SRC3 = os.path.join(HERE, 'source', 'sheet3.webp')                                         # 세 번째 시트(76.webp): 루나아라·아르세우스·제크로무·카멕·키노피오·잉어킹·신규 직원 종이 있다
+SRC6 = os.path.join(HERE, 'source', 'sheet6.webp')                                         # 여섯 번째 시트(81.webp): 자시안·자마젠타·레시라무·큐레무·그란돈 등 전설 컷
 SRC5 = os.path.join(HERE, 'source', 'sheet5.webp')                                         # 다섯 번째 시트(79.webp): 가디·고오스·푸린·피츄·마릴 등 신규 종, 키노피오(서 있는 컷)·뻐끔플라워·코인·버섯, 냉장고·자판기·프린터 등 소품
 SRC4 = os.path.join(HERE, 'source', 'sheet4.webp')                                         # 네 번째 시트(78.webp): 팝고래·뜨아거 등 신규 종과 사무 소품이 있다
 
@@ -64,7 +65,11 @@ EXTRA = [('solgaleo', '솔가레오풍', ('s2', 53)), ('necrozma', '네크로즈
          ('toad_sit', '키노피오(앉음)', ('s3', 23)), ('toad_b', '키노피오(손 흔들기)', ('s5', 20)), ('toad_c', '키노피오(걷기)', ('s5', 24)),
          ('piranha_b', '뻐끔플라워(입 벌림)', ('s5', 25)), ('pipe', '토관', ('s5', 36)), ('coin', '코인', ('s5', (1301, 163, 1346, 203))),
          ('mushroom_red', '빨간 버섯', ('s5', (1301, 45, 1346, 84))), ('mushroom_green', '초록 버섯', ('s5', (1301, 85, 1346, 122))),
-         ('mushroom_orange', '주황 버섯', ('s5', (1301, 123, 1346, 162))), ('goomba_c', '굼바(화난 얼굴)', ('s5', 23))]
+         ('mushroom_orange', '주황 버섯', ('s5', (1301, 123, 1346, 162))), ('goomba_c', '굼바(화난 얼굴)', ('s5', 23)),
+         # --- 6차(sheet6=81.webp): 검왕·방패왕·레시라무·큐레무(오른쪽 전설 영역 아래/가운데 줄, 좌표 컷), 그란돈, 달리는 키노피오
+         ('zacian', '자시안(검왕, 의자)', ('s6', (965, 566, 1090, 658))), ('zamazenta', '자마젠타(방패왕)', ('s6', (1100, 564, 1226, 658))),
+         ('reshiram', '레시라무', ('s6', (945, 368, 1072, 458))), ('kyurem', '큐레무(의자)', ('s6', (823, 563, 945, 658))),
+         ('legend_groudon', '그란돈', ('s6', (1097, 467, 1186, 556))), ('toad_d', '키노피오(뛰는 자세)', ('s6', (922, 128, 975, 208)))]
 # 에이전트 종 추가(CHARS 뒤에 이어 붙인다 — SPR 인덱스가 순서에 의존하므로 기존 순서는 바꾸지 않는다): (id, 한글 이름, (시트, 컷), 초록 몸 여부)
 NEWCHARS = [('psyduck', '고라파덕(책상)', ('s3', 73), False), ('machamp', '근육몬', ('s3', (104, 550, 193, 650)), False),
             ('golem', '딱구리', ('s3', (194, 550, 286, 650)), False), ('magneton', '레어코일', ('s3', (287, 552, 370, 650)), False),
@@ -187,6 +192,21 @@ def defringe(arr, band=4, kill=False):
         a[bad, :3] = a[iy[bad], ix[bad], :3]
     return a
 
+def drop_hlines(arr, minrun=18):
+    """발밑에 가로로 길게 남은 시트 격자선 조각(얇고 어두운 가로줄, 위아래가 투명)을 지운다"""
+    from scipy import ndimage as ndi
+    a = arr.copy(); dark = (a[..., 3] > 40) & (a[..., :3].max(axis=-1) < 110)
+    for y in range(a.shape[0]):
+        lab, n = ndi.label(dark[y])
+        for i in range(1, n + 1):
+            xs = np.where(lab == i)[0]
+            if len(xs) < minrun: continue
+            x0, x1 = xs.min(), xs.max() + 1
+            above = a[max(0, y - 3):y, x0:x1, 3].max(initial=0); below = a[y + 1:y + 4, x0:x1, 3].max(initial=0)
+            if above < 40 or below < 40:
+                a[y, x0:x1, 3] = 0 if (above < 40 and below < 40) or y > a.shape[0] - 6 else a[y, x0:x1, 3]
+    return trim(a)
+
 def keep_main(arr, dil=2):
     """가장 큰 덩어리만 남긴다(시트 격자선 조각이 발밑에 점선처럼 붙는 것을 지운다)"""
     from scipy import ndimage as ndi
@@ -202,6 +222,8 @@ def keep_main(arr, dil=2):
     while keep > 1 and cnt[keep - 1] < 6: keep -= 1           # 발 아래에 한두 점 남은 줄은 잘라 발바닥 기준을 맞춘다
     return trim(out[:keep])
 
+SHEET6_LEGENDS = ('zacian', 'zamazenta', 'reshiram', 'kyurem', 'legend_groudon', 'toad_d')
+
 def prop_fix(pid, arr):
     """초록 번짐이 눈에 띄는 의자는 초록 가장자리를 지운다(식물은 despill의 green 모드만)"""
     return defringe(arr, band=3, kill=True) if pid.startswith('chair') else arr
@@ -215,13 +237,17 @@ def same_canvas(arrs):
     return out
 
 def main():
-    S = {'s1': Sheet(SRC), 's2': Sheet(SRC2), 's3': Sheet(SRC3), 's4': Sheet(SRC4), 's5': Sheet(SRC5)}
+    S = {'s1': Sheet(SRC), 's2': Sheet(SRC2), 's3': Sheet(SRC3), 's4': Sheet(SRC4), 's5': Sheet(SRC5), 's6': Sheet(SRC6)}
     def get(ref, green=False):
         return S[ref[0]].get(ref[1], green)
     def extra_cut(eid, ref):
         g = eid in ('mushroom_green', 'pipe')                     # 초록 몸은 despill의 green 모드(초록을 지우지 않는다)
         a = get(ref, g)
         if eid.startswith('toad') or eid in ('goomba_c', 'mushroom_red', 'mushroom_orange', 'coin'): a = defringe(a)   # 윤곽의 올리브색 번짐 제거
+        if eid in SHEET6_LEGENDS:                                   # 6차 전설 컷: 몸 전체의 초록 번짐을 눌러 주고(흰·푸른 몸), 발밑 격자선 조각을 지운다
+            a = a.copy(); r, g, b = [a[..., i].astype(int) for i in range(3)]
+            cap = np.maximum(r, b) + 14; sp = (a[..., 3] > 0) & (g > cap); a[..., 1][sp] = cap[sp]
+            return drop_hlines(keep_main(enhance(a), dil=4))
         return enhance(a)
     extra = [(eid, extra_cut(eid, ref)) for eid, _, ref in EXTRA]
     chars = [(cid, enhance(S['s1'].cut(i, g))) for cid, _, i, g in CHARS] + [(cid, enhance(defringe(get(ref, g), kill=cid.startswith('rotom') or cid == 'fuecoco' or cid == 'gastly') if (g or cid == 'gastly') else get(ref, g))) for cid, _, ref, g in NEWCHARS + NEWCHARS5]
