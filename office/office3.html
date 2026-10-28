@@ -708,8 +708,8 @@ async function loadAssets() {
     for (const [id, c] of Object.entries(extraBy)) EXT[id] = { c, w: c.width, h: c.height, meta: null };
     const fit = (c, mw, mh, cs) => { const k = Math.min(cs / UPF, mw / c.width, mh / c.height); return { c, w: c.width * k, h: c.height * k }; };
     const X = (id, mw, mh, cs) => (extraBy[id] ? fit(extraBy[id], mw, mh, cs) : null);
-    for (const id of ['solgaleo', 'necrozma', 'palkia', 'dialga', 'lunala', 'arceus', 'zekrom']) { const f = X(id, 38, 40, 0.5); if (f) NPCSPR.legendBy[id] = f; }   // 전설 직원: 앞줄·뒤줄이 엇갈려 서므로 자리 간격(20px)보다 커도 된다(38×40까지)
-    for (const id of ['zacian', 'zamazenta', 'reshiram', 'kyurem', 'legend_groudon']) { const f = X(id, 38, 40, 0.5); if (f) NPCSPR.leg2By[id] = f; }   // 지하 전설: 6F 전설과 같은 크기 상한(38×40)
+    for (const id of ['solgaleo', 'necrozma', 'palkia', 'dialga', 'lunala', 'arceus']) { const f = X(id, 38, 40, 0.5); if (f) NPCSPR.legendBy[id] = f; }   // 전설 직원: 앞줄·뒤줄이 엇갈려 서므로 자리 간격(20px)보다 커도 된다(38×40까지)
+    for (const id of ['zacian', 'zamazenta', 'reshiram', 'kyurem', 'legend_groudon', 'zekrom', 'kyogre']) { const f = X(id, 38, 40, 0.5); if (f) NPCSPR.leg2By[id] = f; }   // 지하 전설: 6F 전설과 같은 크기 상한(38×40)
     NPCSPR.toadD = X('toad_d', 24, 28, 0.4);
     NPCSPR.toad = X('toad', 24, 28, 0.4); NPCSPR.toadC = X('toad_c', 24, 28, 0.4); NPCSPR.toadB = X('toad_b', 24, 28, 0.4); NPCSPR.piranha = X('piranha', 28, 34, 0.45); NPCSPR.piranhaB = X('piranha_b', 28, 34, 0.45); NPCSPR.coin = X('coin', 9, 10, 0.14); NPCSPR.magikarp = X('magikarp', 20, 18, 0.2);
     HAS_PIRANHA = !!NPCSPR.piranha; HAS_TANK = !!NPCSPR.magikarp;
@@ -993,6 +993,8 @@ function drawBasement(g, f) {   // B2 지하: 보일러실·냉동 창고·무�
   R(g, 182, t + 12, 14, 16, '#3a62c0'); R(g, 183, t + 13, 12, 14, '#2a4a9a'); R(g, 187, t + 13, 4, 14, '#e8c030'); R(g, 182, t + 12, 14, 1, '#7aa2f0');   // 방패
   R(g, 118, t + 16, 16, 14, '#2a2f44'); R(g, 119, t + 17, 14, 12, '#1a1f34'); R(g, 122, t + 20, 8, 1, '#ffd23f'); R(g, 122, t + 23, 8, 1, '#ffd23f'); R(g, 122, t + 26, 5, 1, '#ffd23f');   // 경비실 안내판
   R(g, 108, fy - 12, 12, 12, '#a8703a'); R(g, 108, fy - 12, 12, 2, '#d4a060'); R(g, 120, fy - 8, 10, 8, '#c8923a'); R(g, 120, fy - 8, 10, 2, '#e0b060'); R(g, 304, fy - 10, 14, 10, '#a8703a'); R(g, 304, fy - 10, 14, 2, '#d4a060');   // 상자
+  R(g, 318, fy - 40, 22, 40, '#8aa4c8'); R(g, 318, fy - 40, 22, 3, '#c8d8f0'); R(g, 320, fy - 36, 18, 34, '#3a7ac8'); R(g, 320, fy - 36, 18, 6, '#6aa8e8'); R(g, 322, fy - 28, 14, 1, '#a8d0f8'); R(g, 322, fy - 20, 14, 1, '#a8d0f8'); R(g, 330, fy - 46, 3, 6, '#6a7090'); g.fillStyle = '#d8ecff'; g.font = 'bold 5px "Do Hyeon", "IBM Plex Sans KR", sans-serif'; g.textAlign = 'center'; g.fillText('물탱크', 329, fy - 30); g.textAlign = 'left';   // 가이오가의 물탱크 구석
+  R(g, 204, fy - 30, 26, 30, '#3a3f58'); R(g, 205, fy - 29, 24, 28, '#262b44'); R(g, 208, fy - 25, 18, 4, '#ffd23f'); R(g, 208, fy - 18, 18, 3, '#8a90b0'); R(g, 214, fy - 34, 6, 5, '#6a7090'); g.fillStyle = '#ffe8a0'; g.font = 'bold 5px "Do Hyeon", "IBM Plex Sans KR", sans-serif'; g.textAlign = 'center'; g.fillText('발전기', 217, fy - 11); g.textAlign = 'left';   // 제크로무의 전력실
   for (const lx of [56, 150, 236, 318]) { R(g, lx - 1, t + 4, 2, 6, '#3a4468'); R(g, lx - 4, t + 10, 8, 3, '#ffd23f'); g.globalAlpha = 0.16; R(g, lx - 14, t + 13, 28, 56, '#ffd23f'); g.globalAlpha = 0.1; R(g, lx - 22, t + 28, 44, 40, '#ffd23f'); g.globalAlpha = 1; }   // 램프와 빛
   if (IMGA.ok) { dp(g, 'chair_black', 176, fy, { h: 32 }); dp(g, 'chair_red', 194, fy, { h: 30 }); }   // 안마의자 코너
   R(g, 162, t + 32, 36, 9, '#10163a'); R(g, 163, t + 33, 34, 7, '#7a2a6a'); g.fillStyle = '#ffe8a0'; g.font = 'bold 6px "Do Hyeon", "IBM Plex Sans KR", sans-serif'; g.textAlign = 'center'; g.fillText('안마의자', 180, t + 39); g.textAlign = 'left';
@@ -1222,7 +1224,7 @@ function climbTo(a, L, up, sTarget) {
 function resumeClimb(a, up, stop = null) {   // 멈춰 선 곳에서 다시 오르거나(up) 내려간다. 끝까지 가면(stop=null) 층 바닥에 도착해 끝난다
   return new Promise((res) => { const c = a.climb; if (!c) return res(); c.up = up; c.stop = stop; c.hold = false; c.res = res; });
 }
-const TRIPS = { stairs: 0, car: 0 };   // 측정용: 층 이동 수단 집계(__office.trips)
+const TRIPS = { stairs: 0, car: 0, near: 0, nearStairs: 0, nearCommute: 0, nearCommuteStairs: 0 };   // near: 한두 층 이동 횟수, nearStairs: 그중 계단을 쓴 횟수   // 측정용: 층 이동 수단 집계(__office.trips)
 const STAIR_CASUAL = 0.5, STAIR_CASUAL2 = 0.35, STAIR_COMMUTE = 0.18;   // 엘리베이터 우선은 그대로: 출퇴근·급한 이동이 아닌 한 층 오르내림에서만 이 확률로 운동 삼아 계단을 쓴다
 async function takeStairs(a, fi, casual = false) {
   TRIPS.stairs++; a.waitQ = false; a.stairing = true;
@@ -1240,8 +1242,9 @@ async function goFloor(a, f, x, loft = false) {
   if (a.floor !== fi) {
     const waiting = [...actors.values()].filter((q) => q !== a && q.floor === a.floor && q.waitQ && !q.carMode && !q.climb).length;   // 이 층에서 엘리베이터를 기다리는 사람
     const dist = Math.abs(a.floor - fi), pc = a.commute ? (dist <= 2 ? STAIR_COMMUTE : 0) : dist === 1 ? STAIR_CASUAL : dist === 2 ? STAIR_CASUAL2 : 0.1;
-    const casual = !a.npc && !a.rush && !a.meeting && !a.loft && dist <= 4 && a.floor !== LNG && fi !== LNG && !a.noStairs && Math.random() < pc;   // 한두 층(출퇴근은 소수)은 계단으로 걷는다. 휴게실(복층) 출발·도착만 제외
-    if (!a.noStairs && (waiting >= CAR_CAP * CARS.length || casual)) await takeStairs(a, fi, casual && waiting < CAR_CAP * CARS.length);   // 두 카 정원(8×2)만큼 이미 줄 서 있거나 가끔 운동 삼아
+    const casual = !a.npc && !a.rush && !a.meeting && !a.loft && dist <= 4 && !a.noStairs && Math.random() < pc;   // 한두 층(출퇴근은 소수)은 계단으로 걷는다. 휴게실(복층)은 아래층 바닥까지만 계단으로 가고 로프트는 기존 계단으로 오른다
+    const useStairs = !a.noStairs && (waiting >= CAR_CAP * CARS.length || casual); if (!a.npc && dist <= 2) { if (a.commute) { TRIPS.nearCommute++; if (useStairs) TRIPS.nearCommuteStairs++; } else { TRIPS.near++; if (useStairs) TRIPS.nearStairs++; } }
+    if (useStairs) await takeStairs(a, fi, casual && waiting < CAR_CAP * CARS.length);   // 두 카 정원(8×2)만큼 이미 줄 서 있거나 가끔 운동 삼아
     else { a.waitQ = true; await a.walkTo(QUEUE_X - (waiting % 8) * 7 - Math.floor(waiting / 8) * 3); await ride(a, fi); a.waitQ = false; }   // 줄 서는 자리는 조금씩 비켜 서서 겹치지 않는다
   }
   if (loft && !a.loft) { await a.walkTo(STAIR_BOT + 2); a.loft = true; }                            // 로프트로 갈 때는 계단을 올라간다
@@ -1313,20 +1316,29 @@ const LEG_DEF = [
   { id: 'palkia', name: '펄기아', seat: 1, color: '#c8b0d8' },
   { id: 'dialga', name: '디아루가', seat: 2, color: '#8ab0e0' },
   { id: 'arceus', name: '아르세우스', seat: 3, color: '#e8dca8' },
-  { id: 'zekrom', name: '제크로무', seat: 4, color: '#4a4a58' },        // 시트에 기라티나 컷이 없어 이 자리를 시트의 다른 전설 컷(제크로무)이 맡는다
-  { id: 'necrozma', name: '네크로즈마', seat: 5, color: '#4a3a2a' },
-  { id: 'lunala', name: '루나아라', seat: 6, color: '#7a72c0' }
+  { id: 'necrozma', name: '네크로즈마', seat: 4, color: '#4a3a2a' },   // 제크로무는 B2 지하 상주로 옮겼다(6F는 6마리)
+  { id: 'lunala', name: '루나아라', seat: 5, color: '#7a72c0' }
 ];
 
 /* ---- B2 지하 전설(상주): 자시안(검왕)·자마젠타(방패왕)는 지하 순찰·경비, 레시라무·그란돈은 보일러실, 큐레무는 냉동 창고지기. 가끔 B1 편의점에 장을 보러 올라오고,
    가끔 검·방패 대련과 불·얼음 시연을 한다. 사무실 에이전트가 아니라 db에 없다 ---- */
 const LEG2_DEF = [
-  { id: 'zacian', name: '자시안(검왕)', role: '지하 순찰·경비를 서는 검왕', x0: 120, x1: 214, color: '#7ab0e8', lines: ['순찰 이상 무!', '검은 항상 갈아 둔다', '수상한 놈은 없나'] },
-  { id: 'zamazenta', name: '자마젠타(방패왕)', role: '지하 문단속을 하는 방패왕', x0: 130, x1: 230, color: '#d86a6a', lines: ['문단속 완료', '방패로 막아 주지', '지하는 내가 지킨다'] },
-  { id: 'reshiram', name: '레시라무', role: '보일러실을 지키는 화염의 전설', x0: 104, x1: 120, color: '#e8e4d8', lines: ['보일러 온도 적정!', '불 조절은 내 몫', '따뜻하게 틀어 놨다'] },
-  { id: 'legend_groudon', img: 'legend_groudon', name: '그란돈', role: '보일러실을 같이 지키는 대지의 전설', x0: 126, x1: 156, color: '#c8483a', lines: ['으르렁… 뜨끈하군', '지열이 좋다', '난방은 맡겨라'] },
-  { id: 'kyurem', name: '큐레무', role: '냉동 창고를 지키는 얼음의 전설', x0: 234, x1: 244, color: '#9ac8e8', lines: ['냉동 창고 영하 18도', '아이스크림은 건드리지 마', '차갑게 보관 중'] }
+  { id: 'zacian', name: '자시안(검왕)', role: '지하 순찰·경비를 서는 검왕', x0: 150, x1: 176, color: '#7ab0e8', lines: ['순찰 이상 무!', '검은 항상 갈아 둔다', '수상한 놈은 없나'] },
+  { id: 'zamazenta', name: '자마젠타(방패왕)', role: '지하 문단속을 하는 방패왕', x0: 184, x1: 206, color: '#d86a6a', lines: ['문단속 완료', '방패로 막아 주지', '지하는 내가 지킨다'] },
+  { id: 'reshiram', name: '레시라무', role: '보일러실을 지키는 화염의 전설', x0: 98, x1: 108, color: '#e8e4d8', lines: ['보일러 온도 적정!', '불 조절은 내 몫', '따뜻하게 틀어 놨다'] },
+  { id: 'legend_groudon', img: 'legend_groudon', name: '그란돈', role: '보일러실을 같이 지키는 대지의 전설', x0: 116, x1: 142, color: '#c8483a', lines: ['으르렁… 뜨끈하군', '지열이 좋다', '난방은 맡겨라'] },
+  { id: 'kyurem', name: '큐레무', role: '냉동 창고를 지키는 얼음의 전설', x0: 244, x1: 256, color: '#9ac8e8', lines: ['냉동 창고 영하 18도', '아이스크림은 건드리지 마', '차갑게 보관 중'] },
+  { id: 'zekrom', name: '제크로무', role: '지하 전력실(발전기)을 지키는 전기의 전설', x0: 214, x1: 232, color: '#4a4a58', lines: ['발전기 출력 정상', '전기가 남아돈다', '정전은 내가 막는다'] },
+  { id: 'kyogre', name: '가이오가', role: '지하 물탱크 구석을 지키는 바다의 전설', x0: 308, x1: 330, color: '#3a7ac8', lines: ['물탱크 수위 적정', '촉촉한 게 좋다', '물은 내게 맡겨라'] }
 ];
+const LEG2_ORDER = ['reshiram', 'legend_groudon', 'zacian', 'zamazenta', 'zekrom', 'kyurem', 'kyogre'];
+const LEG2_START = { zacian: 162, zamazenta: 194, reshiram: 102, legend_groudon: 128, kyurem: 250, zekrom: 224, kyogre: 318 };   // 시작 위치(겹치지 않게 흩어 둔다)
+function b2Spot(L, want) {   // 지하 전설끼리 24px 안에 겹치지 않는 자리를 고른다
+  const d = L.def, ok = (x) => LEGENDS2.every((o) => o === L || o.floor !== BSMT || Math.abs((o.walk?.x ?? o.x) - x) >= 28);
+  if (ok(want)) return want;
+  for (let i = 0; i < 8; i++) { const x = d.x0 + Math.random() * (d.x1 - d.x0); if (ok(x)) return x; }
+  return want;
+}
 let b2fx = [];
 function burstFx(x, y, col, n = 10, spd = 22) { for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, v = spd * (0.4 + Math.random() * 0.8); b2fx.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 8, t: 0, life: 0.5 + Math.random() * 0.4, col, sz: 1 + (Math.random() < 0.4 ? 1 : 0) }); } }
 function updateB2fx(dt) { for (let i = b2fx.length - 1; i >= 0; i--) { const q = b2fx[i]; q.t += dt * SPEED; q.x += q.vx * dt * SPEED; q.y += q.vy * dt * SPEED; q.vy += 30 * dt * SPEED; if (q.t >= q.life) b2fx.splice(i, 1); } }
@@ -1346,8 +1358,8 @@ async function b2Loop(L, idx) {
     while (running || document.hidden || L.hold) await sleepReal(800);
     await L.job(async () => {
       if (running || L.hold) return;
-      const d = L.def, x = d.x0 + hash(L.step++ * 7 + idx * 13) * (d.x1 - d.x0);
-      await goFloor(L, BSMT, x); L.face = hash(L.step * 3 + idx) > 0.5 ? 1 : -1;
+      const d = L.def, x = b2Spot(L, d.x0 + hash(L.step++ * 7 + idx * 13) * (d.x1 - d.x0));
+      L.rowLay = 0; await goFloor(L, BSMT, x); L.face = hash(L.step * 3 + idx) > 0.5 ? 1 : -1; L.rowLay = (idx % 2) * 7;   // 앞줄·뒤줄로 엇갈려 서서 겹침을 줄인다
       if (Math.random() < 0.45) L.say(pick(d.lines), 'think', 1700);
     });
     if (tod() === 'day' && !L.hold && Math.random() < 0.07) await legendShop(L);
@@ -1389,7 +1401,7 @@ async function sceneMassage() {   // B2 안마의자 코너: 지친 직원이 �
   } finally { a.busy = false; a.massage = 0; a.sink = 0; }
 }
 const NO_CUT = ['기라티나'];                                                            // 시트에 컷이 없는 캐릭터(화면의 건물 직원 패널에 "컷 없음"으로 적는다)
-const LEG_POS = [[66, 0], [86, 9], [106, 0], [126, 9], [146, 0], [166, 9], [186, 0]];   // [x, 뒤줄 높이]: 앞줄(0)과 뒤줄(9)이 엇갈려 서서 크게 보인다. x<46은 왼쪽 계단
+const LEG_POS = [[68, 0], [92, 9], [116, 0], [140, 9], [164, 0], [188, 9]];   // [x, 뒤줄 높이]: 앞줄(0)과 뒤줄(9)이 엇갈려 서서 크게 보인다. x<46은 왼쪽 계단
 const LSEAT = LEG_POS.map((p) => p[0]);
 const GOOMBA_HAT = [['#8a5ad8', '#5a3a98'], ['#2f9a5a', '#1f6a3a'], ['#2f5fc4', '#244a98'], ['#e8832a', '#a85a14'], ['#e0508a', '#a03060'], ['#1fa6a0', '#146a66']]; // 층(사장실~1층)별 청소 모자 색
 const GRANGE = [[262, 322], [60, 150], [60, 150], [96, 276], [60, 150], [60, 150]];                                                                  // 층별 굼바가 닦는 구간(x)
@@ -1429,8 +1441,8 @@ function initNpcs() {
   REGULARS.forEach((r, i) => { r.stepN = 0; regularLoop(r, i); });
   LEGENDS2 = LEG2_DEF.map((d) => {
     const img = NPCSPR.leg2By[d.img ?? d.id];
-    const L = mkNpc({ id: 'npc:leg2:' + d.id, name: d.name, kind: 'legend2', spr: img ?? FALLBACK_NPC.icon(d.color, d.name[0]), floor: BSMT, x: d.x0, face: 1, sflip: -1, color: d.color, status: d.role });
-    L.def = d; L.temp = !img; L.step = 0; return L;
+    const L = mkNpc({ id: 'npc:leg2:' + d.id, name: d.name, kind: 'legend2', spr: img ?? FALLBACK_NPC.icon(d.color, d.name[0]), floor: BSMT, x: LEG2_START[d.id] ?? d.x0, face: 1, sflip: -1, color: d.color, status: d.role });
+    L.def = d; L.temp = !img; L.step = 0; L.rowLay = L.lay = (LEG2_ORDER.indexOf(d.id) % 2) * 7; return L;
   });
   LEGENDS2.forEach((L, i) => b2Loop(L, i));
   BOSSP = mkNpc({ id: 'npc:boss', name: '사장님', kind: 'boss', spr: patrolSprite('awake'), floor: 0, x: BOSS_SX, vis: false, color: '#b88aff' }); BOSSP.air = 5; BOSSP.noStairs = true;
@@ -1869,7 +1881,7 @@ const goofersOn = (f) => [...actors.values()].filter((a) => a.vis && a.alpha > 0
 /* ---- 간식 사건: 전설 둘(50%) 또는 일반 직원 둘(50%)이 몰래 3층으로 내려가 간식을 훔쳐 먹고, 이브이·피카츄가 보고 굼바를 부른다.
    굼바는 혼내다가 울고, 키노피오가 와서 간식을 다시 채운다(키노피오가 없으면 굼바가 채운다). 범인은 제 자리로 돌아간다 ---- */
 function snackThieves(kind) {
-  const legends = () => ['palkia', 'dialga', 'arceus', 'zekrom', 'necrozma'].map((id) => LEGENDS.find((L) => L.leg.id === id && L.vis && L.floor === 0 && !L.walk)).filter(Boolean).slice(0, 2);
+  const legends = () => ['palkia', 'dialga', 'arceus', 'necrozma'].map((id) => LEGENDS.find((L) => L.leg.id === id && L.vis && L.floor === 0 && !L.walk)).filter(Boolean).slice(0, 2);
   if (kind === 'legend') return { kind, list: legends() };
   const cand = [...actors.values()].filter((a) => !a.npc && a.vis && a.alpha > 0.6 && !a.walk && !a.climb && !a.inCar && !a.gone && !a.leaving && !a.coming && !a.settling && !a.busy && a.floor !== LNG && a.floor !== 0);
   cand.sort((p, q) => (p.doc.state === 'working') - (q.doc.state === 'working') || hash(hue(p.id)) - hash(hue(q.id)));   // 놀고 있는 직원이 먼저 걸린다
@@ -2599,7 +2611,7 @@ const LATE = { p: 0.005, slowP: 0.05, force: new Set() };   // 느린 종(야돈
 const SLOW_IDS = ['slowpoke', 'ditto', 'psyduck_stand', 'sudowoodo', 'chansey', 'blissey'];   // 느릿한 종(시트에 잠만보 컷은 없다)
 const isSlow = (a) => !a.npc && SLOW_IDS.includes(SPID[a.sp]);
 async function legendScoldLate(ac) {
-  const L = ['dialga', 'palkia', 'arceus', 'solgaleo', 'zekrom', 'necrozma'].map((id) => LEGENDS.find((q) => q.leg.id === id)).find((q) => q && q.vis && q.floor === 0 && !q.walk && !q.busy);
+  const L = ['dialga', 'palkia', 'arceus', 'solgaleo', 'necrozma'].map((id) => LEGENDS.find((q) => q.leg.id === id)).find((q) => q && q.vis && q.floor === 0 && !q.walk && !q.busy);
   if (!L) { ac.say('죄송해요…', 'think', 1300); await sleep(1300); return; }
   announce(`${ac.name}이(가) 지각했습니다. 전설 직원 ${L.name}이(가) 입구로 내려갑니다.`);
   const big = isSlow(ac);   // 느린 종은 더 크게 갈군다
@@ -2617,7 +2629,7 @@ function lateDemo(id) {   // 디버그/데모: 지금 이 직원(없으면 아�
 }
 
 /* ---- 전설 직원의 일(2): 층 순회와 중간 보고. 전설 2~3마리가 순번제로 한 층씩 맡아 직원들을 둘러보고(걷고 말을 건다), 사장실로 올라와 "중간 보고"를 한다 ---- */
-const ROUND_ORDER = ['solgaleo', 'palkia', 'dialga', 'arceus', 'zekrom', 'necrozma', 'lunala'];
+const ROUND_ORDER = ['solgaleo', 'palkia', 'dialga', 'arceus', 'necrozma', 'lunala'];
 let roundsPtr = 0;
 async function sceneRounds(ev) {
   const free = (id) => LEGENDS.find((q) => q.leg.id === id && q.vis && q.floor === 0 && !q.walk && !q.busy);
@@ -2756,7 +2768,7 @@ const LEG_LINES = {
   dialga: ['일정 점검 마쳤습니다', '마감까지 사흘 남았습니다'], arceus: ['전체 로드맵 정리했습니다', '다음 시즌 로스터 구상입니다'],
   zekrom: ['서버 전력 보고드립니다', '전기료를 줄였습니다'], necrozma: ['조명 비용 검토했습니다', '빛 에너지 효율 건의입니다'], lunala: ['야근 현황 보고합니다', '야간 근무 개선안입니다']
 };
-const EXEC_X = [196, 214, 232, 250, 268, 286, 304];
+const EXEC_X = [200, 220, 240, 260, 280, 300];
 async function sceneExec(ev) {
   const legs = LEGENDS.filter((L) => L.vis && L.floor === 0 && !L.walk && !L.busy);
   if (legs.length < 3) return;
