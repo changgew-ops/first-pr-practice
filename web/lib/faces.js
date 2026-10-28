@@ -16,7 +16,7 @@ export const FACE_NOTE = '사진은 사용자가 따로 넣은 페이스팩(KBL 
 export const VIRTUAL_FACE_TITLE = '가상 얼굴 — AI로 만든 그림이며 실존 인물이 아닙니다';
 export const PHOTO_TITLE = 'KBL 공식 프로필 사진(페이스팩)';
 
-const state = { status: 'idle', fp: null, base: null, waiters: [], pending: new Set() };
+const state = { status: 'idle', fp: null, hi: null, base: null, waiters: [], pending: new Set() };
 const urlCache = new Map();
 
 // ---------- 폴더 찾기와 진단 ----------
@@ -37,7 +37,7 @@ export function candidateBases(explicit = null) {
 
 const failedIds = new Set();
 const noteFail = (p) => { failedIds.add(idOf(p)); diag.photoFails = failedIds.size; };
-const diag = { status: 'idle', base: null, commonBase: null, tried: [], nested: null, mode: null, registry: 0, photos: 0, photoFails: 0, detail: null, listeners: new Set() };
+const diag = { status: 'idle', hi: null, embedded: false, base: null, commonBase: null, tried: [], nested: null, mode: null, registry: 0, photos: 0, photoFails: 0, detail: null, listeners: new Set() };
 const setDiag = (patch) => { Object.assign(diag, patch); for (const fn of [...diag.listeners]) { try { fn(snapshotDiag()); } catch { /* 표시 오류는 무시 */ } } };
 function snapshotDiag() { const { listeners, ...rest } = diag; return { ...rest, tried: [...diag.tried] }; }
 export const getFaceDiagnostics = () => snapshotDiag();
@@ -50,6 +50,13 @@ export function describeDiagnostics(d, { linked = null } = {}) {
   const tried = (d.tried ?? []).join(' · ');
   switch (d.status) {
     case 'ready': {
+      if (d.embedded) {
+        const link = linked ? ` · 이번 게임 선수 ${nf(linked.total)}명 중 ${nf(linked.withPhoto)}명이 사진과 연결됩니다` : '';
+        const lines = [`HTML 안에 줄여서 넣은 사진을 쓰고 있습니다(명부 ${nf(d.registry)}명 중 사진 ${nf(d.photos)}명${link}).`];
+        lines.push(d.hi ? `facepack 폴더(${d.hi})도 찾았습니다. 선수 상세·우승 화면은 폴더의 고해상도 사진으로 보여 줍니다.` : 'facepack 폴더를 HTML 옆에 두면 선수 상세·우승 화면이 더 선명해집니다(없어도 정상입니다).');
+        if (d.photoFails > 0) lines.push(`사진을 읽지 못한 선수가 ${nf(d.photoFails)}명 있습니다(기존 그림으로 표시).`);
+        return { level: d.photoFails > 0 ? 'warn' : 'ok', title: '내장 사진 사용 중', short: `내장 사진 사용 중${linked ? ` · 게임 선수 ${nf(linked.total)}명 중 ${nf(linked.withPhoto)}명` : ''}${d.hi ? ' · 고해상도 폴더 연결' : ''}`, lines };
+      }
       const where = d.nested === 'double' ? ' (facepack 폴더 안에 또 facepack이 있습니다 — 한 겹만 두면 더 깔끔합니다)'
         : d.nested === 'zipname' ? ' (ZIP 이름의 폴더 안에서 찾았습니다 — 안의 facepack 폴더만 HTML 옆으로 옮기면 더 깔끔합니다)' : '';
       const lines = [`폴더: ${d.base}${where}`];
@@ -130,6 +137,18 @@ export function loadFaces() {
       for (const w of ws) w(Boolean(fp));
     };
     (async () => {
+      // HTML에 사진이 내장돼 있으면(tools/build-standalone.mjs) 폴더를 찾지 않고 바로 쓴다. 폴더가 있으면 뒤에서 고해상도로 올린다
+      if (globalThis.KBLFacePackEmbed && globalThis.KBL_FULL_DATA && globalThis.KBL_EMB_IMAGES) {
+        try {
+          const D0 = globalThis.KBL_FULL_DATA;
+          const fp0 = await globalThis.KBLFacePackEmbed.create({ basePath: './' });
+          setDiag({ status: 'ready', embedded: true, mode: 'embedded', base: null, registry: D0.players.length, photos: D0.players.filter((p) => p.photo).length });
+          done(fp0);
+          setDiag({});
+          setTimeout(() => { upgradeFromFolder().catch(() => {}); }, 1200); // 첫 화면을 방해하지 않게 잠시 뒤에 폴더를 찾는다
+          return;
+        } catch (e) { setDiag({ embedded: false }); /* 내장 팩이 안 열리면 폴더 찾기로 넘어간다 */ }
+      }
       const file = location.protocol === 'file:';
       const cands = candidateBases(globalThis.KBL_FACEPACK_BASE ?? '../facepack/');
       try {
@@ -169,6 +188,28 @@ export function loadFaces() {
       } catch (e) { setDiag({ status: 'error', detail: String(e?.message ?? e).slice(0, 120) }); done(null); }
     })();
   });
+}
+
+/** 내장 사진을 쓰는 중에 옆 폴더(facepack/)를 찾아 고해상도 팩(state.hi)으로 올린다. 못 찾으면 조용히 그대로 둔다 */
+async function upgradeFromFolder() {
+  if (state.hi || typeof document === 'undefined') return;
+  const file = location.protocol === 'file:';
+  // 내장 사진이 이미 있으므로 흔한 위치 몇 곳만 본다(브라우저가 없는 파일마다 찍는 오류 줄을 줄이려고)
+  const cands = candidateBases(globalThis.KBL_FACEPACK_BASE ?? '../facepack/').filter((b) => ['./facepack/', './', './facepack/facepack/'].includes(b) || b === globalThis.KBL_FACEPACK_BASE);
+  const D = globalThis.KBL_FULL_DATA;
+  const sample = D?.players?.find((p) => p.photo)?.id;
+  for (const b of cands) {
+    try { await loadScript(`${b}facepack.js`); } catch { continue; }
+    let ok = false;
+    if (file) { try { if (globalThis.KBL_FULL_BOOT) ok = true; else { await loadScript(`${b}offline/boot.js`); ok = Boolean(globalThis.KBL_FULL_BOOT); } } catch { ok = false; } }
+    else ok = Boolean(sample) && await probeImage(`${b}faces/${sample}.webp`);
+    if (!ok || !globalThis.KBLFacePack?.create) continue;
+    try {
+      state.hi = await globalThis.KBLFacePack.create({ basePath: b });
+      setDiag({ hi: b });
+      return;
+    } catch { state.hi = null; }
+  }
 }
 
 export const facesReady = () => state.status === 'ready';
@@ -223,7 +264,7 @@ function pump() {
 
 const keyOf = (p, { mode, teamId, size, virtual }) => {
   const r = state.fp.resolve(inputOf(p, teamId));
-  return `${r.kind}|${idOf(p)}|${r.faceKey ?? ''}|${mode}|${mode === 'bust' ? packTeamId(teamId) : ''}|${size}|${virtual ? 1 : 0}`;
+  return `${r.kind}|${idOf(p)}|${r.faceKey ?? ''}|${mode}|${mode === 'bust' ? packTeamId(teamId) : ''}|${size}|${virtual ? 1 : 0}|${mode === 'bust' && state.hi ? 'hi' : ''}`;
 };
 
 /**
@@ -239,7 +280,7 @@ export async function facePicture(p, { mode = 'face', teamId = p?.teamId, size =
   try { key = keyOf(p, { mode, teamId, size: S, virtual }); } catch { return null; }
   const hit = urlCache.get(key);
   if (hit) return hit;
-  const fp = state.fp;
+  const fp = mode === 'bust' && state.hi ? state.hi : state.fp; // 상세·우승 화면은 폴더의 고해상도 팩이 있으면 그것으로
   const input = inputOf(p, teamId);
   const pre = fp.resolve(input).kind;
   if (pre !== 'real' && !virtual) return null;

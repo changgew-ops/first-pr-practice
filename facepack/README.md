@@ -117,3 +117,18 @@ KBL 공식 프로필 `https://kbl.or.kr/files/kbl/players-photo/{playerNo}.png`.
 | facepack 안에 또 facepack / ZIP 이름 폴더 안에서 찾았습니다 | 동작은 하지만 안쪽 `facepack` 폴더만 HTML 옆으로 옮기면 깔끔하다 |
 
 게임은 `./facepack/`, `./facepack/facepack/`, `./facepack-공통/facepack/` 등 흔한 풀기 결과를 차례로 찾는다.
+
+## HTML 안에 사진을 넣기 (폴더 없이 다른 PC에서도)
+
+`tools/build-standalone.mjs`를 `facepack/`(data.js·facepack.js·faces/가 있는 폴더)가 있는 PC에서 돌리면, 사진을 줄여 게임 HTML 안에 넣습니다. 폴더 없이 HTML 하나만 복사해도 사진이 나옵니다.
+
+```bash
+ESBUILD=<esbuild 경로> node tools/build-standalone.mjs      # facepack/이 있으면 자동으로 내장
+NO_FACEPACK_EMBED=1 node tools/build-standalone.mjs         # 내장 없이 3MB대 HTML
+FACEPACK_PARAMS='{"photoScale":0.75,"photoQuality":45}' node tools/build-standalone.mjs   # 화질 조정
+```
+
+- 내장하는 것: 실사 1,275명(원본 160×240의 0.875배, WebP 품질 45, 평균 약 3KB), 유니폼 몸통 10장(0.5배), 가상 얼굴 16종(너비 640). base64를 포함해 HTML이 **약 8.9MB**(한도 10MB, 목표 9.3MB)입니다. 10MB를 넘으면 빌드가 실패합니다.
+- 줄인 사진은 로스터·카드·도감·라인업 같은 작은 얼굴에 충분합니다. 선수 상세·우승 화면은 원본 크기로 합성하므로 **옆에 `facepack/` 폴더가 있으면 그 고해상도 사진을 우선 씁니다**(없어도 정상).
+- 내장 사진은 필요한 선수만 이미지로 만들어 씁니다(처음 열 때 JSON을 한 번만 읽음).
+- 결과 HTML(dist/)에는 실사 사진이 들어 있으므로 저장소에 올리지 않습니다.

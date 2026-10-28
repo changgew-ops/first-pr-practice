@@ -11,6 +11,8 @@ import { PACK_TEAM, packTeamId, upgradeAvatar, facePicture, championPortraits, f
 import { championPhotoSvg, photoRoster, podiumLayout, MAX_PHOTO } from '../web/lib/champion.js';
 import { avatarSvg } from '../web/lib/avatar.js';
 import { makeZip, verifyZip, splitFacepack, buildZips, crc32, LIMIT } from '../tools/build-facepack-zips.mjs';
+import { patchSdk, buildEmbed, hasEmbeddablePack, LOADER, HTML_LIMIT, HTML_TARGET, DEFAULT_PARAMS } from '../tools/build-facepack-embed.mjs';
+import { execFileSync } from 'node:child_process';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../${p}`, import.meta.url), 'utf8'));
 const players = read('data/players.json');
@@ -137,4 +139,65 @@ test('진단 문구: 상황마다 이유와 해야 할 일이 한국어로 나�
   assert.equal(warn.level, 'warn'); assert.match(warn.lines.join(' '), /3명/);
   assert.match(describeDiagnostics({ status: 'error', detail: '이상함', base: null }).title, /열지 못했습니다/);
   assert.equal(getFaceDiagnostics().status === 'idle' || getFaceDiagnostics().status === 'failed', true); // node에서는 폴더 확인을 시작하지 않는다
+});
+
+// ---------- HTML 내장(tools/build-facepack-embed.mjs) ----------
+test('내장용 SDK 고치기: 폴더 경로·offline 조각·currentScript 대신 내장 표를 읽고, 원본 이름과 겹치지 않는다', () => {
+  const src = readFileSync(new URL('../facepack/facepack.js', import.meta.url), 'utf8');
+  const out = patchSdk(src);
+  assert.ok(!out.includes('currentScript'), 'currentScript(인라인에서는 src가 없다)가 남아 있다');
+  assert.ok(!out.includes('KBL_FULL_BOOT') && !out.includes('KBL_FULL_IMAGES'), '파일 방식 전역이 남아 있다');
+  assert.ok(!out.includes("'offline/'"), 'offline 조각 로드가 남아 있다');
+  assert.match(out, /KBL_EMB_BOOT/); assert.match(out, /KBL_EMB_IMAGES\[id\]/);
+  assert.match(out, /global\.KBLFacePackEmbed=/); assert.ok(!/global\.KBLFacePack=/.test(out), '폴더 팩의 KBLFacePack과 이름이 겹친다');
+  assert.doesNotThrow(() => new vm.Script(out)); // 문법 오류 없음
+  assert.throws(() => patchSdk('function(){}'), /예상과 다릅니다/); // 팩 버전이 다르면 조용히 넘어가지 않고 알린다
+});
+
+test('내장 한도와 기본 화질: 10MB 한도·9.3MB 목표, 사진 총량이 예산 안', () => {
+  assert.equal(HTML_LIMIT, 10485760);
+  assert.ok(HTML_TARGET < HTML_LIMIT);
+  assert.ok(DEFAULT_PARAMS.photoScale > 0 && DEFAULT_PARAMS.photoScale <= 1);
+  assert.ok(DEFAULT_PARAMS.photoQuality >= 30 && DEFAULT_PARAMS.photoQuality <= 90);
+  assert.match(LOADER, /KBL_EMB_IMAGES/); assert.match(LOADER, /Proxy/); // 사진을 부를 때만 데이터 URL로 만든다
+});
+
+test('내장 만들기: 작은 가짜 팩으로 사진 id·몸통·아틀라스가 표와 일치하고 한도 안이다(실사 없이)', (t) => {
+  const dir = mkdtempSync(join(tmpdir(), 'fp-emb-'));
+  try {
+    mkdirSync(join(dir, 'faces')); mkdirSync(join(dir, 'uniforms')); mkdirSync(join(dir, 'generated'));
+    try {
+      execFileSync('python3', ['-I', '-c', `
+from PIL import Image
+import os
+d=${JSON.stringify(dir)}
+for i,pid in enumerate(['111','222','333']):
+    Image.new('RGBA',(160,240),(30*i+40,80,120,255)).save(os.path.join(d,'faces',pid+'.webp'),'WEBP')
+for tid in ['db','sk']:
+    Image.new('RGBA',(470,609),(10,20,30,255)).save(os.path.join(d,'uniforms',tid+'.webp'),'WEBP')
+Image.new('RGBA',(1254,1254),(200,10,10,255)).save(os.path.join(d,'generated','atlas.webp'),'WEBP')
+`], { stdio: 'pipe' });
+    } catch { t.skip('python3/PIL 없음'); return; }
+    writeFileSync(join(dir, 'data.js'), 'window.KBL_FULL_DATA={"players":[{"id":"111","photo":true},{"id":"222","photo":true},{"id":"333","photo":true}],"teams":[{"id":"db"},{"id":"sk"}]};');
+    writeFileSync(join(dir, 'facepack.js'), readFileSync(new URL('../facepack/facepack.js', import.meta.url), 'utf8'));
+    assert.equal(hasEmbeddablePack(dir), true);
+    const e = buildEmbed(dir);
+    const json = JSON.parse(e.jsonScript.replace(/^<script[^>]*>/, '').replace(/<\/script>$/, ''));
+    assert.deepEqual(Object.keys(json.photos).sort(), ['111', '222', '333']);
+    assert.deepEqual(Object.keys(json.uniforms).sort(), ['db', 'sk']);
+    for (const b64 of [...Object.values(json.photos), ...Object.values(json.uniforms), json.atlas]) assert.ok(Buffer.from(b64, 'base64').subarray(0, 4).toString() === 'RIFF', 'WebP 데이터가 아니다');
+    assert.ok(e.bytes < HTML_LIMIT / 10);
+    assert.ok(e.headScripts.includes('KBLFacePackEmbed') && e.headScripts.includes('KBL_FULL_DATA'));
+    assert.ok(!e.headScripts.includes('</script></script>'));
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('내장 진단 문구: 폴더 없이 내장 사진만 쓰면 알려 주고, 폴더가 있으면 고해상도 연결을 알린다', () => {
+  const base = { status: 'ready', embedded: true, mode: 'embedded', registry: 1454, photos: 1275, photoFails: 0, hi: null };
+  const a = describeDiagnostics(base, { linked: { total: 149, withPhoto: 149 } });
+  assert.equal(a.title, '내장 사진 사용 중'); assert.equal(a.level, 'ok');
+  assert.match(a.lines.join(' '), /1,275명/); assert.match(a.lines.join(' '), /149명 중 149명/); assert.match(a.lines.join(' '), /facepack 폴더를 HTML 옆에/);
+  const b = describeDiagnostics({ ...base, hi: './facepack/' });
+  assert.match(b.lines.join(' '), /고해상도/); assert.match(b.short, /고해상도 폴더 연결/);
+  assert.equal(describeDiagnostics({ ...base, photoFails: 2 }).level, 'warn');
 });

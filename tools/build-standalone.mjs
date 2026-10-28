@@ -3,6 +3,8 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname, relative, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
+import { hasEmbeddablePack, buildEmbed, HTML_LIMIT, HTML_TARGET, DEFAULT_PARAMS } from './build-facepack-embed.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const esbuild = await import(process.env.ESBUILD ?? 'esbuild');
@@ -70,6 +72,15 @@ globalThis.__asset = (rel, dir) => {
   return __ASSETS[out.join('/')] ?? '';
 };`;
 
+// 6) 페이스팩 내장(선택): facepack/ 폴더(data.js·facepack.js·faces/)가 이 PC에 있으면 줄인 사진을 HTML 안에 넣는다. 없으면 3MB대 HTML 그대로.
+//    끄려면 NO_FACEPACK_EMBED=1, 화질은 FACEPACK_PARAMS='{"photoScale":0.625,"photoQuality":50}'로 덮어쓴다.
+const packDir = join(root, 'facepack');
+let embed = null;
+if (!process.env.NO_FACEPACK_EMBED && hasEmbeddablePack(packDir)) {
+  const params = { ...DEFAULT_PARAMS, ...(process.env.FACEPACK_PARAMS ? JSON.parse(process.env.FACEPACK_PARAMS) : {}) };
+  embed = buildEmbed(packDir, params);
+}
+
 const html = `<!doctype html>
 <html lang="ko">
 <head>
@@ -87,14 +98,17 @@ ${css}
 <script>
 ${boot}
 </script>
-<script>
+${embed ? embed.headScripts + '\n' : ''}<script>
 ${js}
 </script>
-</body>
+${embed ? embed.jsonScript + '\n' : ''}</body>
 </html>
 `;
 mkdirSync(join(root, 'dist'), { recursive: true });
 const outPath = join(root, 'dist/프로농구-단장-게임.html');
+const bytes = Buffer.byteLength(html);
+if (bytes > HTML_LIMIT) { console.error(`HTML이 10MB를 넘었습니다: ${bytes.toLocaleString()}바이트 (한도 ${HTML_LIMIT.toLocaleString()}). 사진 크기·화질(FACEPACK_PARAMS)을 낮추세요.`); process.exit(1); }
 writeFileSync(outPath, html);
-console.log('페이스팩(선택): 이 HTML 옆에 facepack/ 폴더를 두면 사진을 씁니다(facepack/README.md). 이 도구는 폴더를 복사하지 않습니다.');
-console.log(outPath, (html.length / 1048576).toFixed(2) + 'MB', `(이미지 ${Object.keys(assets).length}개, 데이터 ${dataFiles.length}개)`);
+if (embed) console.log(`페이스팩 내장: 사진 ${embed.stats.photos}명 (사진 ${(embed.stats.photoBytes / 1048576).toFixed(2)}MB + 몸통 ${(embed.stats.uniformBytes / 1048576).toFixed(2)}MB + 가상 얼굴 ${(embed.stats.atlasBytes / 1048576).toFixed(2)}MB, base64 전). 목표 ${(HTML_TARGET / 1048576).toFixed(1)}MB ${bytes <= HTML_TARGET ? '이하' : '초과(한도 10MB 이내)'}`);
+else console.log('페이스팩 내장 없음: 이 HTML 옆에 facepack/ 폴더를 두면 사진을 씁니다(facepack/README.md). 이 도구는 폴더를 복사하지 않습니다.');
+console.log(outPath, (bytes / 1048576).toFixed(2) + 'MB', `(이미지 ${Object.keys(assets).length}개, 데이터 ${dataFiles.length}개)`);
