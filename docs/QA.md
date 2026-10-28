@@ -198,4 +198,5 @@
 | 단일 HTML `file://` + 옆 `facepack/`(offline 조각) | `tools/build-standalone.mjs` 산출물 | 사진 15/15, 우승 합성 13장, PNG 저장 동작, 폴더 없이 열어도 오류 없음 |
 | 같은 얼굴 유지 | `faceKeyOf`로 같은 id를 다른 구단·시즌 값으로 | 항상 같은 `gen-NN` |
 | ZIP | `node tools/build-facepack-zips.mjs` | 공통 0.77MB / 웹용 6.5MB / 로컬용 7.0MB, 각 10MB 이하, python zipfile 검증 통과 |
+| 폴더 모양별 진단(`file://`) | ZIP을 실제로 풀어 6가지: 정상·중첩(`facepack/facepack`)·공통만·ZIP이름 폴더·공통/사진 따로·없음(+사진 조각 일부 누락) | 사진 15/15·15/15·0·15/15·15/15·0, 상태 줄 문구가 각각 맞음(찾음/중첩/offline 없음/ZIP 이름 폴더/다른 폴더/못 찾음/읽지 못한 N명), 오류 0 |
 자동 시험: `tests/faces.test.mjs`(구단 매핑 10/10, 게임 선수 kblId 전원 명부 일치, 팩 없는 환경 무동작, 9~12명 시상대 겹침·트로피, 사진 SVG, ZIP 나누기·검증·10MB 오류).

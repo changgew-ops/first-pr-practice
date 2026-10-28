@@ -104,3 +104,16 @@ KBL 공식 프로필 `https://kbl.or.kr/files/kbl/players-photo/{playerNo}.png`.
 ## HTML 파일만 쓸 때 (웹서버 없이)
 
 `dist/facepack.zip` 하나(공통 + 로컬용, 약 7.8MB)만 풀면 `facepack/` 폴더가 생깁니다. 이 폴더를 게임 HTML(`프로농구-단장-게임.html`) 옆에 두고 HTML을 더블클릭으로 열면 사진이 나옵니다. 폴더가 없으면 기본 아바타로 나옵니다. `facepack-사진-웹용.zip`은 웹서버에 올릴 때만 필요합니다.
+
+### 사진이 안 나올 때
+게임의 **홈 맨 아래 한 줄**이나 **저장 화면 아래 카드**에 이유가 한국어로 나온다.
+
+| 문구 | 뜻과 할 일 |
+|---|---|
+| 페이스팩 폴더를 찾지 못했습니다 | 찾아본 위치 목록이 같이 나온다. `facepack` 폴더를 HTML과 같은 곳에 두세요 |
+| 공통 파일은 찾았지만 사진 조각(offline/)이 없습니다 | 공통 ZIP만 풀었다. HTML을 파일로 열었다면 `facepack-사진-로컬용.zip`을 같은 `facepack` 폴더에 풀기 |
+| 공통 파일은 찾았지만 사진(faces/)이 없습니다 | 웹으로 열었다면 `facepack-사진-웹용.zip`을 같은 폴더에 풀기 |
+| 사진 사용 중 … 못 읽은 사진 N명 | 사진 파일 일부가 빠졌다. 사진 ZIP을 다시 풀기 |
+| facepack 안에 또 facepack / ZIP 이름 폴더 안에서 찾았습니다 | 동작은 하지만 안쪽 `facepack` 폴더만 HTML 옆으로 옮기면 깔끔하다 |
+
+게임은 `./facepack/`, `./facepack/facepack/`, `./facepack-공통/facepack/` 등 흔한 풀기 결과를 차례로 찾는다.

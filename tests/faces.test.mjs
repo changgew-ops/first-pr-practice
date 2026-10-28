@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os';
 import { randomBytes } from 'node:crypto';
 import { join } from 'node:path';
 import vm from 'node:vm';
-import { PACK_TEAM, packTeamId, upgradeAvatar, facePicture, championPortraits, faceKeyOf, facesReady, loadFaces } from '../web/lib/faces.js';
+import { PACK_TEAM, packTeamId, upgradeAvatar, facePicture, championPortraits, faceKeyOf, facesReady, loadFaces, candidateBases, describeDiagnostics, getFaceDiagnostics } from '../web/lib/faces.js';
 import { championPhotoSvg, photoRoster, podiumLayout, MAX_PHOTO } from '../web/lib/champion.js';
 import { avatarSvg } from '../web/lib/avatar.js';
 import { makeZip, verifyZip, splitFacepack, buildZips, crc32, LIMIT } from '../tools/build-facepack-zips.mjs';
@@ -110,4 +110,31 @@ test('ZIP 만들기: 읽어서 검증되고, 최상위는 facepack/, 공통·웹
     writeFileSync(join(dir, 'faces', 'big.webp'), big);
     assert.throws(() => buildZips(dir, join(dir, 'out2')), /10MB/);
   } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('폴더 찾기 후보: 지정한 경로가 먼저, 중첩·ZIP 이름 폴더 변형을 모두 포함, 중복 없음', () => {
+  const c = candidateBases('./facepack/');
+  assert.equal(c[0], './facepack/');
+  for (const need of ['./facepack/facepack/', './facepack-공통/facepack/', './facepack-사진-로컬용/facepack/', './facepack-사진-웹용/facepack/', '../facepack/']) assert.ok(c.includes(need), need);
+  assert.equal(new Set(c).size, c.length);
+  assert.equal(candidateBases('./내폴더')[0], './내폴더/'); // 끝에 /를 붙인다
+  assert.ok(candidateBases(null).every((x) => x.endsWith('/')));
+});
+
+test('진단 문구: 상황마다 이유와 해야 할 일이 한국어로 나온다', () => {
+  const tried = ['./facepack/', './facepack/facepack/'];
+  const nf = describeDiagnostics({ status: 'notfound', tried });
+  assert.match(nf.title, /폴더를 찾지 못했습니다/); assert.ok(nf.lines.join(' ').includes('./facepack/facepack/')); assert.equal(nf.level, 'info');
+  const nl = describeDiagnostics({ status: 'nophotos-local', base: './facepack/', tried });
+  assert.match(nl.title, /사진 조각\(offline\/\)이 없습니다/); assert.match(nl.lines.join(' '), /facepack-사진-로컬용\.zip/); assert.equal(nl.level, 'warn');
+  const nw = describeDiagnostics({ status: 'nophotos-web', base: './facepack/' });
+  assert.match(nw.lines.join(' '), /facepack-사진-웹용\.zip/);
+  const ok = describeDiagnostics({ status: 'ready', base: './facepack/', commonBase: './facepack/', registry: 1454, photos: 1275, photoFails: 0, mode: 'file' }, { linked: { total: 149, withPhoto: 149 } });
+  assert.equal(ok.level, 'ok'); assert.match(ok.lines.join(' '), /1,454명 중 사진 1,275명/); assert.match(ok.short, /149명 중 149명/);
+  const nested = describeDiagnostics({ status: 'ready', base: './facepack/facepack/', commonBase: './facepack/facepack/', nested: 'double', registry: 10, photos: 5, photoFails: 0, mode: 'file' });
+  assert.match(nested.lines[0], /또 facepack/);
+  const warn = describeDiagnostics({ status: 'ready', base: './facepack/', commonBase: './facepack/', registry: 10, photos: 5, photoFails: 3, mode: 'file' });
+  assert.equal(warn.level, 'warn'); assert.match(warn.lines.join(' '), /3명/);
+  assert.match(describeDiagnostics({ status: 'error', detail: '이상함', base: null }).title, /열지 못했습니다/);
+  assert.equal(getFaceDiagnostics().status === 'idle' || getFaceDiagnostics().status === 'failed', true); // node에서는 폴더 확인을 시작하지 않는다
 });

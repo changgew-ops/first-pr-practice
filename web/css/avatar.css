@@ -14,3 +14,11 @@
 /* 페이스팩 사진(web/lib/faces.js): 사진이 있는 선수만. 얼굴 뒤 배경은 구단 팔레트 대신 중립색 */
 .avatar.has-photo { background: linear-gradient(180deg, #dfe6f2, #b9c4d9); }
 .avatar img.face-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* 얼굴 사진 상태 줄(web/lib/faces-view.js) */
+.face-status { margin: 12px 0 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font-size: .88rem; line-height: 1.5; background: var(--panel-2); }
+.face-status[data-level="ok"] { border-color: #2f9a5a; }
+.face-status[data-level="warn"] { border-color: #e6a417; }
+.face-status.compact { padding: 6px 10px; font-size: .82rem; }
+.face-status .note { margin: 2px 0 0; }
+.face-status-title { display: block; }
+.face-status.compact .face-status-title { display: inline; }

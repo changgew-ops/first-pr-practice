@@ -1,3 +1,4 @@
+import { faceStatusEl } from '../lib/faces-view.js';
 import { h, stat, bar, ovrChip, rankChart, link, eok, table } from '../lib/dom.js';
 import { fmtPts, synergyCard } from '../lib/mods-view.js';
 import { emblem } from '../lib/emblem.js';
@@ -112,6 +113,7 @@ export function render(ctx) {
         { key: 'pr', label: '전통', get: (r) => prestigeOf(game, data)[r.id].score, render: (r) => prestigeOf(game, data)[r.id].score.toFixed(2), align: 'r', sort: false },
         { key: 'pay', label: '국내 연봉', get: (r) => payrollInfo(game, data, r.id).domestic, render: (r) => eok(payrollInfo(game, data, r.id).domestic), align: 'r', sort: false }
       ], { rowClass: (r) => (r.id === my ? 'me' : ''), onRow: (r) => ctx.go(`history/${r.id}`) })));
+  body.append(faceStatusEl(ctx, { compact: true }));
   body.style.setProperty('--team', colorOf(my));
   return { title: '홈', body };
 }

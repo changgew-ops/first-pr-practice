@@ -1,5 +1,6 @@
 // 저장 슬롯: 자동 저장 + 직접 저장 3칸. 저장·불러오기·삭제, 용량 표시, 파일로 내보내기·가져오기.
 import { h, ask } from '../lib/dom.js';
+import { faceStatusEl } from '../lib/faces-view.js';
 import { listSlots, deleteSlot, SLOTS, QUOTA, storageStatus, capacityNotice, oldestManualSlot, buildExport, parseImport, importToSlot } from '../lib/save.js';
 import { Session } from '../lib/session.js';
 
@@ -113,6 +114,6 @@ export function render(ctx) {
     h('div', { class: 'topbar' }, h('div', h('div', { class: 'crumb' }, '저장'), h('h1', '저장 · 불러오기'))),
     ctx.session ? null : h('button', { class: 'btn ghost', onclick: () => ctx.go('title') }, '← 타이틀'),
     h('p', { class: 'note' }, '저장은 이 브라우저에만 남습니다. 시즌 중 어느 날이든, 오프시즌 어느 단계든 저장한 그 자리에서 이어집니다. 자동 저장은 조작할 때마다 갱신됩니다. 오래된 시즌은 요약만 남겨 용량을 줄이고, 파일로 내보내 두면 브라우저 데이터를 지워도 되살릴 수 있습니다.'),
-    usageHost, msgHost, host, importCard);
+    usageHost, msgHost, host, importCard, faceStatusEl(ctx));
   return { title: '저장', body };
 }

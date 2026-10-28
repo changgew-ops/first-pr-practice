@@ -19,7 +19,73 @@ export const PHOTO_TITLE = 'KBL 공식 프로필 사진(페이스팩)';
 const state = { status: 'idle', fp: null, base: null, waiters: [], pending: new Set() };
 const urlCache = new Map();
 
-const baseOf = () => String(globalThis.KBL_FACEPACK_BASE ?? '../facepack/').replace(/\/?$/, '/');
+// ---------- 폴더 찾기와 진단 ----------
+// 사용자가 ZIP을 풀 때 생기는 흔한 모양을 차례로 찾는다: 정상(facepack/), 한 겹 중첩(facepack/facepack/), ZIP 이름 폴더 안(facepack-공통/facepack/ 등).
+const EXTRA_BASES = [
+  './facepack/', './facepack/facepack/',
+  './facepack-공통/facepack/', './facepack-공통/', './facepack-사진-로컬용/facepack/', './facepack-사진-웹용/facepack/',
+  '../facepack/'
+];
+/** 찾아볼 폴더 후보(앞이 우선, 중복 없음). explicit(KBL_FACEPACK_BASE)이 있으면 맨 앞 */
+export function candidateBases(explicit = null) {
+  const out = [];
+  const add = (b) => { if (b == null || b === '') return; const v = String(b).replace(/\/?$/, '/'); if (!out.includes(v)) out.push(v); };
+  add(explicit);
+  EXTRA_BASES.forEach(add);
+  return out;
+}
+
+const failedIds = new Set();
+const noteFail = (p) => { failedIds.add(idOf(p)); diag.photoFails = failedIds.size; };
+const diag = { status: 'idle', base: null, commonBase: null, tried: [], nested: null, mode: null, registry: 0, photos: 0, photoFails: 0, detail: null, listeners: new Set() };
+const setDiag = (patch) => { Object.assign(diag, patch); for (const fn of [...diag.listeners]) { try { fn(snapshotDiag()); } catch { /* 표시 오류는 무시 */ } } };
+function snapshotDiag() { const { listeners, ...rest } = diag; return { ...rest, tried: [...diag.tried] }; }
+export const getFaceDiagnostics = () => snapshotDiag();
+/** 진단이 바뀔 때마다 부른다(처음에도 한 번). 해제 함수를 돌려준다 */
+export function onFaceDiagnostics(fn) { diag.listeners.add(fn); try { fn(snapshotDiag()); } catch { /* 무시 */ } return () => diag.listeners.delete(fn); }
+
+const nf = (n) => Number(n).toLocaleString('ko-KR');
+/** 진단 → 한국어 문구 { level: 'ok'|'warn'|'info', title, lines[] }. DOM과 무관한 순수 함수(시험용) */
+export function describeDiagnostics(d, { linked = null } = {}) {
+  const tried = (d.tried ?? []).join(' · ');
+  switch (d.status) {
+    case 'ready': {
+      const where = d.nested === 'double' ? ' (facepack 폴더 안에 또 facepack이 있습니다 — 한 겹만 두면 더 깔끔합니다)'
+        : d.nested === 'zipname' ? ' (ZIP 이름의 폴더 안에서 찾았습니다 — 안의 facepack 폴더만 HTML 옆으로 옮기면 더 깔끔합니다)' : '';
+      const lines = [`폴더: ${d.base}${where}`];
+      if (d.commonBase && d.commonBase !== d.base) lines.push(`공통 파일은 ${d.commonBase}, 사진 조각은 ${d.base}에서 찾았습니다(서로 다른 폴더 — 한 facepack 폴더로 합치면 더 깔끔합니다).`);
+      const link = linked ? ` · 이번 게임 선수 ${nf(linked.total)}명 중 ${nf(linked.withPhoto)}명이 사진과 연결됩니다` : '';
+      lines.push(`명부 ${nf(d.registry)}명 중 사진 ${nf(d.photos)}명${link}.`);
+      if (d.photoFails > 0) lines.push(`사진 파일을 읽지 못한 선수가 ${nf(d.photoFails)}명 있습니다(기존 그림으로 표시). ${d.mode === 'file' ? '사진 조각(offline/) 일부가 빠졌는지 확인하세요.' : '사진(faces/) 일부가 빠졌는지 확인하세요.'}`);
+      const short = `사용 중${linked ? ` · 게임 선수 ${nf(linked.total)}명 중 ${nf(linked.withPhoto)}명` : ''}${d.photoFails > 0 ? ` · 못 읽은 사진 ${nf(d.photoFails)}명` : ''}`;
+      return { level: d.photoFails > 0 ? 'warn' : 'ok', title: '사진 사용 중', short, lines };
+    }
+    case 'notfound':
+      return { level: 'info', title: '페이스팩 폴더를 찾지 못했습니다', lines: [`찾아본 위치: ${tried || '(없음)'}`, 'facepack 폴더를 게임 HTML과 같은 곳에 두세요(facepack-공통.zip과 사진 ZIP을 풀어 한 폴더로 합칩니다). 사진이 없어도 게임은 기존 그림으로 정상 동작합니다.'] };
+    case 'nophotos-local':
+      return { level: 'warn', title: '공통 파일은 찾았지만 사진 조각(offline/)이 없습니다', lines: [`공통 파일 위치: ${d.base}`, '→ facepack-사진-로컬용.zip을 받아 같은 facepack 폴더에 풀어 주세요(파일로 연 HTML은 offline/ 조각이 필요합니다).', `찾아본 위치: ${tried}`] };
+    case 'nophotos-web':
+      return { level: 'warn', title: '공통 파일은 찾았지만 사진(faces/)이 없습니다', lines: [`공통 파일 위치: ${d.base}`, '→ facepack-사진-웹용.zip을 받아 같은 facepack 폴더에 풀어 주세요.'] };
+    case 'loading':
+      return { level: 'info', title: '얼굴 사진 폴더를 확인하는 중…', lines: [] };
+    case 'error':
+      return { level: 'warn', title: '페이스팩을 열지 못했습니다', lines: [d.detail ?? '알 수 없는 오류', `폴더: ${d.base ?? '(미확인)'}`, '파일이 일부 빠졌거나 다른 버전일 수 있습니다. 공통 ZIP과 사진 ZIP을 모두 새로 받아 풀어 보세요.'] };
+    default:
+      return { level: 'info', title: '얼굴 사진 폴더를 아직 확인하지 않았습니다', lines: [] };
+  }
+}
+
+/** 게임 선수 중 사진과 연결되는 수(팩이 준비된 뒤) */
+export function linkedStats(players) {
+  if (!state.fp) return null;
+  const ids = new Set(); let withPhoto = 0;
+  for (const p of players ?? []) {
+    if (p.real === false || !idOf(p) || ids.has(idOf(p))) continue;
+    ids.add(idOf(p));
+    if (faceKind(p) === 'real') withPhoto++;
+  }
+  return { total: ids.size, withPhoto };
+}
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
@@ -30,14 +96,30 @@ function loadScript(src) {
     document.head.append(s);
   });
 }
+function probeImage(src) {
+  return new Promise((resolve) => { const im = new Image(); im.onload = () => resolve(true); im.onerror = () => resolve(false); im.src = src; });
+}
 
-/** 팩을 한 번만 읽는다. 반환: Promise<boolean>(쓸 수 있으면 true). 실패해도 예외·경고 없이 false */
+/** 데이터가 있는 폴더를 후보에서 차례로 찾는다. 반환: { base, tried } */
+async function findCommonBase(cands) {
+  const tried = [];
+  for (const b of cands) {
+    tried.push(b);
+    if (globalThis.KBL_FULL_DATA) return { base: b, tried };
+    try { await loadScript(`${b}data.js`); } catch { continue; }
+    if (globalThis.KBL_FULL_DATA) return { base: b, tried };
+  }
+  return { base: null, tried };
+}
+
+/** 팩을 한 번만 읽는다. 반환: Promise<boolean>(쓸 수 있으면 true). 실패해도 예외·경고 없이 false — 이유는 getFaceDiagnostics()에 남는다 */
 export function loadFaces() {
   if (state.status === 'ready') return Promise.resolve(true);
   if (state.status === 'failed') return Promise.resolve(false);
   if (state.status === 'loading') return new Promise((ok) => state.waiters.push(ok));
   if (typeof document === 'undefined') { state.status = 'failed'; return Promise.resolve(false); }
   state.status = 'loading';
+  setDiag({ status: 'loading' });
   return new Promise((ok) => {
     state.waiters.push(ok);
     const done = (fp) => {
@@ -48,14 +130,43 @@ export function loadFaces() {
       for (const w of ws) w(Boolean(fp));
     };
     (async () => {
+      const file = location.protocol === 'file:';
+      const cands = candidateBases(globalThis.KBL_FACEPACK_BASE ?? '../facepack/');
       try {
-        const base = baseOf();
+        const found = await findCommonBase(cands);
+        if (!found.base) { setDiag({ status: 'notfound', tried: found.tried, base: null }); return done(null); }
+        const base = found.base;
         state.base = base;
-        if (!globalThis.KBL_FULL_DATA) await loadScript(`${base}data.js`);
-        if (!globalThis.KBLFacePack) await loadScript(`${base}facepack.js`);
-        const fp = await globalThis.KBLFacePack.create({ basePath: base });
+        const nested = /facepack\/facepack\/$/.test(base) ? 'double' : /^\.\/facepack-[^/]+\//.test(base) ? 'zipname' : null;
+        setDiag({ base, commonBase: base, tried: found.tried, nested, mode: file ? 'file' : 'http' });
+        try { if (!globalThis.KBLFacePack) await loadScript(`${base}facepack.js`); } catch { setDiag({ status: 'error', detail: 'facepack.js를 찾지 못했습니다' }); return done(null); }
+        const D = globalThis.KBL_FULL_DATA;
+        if (!D?.players || !D?.teams || !globalThis.KBLFacePack?.create) { setDiag({ status: 'error', detail: '이 게임은 전체 페이스팩 v2(data.js의 KBL_FULL_DATA)가 필요합니다. 예전 20명 테스트팩이면 새로 받아 주세요.' }); return done(null); }
+        const photos = D.players.filter((p) => p.photo).length;
+        setDiag({ registry: D.players.length, photos });
+        // 사진 위치: 파일로 열면 offline/boot.js(+조각), 웹이면 faces/*.webp. 공통과 다른 폴더에 풀었을 수도 있어 다른 후보도 본다
+        let photoBase = null;
+        if (file) {
+          for (const b of [base, ...cands.filter((c) => c !== base)]) {
+            if (globalThis.KBL_FULL_BOOT) { photoBase = b; break; }
+            try { await loadScript(`${b}offline/boot.js`); } catch { continue; }
+            if (globalThis.KBL_FULL_BOOT) { photoBase = b; break; }
+          }
+          if (!photoBase) { setDiag({ status: 'nophotos-local' }); return done(null); }
+        } else {
+          const sample = D.players.find((p) => p.photo)?.id;
+          for (const b of [base, ...cands.filter((c) => c !== base)]) {
+            if (sample && await probeImage(`${b}faces/${sample}.webp`)) { photoBase = b; break; }
+          }
+          if (!photoBase) { setDiag({ status: 'nophotos-web' }); return done(null); }
+          if (photoBase !== base) { setDiag({ status: 'nophotos-web', detail: `사진이 다른 폴더(${photoBase})에 있습니다. 한 facepack 폴더로 합쳐 주세요.` }); return done(null); }
+        }
+        let fp;
+        try { fp = await globalThis.KBLFacePack.create({ basePath: photoBase }); } catch (e) { setDiag({ status: 'error', detail: String(e?.message ?? e).slice(0, 120) }); return done(null); }
+        setDiag({ status: 'ready', base: photoBase, commonBase: base });
         done(fp);
-      } catch { done(null); }
+        setDiag({}); // 준비가 끝난 뒤 한 번 더 알린다(게임 선수와 연결되는 수를 셀 수 있게)
+      } catch (e) { setDiag({ status: 'error', detail: String(e?.message ?? e).slice(0, 120) }); done(null); }
     })();
   });
 }
@@ -138,14 +249,16 @@ export async function facePicture(p, { mode = 'face', teamId = p?.teamId, size =
       c.width = S; c.height = S;
       const r = await fp.render(c, input, { mode: 'face', teamId: input.teamId });
       if (!r || r.cancelled) return null;
-      if (r.kind !== 'real' && !virtual) return null; // 사진 로딩 실패로 대체 얼굴이 된 경우
+      if (pre === 'real' && r.kind !== 'real') noteFail(p); // 명부에는 사진이 있는데 파일을 읽지 못함
+      if (r.kind !== 'real' && !virtual) { setDiag({}); return null; } // 사진 로딩 실패로 대체 얼굴이 된 경우
       const href = toUrl(c);
       return href ? { href, kind: r.kind } : null;
     }
     c.width = 470; c.height = 609;
     const r = await fp.render(c, input, { teamId: input.teamId, mode: 'portrait', tone: true });
     if (!r || r.cancelled) return null;
-    if (r.kind !== 'real' && !virtual) return null;
+    if (pre === 'real' && r.kind !== 'real') noteFail(p);
+    if (r.kind !== 'real' && !virtual) { setDiag({}); return null; }
     const sq = document.createElement('canvas'); sq.width = S; sq.height = S;
     sq.getContext('2d').drawImage(c, 0, 0, 470, 470, 0, 0, S, S);
     const href = toUrl(sq);
