@@ -2835,7 +2835,7 @@ function martBonus(a, clerk) {
   else if (r > 0.92) { buyStat.lottery++; (clerk ?? a).say('추첨 당첨이에요!! 🎉', 'good', 1700); a.say('대박! +3코인!', 'good', 1600); a.exc = performance.now() + 1200 / SPEED; spawnConfetti(a.x, a.feet - 26, 14, { w: 12, spread: 50 }); for (let i = 0; i < 3; i++) spawnCoin({ kind: 'drop', a, h: 24 + i * 8, dur: 0.8, t: -i * 0.18, res: () => {} }); }
 }
 const MART_CAP = 5;                                                    // 계산대 줄에 동시에 설 수 있는 손님(자리를 옆으로 비껴 선다)
-const MART_SCENES = new Set(['lunch', 'martq', 'newitem', 'collect', 'bossshop']);   // 이 장면 동안에는 편의점 손님을 따로 보내지 않는다(계산대가 겹친다)
+const MART_SCENES = new Set(['lunch', 'martq', 'newitem', 'collect']);   // 이 장면 동안에는 편의점 손님을 따로 보내지 않는다(계산대가 겹친다)
 let browsing = false;
 function coinSpendTick() {   // 쉬는 직원 중 코인이 있는 사람이 자판기(3층)와 편의점(B1)을 각각 한 명씩 동시에 쓴다. 장면(일과)이 돌고 있어도 쓴다
   if (document.hidden || modeNight() || power.k > 0.5 || vmeet.on) return;
@@ -2855,12 +2855,12 @@ async function martBrowse(a) {   // 코인이 없거나 아직 살 마음이 없
   browseSet.add(a); a.busy = true; a.nextBuy = performance.now() + 18000 / SPEED; a.nextBrowse = performance.now() + 30000 / SPEED;
   try {
     a.say(pick(['편의점 구경이나 할까', '신상 나왔나?', '시원한 데서 쉬어야지~', '버섯 특가 보러 가자']), 'think', 1200);
-    const spots = shuffled([MARTX.shelf + 14 + hash(hue(a.id)) * 30, MARTX.fridge + 6, MARTX.island - 8 + hash(hue(a.id) + 3) * 24, MARTX.basket - 10]).slice(0, 2 + (Math.random() < 0.5 ? 1 : 0));
+    const spots = shuffled([MARTX.shelf + 14 + hash(hue(a.id)) * 30, MARTX.fridge + 6, MARTX.island - 8 + hash(hue(a.id) + 3) * 24, MARTX.basket - 10]).slice(0, 3 + (Math.random() < 0.5 ? 1 : 0));
     await a.job(async () => { await goFloor(a, MART, MARTX.door - 70 - hash(hue(a.id) + 9) * 20); a.face = -1; });
     if (a.floor !== MART) return;
     for (const x of spots) {
       await a.job(async () => { await a.walkTo(x); a.face = hash(x) > 0.5 ? 1 : -1; });
-      a.say(pick(['구경만~', '오, 이거 괜찮네', '다 비싸다…', '이거 맛있어 보이네', '냉장고 시원하다~']), 'think', 1400); await sleep(1700 + Math.random() * 1500);
+      a.say(pick(['구경만~', '오, 이거 괜찮네', '다 비싸다…', '이거 맛있어 보이네', '냉장고 시원하다~']), 'think', 1400); await sleep(2200 + Math.random() * 2600);
     }
     if ((a.coins ?? 0) >= PRICE.drink && Math.random() < 0.4) {        // 충동구매
       await a.job(async () => { await a.walkTo(MARTX.counterL - 14 - (martSet.size) * 12); a.face = 1; });
@@ -2873,14 +2873,16 @@ async function martBrowse(a) {   // 코인이 없거나 아직 살 마음이 없
 function martCrowdTick() {
   if (document.hidden || tod() !== 'day' || vmeet.on || power.k > 0.5) return;
   const now = performance.now();
-  if (now > crowd.next) { crowd.target = 3 + Math.floor(Math.random() * 4); crowd.next = now + (10 + Math.random() * 10) * 1000; }   // 3~6명 사이를 오간다
+  if (now > crowd.next) { crowd.target = 4 + Math.floor(Math.random() * 3); crowd.next = now + (10 + Math.random() * 10) * 1000; }   // 4~6명 사이를 오간다
   crowd.n++; crowd.sum += [...actors.values()].filter((q) => !q.npc && q.floor === MART && q.vis && !q.gone && q.alpha > 0.4).length;
   if (running && MART_SCENES.has(ambientCur)) return;
-  const want = crowd.target - patronN(); if (want <= 0) return;
+  const onMart = [...actors.values()].filter((q) => !q.npc && q.floor === MART && q.vis && !q.gone && !q.walk && q.alpha > 0.4).length;   // 이미 가게 안에 서 있는 손님
+  const flying = [...martSet, ...browseSet].filter((q) => q.floor !== MART || q.walk).length;                                                  // 오가는 중(엘리베이터·계단·걷는 중)
+  const want = crowd.target + 1 - onMart - flying; if (want <= 0 || flying >= 3) return;
   const cand = shuffled([...actors.values()].filter(restOk));
   for (let i = 0; i < Math.min(2, want) && cand.length; i++) {
     const a = cand.shift();
-    if ((a.coins ?? 0) > 0 && martSet.size < MART_CAP && now >= (a.nextBuy ?? 0)) martTrip(a); else martBrowse(a);
+    if ((a.coins ?? 0) > 0 && martSet.size < MART_CAP && now >= (a.nextBuy ?? 0) && Math.random() < 0.7) martTrip(a); else martBrowse(a);
   }
 }
 setInterval(martCrowdTick, 1800);
