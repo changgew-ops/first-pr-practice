@@ -1,116 +1,111 @@
-# Claude Code 적용 지침 — KBL 페이스팩 v1
+# Claude Code 연동 지침 — 전체팩 v2
 
-이 문서와 폴더 전체를 읽은 뒤 사용자의 실제 게임 저장소에 연결하세요.
-이번 팩은 **실존 20명 + 가상 얼굴 16종 + 10구단 몸통**입니다. 전현직 1,454명의 완성 페이스팩이 아닙니다.
-실제 게임 원본을 받지 못한 상태에서 만든 독립 연동용 SDK와 데모입니다.
+## 범위와 변경점
 
-## 1. 파일 배치
+기존 엑셀 명단 1,454명 중 1,275명은 실제 사진, 179명은 가상 대체입니다.
+새로 생성한 선수나 명단 밖 ID도 가상 얼굴로 처리합니다.
+v1(20명 테스트팩) 대신 이 전체 폴더를 사용하세요. v2는 지연 로딩 때문에 **render / drawOriginal 모두 Promise를 반환**합니다.
+기존 게임을 덮어쓰지 말고 렌더러만 연결하세요. 시뮬레이션·세이브 형식은 필요한 faceKey 추가 외에 유지합니다.
 
-게임 HTML 옆에 `facepack/` 폴더를 만들고 다음 파일을 복사합니다.
+## 배치
 
-- `data.js`, `facepack.js`
-- `faces/` 전체 (21개 WebP + 로컬 실행용 pack.js)
-- `generated/atlas.webp`
-
-`originals/`, `generated/atlas-original.png`, 데모의 `app.js`/`style.css`는 실제 게임 실행에 필요하지 않습니다.
-이들은 원본 보관 및 비교용입니다. 게임 HTML에 사진을 base64로 직접 넣지 마세요.
-데모 화면 전체를 기존 게임에 덮어쓰지 말고 `facepack.js`의 API만 연결합니다.
-
-## 2. 스크립트 및 초기화
+게임 HTML 옆에 `full-facepack/` 폴더 전체를 복사합니다.
+HTML 하단에 다음 스크립트를 추가합니다.
 
 ```html
-<canvas id="player-portrait" width="470" height="609"></canvas>
-<script src="./facepack/data.js"></script>
-<script src="./facepack/facepack.js"></script>
+<canvas id="portrait" width="235" height="305"></canvas>
+<script src="./full-facepack/data.js"></script>
+<script src="./full-facepack/facepack.js"></script>
 <script>
 (async () => {
-  const faces = await KBLFacePack.create({basePath:'./facepack/'});
-  const canvas = document.getElementById('player-portrait');
-  faces.render(canvas, {id:'291248',teamId:'db'});
+  const faces = await KBLFacePack.create({basePath:'./full-facepack/'});
+  await faces.render(document.getElementById('portrait'),
+    {id:'245065',teamId:'db'}, {mode:'portrait'});
 })();
 </script>
 ```
 
-실제 초기화는 위 예제처럼 canvas가 존재하는 DOM 준비 후 실행하세요.
-동작하는 최소 예제는 동봉한 `integration-example.html`입니다.
-`create()`는 비동기이고, 초기 로딩 후 `render()`는 동기입니다. 렌더러는 앱에서 한 번 만들고 재사용합니다.
-`basePath`는 문서 URL 기준입니다. 경로가 다른 경우 실제 배치에 맞추세요.
+앱 초기화 때 create()를 한 번 실행해 공유하세요. UI 컴포넌트마다 렌더러를 새로 생성하지 마세요.
+폴더 안의 `integration-example.html`은 바로 실행되는 예제입니다.
 
-## 3. 선수 ID 연결
+## 선수 매핑
 
-`data.js`의 실존 선수 id는 KBL 원본 playerNo입니다.
-게임 내부 ID가 다르면 별도 매핑 테이블을 만드세요. 이름만으로 자동 연결하지 마세요(동명이인/시즌 카드 중복).
-한 선수의 여러 시즌 카드에는 동일한 KBL playerNo를 연결합니다.
-선수 번호나 팀, 나이, 시즌을 얼굴 ID로 사용하지 마세요.
+KBL 선수 ID는 `playerNo`입니다. 같은 선수의 모든 시즌 카드를 동일한 playerNo로 연결합니다.
+게임 ID가 다르면 별도 매핑 테이블을 만드세요. 이름 자동 매칭은 동명이인 때문에 피하세요.
+팀·등번호·이름·시즌을 영구 ID 대신 쓰면 안 됩니다.
 
 ```js
-const faceInput = {
-  id: player.kblPlayerNo || player.persistentId,
+const input = {
+  id: String(player.kblPlayerNo || player.persistentId),
   name: player.name,
-  teamId: teamMap[player.teamId],
-  isGenerated: Boolean(player.isGenerated),
+  isGenerated: !!player.isGenerated,
   faceKey: player.faceKey || undefined
 };
-const resolved = faces.resolve(faceInput);
-// 신규 생성선수나 사진 없는 선수의 얼굴 번호는 세이브 데이터에 함께 저장합니다.
-if (resolved.faceKey && !player.faceKey) player.faceKey = resolved.faceKey;
-faces.render(canvas, faceInput, {teamId:faceInput.teamId});
+const result = await faces.render(canvas, input, {
+  teamId: teamMap[player.teamId],
+  mode: 'portrait' // 얼굴 카드에는 'face'
+});
+if (result.faceKey && !player.faceKey) player.faceKey = result.faceKey;
 ```
 
-`isGenerated:true` → 가상 얼굴. 알려진 실제 ID이며 사진 존재 → 실제 사진.
-ID가 없거나 매칭되지 않는 실존 선수, 선수 사진 로딩 실패 → 가상 얼굴 대체 (`kind:'fallback'`).
-가상 얼굴은 실제 인물 복원이 아니므로 UI에 `대체 얼굴`로 구분할 수 있습니다.
-빈 ID는 오류입니다. 생성선수를 만들 때 영구 ID를 먼저 발급하세요.
+- 사진 확보된 실제 ID: `kind:'real'`.
+- 사진 없음/실루엣/알 수 없는 실제 ID/선수 사진 로딩 실패: `kind:'fallback'`.
+- `isGenerated:true`: `kind:'generated'`.
+- faceKey를 지정하면 실제 사진 여부와 무관하게 해당 가상 얼굴을 사용합니다.
+- 이미지 로딩이 끝난 뒤의 실제 상태는 render() 반환값으로 판단하세요. resolve()는 로딩 전 명부 기준 상태입니다.
+- `{cancelled:true}`는 같은 canvas에 더 최신 렌더 요청이 들어와 이전 결과를 생략했다는 뜻입니다.
+- 새 선수는 영구 ID를 먼저 발급하세요. 빈 ID는 오류입니다.
 
-## 4. 생성선수 일관성
+## 생성/대체 얼굴
 
-- `KBLFacePack.assignFace(id)`는 문자열 ID를 안정적인 해시로 16종 중 하나에 배정합니다.
-- 팀·등번호·시즌·이름을 바꿔도 ID가 같으면 같은 얼굴입니다.
-- `faceKey:'gen-01'`부터 `'gen-16'`으로 명시적 고정이 가능합니다.
-- 팩 업데이트에 대비해 faceKey를 세이브에 저장하세요.
-- 얼굴 16종을 재사용하므로 서로 다른 선수끼리 같은 얼굴이 나올 수 있습니다. 무한 개별 얼굴 생성이나 AI API 실시간 호출은 아닙니다.
-- 현재 제공하는 16종은 모두 성인 남성 가상 인물입니다. 외모 유형을 이름/국적에서 추정하지 않습니다.
+`KBLFacePack.assignFace(id)`는 gen-01 ~ gen-16 중 하나를 고정 배정합니다.
+팀/등번호/시즌/이름이 바뀌어도 ID가 같으면 같은 얼굴입니다.
+향후 팩 업데이트에도 유지하려면 배정된 faceKey를 게임 세이브에 저장하세요.
+16종을 재사용하므로 중복 얼굴은 정상입니다. 매번 AI로 얼굴을 생성하는 기능이 아니며 API 호출도 없습니다.
+실존 선수의 가상 대체 얼굴은 실제 얼굴처럼 표기하지 말고 필요 시 '대체 얼굴'로 구분하세요.
 
-## 5. 화면별 사용
+## 화면별 렌더링
 
 ```js
-// 선수 카드/로스터: 머리만 잘라 보여주기
-faces.render(faceCanvas, faceInput, {mode:'face'});
-// 우승 화면: 해당 소속 유니폼 몸통과 결합
-faces.render(fullCanvas, faceInput, {teamId:'lg', tone:true});
-// 확대/높이 미세 조정
-faces.render(fullCanvas, faceInput, {teamId:'lg', scale:1.02, offset:3});
+await faces.render(faceCanvas, input, {mode:'face'}); // 선수 카드 / 로스터
+await faces.render(fullCanvas, input, {teamId:'lg', mode:'portrait'}); // 우승
+await faces.render(fullCanvas, input, {teamId:'lg', scale:1.02, offset:3, tone:true});
+await faces.drawOriginal(originalCanvas, input); // 원본 프로필 비교
 ```
 
-권장 canvas 비율: 얼굴 정사각형, 상반신 470:609.
-카드·로스터·우승 화면에서 동일한 faceInput을 재사용합니다.
-로스터 전체를 순회해 렌더링하세요. 임의로 7명까지만 잘라내지 마세요.
-팀 ID: `db`, `sk`, `kt`, `lg`, `kcc`, `sono`, `samsung`, `mobis`, `gas`, `kgc`.
-구단 명칭/코드가 게임과 다르면 별도 teamMap을 만드세요. 잘못된 teamId는 오류입니다.
-`render()` 반환값은 `{playerId,kind,faceKey,teamId}`입니다.
+얼굴 카드: 정사각 canvas. 상반신: 470:609 비율.
+우승 로스터 전체를 순회하세요. 7명 등 고정 인원으로 자르지 마세요.
+한 화면의 사진을 4~8개씩 나누어 await하면 초기 부하를 줄일 수 있습니다.
+모든 1,454명을 시작 시 선로딩하지 마세요. 현재 화면에 필요한 사진만 렌더링합니다.
 
-## 6. 로컬 HTML과 호스팅
+팀 코드: db / sk / kt / lg / kcc / sono / samsung / mobis / gas / kgc.
+실제 게임 팀 코드와 다르면 teamMap을 구성하세요. 사진 속 팀을 현재 소속으로 사용하지 마세요.
 
-- `file://` 실행 시 SDK가 `faces/pack.js`를 읽습니다. 캔버스 보안 제한을 피하는 데이터 URI 자산 묶음입니다.
-- HTTP(S) 실행 시 개별 WebP를 사용합니다. 외부 KBL 사이트에서 실시간 다운로드하지 않습니다.
-- 외부 CDN, npm 패키지, API 키, 유료 생성 호출이 필요하지 않습니다.
-- 게임을 웹에 올리면 facepack 폴더도 같은 출처에 업로드해야 합니다.
-- 브라우저 안의 HTML 미리보기에서는 PC의 옆 폴더를 자동으로 읽을 수 없습니다. 전체 폴더를 지원하는 환경이나 실제 브라우저에서 실행하세요.
-- `faces/pack.js`는 이미지의 중복 데이터이므로 HTTP 전용 배포는 생략할 수 있습니다. 로컬 HTML 지원을 유지하려면 포함하세요.
+## 로컬 HTML / 웹
 
-## 7. 합성 한계 / 수정 시 주의
+- `file://`에서는 offline/boot.js와 offline/photos-XXX.js를 지연 로딩합니다.
+- HTTP(S)에서는 faces/*.webp, uniforms/*.webp, generated/atlas.webp를 사용합니다.
+- 동일 출처에 폴더 전체를 배포하세요. PC 폴더를 온라인 미리보기에서 자동 접근할 수는 없습니다.
+- HTTP 전용이면 offline/ 폴더를 배포에서 제외할 수 있으나, 로컬 실행 지원이 사라집니다.
+- HTML 본문에 사진을 넣지 마세요. 이 폴더를 독립 페이스팩으로 유지합니다.
+- 외부 KBL 다운로드, CDN, npm, API 키, 생성 API 호출은 필요 없습니다.
+- 필수 유니폼/가상 아틀라스 파일이 없으면 초기화가 실패합니다. 폴더 누락을 선수 사진 없음으로 숨기지 마세요.
 
-- 몸통·팔·포즈·체형·등번호·문신은 구단별 원본 제공 선수의 것입니다.
-- 등번호를 게임 데이터로 바꾸는 기능은 아직 없습니다. 원본 번호를 실제 선수 번호라고 표시하지 마세요.
-- 목 가장자리와 색 차이는 완벽하지 않습니다. 선수별 위치 메타데이터로 보정하거나 향후 공통 몸통을 정리하세요.
-- 사진 촬영 시즌은 확인하지 않았습니다. 최신 시즌 유니폼 보증 자료가 아닙니다.
-- 원본 사진과 생성 아틀라스는 보존하고, 수정 결과를 별도 파일로 저장하세요.
-- 기존 게임의 저장 데이터, 난수 생성기, 시즌 시뮬레이션 로직을 변경하지 마세요.
+## 품질 메타데이터
 
-## 8. 연동 후 확인
+manifest.json의 players[].faceBox는 [x,y,width,height] 정규화 좌표입니다.
+기준은 원본 이미지이며 rotation:90인 1장은 시계 방향 90도 회전 후의 좌표입니다.
+검출 실패 25장은 cropMethod:'estimated'이고 UI에서 점검 대상으로 분류합니다.
+다른 사진도 수동 얼굴/합성 검증을 모두 한 것은 아닙니다. 필요한 경우 faceBox를 조정해 data.js와 manifest.json을 함께 갱신하세요.
+photo:true는 공식 URL의 이미지 확보·형식 검증 기준이며 최신 시즌 사진이나 개별 인물 수동 검증 보증은 아닙니다.
+수집 불가 163명과 기본 실루엣 16명은 photo:false입니다.
 
-실존 선수, 생성선수, 사진 없는 선수 각각을 확인합니다.
-같은 선수가 팀 이동/등번호 변경/시즌 변경/세이브 로드 후에도 같은 얼굴인지 확인합니다.
-선수 카드·로스터·우승 화면의 ID 매핑이 일치하는지 확인합니다.
-20명 이상 로스터에서 모든 선수가 표시되는지 확인합니다.
-인터넷을 끊은 로컬 실행에서도 자산이 표시되는지 확인합니다.
+몸통 등번호·문신·체형·포즈는 고정 원본이며 현재 선수의 실제 정보로 사용하면 안 됩니다.
+목 연결과 과거 사진 배경은 완벽히 제거되지 않았습니다.
+
+## 연동 검수
+
+실제 선수(허재 245065, 워니 291248), 대체 선수(291677), 신규 ID를 확인합니다.
+카드·로스터·우승 화면에서 동일한 ID인지 확인합니다.
+이적/시즌 변경/세이브 로드 후 얼굴이 유지되는지 확인합니다.
+20명 이상 전체 로스터, 로컬 HTML 오프라인 실행, 웹 실행을 확인합니다.
