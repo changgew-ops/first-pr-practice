@@ -1165,7 +1165,7 @@ const NPC = { janitor: null };                     // janitor = 1층 굼바(예�
 let LEGENDS = [], GOOMBAS = [], KAMEKS = [], TOADS = [], REGULARS = [], BOSSP = null, SPR_BOO = null;
 let todForce = null, nightDemo = false, idleOffice = true, ambientCur = null, nightK = 0, eveK = 0;
 /* 낮·밤은 현지 시각이 아니라 가속 주기로 돈다: 페이지를 연 시각부터 (경과 초 mod 주기). 낮에는 일과 장면(순시·간식 사건), 밤에는 퇴근·야근·킹부끄 */
-const CYC = { day: 62, eve: 26, night: 27, fade: 3 };    // 초. 낮 62 + 저녁 26 + 밤 27 = 115초 주기(예전 77초의 1.5배). fade는 구간이 바뀔 때 어두워지는 시간
+const CYC = { day: 52, eve: 28, night: 40, fade: 3 };    // 초. 낮 52(08→17시) + 저녁 28(17→21시) + 밤 40(21→08시) = 120초 주기. 낮은 짧게 밤은 길게. fade는 구간이 바뀔 때 어두워지는 시간
 const cycT0 = performance.now(); let cycShift = 0;
 const cycLen = () => CYC.day + CYC.eve + CYC.night;
 let cycFrozenAt = null, cycFrozenTotal = 0;                                  // 주간 회의 동안 시계(주기 위상)를 멈춘다
@@ -1175,7 +1175,7 @@ const clockFrozen = () => cycFrozenAt !== null;
 const cycPhase = () => cycElapsed() % cycLen();
 const todAuto = () => { const p = cycPhase(); return p < CYC.day ? 'day' : p < CYC.day + CYC.eve ? 'eve' : 'night'; };
 const tod = () => todForce ?? todAuto();                                    // 'day' 낮 · 'eve' 저녁 · 'night' 밤
-const modeNight = () => tod() === 'night';                                  // 직원 퇴근의 기준(데모 밤은 제외). 저녁에는 아직 다들 있다
+const modeNight = () => tod() !== 'day';                                    // 직원 퇴근의 기준(데모 밤은 제외): 저녁 5시(17:00, 저녁 구간 시작)부터 일하지 않는 직원이 퇴근한다. 일하는 직원은 야근
 const isDark = () => nightDemo || tod() !== 'day';                          // 화면 어둡기·킹부끄의 기준(킹부끄는 저녁부터 나온다)
 const TOD_LABEL = { day: '낮', eve: '저녁', night: '밤' };
 // 화면 시계: 낮 08:00→17:00, 저녁 17:00→21:00, 밤 21:00→08:00(다음 날)로 구간마다 선형으로 흐른다. 고정 모드이면 그 구간의 대표 시각에 멈춘다
@@ -1632,7 +1632,7 @@ function drawGhost() {
 const AMBIENT = new Set(['snack', 'patrol', 'meeting', 'kamek', 'exec', 'extra', 'blackout', 'printer', 'cake', 'rain', 'minimeet', 'break', 'dept', 'rounds']);
 const AMB_KS = { rounds: 2.4, dept: 2.2, blackout: 1.5, printer: 1.8, cake: 2, rain: 2, minimeet: 2.2, break: 2.2, exec: 2.4, extra: 2 };   // 이벤트별 배속(정전·비는 눈으로 볼 수 있게 천천히)
 const AMB_K = 2.8;                                   // 일과 장면은 낮 52초 안에 끝나도록 이 배속 이상으로 돌린다(순시 약 20초 + 간식 사건 약 17초)
-const SCHED = [{ id: 'patrol', at: 4, kind: 'patrol', wait: 20 }, { id: 'meeting', at: 18, kind: 'meeting', chance: 0.1, wait: 26 }, { id: 'exec', at: 26, kind: 'exec', chance: 0.75, wait: 20 }, { id: 'rounds', at: 22, kind: 'rounds', chance: 0.5, wait: 18 }, { id: 'dept', at: 33, kind: 'dept', chance: 0.4, wait: 16 }, { id: 'snack', at: 38, kind: 'snack', wait: 20 }, { id: 'extra', at: 48, kind: 'extra', chance: 0.8, wait: 14 }];   // 낮 구간(초): 아침 출근이 끝난 뒤 순시, 10% 확률로 주간 회의, 그 뒤 간식 사건
+const SCHED = [{ id: 'patrol', at: 3, kind: 'patrol', wait: 20 }, { id: 'meeting', at: 15, kind: 'meeting', chance: 0.1, wait: 26 }, { id: 'exec', at: 22, kind: 'exec', chance: 0.75, wait: 20 }, { id: 'rounds', at: 18, kind: 'rounds', chance: 0.5, wait: 18 }, { id: 'dept', at: 28, kind: 'dept', chance: 0.4, wait: 16 }, { id: 'snack', at: 32, kind: 'snack', wait: 20 }, { id: 'extra', at: 40, kind: 'extra', chance: 0.8, wait: 14 }];   // 낮 구간(초): 아침 출근이 끝난 뒤 순시, 10% 확률로 주간 회의, 그 뒤 간식 사건
 const snack = { n: 3, show: 0 };
 async function sceneAmbient(ev) {
   const sp0 = SPEED; ambientCur = ev.kind; SPEED = Math.max(SPEED, reduce ? 3 : ev.demo ? 2.2 : (AMB_KS[ev.kind] ?? AMB_K)); renderStaff();   // 일과 데모는 눈으로 따라갈 수 있게 조금 천천히
@@ -2144,8 +2144,8 @@ setInterval(visitTick, 1000);
 let lastTod = tod(), lastE = cycElapsed(), demoRun = false; const pendFire = [];
 function onTod(t, prev) {
   visiting.clear();
-  announce(t === 'eve' ? '저녁이 되었습니다. 킹부끄가 슬슬 나타납니다.' : t === 'night' ? '밤이 되었습니다. 일하지 않는 직원은 퇴근하고, 일하는 직원은 야근합니다.' : '아침이 밝았습니다. 직원들이 출근합니다.');
-  if ((prev === 'night') !== (t === 'night')) settleAll(false);
+  announce(t === 'eve' ? '저녁 5시입니다. 일하지 않는 직원은 퇴근을 시작하고 킹부끄가 슬슬 나타납니다.' : t === 'night' ? '밤이 되었습니다. 일하는 직원은 야근합니다.' : '아침이 밝았습니다. 직원들이 출근합니다.');
+  if ((prev !== 'day') !== (t !== 'day')) settleAll(false);
 }
 function tickSchedule() {
   const e = cycElapsed(), P = cycLen(), t = tod();

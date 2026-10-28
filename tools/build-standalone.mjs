@@ -20,7 +20,7 @@ const assets = {};
 })(join(root, 'web/assets'));
 
 // 2) 게임이 fetch로 읽는 데이터 파일 표 (data/ 아래 필요한 것만). 키는 data/ 기준 경로
-const dataFiles = ['league-rules.json', 'teams.json', 'players.json', 'arenas.csv', 'history/seasons.json', 'history/franchises.json', 'history/attendance.csv', 'players/profiles.json', 'players/careers.json', 'cards/domestic.json', 'cards/foreign.json'];
+const dataFiles = ['league-rules.json', 'teams.json', 'players.json', 'arenas.csv', 'history/seasons.json', 'history/franchises.json', 'history/attendance.csv', 'players/profiles.json', 'players/careers.json', 'cards/domestic.json', 'cards/foreign.json', 'difficulty.json'];
 for (const f of readdirSync(join(root, 'data/history/stats'))) if (f.endsWith('.json')) dataFiles.push(`history/stats/${f}`);
 const data = {};
 for (const f of dataFiles) data[f] = readFileSync(join(root, 'data', f), 'utf8');

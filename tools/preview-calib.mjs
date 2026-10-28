@@ -8,7 +8,8 @@ import { simulateOdds } from '../src/preview.mjs';
 import { effectiveTable } from '../web/lib/game.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(`../data/${p}`, import.meta.url), 'utf8'));
-const rules = read('league-rules.json'), teams = read('teams.json'), players = read('players.json');
+const rules = JSON.parse(JSON.stringify(read('league-rules.json'))), teams = read('teams.json'), players = read('players.json');
+for (const [k, v] of Object.entries(JSON.parse(process.env.PREVIEW_RULES ?? '{}'))) rules.preview[k] = v; // 후보 값 시험: PREVIEW_RULES='{"gameTemp":0.16}'
 const seeds = Number(process.argv[2] ?? 8), years = Number(process.argv[3] ?? 10);
 const data = { rules, teams, players };
 const rows = { base: [], eff: [] };
