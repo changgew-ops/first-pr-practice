@@ -24,7 +24,7 @@ const urlCache = new Map();
 const EXTRA_BASES = [
   './facepack/', './facepack/facepack/',
   './facepack-공통/facepack/', './facepack-공통/', './facepack-사진-로컬용/facepack/', './facepack-사진-웹용/facepack/',
-  '../facepack/'
+  './', '../facepack/'   // './' = 게임 HTML을 facepack 폴더 안에 넣은 경우
 ];
 /** 찾아볼 폴더 후보(앞이 우선, 중복 없음). explicit(KBL_FACEPACK_BASE)이 있으면 맨 앞 */
 export function candidateBases(explicit = null) {
