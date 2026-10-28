@@ -747,8 +747,8 @@ function drawWalls(g) {
   drawStairs(g);
   // 땅: 지상은 1층까지, 그 아래 편의점·지하는 땅속(흙). 나무는 지면(GY)에 선다
   const GY = fTop(MART);
-  R(g, 0, GY - 2, 2, H - GY + 2, '#4a3a2c'); R(g, W - 2, GY - 2, 2, H - GY + 2, '#4a3a2c'); R(g, 0, GY - 2, 2, 2, '#5aa05a'); R(g, W - 2, GY - 2, 2, 2, '#5aa05a');
-  R(g, 0, TOP + BH, W, H - TOP - BH, '#3a2e26'); R(g, 0, TOP + BH, W, 2, '#2a2018'); for (let i = 0; i < 10; i++) R(g, 14 + i * 38, TOP + BH + 5 + (i % 3) * 3, 5, 2, '#54463a');
+  R(g, 0, GY - 2, 2, H - GY + 2, '#2c2a40'); R(g, W - 2, GY - 2, 2, H - GY + 2, '#2c2a40'); R(g, 0, GY - 2, 2, 2, '#5aa05a'); R(g, W - 2, GY - 2, 2, 2, '#5aa05a');
+  R(g, 0, TOP + BH, W, H - TOP - BH, '#242640'); R(g, 0, TOP + BH, W, 2, '#10163a'); for (let i = 0; i < 10; i++) R(g, 14 + i * 38, TOP + BH + 5 + (i % 3) * 3, 5, 2, '#3a3c5a');
   for (let i = 0; i < 6; i++) { const tx = i < 3 ? 6 + i * 3 : W - 10 - (i - 3) * 3; R(g, tx - 1, GY - 14 - i % 3 * 3, 6, 14, '#2d7a3a'); R(g, tx, GY - 20 - i % 3 * 3, 4, 8, '#3fa24a'); }
 }
 /* ---- 왼쪽 층간 계단: 층마다 지그재그 두 번(바닥 입구 x=STX1 → 참 x=STX0 → 위층 바닥 x=STX1). 위층 바닥에 뚫린 구멍으로 올라온다.
@@ -950,9 +950,9 @@ function shelfUnit(g, x, w, fy, tiers, seed) {   // 상품이 가득한 진열�
 }
 function drawMart(g, f) {   // B1 편의점: 밝은 형광등과 타일 바닥, 진열대·냉장고·자판기·계산대
   const t = fTop(f), x0 = 8, x1 = SHAFT_L - 3, fh = FHS[f], fy = fFeet(f);
-  R(g, x0, t + 2, x1 - x0, fh - 2, '#d4ece0'); R(g, x0, t + 2, x1 - x0, 4, '#1e2750');
-  R(g, x0, t + 44, x1 - x0, 24, '#2f7f5f'); R(g, x0, t + 44, x1 - x0, 1, '#6ac8a0'); R(g, x0, t + 54, x1 - x0, 2, '#f2c230');
-  R(g, x0, t + 68, x1 - x0, 8, '#e6e8ee'); for (let i = x0; i < x1; i += 14) R(g, i, t + 68, 1, 8, '#b4b8c8'); R(g, x0, t + 68, x1 - x0, 1, '#ffffff');
+  R(g, x0, t + 2, x1 - x0, fh - 2, '#d8e2ea'); R(g, x0, t + 2, x1 - x0, 4, '#1e2750');
+  R(g, x0, t + 44, x1 - x0, 24, '#2a3869'); R(g, x0, t + 44, x1 - x0, 1, '#4a5a98'); R(g, x0, t + 54, x1 - x0, 2, '#f2c230');   // 위층과 같은 남색 아랫벽 패널(노란 줄만 편의점 포인트)
+  R(g, x0, t + 68, x1 - x0, 8, '#d9d2c4'); for (let i = x0; i < x1; i += 14) R(g, i, t + 68, 1, 8, '#b4b8c8'); R(g, x0, t + 68, x1 - x0, 1, '#ffffff');
   R(g, 2, t + fh - 4, W - 4, 4, '#0e1330'); R(g, 2, t + fh - 4, W - 4, 1, '#27336a');
   for (let x = x0 + 20; x < x1; x += 60) R(g, x, t + 3, 22, 2, '#ffffff');
   R(g, 118, t + 8, 124, 16, '#0f3a28'); R(g, 119, t + 9, 122, 14, '#27b86a'); R(g, 119, t + 9, 122, 2, '#7af0b0');
@@ -975,9 +975,9 @@ function martFront(g) {   // 계산대 앞면: 점원의 아랫도리를 가린�
 }
 function drawBasement(g, f) {   // B2 지하: 보일러실·냉동 창고·무기 선반. 어두운 벽과 노란 램프. 창문 없음
   const t = fTop(f), x0 = 8, x1 = SHAFT_L - 3, fh = FHS[f], fy = fFeet(f);
-  R(g, x0, t + 2, x1 - x0, fh - 2, '#262b44'); R(g, x0, t + 2, x1 - x0, 4, '#0c1026');
-  R(g, x0, t + 44, x1 - x0, 24, '#1c2134'); R(g, x0, t + 44, x1 - x0, 1, '#3a4468');
-  R(g, x0, t + 68, x1 - x0, 8, '#454962'); for (let i = x0; i < x1; i += 20) R(g, i, t + 68, 1, 8, '#32364c'); R(g, x0, t + 68, x1 - x0, 1, '#6a7090');
+  R(g, x0, t + 2, x1 - x0, fh - 2, '#5a6488'); R(g, x0, t + 2, x1 - x0, 4, '#1e2750');
+  R(g, x0, t + 44, x1 - x0, 24, '#2a3869'); R(g, x0, t + 44, x1 - x0, 1, '#4a5a98');   // 위층과 같은 벽·패널 색에 어둡게 덮는다(아래 반투명)
+  R(g, x0, t + 68, x1 - x0, 8, '#8a6a4a'); for (let i = x0; i < x1; i += 20) R(g, i, t + 68, 1, 8, '#32364c'); R(g, x0, t + 68, x1 - x0, 1, '#6a7090');
   R(g, 2, t + fh - 4, W - 4, 4, '#0a0e22'); R(g, 2, t + fh - 4, W - 4, 1, '#1f2850');
   R(g, x0, t + 8, x1 - x0, 4, '#6a7090'); R(g, x0, t + 8, x1 - x0, 1, '#9aa2c8'); for (let x = x0 + 30; x < x1; x += 46) R(g, x, t + 7, 3, 6, '#4a5070');   // 천장 배관
   R(g, x0, t + 15, x1 - x0, 2, '#8a5a3a'); R(g, x0, t + 15, x1 - x0, 1, '#c88a5a');
@@ -996,7 +996,7 @@ function drawBasement(g, f) {   // B2 지하: 보일러실·냉동 창고·무�
   for (const lx of [56, 150, 236, 318]) { R(g, lx - 1, t + 4, 2, 6, '#3a4468'); R(g, lx - 4, t + 10, 8, 3, '#ffd23f'); g.globalAlpha = 0.16; R(g, lx - 14, t + 13, 28, 56, '#ffd23f'); g.globalAlpha = 0.1; R(g, lx - 22, t + 28, 44, 40, '#ffd23f'); g.globalAlpha = 1; }   // 램프와 빛
   if (IMGA.ok) { dp(g, 'chair_black', 176, fy, { h: 32 }); dp(g, 'chair_red', 194, fy, { h: 30 }); }   // 안마의자 코너
   R(g, 162, t + 32, 36, 9, '#10163a'); R(g, 163, t + 33, 34, 7, '#7a2a6a'); g.fillStyle = '#ffe8a0'; g.font = 'bold 6px "Do Hyeon", "IBM Plex Sans KR", sans-serif'; g.textAlign = 'center'; g.fillText('안마의자', 180, t + 39); g.textAlign = 'left';
-  g.globalAlpha = 0.2; R(g, x0, t + 2, x1 - x0, fh - 6, '#05071a'); g.globalAlpha = 1;
+  g.globalAlpha = 0.3; R(g, x0, t + 2, x1 - x0, fh - 6, '#05071a'); g.globalAlpha = 1;
 }
 function drawShop() {   // 편의점 동적 소품: 바구니 속 버섯(재고만큼)
   if (!IMGA.ok) return;
@@ -1223,7 +1223,7 @@ function resumeClimb(a, up, stop = null) {   // 멈춰 선 곳에서 다시 오�
   return new Promise((res) => { const c = a.climb; if (!c) return res(); c.up = up; c.stop = stop; c.hold = false; c.res = res; });
 }
 const TRIPS = { stairs: 0, car: 0 };   // 측정용: 층 이동 수단 집계(__office.trips)
-const STAIR_CASUAL = 0.1;   // 엘리베이터 우선은 그대로: 출퇴근·급한 이동이 아닌 한 층 오르내림에서만 이 확률로 운동 삼아 계단을 쓴다
+const STAIR_CASUAL = 0.5, STAIR_CASUAL2 = 0.35, STAIR_COMMUTE = 0.18;   // 엘리베이터 우선은 그대로: 출퇴근·급한 이동이 아닌 한 층 오르내림에서만 이 확률로 운동 삼아 계단을 쓴다
 async function takeStairs(a, fi, casual = false) {
   TRIPS.stairs++; a.waitQ = false; a.stairing = true;
   a.say(pick(casual ? ['운동 삼아 계단으로~', '한 층쯤은 걸어야지', '계단이 더 빠르겠다'] : ['휴…', '엘리베이터가 꽉 찼네…', '계단으로 가야겠다…', '아, 또 계단이야…']), 'think', 1700);
@@ -1239,7 +1239,8 @@ async function goFloor(a, f, x, loft = false) {
   if (a.loft && (a.floor !== fi || !loft)) { await a.walkTo(STAIR_BOT + 2); a.loft = false; }   // 로프트에서 내려올 때는 계단으로 걸어 내려온다(발 높이는 계단 위치로 이어진다)
   if (a.floor !== fi) {
     const waiting = [...actors.values()].filter((q) => q !== a && q.floor === a.floor && q.waitQ && !q.carMode && !q.climb).length;   // 이 층에서 엘리베이터를 기다리는 사람
-    const casual = !a.npc && !a.commute && !a.rush && !a.meeting && !a.loft && Math.abs(a.floor - fi) === 1 && a.floor !== LNG && fi !== LNG && Math.random() < STAIR_CASUAL;   // 한 층 거리만, 휴게실(복층) 제외
+    const dist = Math.abs(a.floor - fi), pc = a.commute ? (dist <= 2 ? STAIR_COMMUTE : 0) : dist === 1 ? STAIR_CASUAL : dist === 2 ? STAIR_CASUAL2 : 0.1;
+    const casual = !a.npc && !a.rush && !a.meeting && !a.loft && dist <= 4 && a.floor !== LNG && fi !== LNG && !a.noStairs && Math.random() < pc;   // 한두 층(출퇴근은 소수)은 계단으로 걷는다. 휴게실(복층) 출발·도착만 제외
     if (!a.noStairs && (waiting >= CAR_CAP * CARS.length || casual)) await takeStairs(a, fi, casual && waiting < CAR_CAP * CARS.length);   // 두 카 정원(8×2)만큼 이미 줄 서 있거나 가끔 운동 삼아
     else { a.waitQ = true; await a.walkTo(QUEUE_X - (waiting % 8) * 7 - Math.floor(waiting / 8) * 3); await ride(a, fi); a.waitQ = false; }   // 줄 서는 자리는 조금씩 비켜 서서 겹치지 않는다
   }
@@ -2491,14 +2492,15 @@ async function martClerkLoop(t) {
 }
 async function regularLoop(r, idx) {
   await sleepReal(3000 + idx * 4000);
-  const spots = idx === 0 ? [292, 286, 298] : [86, 150, 198, 216, 248];   // 피카츄: 계산대 안쪽(알바), 이브이: 손님처럼 돌아다닌다
+  const spots = idx === 0 ? [284, 294, 300] : [86, 150, 198, 216, 248];   // 피카츄: 계산대 위에 올라서서 계산 놀이(앞면이 아랫도리를 가려도 몸이 보인다), 이브이: 손님처럼 돌아다닌다
   for (;;) {
     while (running || document.hidden || r.hold) await sleepReal(900);
     await r.job(async () => {
       if (running || r.hold) return;
       const x = spots[Math.floor(hash(r.stepN++ * 5 + idx * 3) * spots.length)];
-      await goFloor(r, MART, x); r.face = idx === 0 ? -1 : (hash(r.stepN * 7) > 0.5 ? 1 : -1);
-      if (idx === 0) { r.say(pick(['삑- 삑-', '어서 오세요~', '포인트 적립하시겠어요?', '계산 놀이 재밌다']), 'think', 1500); r.exc = performance.now() + 600 / SPEED; await sleep(1500); }
+      r.rowLay = 0; await goFloor(r, MART, x); r.face = idx === 0 ? -1 : (hash(r.stepN * 7) > 0.5 ? 1 : -1);
+      if (idx === 0) r.rowLay = 17;   // 계산대(높이 17) 위에 선다
+      if (idx === 0) { r.say(pick(['어서오세요~', '삑- 삑-', '포인트 적립하시겠어요?', '계산 놀이 재밌다', '피카~ 감사합니다!']), 'good', 1500); r.exc = performance.now() + 600 / SPEED; await sleep(1500); }
       else if (Math.random() < 0.5) { r.pose = 'snack'; r.say('(몰래 한입…)', 'think', 1700); await sleep(2400); r.pose = 'stand'; r.say('들키면 안 돼', 'warn', 1200); await sleep(900); }
       else { r.say(pick(['이거 하나만…', '오늘은 뭘 살까', '버섯이 특가래!']), 'think', 1500); await sleep(1600); }
     });
@@ -2519,7 +2521,7 @@ async function martTrip(a) {   // 코인이 있는 직원이 편의점에 내려
     await a.job(async () => { await a.walkTo(spot); a.face = kind === 'mush' ? -1 : -1; a.sink = 0; }); await sleep(900);
     await a.job(async () => { await a.walkTo(MARTX.counterL - 14); a.face = 1; });
     if (kind === 'mush') shop.mush = Math.max(0, shop.mush - 1);
-    a.coins--; coinsChanged(); await payCoin(a); a.say('계산해 주세요!', 'good', 1100); spawnCoin({ kind: 'pop', a, neg: true, dur: 1.0, res: () => {} });
+    a.coins--; coinsChanged(); shop.till = (shop.till ?? 0) + 1; await payCoin(a); a.say('계산해 주세요!', 'good', 1100); spawnCoin({ kind: 'pop', a, neg: true, dur: 1.0, res: () => {} });
     (clerk?.vis ? clerk : pika)?.say('삑- 감사합니다~', 'good', 1300); announce(`${a.name}이(가) 코인으로 편의점에서 ${kind === 'mush' ? '버섯' : kind === 'drink' ? '음료' : '간식'}을 샀습니다.`); await sleep(1200);
     if (kind === 'mush') {
       a.pose = 'snack'; a.say('냠… 버섯이다!', 'good', 1400); await sleep(1700); a.pose = 'stand';
