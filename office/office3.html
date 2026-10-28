@@ -1834,9 +1834,9 @@ function drawGhost() {
    모두 가속 주기(CYC) 위상으로 건다. 장면은 한 번에 하나씩, 주문·보고 같은 실제 장면 뒤에 끼지 않고 앞에 선다.
    ===================================================================== */
 const AMBIENT = new Set(['snack', 'patrol', 'meeting', 'vmeet', 'spar', 'elem', 'massage', 'kamek', 'exec', 'extra', 'blackout', 'printer', 'cake', 'rain', 'minimeet', 'break', 'dept', 'rounds', 'dinner', 'welcome', 'quiz', 'mishap', 'clean', 'gossip', 'treasure', 'stairslip', 'parcel']);
-const AMB_KS = { spar: 2, elem: 2, massage: 2.4, vmeet: 1.5, gossip: 2.2, treasure: 2.2, stairslip: 2.2, parcel: 2.2, dinner: 3, welcome: 2.2, quiz: 2.2, mishap: 2.2, clean: 2.4, rounds: 2.4, dept: 2.2, blackout: 1.5, printer: 1.8, cake: 2, rain: 2, minimeet: 2.2, break: 2.2, exec: 2.4, extra: 2 };   // 이벤트별 배속(정전·비는 눈으로 볼 수 있게 천천히)
+const AMB_KS = { martq: 2.2, newitem: 2.2, lunch: 2.2, collect: 2, recruit: 2, freezer: 1.8, spar: 2, elem: 2, massage: 2.4, vmeet: 1.5, gossip: 2.2, treasure: 2.2, stairslip: 2.2, parcel: 2.2, dinner: 3, welcome: 2.2, quiz: 2.2, mishap: 2.2, clean: 2.4, rounds: 2.4, dept: 2.2, blackout: 1.5, printer: 1.8, cake: 2, rain: 2, minimeet: 2.2, break: 2.2, exec: 2.4, extra: 2 };   // 이벤트별 배속(정전·비는 눈으로 볼 수 있게 천천히)
 const AMB_K = 2.8;                                   // 일과 장면은 낮 52초 안에 끝나도록 이 배속 이상으로 돌린다(순시 약 20초 + 간식 사건 약 17초)
-const SCHED = [{ id: 'patrol', at: 3, kind: 'patrol', wait: 20 }, { id: 'vmeet', at: 6, kind: 'vmeet', weekly: true, wait: 30 }, { id: 'spar', at: 26, kind: 'spar', chance: 0.4, wait: 12 }, { id: 'elem', at: 36, kind: 'elem', chance: 0.35, wait: 12 }, { id: 'massage', at: 10, kind: 'massage', chance: 0.5, wait: 14 }, { id: 'meeting', at: 15, kind: 'meeting', chance: 0.012, wait: 26 }, { id: 'exec', at: 22, kind: 'exec', chance: 0.75, wait: 20 }, { id: 'rounds', at: 18, kind: 'rounds', chance: 0.5, wait: 18 }, { id: 'dept', at: 28, kind: 'dept', chance: 0.4, wait: 16 }, { id: 'snack', at: 32, kind: 'snack', wait: 20 }, { id: 'extra', at: 40, kind: 'extra', chance: 0.8, wait: 14 }, { id: 'extra2', at: 12, kind: 'extra', chance: 0.45, wait: 10 }];   // 낮 구간(초): 아침 출근이 끝난 뒤 순시, 10% 확률로 주간 회의, 그 뒤 간식 사건
+const SCHED = [{ id: 'patrol', at: 3, kind: 'patrol', wait: 20 }, { id: 'vmeet', at: 6, kind: 'vmeet', weekly: true, wait: 30 }, { id: 'spar', at: 26, kind: 'spar', chance: 0.4, wait: 12 }, { id: 'elem', at: 36, kind: 'elem', chance: 0.35, wait: 12 }, { id: 'massage', at: 10, kind: 'massage', chance: 0.5, wait: 14 }, { id: 'meeting', at: 15, kind: 'meeting', chance: 0.012, wait: 26 }, { id: 'exec', at: 22, kind: 'exec', chance: 0.75, wait: 20 }, { id: 'rounds', at: 18, kind: 'rounds', chance: 0.5, wait: 18 }, { id: 'dept', at: 28, kind: 'dept', chance: 0.6, wait: 16 }, { id: 'snack', at: 32, kind: 'snack', wait: 20 }, { id: 'extra', at: 40, kind: 'extra', chance: 0.8, wait: 14 }, { id: 'extra2', at: 12, kind: 'extra', chance: 0.45, wait: 10 }, { id: 'lunch', at: 24, kind: 'lunch', chance: 0.7, wait: 12 }, { id: 'mq', at: 30, kind: 'martq', chance: 0.5, wait: 12 }, { id: 'newitem', at: 8, kind: 'newitem', chance: 0.4, wait: 12 }, { id: 'collect', at: 14, kind: 'collect', chance: 0.4, wait: 16 }, { id: 'recruit', at: 34, kind: 'recruit', chance: 0.4, wait: 18 }, { id: 'freezer', at: 20, kind: 'freezer', chance: 0.3, wait: 16 }];   // 낮 구간(초): 아침 출근이 끝난 뒤 순시, 10% 확률로 주간 회의, 그 뒤 간식 사건
 const snack = { n: 3, show: 0 };
 async function sceneAmbient(ev) {
   const sp0 = SPEED; ambientCur = ev.kind; SPEED = Math.max(SPEED, reduce ? 3 : ev.demo ? 2.2 : (AMB_KS[ev.kind] ?? AMB_K)); renderStaff();   // 일과 데모는 눈으로 따라갈 수 있게 조금 천천히
@@ -1848,6 +1848,12 @@ async function sceneAmbient(ev) {
     else if (ev.kind === 'spar') await sceneSpar(ev);
     else if (ev.kind === 'elem') await sceneElem(ev);
     else if (ev.kind === 'massage') await sceneMassage(ev);
+    else if (ev.kind === 'lunch') await sceneLunch(ev);
+    else if (ev.kind === 'martq') await sceneMartQueue(ev);
+    else if (ev.kind === 'newitem') await sceneNewItem(ev);
+    else if (ev.kind === 'collect') await sceneCollect(ev);
+    else if (ev.kind === 'recruit') await sceneRecruit(ev);
+    else if (ev.kind === 'freezer') await sceneFreezer(ev);
     else if (ev.kind === 'kamek') await sceneKamek(ev);
     else if (ev.kind === 'exec') await sceneExec(ev);
     else if (ev.kind === 'dept') await sceneDept(ev);
@@ -2032,7 +2038,8 @@ async function bossBonus(list, big) {   // 사장님이 코인을 던져(또는 
   bossSet('happy', 3000); bossSay(big ? '이번 분기 보너스다! 받아라!' : '수고했다! 보너스!', 'good', 1900);
   announce(`사장님이 ${list.length > 1 ? list.length + '명에게' : list[0].name + '에게'} 보너스 코인을 줍니다.`);
   const b = [BOSS_SX - 12, (boss.topY ?? fFeet(0) - 60) + 16];
-  await Promise.all(list.map((a, i) => new Promise((r) => setTimeout(r, i * 230 / SPEED)).then(() => (big ? dropCoin(a, 24 + hash(i * 3 + 1) * 22) : throwCoin(b[0], b[1], a)))));
+  const nEach = (i) => (big ? 2 : (hash(i * 7 + list.length) < 0.45 ? 2 : 1));   // 한 번에 1~2개(큰 보너스는 2개): 받는 직원이 더 자주·더 많이 받는다
+  await Promise.all(list.map(async (a, i) => { await new Promise((r) => setTimeout(r, i * 230 / SPEED)); for (let n = 0; n < nEach(i); n++) { await (big ? dropCoin(a, 24 + hash(i * 3 + 1 + n) * 22) : throwCoin(b[0], b[1], a)); } }));
   for (const a of list.slice(0, 4)) a.say(pick(['코인이다!', '와! 보너스!', '감사합니다 사장님!', '야호~!']), 'good', 1400);
   await sleep(1500);
 }
@@ -2069,7 +2076,7 @@ async function sceneDept(ev) {
    보고(done)하러 갈 때 가끔(REPORT.printP, 기본 30%) 먼저 3층 아래층 복사기에서 보고서를 뽑아 들고 사장실로 올라간다. 사장님(뮤츠)이나 6F 전설(REPORT.legendP)이 서류를 읽고
    마음에 들면(REPORT.pleaseP) 자기가 가진 코인을 주며 격려한다(사장님은 많이, 전설은 소량, 쓰면 줄고 시간이 지나면 조금씩 채워진다).
    보고가 마음에 든 경우 REWARD.p(기본 2%)로 특별 포상: 휴가(REWARD.vacSec초 동안 자리를 비운다) 또는 조기 퇴근(다음 낮까지). 화면 연출일 뿐 db는 건드리지 않고, 일하는(working) 직원에게는 주지 않는다 */
-const REPORT = { printP: 0.3, pleaseP: 0.65, legendP: 0.35, force: null };
+const REPORT = { printP: 0.3, pleaseP: 0.8, legendP: 0.5, force: null };
 const REWARD = { p: 0.02, vacShare: 0.5, vacSec: 100 };
 const wallet = { boss: 12, bossMax: 12, legMax: 3 };
 const PRINT_X = 88, COPIER_X = 72;                                   // 복사기(3F 아래층)와 보고서를 기다리며 서는 자리
@@ -2078,8 +2085,8 @@ const printFx = { until: 0 }, rewardLeave = new Map();               // rewardLe
 function msToDay() { return Math.max(1000, (cycLen() - cycPhase()) * 1000 + 2500); }
 function rewardTick() {
   if (document.hidden) return;
-  if (wallet.boss < wallet.bossMax && Math.random() < 0.06) wallet.boss++;                          // 사장님 코인은 20초에 한 개꼴로 채워진다
-  for (const L of LEGENDS) { L.coins ??= 2; if (L.coins < wallet.legMax && Math.random() < 0.025) L.coins++; }
+  if (wallet.boss < wallet.bossMax && Math.random() < 0.1) wallet.boss++;                          // 사장님 코인은 20초에 한 개꼴로 채워진다
+  for (const L of LEGENDS) { L.coins ??= 2; if (L.coins < wallet.legMax && Math.random() < 0.04) L.coins++; }
   const now = performance.now(); let back = false;
   for (const [id, r] of [...rewardLeave]) {
     const ac = actors.get(id), doc = agents.find((q) => q.id === id);
@@ -2279,6 +2286,204 @@ async function bossAppear(f, x) {   // 사장님(순시 모습)이 책상을 비
   await P.job(async () => { await goFloor(P, f, x); P.face = -1; }); return P;
 }
 async function bossLeave(P) { await P.job(async () => { await goFloor(P, 0, BOSS_SX); }); P.alphaT = 0; await sleep(350); P.vis = false; boss.away = false; bossSet('awake', 1500); }
+
+/* =====================================================================
+   v25: 지하와 지상의 왕래 — 편의점 구경·점심 몰림, 사장님의 코인 수금, B2 전설의 꼬시기, 냉동실 갇힘 사건
+   ===================================================================== */
+async function storageTrip(a) {   // 코인이 없는 쉬는 직원: 1층 간식 창고(자판기·박스)로 가서 공짜 간식을 꺼내 먹는다. 재고가 모자라면 키노피오가 채운다
+  a.busy = true; a.nextBrowse = performance.now() + 40000 / SPEED;
+  try {
+    a.say(pick(['월급날 멀었다…', '코인이 없네… 창고 가야지', '공짜 간식이라도…', '1층 창고에 간식 있겠지']), 'think', 1500);
+    await a.job(async () => { await goFloor(a, OPS, STORE_X + 24 + hash(hue(a.id)) * 60, false); a.face = -1; });
+    if (a.floor !== OPS) return;
+    if (store.n > 0) {
+      store.n--; a.say('박스에서 하나만…', 'think', 1300); await sleep(1100);
+      a.pose = 'snack'; a.say(pick(['냠냠… 공짜가 최고', '월급날 멀었다…', '창고 간식이 제일 맛있네']), 'good', 1600); await sleep(2400); a.pose = 'stand';
+    } else {
+      a.say('창고가 비었네…', 'warn', 1500); await sleep(1100);
+      await a.job(async () => { await a.walkTo(142); a.face = -1; }); a.say('자판기라도 눌러 볼까', 'think', 1300); await sleep(1000);
+      a.pose = 'drink'; a.say('(덜컹) 공짜 음료 한 캔 나왔다!', 'good', 1600); await sleep(2200); a.pose = 'stand';
+    }
+    if (store.n <= 1) toadRestock();
+    await sendHome(a);
+  } finally { a.busy = false; }
+}
+async function toadRestock() {   // 창고 재고가 바닥나면 경리 키노피오가 박스를 채운다
+  const t = TOADS.find((q) => q.vis && !q.hold && !q.leaving && q !== TOADS[2]); if (!t || t.restocking) return;
+  t.restocking = true; t.hold = true;
+  try {
+    await t.job(async () => { t.say('창고 간식 채울게요!', 'good', 1400); await goFloor(t, OPS, STORE_X + 14, false); t.face = -1; });
+    t.carry = 'box'; await sleep(1500); store.n = Math.min(store.max, store.n + 3); t.carry = null; t.say('간식 박스 가득!', 'good', 1400); t.spark = performance.now() + 1200 / SPEED; await sleep(1200);
+  } finally { t.hold = false; t.restocking = false; }
+}
+async function sceneLunch() {   // 점심 몰림: 낮 한가운데 일하지 않는 직원 서넛이 함께 편의점으로 내려가 도시락·간식을 사 먹고 돌아온다
+  if (running || vmeet.on || buying) return;
+  const grp = shuffled([...actors.values()].filter((q) => restOk(q) && (q.coins ?? 0) > 0)).slice(0, 4); if (grp.length < 2) { const r = shuffled([...actors.values()].filter(restOk)); for (const q of r.slice(0, 3)) coinCatch(q); return; }   // 코인이 있는 사람만 편의점 점심(코인이 없으면 사장님이 점심 코인을 돌린다)
+  announce(`점심시간입니다. 직원 ${grp.length}명이 편의점으로 내려갑니다.`); grp.forEach((a) => { a.busy = true; a.nextBrowse = performance.now() + 60000 / SPEED; });
+  try {
+    await Promise.all(grp.map((a, i) => a.job(async () => { await sleep(i * 500); a.say(pick(['점심 먹으러 가자!', '오늘 뭐 먹지?', '편의점 도시락!']), 'good', 1200); await goFloor(a, MART, MARTX.shelf + 30 + i * 26); a.face = 1; })));
+    TOADS[2]?.say('점심 손님이 몰렸다!', 'warn', 1400); REGULARS[0]?.say('줄 서 주세요~', 'warn', 1400); await sleep(1300);
+    await Promise.all(grp.map((a, i) => a.job(async () => { await sleep(i * 300); await a.walkTo(MARTX.counterL - 14 - i * 9); a.face = 1; a.say('계산이요~', 'think', 1000); })));
+    for (const a of grp) { a.coins--; spawnCoin({ kind: 'pop', a, neg: true, dur: 1.0, res: () => {} }); } coinsChanged(); shop.till = (shop.till ?? 0) + grp.length; shop.snack = Math.max(0, shop.snack - 1); await sleep(1300);
+    grp.forEach((a, i) => { a.pose = i % 2 ? 'drink' : 'snack'; a.say(pick(['냠냠', '캬~', '역시 편의점 도시락!', '배부르다']), 'good', 1500); }); await sleep(2800);
+    grp.forEach((a) => { a.pose = 'stand'; });
+    await Promise.all(grp.map((a) => sendHome(a)));
+  } finally { grp.forEach((a) => { a.busy = false; a.pose = a.pose === 'stand' ? 'stand' : a.pose; }); }
+}
+/* 사장님 코인 수금: 낮에 가끔 엘리베이터로 B1까지 내려와 점원·피카츄가 모은 코인 자루를 받아 간다(사장 코인 보유가 늘어난다) */
+async function sceneCollect() {
+  if (running || boss.away || vmeet.on || buying) return;
+  const P = BOSSP, clerk = TOADS[2], pika = REGULARS[0];
+  const take = Math.max(1, Math.min(6, Math.ceil((shop.till ?? 0) * 0.7)) || 1); shop.till = Math.max(0, (shop.till ?? 0) - take);
+  announce('사장님이 편의점 코인을 수금하러 내려갑니다.'); exciteLegends();
+  try {
+    await bossAppear(MART, MARTX.cust - 14); P.face = 1;
+    for (const a of actors.values()) if (!a.npc && a.vis && a.floor === MART && !a.walk) { a.face = P.x < a.x ? -1 : 1; a.say(pick(['헉, 사장님이다…', '(긴장…)', '안녕하십니까!']), 'warn', 1400); }
+    clerk?.say('사, 사장님! 코인 자루 준비했습니다', 'warn', 1700); pika?.say('피카!(자루 번쩍)', 'good', 1500); if (pika) pika.exc = performance.now() + 900 / SPEED; await sleep(1800);
+    P.say('매출은 어떤가', 'say', 1500); await sleep(1400);
+    clerk?.say(`이번에 ${take}코인입니다!`, 'good', 1500); burstFx(MARTX.counterL + 24, fFeet(MART) - 24, '#ffd23f', 14, 24); await sleep(1100);
+    for (let i = 0; i < Math.min(take, 4); i++) { spawnCoin({ kind: 'pop', a: P, dur: 1.2, res: () => {} }); await sleep(260); }
+    wallet.boss = Math.min(wallet.bossMax + 8, wallet.boss + take); coinsChanged();
+    boss.bub = null; P.say('수금 완료!', 'good', 1800); P.exc = performance.now() + 900 / SPEED; await sleep(1500);
+    P.say(pick(['장사 잘 되는군', '다음에 또 오지', '재고 채워 놔']), 'say', 1500); clerk?.say('감사합니다 사장님~', 'good', 1400); await sleep(1500);
+  } finally { await bossLeave(P); bossSay(`코인 ${wallet.boss}개`, 'good', 1400); }
+}
+/* B2 전설이 사장실로 올라가 6F 전설(과 가끔 쉬는 직원 한 명)을 꼬셔 지하로 데려와 논다. 사장님이 알아채면 호통, 놀다가 시간이 되면 모두 자기 자리로 돌아간다 */
+async function sceneRecruit() {
+  if (running || vmeet.on || boss.away) return;
+  const guides = shuffled(LEGENDS2.filter((L) => !L.hold && !L.walk)).slice(0, Math.random() < 0.4 ? 2 : 1);
+  const lured = shuffled(LEGENDS.filter((L) => L.vis && L.floor === 0 && !L.walk && !L.busy && !L.hold)).slice(0, 1 + (Math.random() < 0.5 ? 1 : 0));
+  if (!guides.length || !lured.length) return;
+  const staff = Math.random() < 0.5 ? shuffled([...actors.values()].filter(restOk))[0] : null;
+  const all = [...guides, ...lured]; all.forEach((L) => { L.hold = true; L.busy = true; }); if (staff) staff.busy = true;
+  const noticed = Math.random() < 0.22;
+  try {
+    announce(`${guides.map((g) => g.name).join('·')}이(가) 사장실로 올라가 ${lured.map((l) => l.name).join('·')}을(를) 꼬시러 갑니다.`);
+    await Promise.all(guides.map((g, i) => g.job(async () => { g.say('사장실에 놀 애들 없나~', 'think', 1300); await goFloor(g, 0, 214 + i * 22); g.face = -1; })));
+    guides[0].say('놀러 가자~', 'good', 1500); guides[1]?.say('지하가 훨씬 재밌어', 'good', 1500); await sleep(1500);
+    lured.forEach((L, i) => { L.exc = performance.now() + 900 / SPEED; L.say(pick(['어? 놀아도 돼?', '잠깐이면 괜찮겠지', '사장님 몰래 가자…', '좋아, 가자~']), 'think', 1600); });
+    if (staff) { staff.say('저도 같이 가요!', 'good', 1400); }
+    await sleep(1500);
+    if (noticed) {
+      bossSet('angry', 3200); bossSay('어딜 가는 거야?!', 'warn', 1800); shake(); lured.forEach((L) => L.say('들켰다!!', 'warn', 1300)); guides.forEach((g) => g.say('도, 도망쳐!', 'warn', 1300)); await sleep(1900);
+      bossSay('근무 시간에 놀러 다니면 되겠나!', 'warn', 2000); await sleep(2100); bossSet('awake', 1500);
+    }
+    const goers = noticed ? lured.slice(0, 0) : lured;   // 들키면 전설들은 못 가고, 안내하던 지하 전설만 돌아간다
+    await Promise.all([
+      ...goers.map((L, i) => L.job(async () => { L.rowLay = 0; L.lay = 0; await sleep(i * 500); await goFloor(L, BSMT, 140 + i * 26); L.face = 1; })),
+      ...(staff && !noticed ? [staff.job(async () => { await goFloor(staff, BSMT, 200); staff.face = 1; })] : []),
+      ...guides.map((g, i) => g.job(async () => { await sleep(300); await goFloor(g, BSMT, 120 + i * 20); g.face = 1; }))
+    ]);
+    if (goers.length) {
+      announce('6층 전설들이 지하에서 놀고 있습니다.');
+      const g0 = guides[0]; g0.say('자, 이쪽이 안마의자!', 'good', 1500); goers.forEach((L) => L.say(pick(['오오~ 여기가 지하!', '시원하다~', '이 맛에 오는군']), 'good', 1500));
+      for (let i = 0; i < 3; i++) { burstFx(150 + i * 26, fFeet(BSMT) - 26, i % 2 ? '#ffd23f' : '#9ae0ff', 10, 22); await sleep(900); }
+      if (Math.random() < 0.6) {   // 편의점도 한 번 들른다
+        await Promise.all([...goers, ...(staff ? [staff] : [])].map((L, i) => L.job(async () => { await sleep(i * 400); await goFloor(L, MART, MARTX.cust - 30 + i * 18); L.face = 1; })));
+        (TOADS[2]?.vis ? TOADS[2] : REGULARS[0])?.say('전설님들이 단체로 오셨네!', 'good', 1400); goers.forEach((L) => { L.pose = 'snack'; }); await sleep(2200); goers.forEach((L) => { L.pose = 'stand'; L.say('잘 먹었다~', 'good', 1300); });
+      }
+    }
+    // 복귀: 6F 전설은 자기 자리로, 지하 전설은 지하로, 직원은 자기 자리로
+    lured.forEach((L) => L.say(goers.length ? '이제 슬슬 돌아가야지…' : '(시무룩) 자리로 가자…', 'think', 1400)); await sleep(1200);
+    await Promise.all([
+      ...lured.map((L) => L.job(async () => { await goFloor(L, 0, LSEAT[L.leg.seat]); L.face = 1; L.rowLay = L.seatLay; })),
+      ...guides.map((g) => g.job(async () => { await goFloor(g, BSMT, g.def.x0 + 6); })),
+      ...(staff ? [sendHome(staff)] : [])
+    ]);
+    lured.forEach((L) => { L.say(goers.length ? '다녀왔습니다~' : '…', 'think', 1200); });
+    if (goers.length && Math.random() < 0.3) { bossSay('…어디 갔다 왔지?', 'say', 1500); lured[0]?.say('화장실이요!', 'warn', 1200); }
+  } finally { all.forEach((L) => { L.hold = false; L.busy = false; if (L.leg) { L.rowLay = L.seatLay; } }); if (staff) staff.busy = false; }
+}
+/* 냉동실 갇힘: 아이스크림을 가지러 간 직원이 냉동 창고 문이 닫혀 갇힌다 → 텔레파시로 도움을 청한다 → 사장님(뮤츠)이 받아 큐레무·자마젠타에게 알려 구출한다 */
+const freezer = { stuck: false, frost: 0, tele: 0, tx: 273, ty: 0 };
+const FRZ_X = 273;
+async function sceneFreezer() {
+  if (running || vmeet.on || freezer.stuck) return;
+  const k = LEGENDS2.find((L) => L.def.id === 'kyurem'), z = LEGENDS2.find((L) => L.def.id === 'zamazenta');
+  const a = shuffled([...actors.values()].filter(restOk))[0]; if (!k || !z || k.hold || z.hold || !a) return;
+  a.busy = true; k.hold = true; z.hold = true;
+  try {
+    announce(`${a.name}이(가) 지하 냉동 창고에 아이스크림을 가지러 갑니다.`);
+    a.say(pick(['아이스크림 먹고 싶다~', '냉동 창고에 하나 있겠지', '큐레무님 몰래 하나만…']), 'think', 1500);
+    await a.job(async () => { await goFloor(a, BSMT, FRZ_X - 24); a.face = 1; });
+    k.say('아이스크림은 건드리지 마…', 'warn', 1300); await sleep(900);
+    await a.job(async () => { await a.walkTo(FRZ_X); a.face = 1; });
+    a.say('와, 시원하다!', 'good', 1200); await sleep(1200);
+    freezer.stuck = true; freezer.frost = 0; b2fx.length = 0; burstFx(FRZ_X, fFeet(BSMT) - 22, '#e8f6ff', 18, 24); shake();
+    a.say('어? 문이 닫혔다?!', 'warn', 1500); await sleep(1600);
+    a.say('안 열려!! 추워…', 'warn', 1700); a.cry = performance.now() + 5000 / SPEED; a.sweat = performance.now() + 5000 / SPEED;
+    for (let i = 0; i < 3; i++) { a.exc = performance.now() + 500 / SPEED; burstFx(FRZ_X, fFeet(BSMT) - 20, '#9ae0ff', 6, 14); await sleep(700); }
+    announce('냉동 창고에 갇힌 직원이 텔레파시를 보냅니다.');
+    freezer.tele = performance.now() + 4200 / SPEED; a.say('~~~ 누가 좀 도와줘 ~~~', 'think', 2600); await sleep(2400);
+    boss.bub = null; bossSet('awake', 2600); bossSay('…?! 지하에서 텔레파시가!', 'warn', 1900); exciteLegends(); await sleep(2000);
+    bossSay('큐레무! 냉동 창고 확인해라!', 'say', 1900); freezer.tele = performance.now() + 2200 / SPEED; await sleep(1700);
+    k.say('냉동 창고 쪽? 설마…', 'warn', 1400); z.say('문부터 확인하지!', 'warn', 1400);
+    await Promise.all([k.job(async () => { await goFloor(k, BSMT, FRZ_X + 22); k.face = -1; }), z.job(async () => { await goFloor(z, BSMT, FRZ_X - 22); z.face = 1; })]);
+    k.say('문이 얼어붙었군!', 'warn', 1400); await sleep(1300);
+    z.say('내 방패로 열어 주지!', 'good', 1600); z.exc = performance.now() + 700 / SPEED; await sleep(800);
+    for (let i = 0; i < 4; i++) { burstFx(FRZ_X, fFeet(BSMT) - 24, i % 2 ? '#ffffff' : '#9ae0ff', 10, 26); if (i === 1) shake(); await sleep(300); }
+    freezer.stuck = false; a.cry = 0; a.sweat = 0; burstFx(FRZ_X, fFeet(BSMT) - 24, '#ffffff', 22, 30);
+    await a.job(async () => { await a.walkTo(FRZ_X - 40); a.face = 1; });
+    a.pose = 'snack'; a.say('살았다… 아이스크림은 챙겼어요!', 'good', 2000); a.spark = performance.now() + 1500 / SPEED; k.say('다음엔 허락받고 가져가라', 'warn', 1700); z.say('무사해서 다행이다', 'good', 1500); await sleep(2400);
+    a.pose = 'stand'; a.say('고맙습니다 큐레무님, 자마젠타님!', 'good', 1600); await sleep(1500);
+    await sendHome(a);
+  } finally { freezer.stuck = false; freezer.tele = 0; a.busy = false; k.hold = false; z.hold = false; a.cry = 0; a.sweat = 0; }
+}
+function drawFreezerFx() {   // 냉동 창고 문 앞의 서리와 텔레파시 파동. 문은 위층 쪽 그림 위에 반투명 서리를 덮는다
+  const fy = fFeet(BSMT), now = performance.now();
+  if (freezer.stuck) {
+    freezer.frost = Math.min(1, freezer.frost + 0.02);
+    ctx.globalAlpha = 0.5 * freezer.frost; R(ctx, 262, fy - 36, 24, 30, '#e8f6ff'); ctx.globalAlpha = 0.8 * freezer.frost;
+    for (let i = 0; i < 6; i++) R(ctx, 262 + i * 4, fy - 36, 2, 4 + (i % 3) * 3, '#ffffff');   // 고드름
+    for (let i = 0; i < 5; i++) R(ctx, 264 + ((i * 5 + Math.floor(now / 400)) % 18), fy - 30 + i * 5, 2, 2, '#cfeaff');
+    ctx.globalAlpha = 1;
+  } else freezer.frost = 0;
+  if (freezer.tele > now) {   // 텔레파시: 머리 위에서 위로 퍼지는 파동
+    const u = 1 - (freezer.tele - now) * SPEED / 4200, x = FRZ_X, y = fy - 44;
+    for (let i = 0; i < 4; i++) { const r = ((u * 60 + i * 12) % 48) + 4; ctx.globalAlpha = Math.max(0, 0.7 - r / 60); ctx.strokeStyle = '#c8a0ff'; ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(x, y - r * 0.6, r, r * 0.45, 0, 0, Math.PI * 2); ctx.stroke(); }
+    ctx.globalAlpha = 1;
+    if (!reduce) for (let i = 0; i < 6; i++) { const yy = y - 12 - ((u * 120 + i * 24) % 140); ctx.globalAlpha = 0.5; R(ctx, x - 1 + Math.sin(yy * 0.2 + i) * 3, yy, 2, 2, '#d8b8ff'); } ctx.globalAlpha = 1;
+  }
+}
+
+/* 편의점 줄서기: 점심·퇴근 무렵 계산대 앞에 손님이 줄을 서고, 피카츄가 계산을 틀려서 손님이 "어, 이거 아닌데요?" 하고 키노피오가 도와준다 */
+async function sceneMartQueue() {
+  if (running || vmeet.on || buying) return;
+  const grp = shuffled([...actors.values()].filter((q) => restOk(q) && (q.coins ?? 0) > 0)).slice(0, 3);
+  if (grp.length < 2) { shuffled([...actors.values()].filter(restOk)).slice(0, 2).forEach(coinCatch); return; }
+  const pika = REGULARS[0], clerk = TOADS[2]; grp.forEach((a) => { a.busy = true; });
+  try {
+    announce('편의점 계산대 앞에 손님이 줄을 섭니다.');
+    await Promise.all(grp.map((a, i) => a.job(async () => { await sleep(i * 400); a.say(pick(['편의점 줄 서야지', '간식 사러 가요~']), 'think', 1100); await goFloor(a, MART, MARTX.counterL - 14 - i * 12); a.face = 1; })));
+    pika?.say('줄 서 주세요~ 한 분씩!', 'warn', 1500); await sleep(1500);
+    grp[0].say('이거 하나요!', 'think', 1200); await sleep(1100);
+    pika?.say('삑… 삑… 어? 이게 얼마였더라?', 'think', 1700); if (pika) pika.exc = performance.now() + 800 / SPEED; await sleep(1800);
+    pika?.say('삐삑! 9,999코인입니다!', 'warn', 1700); grp[0].say('네?! 이거 아닌데요?!', 'warn', 1500); grp[1]?.say('(웅성웅성)', 'think', 1300); shake(); await sleep(1800);
+    clerk?.say('제가 다시 찍을게요~ 1코인이에요!', 'good', 1800); pika?.say('피카… 미안해요', 'think', 1400); await sleep(1900);
+    for (const a of grp) { a.coins--; spawnCoin({ kind: 'pop', a, neg: true, dur: 1.0, res: () => {} }); shop.till = (shop.till ?? 0) + 1; } coinsChanged();
+    grp.forEach((a) => { a.pose = 'snack'; a.say(pick(['냠냠', '줄 선 보람이 있네']), 'good', 1400); }); await sleep(2300); grp.forEach((a) => { a.pose = 'stand'; });
+    await Promise.all(grp.map((a) => sendHome(a)));
+  } finally { grp.forEach((a) => { a.busy = false; a.pose = 'stand'; }); }
+}
+/* 신상품 소개: 키노피오 점원이 "신상품!" 나팔을 불면 손님이 모이고, 버섯을 먹은 손님이 눈앞에서 쑥쑥 커지는 걸 구경한다 */
+async function sceneNewItem() {
+  if (running || vmeet.on || buying) return;
+  const clerk = TOADS[2]; if (!clerk?.vis || clerk.hold) return;
+  const crowd = shuffled([...actors.values()].filter(restOk)).slice(0, 3); if (!crowd.length) return;
+  const eater = crowd.find((q) => (q.coins ?? 0) > 0) ?? (coinCatch(crowd[0]), crowd[0]); clerk.hold = true; crowd.forEach((a) => { a.busy = true; });
+  try {
+    announce('편의점에서 신상품 소개를 합니다.');
+    clerk.say('신상품이 나왔어요! 🍄 슈퍼 버섯!', 'good', 1900); clerk.spark = performance.now() + 1800 / SPEED; burstFx(MARTX.basket, fFeet(MART) - 30, '#ffd23f', 16, 24); shop.mush = Math.min(shop.mushMax, shop.mush + 2);
+    await Promise.all(crowd.map((a, i) => a.job(async () => { await sleep(i * 350); a.say(pick(['신상이래?', '구경 가자~', '버섯 특가!']), 'think', 1100); await goFloor(a, MART, MARTX.basket - 22 - i * 14); a.face = 1; })));
+    await sleep(1200); clerk.say('먹으면 오늘 하루 쑥쑥 커져요!', 'good', 1900); await sleep(1900);
+    eater.say('내가 먹어 볼게!', 'good', 1400); await eater.job(async () => { await eater.walkTo(MARTX.counterL - 14); eater.face = 1; });
+    eater.coins--; coinsChanged(); shop.till = (shop.till ?? 0) + 1; shop.mush = Math.max(0, shop.mush - 1); await payCoin(eater); spawnCoin({ kind: 'pop', a: eater, neg: true, dur: 1.0, res: () => {} });
+    eater.pose = 'snack'; eater.say('냠… 버섯!', 'good', 1300); await sleep(1500); eater.pose = 'stand';
+    eater.big = performance.now() + msToDay(); eater.glit = performance.now() + 3000 / SPEED; eater.exc = performance.now() + 1200 / SPEED; eater.say('쑥쑥!', 'good', 1600); spawnConfetti(eater.x, eater.feet - 24, 18, { w: 12, spread: 40 });
+    crowd.filter((a) => a !== eater).forEach((a) => { a.say(pick(['우와~ 진짜 커졌다!', '대박!', '나도 다음엔…']), 'good', 1600); a.exc = performance.now() + 900 / SPEED; }); clerk.say('보셨죠? 하루 종일 커져요!', 'good', 1700); await sleep(2400);
+    await Promise.all(crowd.map((a) => sendHome(a)));
+  } finally { clerk.hold = false; crowd.forEach((a) => { a.busy = false; }); }
+}
 async function sceneGossip() {
   const pool = shuffled([...actors.values()].filter(restOk)); if (pool.length < 2) return;
   const [a1, a2] = pool, L = pick([1, 2, 4, 5]), la = stairLens(L)[0];
@@ -2532,11 +2737,14 @@ async function martTrip(a) {   // 코인이 있는 직원이 편의점에 내려
     return true;
   } finally { a.busy = false; buying = null; }
 }
+let browsing = false;
 function coinSpendTick() {   // 휴게실 위층에서 쉬는 직원 중 코인이 있는 사람이 가끔 음료를 사러 간다(한 번에 한 명)
   if (document.hidden || running || buying || modeNight() || power.k > 0.5) return;
   const now = performance.now();
   const rich = [...actors.values()].filter((a) => restOk(a) && (a.coins ?? 0) > 0 && now >= (a.nextBuy ?? 0));   // 코인이 있는 쉬는 직원은 어느 층에 있든 자판기로 간다(받은 코인이 쓰이는 흐름)
   const c = [...actors.values()].filter((a) => restOk(a) && a.floor === LNG && a.loft && now >= (a.nextBuy ?? 0));
+  const lookers = [...actors.values()].filter((q) => restOk(q) && now >= (q.nextBrowse ?? 0) && now >= (q.nextBuy ?? 0) && !(q.coins > 0));   // 코인 없는 쉬는 직원도 가끔 편의점 구경
+  if (!rich.length && lookers.length && !browsing && Math.random() < 0.35 && tod() === 'day') { const q = pick(lookers); browsing = true; storageTrip(q).finally(() => { browsing = false; }); return; }
   const a = rich.length ? pick(rich) : (c.length && Math.random() < 0.12 ? pick(c) : null);
   if (a) { if ((a.coins ?? 0) > 0 && Math.random() < 0.55) martTrip(a); else drinkTrip(a); }   // 코인은 편의점(55%)이나 3층 자판기에서 쓴다
 }
@@ -2909,7 +3117,7 @@ async function sceneDone(ev) {
   bossSet('awake'); bossSay('음? 보고인가', 'say', 1100); a.say(printed ? '보고서입니다!' : '끝냈습니다!', 'say', 1400); await sleep(1500);
   let pleased;
   if (printed) pleased = await readReport(a, F);                                                  // 읽고 마음에 들면 자기 코인으로 격려
-  else { bossSet('happy', 1700); bossSay('좋아!', 'good', 1500); a.say('♥', 'good', 1300); await sleep(1700); pleased = true; if (Math.random() < 0.6) await bossBonus([a], false); }   // 보고하면 절반 넘게 보너스 코인(받는 직원은 코인을 꼭 받는다)
+  else { bossSet('happy', 1700); bossSay('좋아!', 'good', 1500); a.say('♥', 'good', 1300); await sleep(1700); pleased = true; if (Math.random() < 0.85) await bossBonus([a], false); }   // 보고하면 절반 넘게 보너스 코인(받는 직원은 코인을 꼭 받는다)
   if (pleased && (F.reward || Math.random() < REWARD.p)) await specialReward(a, F.reward === true ? undefined : F.reward);
   bossSet('sleep');
   await a.job(async () => { const h = layout().get(a.id) ?? home; if (h && !h.gone) { await goFloor(a, fIdx(h.floor), h.x, h.loft); a.setPose(h); a.say('휴식', 'think', 1200); } });   // 보고 뒤에는 3F가 아니라 자기 층 자리로 돌아간다(밤이면 settleAll이 퇴근시킨다)
@@ -3347,7 +3555,7 @@ function frame(ts) {
   drawBoss();
   for (const a of outside) drawActor(a);
   for (const a of inside) drawActor(a);
-  drawElevatorDoors(); drawFire(); drawCoins(); drawConfetti(); drawB2fx();
+  drawElevatorDoors(); drawFire(); drawCoins(); drawConfetti(); drawB2fx(); drawFreezerFx();
   ctx.imageSmoothingEnabled = true; ctx.drawImage(FG, 0, 0, W, H);
   drawGhost(); drawBlackout(); ctx.imageSmoothingEnabled = IMGA.ok;
   drawHud();
@@ -3596,7 +3804,7 @@ async function boot() {
   document.getElementById('b-day').addEventListener('click', runDayDemo);
   document.getElementById('b-replay').addEventListener('click', replayRecent);
   window.__framesOf = framesOf; window.__hidden = () => ({ ...HIDDEN });
-  window.__office = { martTrip, spar: sceneSpar, elem: sceneElem, massage: sceneMassage, legends2: () => LEGENDS2, mushroom: (id) => { const a = actors.get(id); if (a) a.big = performance.now() + 60000; }, vmeet: sceneVMeet, planOutings, isWeekly, shop, outings: outingCount, gossip: sceneGossip, treasure: sceneTreasure, stairslip: sceneStairSlip, parcel: sceneParcel, outingTick, OUTING, store, STAIR_CASUAL, stairGb: () => STAIR_GB, reward: (id, kind) => specialReward(actors.get(id), kind), report: (id, o = {}) => { REPORT.force = o; enqueue({ kind: 'done', agent: id }); }, dozer: (id) => { const a = actors.get(id); if (a) { a.ikForce = 0; a.ik = 0; a.awakeUntil = 0; } return a; }, dinner: planDinner, welcome: (id) => enqueue({ kind: 'welcome', agent: id }), quiz: sceneQuiz, mishap: sceneMishap, clean: sceneClean, REPORT, REWARD, DINNER, wallet, rewardLeave, confetti, spawnConfetti, isSlow, restOk, coinSpendTick, isRunning: () => running, trips: TRIPS, cars: CARS, late: lateDemo, LATE, rounds: sceneRounds, dept: sceneDept, setAgents: applyAgents, exec: sceneExec, bonus: bossBonus, fire: fireAt, plants: PLANTS, guard: GUARD, inspect: kamekInspect, extra: (k) => enqueue({ kind: k }), power, weather, printer, cake, coinFx, fireballs, drink: drinkTrip, coinCatch, isRunning: () => running, actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, cars: CARS, boss, ghost, npc: NPC, legends: () => LEGENDS, goombas: () => GOOMBAS, kameks: () => KAMEKS, regulars: () => REGULARS, bossP: () => BOSSP, clones, ghostVisit, ghostCatch, setNight: (v) => setTodMode(v), tod, gameClock, freezeClock, plant, fish, toads: () => TOADS, chomp, meetingSlots, takeStairs, stairPos, CAR_CAP, setPhase, cyc: CYC, phase: cycPhase, isDark, nightK: () => nightK, visiting, visitState, VISIT, layout, slotOf, runDayDemo, snack, REPORT_X, BOSS_X, workersOn, setSpeed: (n) => { SPEED = n; }, play: (kind, o = {}) => enqueue({ kind, ...o }) };
+  window.__office = { martq: sceneMartQueue, newitem: sceneNewItem, browse: storageTrip, restock: toadRestock, lunch: sceneLunch, collect: sceneCollect, recruit: sceneRecruit, freezer: sceneFreezer, freezerState: freezer, martTrip, spar: sceneSpar, elem: sceneElem, massage: sceneMassage, legends2: () => LEGENDS2, mushroom: (id) => { const a = actors.get(id); if (a) a.big = performance.now() + 60000; }, vmeet: sceneVMeet, planOutings, isWeekly, shop, outings: outingCount, gossip: sceneGossip, treasure: sceneTreasure, stairslip: sceneStairSlip, parcel: sceneParcel, outingTick, OUTING, store, STAIR_CASUAL, stairGb: () => STAIR_GB, reward: (id, kind) => specialReward(actors.get(id), kind), report: (id, o = {}) => { REPORT.force = o; enqueue({ kind: 'done', agent: id }); }, dozer: (id) => { const a = actors.get(id); if (a) { a.ikForce = 0; a.ik = 0; a.awakeUntil = 0; } return a; }, dinner: planDinner, welcome: (id) => enqueue({ kind: 'welcome', agent: id }), quiz: sceneQuiz, mishap: sceneMishap, clean: sceneClean, REPORT, REWARD, DINNER, wallet, rewardLeave, confetti, spawnConfetti, isSlow, restOk, coinSpendTick, isRunning: () => running, trips: TRIPS, cars: CARS, late: lateDemo, LATE, rounds: sceneRounds, dept: sceneDept, setAgents: applyAgents, exec: sceneExec, bonus: bossBonus, fire: fireAt, plants: PLANTS, guard: GUARD, inspect: kamekInspect, extra: (k) => enqueue({ kind: k }), power, weather, printer, cake, coinFx, fireballs, drink: drinkTrip, coinCatch, isRunning: () => running, actors, enqueue, settleAll, agents: () => agents, runDemo, scenes, car, cars: CARS, boss, ghost, npc: NPC, legends: () => LEGENDS, goombas: () => GOOMBAS, kameks: () => KAMEKS, regulars: () => REGULARS, bossP: () => BOSSP, clones, ghostVisit, ghostCatch, setNight: (v) => setTodMode(v), tod, gameClock, freezeClock, plant, fish, toads: () => TOADS, chomp, meetingSlots, takeStairs, stairPos, CAR_CAP, setPhase, cyc: CYC, phase: cycPhase, isDark, nightK: () => nightK, visiting, visitState, VISIT, layout, slotOf, runDayDemo, snack, REPORT_X, BOSS_X, workersOn, setSpeed: (n) => { SPEED = n; }, play: (kind, o = {}) => enqueue({ kind, ...o }) };
   setInterval(wander, 9000); setInterval(renderStaff, 2500);
   initNpcs(); renderStaff();
   renderDom(); requestAnimationFrame(frame); connect();
