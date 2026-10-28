@@ -69,7 +69,9 @@ EXTRA = [('solgaleo', '솔가레오풍', ('s2', 53)), ('necrozma', '네크로즈
          # --- 6차(sheet6=81.webp): 검왕·방패왕·레시라무·큐레무(오른쪽 전설 영역 아래/가운데 줄, 좌표 컷), 그란돈, 달리는 키노피오
          ('zacian', '자시안(검왕, 의자)', ('s6', (965, 566, 1090, 658))), ('zamazenta', '자마젠타(방패왕)', ('s6', (1100, 564, 1226, 658))),
          ('reshiram', '레시라무', ('s6', (945, 368, 1072, 458))), ('kyurem', '큐레무(의자)', ('s6', (823, 563, 945, 658))),
-         ('legend_groudon', '그란돈', ('s6', (1097, 467, 1186, 556))), ('toad_d', '키노피오(뛰는 자세)', ('s6', (922, 128, 975, 208)))]
+         ('legend_groudon', '그란돈', ('s6', (1097, 467, 1186, 556))), ('toad_d', '키노피오(뛰는 자세)', ('s6', (922, 128, 975, 208))),
+         # --- 7차: sheet3(76.webp) 전설 영역 3줄째의 온전한 가이오가(sheet6 쪽은 오른쪽 지느러미가 칸 경계에서 잘려 있다)
+         ('kyogre', '가이오가', ('s3', (1096, 462, 1182, 556)))]
 # 에이전트 종 추가(CHARS 뒤에 이어 붙인다 — SPR 인덱스가 순서에 의존하므로 기존 순서는 바꾸지 않는다): (id, 한글 이름, (시트, 컷), 초록 몸 여부)
 NEWCHARS = [('psyduck', '고라파덕(책상)', ('s3', 73), False), ('machamp', '근육몬', ('s3', (104, 550, 193, 650)), False),
             ('golem', '딱구리', ('s3', (194, 550, 286, 650)), False), ('magneton', '레어코일', ('s3', (287, 552, 370, 650)), False),
@@ -222,7 +224,7 @@ def keep_main(arr, dil=2):
     while keep > 1 and cnt[keep - 1] < 6: keep -= 1           # 발 아래에 한두 점 남은 줄은 잘라 발바닥 기준을 맞춘다
     return trim(out[:keep])
 
-SHEET6_LEGENDS = ('zacian', 'zamazenta', 'reshiram', 'kyurem', 'legend_groudon', 'toad_d')
+SHEET6_LEGENDS = ('zacian', 'zamazenta', 'reshiram', 'kyurem', 'legend_groudon', 'toad_d', 'kyogre')
 
 def prop_fix(pid, arr):
     """초록 번짐이 눈에 띄는 의자는 초록 가장자리를 지운다(식물은 despill의 green 모드만)"""
