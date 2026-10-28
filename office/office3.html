@@ -1869,7 +1869,7 @@ function rewardTick() {
     if (!doc || doc.state === 'working') { rewardLeave.delete(id); back = true; continue; }                                  // 일을 시작하면 바로 돌아온다(휴가·외근 연출은 db와 무관)
     if (now > r.until) { rewardLeave.delete(id); if (ac && !modeNight()) ac.backFrom = r.kind; back = true; }
   }
-  if (back) settleAll(false);
+  if (back) { settleAll(false); coinsChanged(); }
 }
 setInterval(rewardTick, 1000);
 const confetti = [];
