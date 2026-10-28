@@ -1,7 +1,7 @@
 // 라인업 편성 화면의 순수 계산(브라우저 API 없음). 편집 중인 편성(draft)은 { starters: [선수 id], bench: [선수 id] }.
 import { validateLineup, buildLineup, buildLineupHealthy } from '../../src/lineup.mjs';
 import { POSITION_TARGET } from '../../src/valuation.mjs';
-import { STAT_KEYS } from '../../src/rating.mjs';
+import { STAT_KEYS, legacyOvr } from '../../src/rating.mjs';
 
 export const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C'];
 
@@ -11,8 +11,8 @@ export const rosterOfTeam = (players, teamId) => players.filter((p) => p.teamId 
 const avg = (list, fn) => (list.length ? list.reduce((s, p) => s + fn(p), 0) / list.length : 0);
 
 /** 팀 전력: 스타팅 OVR 평균 70% + 벤치 30% (web/lib/game.js teamPower와 같은 식) */
-export function powerOf(starters, bench) {
-  return avg(starters, (p) => p.ovr) * 0.7 + avg(bench, (p) => p.ovr) * 0.3;
+export function powerOf(starters, bench) { // 선수 OVR을 예전 눈금으로 되돌려 평균한다(src/effective.mjs powerOfLineup과 같은 식)
+  return avg(starters, (p) => legacyOvr(p.ovr)) * 0.7 + avg(bench, (p) => legacyOvr(p.ovr)) * 0.3;
 }
 
 /** 편집 중인 편성을 점검한다. 반환: { starters, bench (선수 객체), errors, foreignStarters, power, positions, complete } */

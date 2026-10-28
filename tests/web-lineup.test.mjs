@@ -9,6 +9,7 @@ import {
 } from '../web/lib/lineup-view.js';
 import { remainingCheckpoints, previewGain, projectGain } from '../web/lib/training-view.js';
 import { Session } from '../web/lib/session.js';
+import { legacyOvr } from '../src/rating.mjs';
 import { autoFocus } from '../src/training.mjs';
 import { loadHistory } from '../src/history.mjs';
 
@@ -61,7 +62,7 @@ test('라인업: 코스트 제한 없이 코스트가 높은 선수로 짠 편�
 });
 
 test('라인업: 전력은 스타팅 70% + 벤치 30%', () => {
-  assert.equal(powerOf([{ ovr: 70 }, { ovr: 80 }], [{ ovr: 50 }]), 75 * 0.7 + 50 * 0.3);
+  assert.equal(powerOf([{ ovr: 70 }, { ovr: 80 }], [{ ovr: 50 }]), (legacyOvr(70) + legacyOvr(80)) / 2 * 0.7 + 50 * 0.3);
 });
 
 test('훈련: 남은 훈련 횟수는 훈련 시점(checkpointDays 배수, 마지막 날 제외)을 센다', () => {

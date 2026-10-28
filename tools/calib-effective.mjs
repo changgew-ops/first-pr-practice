@@ -3,10 +3,10 @@ import { readFileSync } from 'node:fs';
 const root = new URL('..', import.meta.url).pathname;
 const imp=(p)=>import(`${root}/${p}`);
 const { createLeague, playLeagueYear } = await imp('src/league.mjs'); const { mulberry32 } = await imp('src/rng.mjs'); const { loadHistory } = await imp('src/history.mjs');
-const { buildLineup } = await imp('src/lineup.mjs'); const { teamRatings } = await imp('src/game.mjs');
+const { legacyOvr } = await imp('src/rating.mjs'); const { buildLineup } = await imp('src/lineup.mjs'); const { teamRatings } = await imp('src/game.mjs');
 const read=(p)=>JSON.parse(readFileSync(`${root}/data/${p}`,'utf8'));
 const rules=read('league-rules.json'),teams=read('teams.json'),players=read('players.json');
-const pow=(l)=>{const s=(a)=>a.reduce((x,p)=>x+p.ovr,0);return s(l.starters)/l.starters.length*0.7+s(l.bench)/l.bench.length*0.3;};
+const pow=(l)=>{const s=(a)=>a.reduce((x,p)=>x+legacyOvr(p.ovr),0);return s(l.starters)/l.starters.length*0.7+s(l.bench)/l.bench.length*0.3;};
 const xs=[],ys=[]; const rng=mulberry32(5); let league=createLeague(players,rules,{history:loadHistory(),teamData:teams});
 for(let y=0;y<8;y++){ for(const t of teams){ const l=buildLineup(league.players.filter(p=>p.teamId===t.id),rules,rules.simulation.benchWeight); const r=teamRatings(l,rules.simulation); xs.push(pow(l)); ys.push(r.offense+r.defense);} league=playLeagueYear(league,teams,rules,rng,{}).league; }
 const mx=xs.reduce((a,b)=>a+b)/xs.length,my=ys.reduce((a,b)=>a+b)/ys.length;

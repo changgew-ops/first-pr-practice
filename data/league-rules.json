@@ -1143,10 +1143,10 @@
     "minHealthyAfterRest": 9
   },
   "preview": {
-    "_note": "시즌 프리뷰(src/preview.mjs, 게임용 가정). 시즌 시작 전력에서 가벼운 몬테카를로로 우승·플레이오프 확률을 구한다. gameTemp: 전력 1점 차이당 한 경기 승리 확률의 로지스틱 기울기(30시즌 시뮬에서 전력→승률 회귀로 맞춘 값), strengthSd: 시즌 중 변수(부상·영입·훈련)를 반영하는 팀 전력 잡음, mcSeasons: 몬테카를로 시즌 수, margin·minOdds: 가상 배당 = 1/(확률×(1+margin)), 하한 minOdds(게임 안의 점수일 뿐 돈을 걸 수 없다), reporters: 가상 기자 수(최대 12), reporterNoise: 기자별 평가 잡음, playoffPicks: 기자가 꼽는 플레이오프 진출 팀 수, costWeight: 예상 베스트 지표에서 코스트 가중(코스트 개념을 화면에서 없앴으므로 0), rookieAge: 주목할 신인 나이 상한. 보정: 시즌 시뮬 6시드×10시즌(60시즌)에서 시작 전력으로 우승·플레이오프·승수를 예측해 로그 손실이 가장 작았던 값(OVR 눈금을 100까지 늘리기 전 gameTemp 0.3·strengthSd 1.0, 눈금 개정 뒤에는 전력 1이 득점 1.07점(전에는 1.56점)이라 같은 점수 차가 되도록 gameTemp 0.205·strengthSd 1.46): 1위 후보의 우승 확률 평균 28.5%, 실제 우승 28%(60시즌), 플레이오프 6팀 예측 적중 약 77%. maxOdds: 가상 배당 표시 상한(확률이 아주 낮은 팀).",
+    "_note": "시즌 프리뷰(src/preview.mjs, 게임용 가정). 시즌 시작 전력에서 가벼운 몬테카를로로 우승·플레이오프 확률을 구한다. gameTemp: 전력 1점 차이당 한 경기 승리 확률의 로지스틱 기울기(30시즌 시뮬에서 전력→승률 회귀로 맞춘 값), strengthSd: 시즌 중 변수(부상·영입·훈련)를 반영하는 팀 전력 잡음, mcSeasons: 몬테카를로 시즌 수, margin·minOdds: 가상 배당 = 1/(확률×(1+margin)), 하한 minOdds(게임 안의 점수일 뿐 돈을 걸 수 없다), reporters: 가상 기자 수(최대 12), reporterNoise: 기자별 평가 잡음, playoffPicks: 기자가 꼽는 플레이오프 진출 팀 수, costWeight: 예상 베스트 지표에서 코스트 가중(코스트 개념을 화면에서 없앴으므로 0), rookieAge: 주목할 신인 나이 상한. 보정: 시즌 시뮬 6시드×10시즌(60시즌)에서 시작 전력으로 우승·플레이오프·승수를 예측해 로그 손실이 가장 작았던 값(gameTemp 0.3, strengthSd 1.0): 1위 후보의 우승 확률 평균 28.5%, 실제 우승 28%(60시즌), 플레이오프 6팀 예측 적중 약 77%. maxOdds: 가상 배당 표시 상한(확률이 아주 낮은 팀).",
     "mcSeasons": 400,
-    "gameTemp": 0.205,
-    "strengthSd": 1.46,
+    "gameTemp": 0.3,
+    "strengthSd": 1,
     "margin": 0.15,
     "minOdds": 1.2,
     "reporters": 11,
@@ -1168,8 +1168,8 @@
     "bubbleGap": 2
   },
   "effective": {
-    "_note": "유효 전력(src/effective.mjs): 전력 1(OVR 합성 전력)이 경기 기대 득점 차이로 몇 점인지 = qPerPower × simulation.ratingScale. qPerPower는 팀 편성의 (공격+수비) 점수가 전력 1당 오르는 폭을 시즌 8개×10개 구단 편성의 회귀로 잰 값(1.25, 게임용 보정값; OVR 눈금을 100까지 늘리기 전에는 1.83이었다 — tools/calib-effective.mjs로 다시 잰다). 화면의 '전력'은 기본 전력 + 경기 보정(edge)÷이 값이다.",
-    "qPerPower": 1.25
+    "_note": "유효 전력(src/effective.mjs): 전력 1(OVR 합성 전력)이 경기 기대 득점 차이로 몇 점인지 = qPerPower × simulation.ratingScale. qPerPower는 팀 편성의 (공격+수비) 점수가 전력 1당 오르는 폭을 시즌 8개×10개 구단 편성의 회귀로 잰 값(2.02, 게임용 보정값; 반올림된 정수 OVR 대신 예전 눈금 연속값으로 재서 이전 값 1.83보다 반올림 잡음에 덜 깎였다). 전력은 선수 OVR을 예전 눈금(src/rating.mjs의 legacyOvr)으로 되돌려 평균하므로 선수 OVR 눈금을 100까지 늘린 뒤에도 값이 같다. 화면의 '전력'은 기본 전력 + 경기 보정(edge)÷이 값이다.",
+    "qPerPower": 2.02
   },
   "todo": {
     "_note": "홈 \"지금 해야 할 일\" 목록의 기준(게임용 가정). 필수는 진행을 막거나 즉시 대응이 필요한 일, 검토는 곧 판단이 필요한 일, 참고는 접어 둔다. conditionLow: 스타팅 선수의 컨디션이 이 값 미만이면 \"피로\" 검토 항목. maxReview: 검토 항목을 이만큼만 보이고 나머지는 \"더 보기\". expiring: 계약 남은 연수가 이 값 이하인 선수가 있으면 시즌 중 \"만료 예정\" 요약. waiverLeftDays: 웨이버 공시 마감까지 이 일수 이하면 임박. infoNews/infoAchievements: 참고에 보일 개수.",

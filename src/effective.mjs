@@ -9,6 +9,7 @@
 //   effective 유효 전력 = baseOvr + edge ÷ pointsPerPower. edge(득점 점수)를 OVR 전력과 같은 눈금으로 옮긴 값이다.
 //   pointsPerPower: 전력 1이 경기 득점 차이로 몇 점인지. 편성의 (공격+수비) 점수가 전력 1당 qPerPower만큼 오르고 득점 차이는 ratingScale × 그 값이라 qPerPower × ratingScale(규칙값 effective, 게임용 보정값).
 // 순수 함수만 둔다(파일·브라우저 API 없음).
+import { legacyOvr } from './rating.mjs';
 import { leagueRefs, chooseAuto, tacticMods, tacticList } from './tactics.mjs';
 import { lineupCondScore, condEdge } from './condition.mjs';
 import { rotationEdge, tacMult } from './coaching.mjs';
@@ -16,9 +17,13 @@ import { synergyOf, synergyOn, synergyParts } from './synergy.mjs';
 
 const round2 = (v) => Math.round(v * 100) / 100;
 
-/** 기본 전력: 스타팅 OVR 평균 70% + 벤치 OVR 평균 30% */
+/**
+ * 기본 전력: 스타팅 OVR 평균 70% + 벤치 OVR 평균 30%.
+ * 팀 단위 지표라서 선수 OVR을 예전 눈금(legacyOvr, src/rating.mjs)으로 되돌려 평균한다: 선수 OVR 눈금을 100까지 늘려도 전력 숫자와
+ * 전력→득점 환산(qPerPower)·시즌 프리뷰 확률이 그대로 맞는다(늘린 눈금의 평균은 스타가 많은 팀을 과대평가해 득점과의 선형 관계가 깨진다).
+ */
 export function powerOfLineup(lineup) {
-  const sum = (l) => l.reduce((s, p) => s + p.ovr, 0);
+  const sum = (l) => l.reduce((s, p) => s + legacyOvr(p.ovr), 0);
   return sum(lineup.starters) / lineup.starters.length * 0.7 + sum(lineup.bench) / lineup.bench.length * 0.3;
 }
 
