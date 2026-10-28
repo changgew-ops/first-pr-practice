@@ -102,7 +102,7 @@ test('ZIP 만들기: 읽어서 검증되고, 최상위는 facepack/, 공통·웹
     assert.deepEqual(parts.local, ['offline/boot.js']);
     const out = join(dir, 'out');
     const rep = buildZips(dir, out);
-    assert.equal(rep.length, 3);
+    assert.equal(rep.length, 4); // 공통·웹용·로컬용 + HTML 전용 한 묶음(facepack.zip)
     for (const r of rep) { assert.ok(r.bytes < LIMIT); const entries = verifyZip(readFileSync(r.out)); assert.ok(entries.every((e) => e.name.startsWith('facepack/'))); }
     assert.throws(() => verifyZip(Buffer.concat([makeZip([{ name: 'facepack/a', data: Buffer.from('hello world, hello world, hello world, hello world, hello world, hello') }]).subarray(0, 40)])));
     // 10MB를 넘기면 오류(저장만 하는 큰 무작위 데이터)

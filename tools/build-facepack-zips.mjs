@@ -106,6 +106,16 @@ export function buildZips(dir, outDir) {
     if (zip.length > LIMIT) throw new Error(`${NAMES[key]}가 10MB를 넘습니다: ${zip.length}바이트 (한도 ${LIMIT})`);
     writeFileSync(out, zip);
   }
+  // HTML 파일만 쓰는 사용자용 한 묶음: 공통 + 로컬용(faces/ 제외). 합쳐서 10MB 이하일 때만 만든다
+  const htmlFiles = [...parts.common, ...parts.local];
+  if (parts.local.length) {
+    const zip = makeZip(htmlFiles.map((f) => ({ name: `facepack/${f}`, data: readFileSync(join(dir, f)) })));
+    verifyZip(zip);
+    if (zip.length > LIMIT) throw new Error(`facepack.zip이 10MB를 넘습니다: ${zip.length}바이트 (한도 ${LIMIT})`);
+    const out = join(outDir, 'facepack.zip');
+    writeFileSync(out, zip);
+    report.push({ key: 'html', out, files: htmlFiles.length, bytes: zip.length });
+  }
   return report;
 }
 
@@ -115,6 +125,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (!existsSync(dir)) { console.error(`폴더가 없습니다: ${dir}`); process.exit(1); }
   try {
     for (const r of buildZips(dir, outDir)) console.log(`${r.out}  ${(r.bytes / 1048576).toFixed(2)}MB (${r.bytes.toLocaleString()}바이트, 파일 ${r.files}개, 한도 ${LIMIT.toLocaleString()}바이트 이하)`);
-    console.log('합치는 법: 공통 + (웹용 또는 로컬용)을 같은 위치에 풀면 facepack/ 폴더 하나가 됩니다. 이 폴더를 게임 HTML 옆에 두세요.');
+    console.log('HTML만 쓰면 facepack.zip(공통+로컬용) 하나만 풀어 facepack/ 폴더를 게임 HTML 옆에 두세요. 웹서버에 올릴 때는 공통 + 웹용을 같은 위치에 풀면 됩니다.');
   } catch (e) { console.error(e.message); process.exit(1); }
 }
