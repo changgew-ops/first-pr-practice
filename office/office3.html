@@ -2105,9 +2105,10 @@ function rewardTick() {
   for (const [id, r] of [...rewardLeave]) {
     const ac = actors.get(id), doc = agents.find((q) => q.id === id);
     if (!doc || doc.state === 'working') { rewardLeave.delete(id); back = true; continue; }                                  // 일을 시작하면 바로 돌아온다(휴가·외근 연출은 db와 무관)
-    if (now > r.until) { rewardLeave.delete(id); if (ac && !modeNight()) ac.backFrom = r.kind; back = true; }
+    if (now > r.until) { rewardLeave.delete(id); if (r.kind === 'outing') outCool.set(id, now + OUTING.cool * 1000); if (ac && !modeNight()) ac.backFrom = r.kind; back = true; }
   }
   if (back) { settleAll(false); coinsChanged(); }
+  if (now > outingNext) { outingNext = now + 4000; planOutings(); }          // 낮 내내 외근 비율을 목표치로 채운다(복귀한 만큼 다시 나간다)
 }
 setInterval(rewardTick, 1000);
 /* 행운 동전(코인 공급원): 낮 동안 가끔 직원 머리 위에 동전이 떨어진다. 코인이 없는 직원이 우선이고, 바닥나지 않도록 하한을 보정한다 */
@@ -2314,18 +2315,29 @@ async function sceneClean() {   // 굼바 여섯 마리가 동시에 대청소: 
 
 /* ---- 외근: 낮이 시작될 때 일하지 않는(done/idle) 직원의 대부분(OUTING.share, 기본 65%)이 아예 출근하지 않고 외근을 나가 있다가 30~50초 뒤 서류나 선물을 들고 돌아온다(그래서 낮 사무실이 한산하다).
    db 상태와 무관한 연출이라 working인 직원은 보내지 않는다(일을 시작하면 바로 돌아와 자리에 앉는다). 주기 7번째 낮(일주일에 한 번)은 뮤츠의 화상 전체 회의의 날이라 외근이 없다 ---- */
-const OUTING = { share: 0.65, minSec: 70, maxSec: 120 };
+const OUTING = { share: 0.65, minSec: 45, maxSec: 85, cool: 14, lead: 20 };   // cool: 복귀 뒤 다시 나가기까지 쉬는 초, lead: 낮이 끝나기 전 이 초 안에는 새로 내보내지 않는다
+const outCool = new Map();      // 직원 id → 다시 외근을 나갈 수 있는 시각(performance.now)
 let outingNext = 0;
 const outingCount = () => [...rewardLeave.values()].filter((r) => r.kind === 'outing').length;
 const dayIndex = () => Math.floor(cycElapsed() / cycLen());
 const isWeekly = (c = dayIndex()) => (c + 1) % 7 === 0;               // 7번째 낮마다 한 번: 뮤츠의 주간 화상 회의
+/* 외근 인원을 낮 내내 목표 비율(OUTING.share)로 유지한다. 예전에는 낮이 시작될 때 한 번만 내보내서, 복귀한 뒤(낮 한가운데부터) 사무실이 다시 가득 찼다.
+   '바쁜(busy)' 직원(휴게실 방문·장보기·간식 같은 개인 일과 중)도 제외하지 않는다 — 그 일과가 끝나는 대로 나가고(작업 큐), 예전에는 바쁜 직원이 거의 항상 제외돼 외근이 한 명도 안 나갔다 */
 function planOutings(force = false) {
   if (!force && (document.hidden || tod() !== 'day' || isWeekly() || vmeet.on)) return;
   const now = performance.now();
-  const pool = shuffled(agents.filter((a) => a.state !== 'working' && !rewardLeave.has(a.id) && !dinner.ids.has(a.id) && !(actors.get(a.id)?.busy)));
-  const target = Math.round(agents.filter((a) => a.state !== 'working').length * OUTING.share) - outingCount();
+  const dayLeft = CYC.day - cycPhase();                                   // 낮이 끝나기까지 남은 초(낮 구간 위상 기준)
+  if (!force && dayLeft < OUTING.lead) return;
+  const rest = agents.filter((a) => a.state !== 'working');
+  const target = Math.round(rest.length * OUTING.share) - outingCount();
   if (target <= 0) return;
-  pool.slice(0, target).forEach((a) => { rewardLeave.set(a.id, { kind: 'outing', until: now + (OUTING.minSec + Math.random() * (OUTING.maxSec - OUTING.minSec)) * 1000 }); const ac = actors.get(a.id); if (ac && !ac.gone) ac.leaveLine = pick(['외근 다녀오겠습니다!', '거래처 좀 다녀올게요~', '외근 나갑니다~', '미팅 다녀올게요!']); });
+  const pool = shuffled(rest.filter((a) => !rewardLeave.has(a.id) && !dinner.ids.has(a.id) && !((outCool.get(a.id) ?? 0) > now) && !(actors.get(a.id)?.noRoam > now)));
+  const span = Math.max(15, Math.min(OUTING.maxSec, dayLeft - 6));
+  pool.slice(0, target).forEach((a) => {
+    const sec = Math.min(span, OUTING.minSec + Math.random() * (OUTING.maxSec - OUTING.minSec));
+    rewardLeave.set(a.id, { kind: 'outing', until: now + sec * 1000 });
+    const ac = actors.get(a.id); if (ac && !ac.gone) ac.leaveLine = pick(['외근 다녀오겠습니다!', '거래처 좀 다녀올게요~', '외근 나갑니다~', '미팅 다녀올게요!']);
+  });
   settleAll(false); coinsChanged();
 }
 function outingTick() { planOutings(true); }   // 디버그 훅 호환: 지금 한 번 더 내보낸다
@@ -2798,7 +2810,8 @@ function martBonus(a, clerk) {
   if (r < 0.25) { buyStat.coupon++; (clerk ?? a).say('포인트 적립해 드렸어요~', 'good', 1400); a.say('쿠폰이다! +1', 'good', 1300); spawnCoin({ kind: 'drop', a, h: 26, dur: 0.8, res: () => {} }); }
   else if (r > 0.92) { buyStat.lottery++; (clerk ?? a).say('추첨 당첨이에요!! 🎉', 'good', 1700); a.say('대박! +3코인!', 'good', 1600); a.exc = performance.now() + 1200 / SPEED; spawnConfetti(a.x, a.feet - 26, 14, { w: 12, spread: 50 }); for (let i = 0; i < 3; i++) spawnCoin({ kind: 'drop', a, h: 24 + i * 8, dur: 0.8, t: -i * 0.18, res: () => {} }); }
 }
-const MART_SCENES = new Set(['lunch', 'martq', 'newitem', 'collect']);   // 이 장면 동안에는 편의점 손님을 따로 보내지 않는다(계산대가 겹친다)
+const MART_CAP = 5;                                                    // 계산대 줄에 동시에 설 수 있는 손님(자리를 옆으로 비껴 선다)
+const MART_SCENES = new Set(['lunch', 'martq', 'newitem', 'collect', 'bossshop']);   // 이 장면 동안에는 편의점 손님을 따로 보내지 않는다(계산대가 겹친다)
 let browsing = false;
 function coinSpendTick() {   // 쉬는 직원 중 코인이 있는 사람이 자판기(3층)와 편의점(B1)을 각각 한 명씩 동시에 쓴다. 장면(일과)이 돌고 있어도 쓴다
   if (document.hidden || modeNight() || power.k > 0.5 || vmeet.on) return;
@@ -2806,11 +2819,48 @@ function coinSpendTick() {   // 쉬는 직원 중 코인이 있는 사람이 자
   const rich = shuffled([...actors.values()].filter((a) => restOk(a) && (a.coins ?? 0) > 0 && now >= (a.nextBuy ?? 0)));
   let pickedVend = null;
   if (vendSet.size < 2 && rich.length) { pickedVend = rich.shift(); drinkTrip(pickedVend); }
-  if (martSet.size < 2 && rich.length && !(running && MART_SCENES.has(ambientCur))) martTrip(rich.shift());
+  if (martSet.size < MART_CAP && rich.length && !(running && MART_SCENES.has(ambientCur))) martTrip(rich.shift());
   const lookers = [...actors.values()].filter((q) => restOk(q) && now >= (q.nextBrowse ?? 0) && now >= (q.nextBuy ?? 0) && !(q.coins > 0));   // 코인 없는 쉬는 직원은 1층 창고
   if (!rich.length && lookers.length && !browsing && Math.random() < 0.3 && tod() === 'day') { const q = pick(lookers); browsing = true; storageTrip(q).finally(() => { browsing = false; }); }
 }
 setInterval(coinSpendTick, 1200);
+/* ---- 편의점은 늘 북적여야 한다(v27): 낮 내내 손님 3~6명을 유지한다. 코인이 있으면 사러, 없으면 구경만(진열대·냉장고·버섯 바구니 앞을 돌아다니다 돌아간다) ---- */
+const browseSet = new Set(), crowd = { target: 4, next: 0, n: 0, sum: 0 };
+const patronN = () => martSet.size + browseSet.size;
+async function martBrowse(a) {   // 코인이 없거나 아직 살 마음이 없는 직원: 편의점을 구경하다 간다. 가끔 충동구매
+  browseSet.add(a); a.busy = true; a.nextBuy = performance.now() + 18000 / SPEED; a.nextBrowse = performance.now() + 30000 / SPEED;
+  try {
+    a.say(pick(['편의점 구경이나 할까', '신상 나왔나?', '시원한 데서 쉬어야지~', '버섯 특가 보러 가자']), 'think', 1200);
+    const spots = shuffled([MARTX.shelf + 14 + hash(hue(a.id)) * 30, MARTX.fridge + 6, MARTX.island - 8 + hash(hue(a.id) + 3) * 24, MARTX.basket - 10]).slice(0, 2 + (Math.random() < 0.5 ? 1 : 0));
+    await a.job(async () => { await goFloor(a, MART, MARTX.door - 70 - hash(hue(a.id) + 9) * 20); a.face = -1; });
+    if (a.floor !== MART) return;
+    for (const x of spots) {
+      await a.job(async () => { await a.walkTo(x); a.face = hash(x) > 0.5 ? 1 : -1; });
+      a.say(pick(['구경만~', '오, 이거 괜찮네', '다 비싸다…', '이거 맛있어 보이네', '냉장고 시원하다~']), 'think', 1400); await sleep(1700 + Math.random() * 1500);
+    }
+    if ((a.coins ?? 0) >= PRICE.drink && Math.random() < 0.4) {        // 충동구매
+      await a.job(async () => { await a.walkTo(MARTX.counterL - 14 - (martSet.size) * 12); a.face = 1; });
+      a.coins -= PRICE.drink; coinsChanged(); shop.till = (shop.till ?? 0) + PRICE.drink; buyStat.mart++; await payCoin(a); a.say('이것만 계산해 주세요!', 'good', 1200); spawnCoin({ kind: 'pop', a, neg: true, dur: 1.0, res: () => {} });
+      (TOADS[2]?.vis ? TOADS[2] : REGULARS[0])?.say('삑- 감사합니다~', 'good', 1300); await sleep(1100);
+    }
+    await sendHome(a);
+  } finally { a.busy = false; browseSet.delete(a); }
+}
+function martCrowdTick() {
+  if (document.hidden || tod() !== 'day' || vmeet.on || power.k > 0.5) return;
+  const now = performance.now();
+  if (now > crowd.next) { crowd.target = 3 + Math.floor(Math.random() * 4); crowd.next = now + (10 + Math.random() * 10) * 1000; }   // 3~6명 사이를 오간다
+  crowd.n++; crowd.sum += [...actors.values()].filter((q) => !q.npc && q.floor === MART && q.vis && !q.gone && q.alpha > 0.4).length;
+  if (running && MART_SCENES.has(ambientCur)) return;
+  const want = crowd.target - patronN(); if (want <= 0) return;
+  const cand = shuffled([...actors.values()].filter(restOk));
+  for (let i = 0; i < Math.min(2, want) && cand.length; i++) {
+    const a = cand.shift();
+    if ((a.coins ?? 0) > 0 && martSet.size < MART_CAP && now >= (a.nextBuy ?? 0)) martTrip(a); else martBrowse(a);
+  }
+}
+setInterval(martCrowdTick, 1800);
+
 
 /* ---- 간부 회의(6F, 낮): 사장님이 전설 직원들을 소집한다. 책상 앞에 반원으로 모여 한 명씩 보고하고, 사장님은 고개를 끄덕이다 가끔 화를 낸다(경호 뻐끔플라워가 불을 쏜다) ---- */
 const LEG_LINES = {
