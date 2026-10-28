@@ -57,3 +57,46 @@ KBL 공식 프로필 `https://kbl.or.kr/files/kbl/players-photo/{playerNo}.png`.
 선수별 URL은 CSV에 있습니다. 촬영 시점과 시즌은 확인되지 않았습니다.
 사진과 구단 표장의 권리는 원 권리자에게 있습니다. 가상 얼굴은 AI로 만든 허구 인물입니다.
 이번 배포팩에는 대용량 원본 PNG를 넣지 않았습니다.
+
+---
+
+## 게임(이 저장소)에 연결하는 법
+
+게임은 `facepack/`을 **선택적으로** 읽는다. 폴더가 없거나 일부만 있어도 오류 없이 기존 조합형 아바타로 대신 보인다(`web/lib/faces.js`). 사진은 HTML에 넣지 않는다 — 게임을 갱신할 때는 HTML만 바꾸고 페이스팩은 그대로 쓴다.
+
+### 내려받기용 ZIP (세 개로 나뉨, 각 10MB 이하)
+`node tools/build-facepack-zips.mjs`가 `dist/`에 만든다.
+
+| 파일 | 내용 | 언제 필요한가 |
+|---|---|---|
+| `facepack-공통.zip` | 코드·`data.js`·`manifest.json`·`generated/`·`uniforms/`·문서 | 항상 |
+| `facepack-사진-웹용.zip` | `faces/`(WebP 사진 1,275장) | 웹·개발 서버로 열 때 |
+| `facepack-사진-로컬용.zip` | `offline/`(데이터 조각) | HTML을 파일로 직접 열 때(`file://`) |
+
+세 ZIP 모두 최상위 폴더가 `facepack/`이다. **공통 + (웹용 또는 로컬용)을 같은 위치에 풀면 `facepack/` 폴더 하나로 합쳐진다**(둘 다 풀어도 된다). 이 폴더를 게임 HTML과 같은 곳에 둔다.
+
+```
+게임 폴더/
+├─ 프로농구-단장-게임.html
+└─ facepack/          ← 공통 + 웹용/로컬용을 풀어 합친 폴더
+   ├─ data.js, facepack.js, manifest.json, generated/, uniforms/ …
+   ├─ faces/          (웹용)
+   └─ offline/        (로컬용)
+```
+
+| 실행 방식 | 폴더 위치 |
+|---|---|
+| 개발 서버(`npm run web`) | 저장소 루트의 `facepack/`(`web/`의 한 단계 위). `globalThis.KBL_FACEPACK_BASE`로 바꿀 수 있다 |
+| 단일 HTML을 파일로 열기 | HTML과 같은 폴더의 `facepack/`(로컬용 `offline/` 조각을 읽는다) |
+| 웹에 올릴 때 | HTML과 `facepack/`을 같은 위치에 올리고(웹용 `faces/`), 페이지에서 `KBL_FACEPACK_BASE`를 지정 |
+
+### 어디에 어떻게 쓰이는가
+- **로스터·라인업·도감·선수 정보**: 사진이 있는 선수만 사진(작은 크기는 얼굴, 96px 이상은 소속팀 유니폼 합성 상반신). 화면에 보이는 것만 불러온다. **사진이 없는 선수는 기존 일러스트 그대로.**
+- **우승 화면(단체 사진)**: 팩이 있으면 소속팀 유니폼 합성 상반신으로 바뀌고 로스터 전체(최대 12명, 세 줄)가 선다. 사진이 없는 선수는 가상 얼굴 16종 중 하나(고정 id의 해시)가 몸통에 붙고 카드에 "가상"이 표시된다. PNG 저장도 같은 그림.
+- **게임 선수 ↔ 사진**: 게임 선수의 `kblId`(KBL playerNo)로만 연결한다(이름으로 짝짓지 않는다). 현재 게임 선수 149명은 전원 명부에 있고 사진도 있다. 가상 얼굴은 `kblId ?? id`의 해시라 이적·시즌 변경·저장 불러오기 뒤에도 같다(저장 형식은 바뀌지 않는다).
+- **구단 매핑**: `web/lib/faces.js`의 `PACK_TEAM`(wonju-db→db, seoul-sk→sk, suwon-kt→kt, changwon-lg→lg, busan-kcc→kcc, goyang-sono→sono, seoul-samsung→samsung, ulsan-hyundai-mobis→mobis, daegu-kogas→gas, anyang-jungkwanjang→kgc).
+
+### 한계
+- 몸통(유니폼)의 **등번호·체형·문신은 구단별 원본 그대로**다. 화면은 번호를 덧붙이지 않는다. 목 연결이 어색한 선수가 있다.
+- 사진 촬영 시즌은 확인되지 않아 최신 유니폼을 보증하지 않는다. 일부는 배경이 있거나 저해상도이고 25장은 얼굴 위치가 추정값이다.
+- 가상 얼굴 16종은 서로 다른 선수끼리 겹칠 수 있다. 사진과 구단 표장의 권리는 원 권리자에게 있다.

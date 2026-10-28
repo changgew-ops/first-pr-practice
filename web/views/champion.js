@@ -117,10 +117,10 @@ function photoBox(snap) {
  * 팩이 없으면 아무것도 바꾸지 않는다(기존 일러스트 그대로). 팩은 비동기로 읽으므로 준비되는 대로 같은 상자를 갈아 끼운다.
  */
 function upgradeWithFaces(snap, box, noteEl) {
-  onFacesReady(() => {
+  onFacesReady(async () => {
     const { starters, bench, mvp } = snap.parts;
     const roster = photoRoster({ starters, bench, finalsMvp: mvp, limit: MAX_PHOTO });
-    const pf = championPortraits(roster, snap.data.teamId, 120);
+    const pf = await championPortraits(roster, snap.data.teamId, 120); // v2 팩은 사진을 그때그때 불러오므로 비동기(4명씩 나눠 불러온다)
     if (!pf || !Object.keys(pf.photos).length) return;
     snap.data = { ...snap.data, roster };
     snap.photos = pf.photos;

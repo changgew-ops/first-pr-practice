@@ -1,4 +1,4 @@
-// 페이스팩 어댑터(선택 기능). HTML 옆의 `facepack/`(data.js, facepack.js, faces/, generated/)가 있으면 읽어서 선수 사진을 쓰고,
+// 페이스팩 어댑터(선택 기능, v2 전체팩). HTML 옆의 `facepack/`(data.js, facepack.js, faces/ 또는 offline/, uniforms/, generated/)가 있으면 읽어서 선수 사진을 쓰고,
 // 없거나 읽기에 실패하면 아무 일도 하지 않는다(기존 조합형 아바타 web/lib/avatar.js가 그대로 보인다).
 //  - 실존 선수: 게임 선수의 kblId(KBL playerNo)가 팩의 선수 목록에 있고 사진이 있을 때만 사진을 쓴다. 이름으로 짝짓지 않는다.
 //  - 가상 얼굴: 사진이 없는 선수는 고정 id(kblId ?? id)의 해시로 16종 중 하나를 고른다. 같은 선수는 이적·시즌·저장 불러오기 뒤에도 같은 얼굴이다(저장 형식은 바뀌지 않는다).
@@ -12,7 +12,7 @@ export const PACK_TEAM = {
 };
 export const packTeamId = (teamId) => PACK_TEAM[teamId] ?? 'db';
 
-export const FACE_NOTE = '사진은 사용자가 따로 넣은 페이스팩(KBL 공식 프로필 사진)입니다. 사진이 없는 선수는 AI로 만든 가상 얼굴이며 실존 인물이 아닙니다. 몸통(유니폼)의 번호와 체형은 합성 원본 그대로입니다.';
+export const FACE_NOTE = '사진은 사용자가 따로 넣은 페이스팩(KBL 공식 프로필 사진, 촬영 시즌 미확인)입니다. 사진이 없는 선수는 AI로 만든 가상 얼굴이며 실존 인물이 아닙니다. 몸통(유니폼)의 번호와 체형은 합성 원본 그대로입니다.';
 export const VIRTUAL_FACE_TITLE = '가상 얼굴 — AI로 만든 그림이며 실존 인물이 아닙니다';
 export const PHOTO_TITLE = 'KBL 공식 프로필 사진(페이스팩)';
 
@@ -51,7 +51,7 @@ export function loadFaces() {
       try {
         const base = baseOf();
         state.base = base;
-        if (!globalThis.UNIFORM_DATA) await loadScript(`${base}data.js`);
+        if (!globalThis.KBL_FULL_DATA) await loadScript(`${base}data.js`);
         if (!globalThis.KBLFacePack) await loadScript(`${base}facepack.js`);
         const fp = await globalThis.KBLFacePack.create({ basePath: base });
         done(fp);
@@ -75,16 +75,13 @@ function inputOf(p, teamId) {
   return { id: idOf(p), name: p.baseName ?? p.name, isGenerated: p.real === false, teamId: packTeamId(teamId ?? p.teamId) };
 }
 
-/** 이 선수에게 실제 사진이 있는가(팩이 준비된 뒤에만 true) */
-export function hasRealPhoto(p) {
-  if (!state.fp || !p || p.real === false || !idOf(p)) return false;
-  try { return state.fp.resolve({ id: idOf(p) }).kind === 'real'; } catch { return false; }
-}
-/** 팩이 준비됐을 때의 얼굴 종류: 'real' | 'generated' | 'fallback'(사진 없는 실존 선수의 가상 얼굴) | null */
+/** 로딩 전 명부 기준 얼굴 종류: 'real'(사진이 있는 id) | 'generated' | 'fallback'(사진 없는 실존 선수의 가상 얼굴) | null(팩 없음) */
 export function faceKind(p) {
   if (!state.fp || !p || !idOf(p)) return null;
   try { return state.fp.resolve(inputOf(p)).kind; } catch { return null; }
 }
+/** 이 선수에게 실제 사진이 있는가(팩이 준비된 뒤, 로딩 전 명부 기준) */
+export function hasRealPhoto(p) { return p?.real !== false && faceKind(p) === 'real'; }
 /** 가상 얼굴 번호(gen-01…16). 같은 선수는 항상 같다 */
 export function faceKeyOf(p) {
   if (!idOf(p)) return null;
@@ -95,45 +92,76 @@ function toUrl(canvas) {
   try { return canvas.toDataURL('image/webp', 0.9); } catch { return null; }
 }
 
-/**
- * 선수 사진 주소(데이터 URL) 또는 null. 팩이 준비되지 않았거나, 사진이 없는데 virtual도 허용하지 않았으면 null.
- * mode 'face': 머리만 잘라 정사각형(목록·카드). 'bust': 소속팀 유니폼 합성 상반신의 위쪽 정사각형(상세·우승). size는 한 변(px).
- * virtual: true면 사진 없는 선수의 가상 얼굴도 돌려준다(우승 화면). 반환 { href, kind } 또는 null
- */
-export function facePicture(p, { mode = 'face', teamId = p?.teamId, size = 120, virtual = false } = {}) {
-  if (!state.fp || !p || !idOf(p)) return null;
-  let kind;
-  try { kind = state.fp.resolve(inputOf(p, teamId)).kind; } catch { return null; }
-  if (kind !== 'real' && !virtual) return null;
-  const S = Math.max(24, Math.min(256, Math.round(size * 2)));
-  const key = `${kind}|${idOf(p)}|${state.fp.resolve(inputOf(p, teamId)).faceKey ?? ''}|${mode}|${mode === 'bust' ? packTeamId(teamId) : ''}|${S}`;
-  let href = urlCache.get(key);
-  if (!href) {
-    try {
-      const input = inputOf(p, teamId);
-      if (mode === 'face') {
-        const c = document.createElement('canvas'); c.width = S; c.height = S;
-        state.fp.render(c, input, { mode: 'face', teamId: input.teamId });
-        href = toUrl(c);
-      } else {
-        const full = document.createElement('canvas'); full.width = 470; full.height = 609;
-        state.fp.render(full, input, { teamId: input.teamId, tone: true });
-        const c = document.createElement('canvas'); c.width = S; c.height = S;
-        c.getContext('2d').drawImage(full, 0, 0, 470, 470, 0, 0, S, S);
-        href = toUrl(c);
-      }
-    } catch { href = null; }
-    if (!href) return null;
-    if (urlCache.size > 600) urlCache.clear();
-    urlCache.set(key, href);
+// v2의 render는 async(사진을 그때그때 불러온다). 동시에 너무 많이 돌리지 않도록 작은 작업 대기열을 쓴다
+const MAX_JOBS = 3;
+let running = 0;
+const queue = [];
+function schedule(fn) {
+  return new Promise((resolve) => {
+    queue.push(() => fn().then(resolve, () => resolve(null)));
+    pump();
+  });
+}
+function pump() {
+  while (running < MAX_JOBS && queue.length) {
+    const job = queue.shift();
+    running++;
+    job().finally(() => { running--; pump(); });
   }
-  return { href, kind };
+}
+
+const keyOf = (p, { mode, teamId, size, virtual }) => {
+  const r = state.fp.resolve(inputOf(p, teamId));
+  return `${r.kind}|${idOf(p)}|${r.faceKey ?? ''}|${mode}|${mode === 'bust' ? packTeamId(teamId) : ''}|${size}|${virtual ? 1 : 0}`;
+};
+
+/**
+ * 선수 사진(데이터 URL)을 만든다. 반환 Promise<{ href, kind } | null>.
+ * 팩이 없거나, 실제 사진이 아닌데 virtual을 허용하지 않았거나, 사진 로딩에 실패하면 null.
+ * mode 'face': 얼굴만(정사각, 목록·카드). 'bust': 소속팀 유니폼 합성 상반신의 위쪽 정사각형(상세·우승). size는 한 변(px).
+ * virtual: true면 사진 없는 선수의 가상 얼굴도 돌려준다(우승 화면). 같은 조건의 결과는 캐시한다.
+ */
+export async function facePicture(p, { mode = 'face', teamId = p?.teamId, size = 120, virtual = false } = {}) {
+  if (!state.fp || !p || !idOf(p)) return null;
+  const S = Math.max(24, Math.min(256, Math.round(size * 2)));
+  let key;
+  try { key = keyOf(p, { mode, teamId, size: S, virtual }); } catch { return null; }
+  const hit = urlCache.get(key);
+  if (hit) return hit;
+  const fp = state.fp;
+  const input = inputOf(p, teamId);
+  const pre = fp.resolve(input).kind;
+  if (pre !== 'real' && !virtual) return null;
+  const out = await schedule(async () => {
+    const c = document.createElement('canvas');
+    if (mode === 'face') {
+      c.width = S; c.height = S;
+      const r = await fp.render(c, input, { mode: 'face', teamId: input.teamId });
+      if (!r || r.cancelled) return null;
+      if (r.kind !== 'real' && !virtual) return null; // 사진 로딩 실패로 대체 얼굴이 된 경우
+      const href = toUrl(c);
+      return href ? { href, kind: r.kind } : null;
+    }
+    c.width = 470; c.height = 609;
+    const r = await fp.render(c, input, { teamId: input.teamId, mode: 'portrait', tone: true });
+    if (!r || r.cancelled) return null;
+    if (r.kind !== 'real' && !virtual) return null;
+    const sq = document.createElement('canvas'); sq.width = S; sq.height = S;
+    sq.getContext('2d').drawImage(c, 0, 0, 470, 470, 0, 0, S, S);
+    const href = toUrl(sq);
+    return href ? { href, kind: r.kind } : null;
+  });
+  if (out) {
+    if (urlCache.size > 600) urlCache.clear();
+    urlCache.set(key, out);
+  }
+  return out;
 }
 
 // ---------- 기존 아바타 요소 업그레이드 ----------
-function apply(el, p, opts) {
-  const pic = facePicture(p, { mode: (opts.size ?? 64) >= 96 ? 'bust' : 'face', teamId: p.teamId, size: opts.size ?? 64 });
-  if (!pic) return;
+const optsOf = (p, opts) => ({ mode: (opts.size ?? 64) >= 96 ? 'bust' : 'face', teamId: p.teamId, size: opts.size ?? 64 });
+
+function setPhoto(el, p, opts, pic) {
   const label = String(p.baseName ?? p.name ?? '선수').replace(/[<>&"]/g, '');
   const img = document.createElement('img');
   img.className = 'face-photo';
@@ -144,18 +172,49 @@ function apply(el, p, opts) {
   el.classList.add('has-photo');
   el.title = PHOTO_TITLE;
 }
+
+// 화면에 보이는(또는 곧 보일) 요소만 사진을 만든다. 로스터·도감이 길어도 보이는 것만 불러온다
+let io = null;
+const watched = new WeakMap();
+function observe(el, p, opts) {
+  if (typeof IntersectionObserver === 'undefined') { render(el, p, opts); return; }
+  io ??= new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      const job = watched.get(e.target);
+      io.unobserve(e.target); watched.delete(e.target);
+      if (job) render(e.target, job.p, job.opts);
+    }
+  }, { rootMargin: '200px' });
+  watched.set(el, { p, opts });
+  io.observe(el);
+}
+async function render(el, p, opts) {
+  try {
+    const pic = await facePicture(p, optsOf(p, opts));
+    if (!pic || el.dataset.faceSkip) return;
+    setPhoto(el, p, opts, pic);
+  } catch { /* 기존 아바타 유지 */ }
+}
 function flushPending() {
-  for (const { el, p, opts } of state.pending) { if (!el.isConnected) continue; try { apply(el, p, opts); } catch { /* 그대로 기존 아바타 */ } }
+  for (const { el, p, opts } of state.pending) { if (el.isConnected) track(el, p, opts); }
+}
+function track(el, p, opts) {
+  if (!hasRealPhoto(p)) return; // 사진이 없는 선수는 기존 일러스트 그대로
+  let hit = null;
+  try { hit = urlCache.get(keyOf(p, { ...optsOf(p, opts), size: Math.max(24, Math.min(256, Math.round((opts.size ?? 64) * 2))), virtual: false })); } catch { /* 없음 */ }
+  if (hit) { setPhoto(el, p, opts, hit); return; } // 캐시에 있으면 바로(로스터를 다시 그려도 깜빡이지 않는다)
+  observe(el, p, opts);
 }
 
 /**
  * avatarEl이 만든 요소를, 팩이 있고 이 선수에게 실제 사진이 있으면 사진으로 바꾼다. 팩이 없으면 아무 일도 하지 않는다.
- * 팩이 아직 로드 중이면 대기열에 넣어 두었다가 준비되면 바꾼다.
+ * 팩이 아직 로드 중이면 대기열에 넣어 두었다가 준비되면 이어서 한다.
  */
 export function upgradeAvatar(el, p, opts = {}) {
   if (typeof document === 'undefined' || !p || p.real === false || !idOf(p)) return;
   if (state.status === 'failed') return;
-  if (state.status === 'ready') { try { apply(el, p, opts); } catch { /* 기존 아바타 유지 */ } return; }
+  if (state.status === 'ready') { try { track(el, p, opts); } catch { /* 기존 아바타 유지 */ } return; }
   if (state.pending.size > 400) { for (const q of state.pending) if (!q.el.isConnected) state.pending.delete(q); }
   state.pending.add({ el, p, opts });
   if (state.status === 'idle') loadFaces();
@@ -163,22 +222,26 @@ export function upgradeAvatar(el, p, opts = {}) {
 
 // ---------- 우승 화면 ----------
 /**
- * 우승 단체 사진용 상반신 그림: roster [{ p, mvp }] → { photos: { [선수 id]: { href, virtual } }, virtualCount, realCount }.
- * 팩이 준비되지 않았으면 null. 사진 없는 선수는 가상 얼굴(16종 해시 배정)이 소속팀 유니폼 몸통에 붙는다.
+ * 우승 단체 사진용 상반신 그림: roster [{ p, mvp }] → Promise<{ photos: { [선수 id]: { href, virtual } }, virtualCount, realCount } | null>.
+ * 팩이 준비되지 않았으면 null. 사진 없는(또는 로딩에 실패한) 선수는 가상 얼굴(16종 해시 배정)이 소속팀 유니폼 몸통에 붙는다.
+ * 사진을 한꺼번에 몇 장씩 나눠 불러온다.
  */
-export function championPortraits(roster, teamId, size = 120) {
+export async function championPortraits(roster, teamId, size = 120) {
   if (!state.fp) return null;
   const photos = {}; let virtualCount = 0, realCount = 0;
-  for (const { p } of roster) {
-    const pic = facePicture(p, { mode: 'bust', teamId, size, virtual: true });
-    if (!pic) continue;
-    const virtual = pic.kind !== 'real';
-    photos[p.id] = { href: pic.href, virtual };
-    if (virtual) virtualCount++; else realCount++;
+  const list = roster.map(({ p }) => p);
+  for (let i = 0; i < list.length; i += 4) {
+    const part = await Promise.all(list.slice(i, i + 4).map((p) => facePicture(p, { mode: 'bust', teamId, size, virtual: true })));
+    part.forEach((pic, k) => {
+      if (!pic) return;
+      const virtual = pic.kind !== 'real';
+      photos[list[i + k].id] = { href: pic.href, virtual };
+      if (virtual) virtualCount++; else realCount++;
+    });
   }
   return { photos, virtualCount, realCount };
 }
 
 /** 시험·진단용 */
 export const __faces = { state, urlCache };
-if (typeof globalThis !== 'undefined') globalThis.__faces = { state: () => state.status, kindOf: (p) => faceKind(p), keyOf: (p) => faceKeyOf(p) };
+if (typeof globalThis !== 'undefined') globalThis.__faces = { state: () => state.status, kindOf: (p) => faceKind(p), keyOf: (p) => faceKeyOf(p), cache: () => urlCache.size };
