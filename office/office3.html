@@ -1282,7 +1282,7 @@ const NPC = { janitor: null };                     // janitor = 1층 굼바(예�
 let LEGENDS2 = [], LEGENDS = [], GOOMBAS = [], KAMEKS = [], TOADS = [], REGULARS = [], BOSSP = null, SPR_BOO = null;
 let todForce = null, nightDemo = false, idleOffice = true, ambientCur = null, nightK = 0, eveK = 0;
 /* 낮·밤은 현지 시각이 아니라 가속 주기로 돈다: 페이지를 연 시각부터 (경과 초 mod 주기). 낮에는 일과 장면(순시·간식 사건), 밤에는 퇴근·야근·킹부끄 */
-const CYC = { day: 52, eve: 28, night: 40, fade: 3 };    // 초. 낮 52(08→17시) + 저녁 28(17→21시) + 밤 40(21→08시) = 120초 주기. 낮은 짧게 밤은 길게. fade는 구간이 바뀔 때 어두워지는 시간
+const CYC = { day: 125, eve: 50, night: 65, fade: 3 };    // 초. 낮 52(08→17시) + 저녁 28(17→21시) + 밤 40(21→08시) = 120초 주기. 낮은 짧게 밤은 길게. fade는 구간이 바뀔 때 어두워지는 시간
 const cycT0 = performance.now(); let cycShift = 0;
 const cycLen = () => CYC.day + CYC.eve + CYC.night;
 let cycFrozenAt = null, cycFrozenTotal = 0;                                  // 주간 회의 동안 시계(주기 위상)를 멈춘다
@@ -1835,8 +1835,8 @@ function drawGhost() {
    ===================================================================== */
 const AMBIENT = new Set(['snack', 'patrol', 'meeting', 'vmeet', 'spar', 'elem', 'massage', 'kamek', 'exec', 'extra', 'blackout', 'printer', 'cake', 'rain', 'minimeet', 'break', 'dept', 'rounds', 'dinner', 'welcome', 'quiz', 'mishap', 'clean', 'gossip', 'treasure', 'stairslip', 'parcel']);
 const AMB_KS = { martq: 2.2, newitem: 2.2, lunch: 2.2, collect: 2, recruit: 2, freezer: 1.8, spar: 2, elem: 2, massage: 2.4, vmeet: 1.5, gossip: 2.2, treasure: 2.2, stairslip: 2.2, parcel: 2.2, dinner: 3, welcome: 2.2, quiz: 2.2, mishap: 2.2, clean: 2.4, rounds: 2.4, dept: 2.2, blackout: 1.5, printer: 1.8, cake: 2, rain: 2, minimeet: 2.2, break: 2.2, exec: 2.4, extra: 2 };   // 이벤트별 배속(정전·비는 눈으로 볼 수 있게 천천히)
-const AMB_K = 2.8;                                   // 일과 장면은 낮 52초 안에 끝나도록 이 배속 이상으로 돌린다(순시 약 20초 + 간식 사건 약 17초)
-const SCHED = [{ id: 'patrol', at: 3, kind: 'patrol', wait: 20 }, { id: 'vmeet', at: 6, kind: 'vmeet', weekly: true, wait: 30 }, { id: 'spar', at: 26, kind: 'spar', chance: 0.4, wait: 12 }, { id: 'elem', at: 36, kind: 'elem', chance: 0.35, wait: 12 }, { id: 'massage', at: 10, kind: 'massage', chance: 0.5, wait: 14 }, { id: 'meeting', at: 15, kind: 'meeting', chance: 0.012, wait: 26 }, { id: 'exec', at: 22, kind: 'exec', chance: 0.75, wait: 20 }, { id: 'rounds', at: 18, kind: 'rounds', chance: 0.5, wait: 18 }, { id: 'dept', at: 28, kind: 'dept', chance: 0.6, wait: 16 }, { id: 'snack', at: 32, kind: 'snack', wait: 20 }, { id: 'extra', at: 40, kind: 'extra', chance: 0.8, wait: 14 }, { id: 'extra2', at: 12, kind: 'extra', chance: 0.45, wait: 10 }, { id: 'lunch', at: 24, kind: 'lunch', chance: 0.7, wait: 12 }, { id: 'mq', at: 30, kind: 'martq', chance: 0.5, wait: 12 }, { id: 'newitem', at: 8, kind: 'newitem', chance: 0.4, wait: 12 }, { id: 'collect', at: 14, kind: 'collect', chance: 0.4, wait: 16 }, { id: 'recruit', at: 34, kind: 'recruit', chance: 0.4, wait: 18 }, { id: 'freezer', at: 20, kind: 'freezer', chance: 0.3, wait: 16 }];   // 낮 구간(초): 아침 출근이 끝난 뒤 순시, 10% 확률로 주간 회의, 그 뒤 간식 사건
+const AMB_K = 2.0;                                   // 일과 장면은 낮 52초 안에 끝나도록 이 배속 이상으로 돌린다(순시 약 20초 + 간식 사건 약 17초)
+const SCHED = [{ id: 'patrol', at: 8, kind: 'patrol', wait: 40 }, { id: 'vmeet', at: 14, kind: 'vmeet', weekly: true, wait: 60 }, { id: 'newitem', at: 22, kind: 'newitem', chance: 0.2, wait: 30 }, { id: 'extra2', at: 30, kind: 'extra', chance: 0.2, wait: 24 }, { id: 'massage', at: 38, kind: 'massage', chance: 0.4, wait: 30 }, { id: 'exec', at: 46, kind: 'exec', chance: 0.45, wait: 40 }, { id: 'collect', at: 54, kind: 'collect', chance: 0.3, wait: 30 }, { id: 'rounds', at: 62, kind: 'rounds', chance: 0.3, wait: 36 }, { id: 'freezer', at: 70, kind: 'freezer', chance: 0.2, wait: 30 }, { id: 'lunch', at: 78, kind: 'lunch', chance: 0.5, wait: 24 }, { id: 'dept', at: 86, kind: 'dept', chance: 0.4, wait: 30 }, { id: 'snack', at: 92, kind: 'snack', wait: 40 }, { id: 'elem', at: 98, kind: 'elem', chance: 0.25, wait: 24 }, { id: 'mq', at: 104, kind: 'martq', chance: 0.25, wait: 24 }, { id: 'spar', at: 110, kind: 'spar', chance: 0.3, wait: 24 }, { id: 'recruit', at: 116, kind: 'recruit', chance: 0.25, wait: 24 }, { id: 'extra', at: 121, kind: 'extra', chance: 0.4, wait: 20 }, { id: 'meeting', at: 100, kind: 'meeting', chance: 0.012, wait: 40 }];   // 낮 구간(초). 낮이 125초로 길어진 만큼 일과를 넓게 배치했고 기대 개수는 늘리지 않았다(하루 약 6건). 같은 종류는 EVENT_GAP초 이상 띄운다. 이벤트는 한 번에 하나씩만 돈다
 const snack = { n: 3, show: 0 };
 async function sceneAmbient(ev) {
   const sp0 = SPEED; ambientCur = ev.kind; SPEED = Math.max(SPEED, reduce ? 3 : ev.demo ? 2.2 : (AMB_KS[ev.kind] ?? AMB_K)); renderStaff();   // 일과 데모는 눈으로 따라갈 수 있게 조금 천천히
@@ -1861,7 +1861,7 @@ async function sceneAmbient(ev) {
     else if (ev.kind === 'dinner') await sceneDinner(ev);
     else if (ev.kind === 'welcome') await sceneWelcome(ev);
     else if (ev.kind === 'extra' || EXTRA_KINDS.includes(ev.kind)) await sceneExtra(ev);
-  } finally { ambientCur = null; SPEED = sp0; renderStaff(); }
+  } finally { ambientCur = null; SPEED = sp0; lastEventEnd = cycElapsed(); renderStaff(); }
 }
 const dozingNow = (a) => !a.npc && a.vis && !a.walk && !(a.awakeUntil > performance.now()) && (a.pose === 'nap' || (a.pose === 'sofa' && a.doze) || (a.sitting && a.pose === 'desk' && a.doc?.state !== 'working' && !(a.pretend > performance.now()) && a.ik === 0));   // drawActor의 졸음 판정과 같다
 const goofersOn = (f) => [...actors.values()].filter((a) => a.vis && a.alpha > 0.5 && a.floor === f && !a.walk && !a.climb && !a.inCar && !a.leaving && !a.coming && ((a.npc === 'regular' && f === LNG) || (!a.npc && a.doc.state !== 'working')));
@@ -2077,7 +2077,7 @@ async function sceneDept(ev) {
    마음에 들면(REPORT.pleaseP) 자기가 가진 코인을 주며 격려한다(사장님은 많이, 전설은 소량, 쓰면 줄고 시간이 지나면 조금씩 채워진다).
    보고가 마음에 든 경우 REWARD.p(기본 2%)로 특별 포상: 휴가(REWARD.vacSec초 동안 자리를 비운다) 또는 조기 퇴근(다음 낮까지). 화면 연출일 뿐 db는 건드리지 않고, 일하는(working) 직원에게는 주지 않는다 */
 const REPORT = { printP: 0.3, pleaseP: 0.8, legendP: 0.5, force: null };
-const REWARD = { p: 0.02, vacShare: 0.5, vacSec: 100 };
+const REWARD = { p: 0.02, vacShare: 0.5, vacSec: 220 };
 const wallet = { boss: 12, bossMax: 12, legMax: 3 };
 const PRINT_X = 88, COPIER_X = 72;                                   // 복사기(3F 아래층)와 보고서를 기다리며 서는 자리
 const dinner = { ids: new Set(), on: false };                      // 저녁 회식 참석자(이들은 저녁에도 퇴근하지 않고 남는다)
@@ -2263,7 +2263,7 @@ async function sceneClean() {   // 굼바 여섯 마리가 동시에 대청소: 
 
 /* ---- 외근: 낮이 시작될 때 일하지 않는(done/idle) 직원의 대부분(OUTING.share, 기본 65%)이 아예 출근하지 않고 외근을 나가 있다가 30~50초 뒤 서류나 선물을 들고 돌아온다(그래서 낮 사무실이 한산하다).
    db 상태와 무관한 연출이라 working인 직원은 보내지 않는다(일을 시작하면 바로 돌아와 자리에 앉는다). 주기 7번째 낮(일주일에 한 번)은 뮤츠의 화상 전체 회의의 날이라 외근이 없다 ---- */
-const OUTING = { share: 0.65, minSec: 30, maxSec: 50 };
+const OUTING = { share: 0.65, minSec: 70, maxSec: 120 };
 let outingNext = 0;
 const outingCount = () => [...rewardLeave.values()].filter((r) => r.kind === 'outing').length;
 const dayIndex = () => Math.floor(cycElapsed() / cycLen());
@@ -2332,7 +2332,7 @@ async function sceneLunch() {   // 점심 몰림: 낮 한가운데 일하지 않
 }
 /* 사장님 코인 수금: 낮에 가끔 엘리베이터로 B1까지 내려와 점원·피카츄가 모은 코인 자루를 받아 간다(사장 코인 보유가 늘어난다) */
 async function sceneCollect() {
-  if (running || boss.away || vmeet.on || buying) return;
+  if (running || boss.away || vmeet.on) return;
   const P = BOSSP, clerk = TOADS[2], pika = REGULARS[0];
   const take = Math.max(1, Math.min(6, Math.ceil((shop.till ?? 0) * 0.7)) || 1); shop.till = Math.max(0, (shop.till ?? 0) - take);
   announce('사장님이 편의점 코인을 수금하러 내려갑니다.'); exciteLegends();
@@ -2744,7 +2744,7 @@ function coinSpendTick() {   // 휴게실 위층에서 쉬는 직원 중 코인�
   const rich = [...actors.values()].filter((a) => restOk(a) && (a.coins ?? 0) > 0 && now >= (a.nextBuy ?? 0));   // 코인이 있는 쉬는 직원은 어느 층에 있든 자판기로 간다(받은 코인이 쓰이는 흐름)
   const c = [...actors.values()].filter((a) => restOk(a) && a.floor === LNG && a.loft && now >= (a.nextBuy ?? 0));
   const lookers = [...actors.values()].filter((q) => restOk(q) && now >= (q.nextBrowse ?? 0) && now >= (q.nextBuy ?? 0) && !(q.coins > 0));   // 코인 없는 쉬는 직원도 가끔 편의점 구경
-  if (!rich.length && lookers.length && !browsing && Math.random() < 0.35 && tod() === 'day') { const q = pick(lookers); browsing = true; storageTrip(q).finally(() => { browsing = false; }); return; }
+  if (!rich.length && lookers.length && !browsing && Math.random() < 0.2 && tod() === 'day') { const q = pick(lookers); browsing = true; storageTrip(q).finally(() => { browsing = false; }); return; }
   const a = rich.length ? pick(rich) : (c.length && Math.random() < 0.12 ? pick(c) : null);
   if (a) { if ((a.coins ?? 0) > 0 && Math.random() < 0.55) martTrip(a); else drinkTrip(a); }   // 코인은 편의점(55%)이나 3층 자판기에서 쓴다
 }
@@ -2991,7 +2991,7 @@ async function sceneKamek(ev) {
 }
 
 /* ---- 가끔 휴게실에 다녀오기: 쉬는 직원은 자기 자리에 있다가 90~150초에 한 번 3F에 가서 20~40초 쉬고 돌아온다(동시에 최대 3명) ---- */
-const VISIT = { first: [25, 70], gap: [60, 110], stay: [20, 40], travel: 8, max: 4 };   // 초(실시간). 출발 시각은 에이전트 id 해시로 분산(결정적)
+const VISIT = { first: [50, 140], gap: [120, 220], stay: [24, 48], travel: 8, max: 4 };   // 초(실시간). 출발 시각은 에이전트 id 해시로 분산(결정적)
 const visitState = new Map();
 const hid = (id) => hash(hue(id) % 9973);
 function visitTick() {
@@ -3021,16 +3021,17 @@ function onTod(t, prev) {
   announce(t === 'eve' ? '저녁 5시입니다. 일하지 않는 직원은 퇴근을 시작하고 킹부끄가 슬슬 나타납니다.' : t === 'night' ? '밤이 되었습니다. 일하는 직원은 야근합니다.' : '아침이 밝았습니다. 직원들이 출근합니다.');
   if ((prev !== 'day') !== (t !== 'day')) settleAll(false);
 }
+const EVENT_GAP = 90, lastFired = new Map(); let lastEventEnd = -1e9;   // 같은 종류 이벤트는 최소 90초 간격
 function tickSchedule() {
   const e = cycElapsed(), P = cycLen(), t = tod();
   if (t !== lastTod) { const prev = lastTod; lastTod = t; if (todForce === null) onTod(t, prev); }
   if (!document.hidden && todForce === null && !nightDemo && !demoRun) {
-    for (let c = Math.floor(lastE / P); c <= Math.floor(e / P); c++) for (const ev of SCHED) { const tm = c * P + ev.at; if (tm > lastE && tm <= e && e - tm < 4 && (!ev.weekly || isWeekly(c)) && (!ev.chance || Math.random() < ev.chance)) pendFire.push({ ev, until: e + (ev.wait ?? 8) }); }   // 지나간 이벤트는 다시 하지 않고, 지금 시작하는 것만
+    for (let c = Math.floor(lastE / P); c <= Math.floor(e / P); c++) for (const ev of SCHED) { const tm = c * P + ev.at; if (tm > lastE && tm <= e && e - tm < 4 && (!ev.weekly || isWeekly(c)) && e - (lastFired.get(ev.kind) ?? -1e9) >= EVENT_GAP && (!ev.chance || Math.random() < ev.chance)) pendFire.push({ ev, until: e + (ev.wait ?? 8) }); }   // 지나간 이벤트는 다시 하지 않고, 지금 시작하는 것만
   }
   lastE = e;
   for (let i = pendFire.length - 1; i >= 0; i--) {
     const p = pendFire[i]; if (e > p.until || tod() !== 'day') { pendFire.splice(i, 1); continue; }
-    if (!running && !ghost.busy) { pendFire.splice(i, 1); enqueue({ kind: p.ev.kind, text: p.ev.id }); break; }
+    if (!running && !ghost.busy && e - lastEventEnd >= 6) { pendFire.splice(i, 1); lastFired.set(p.ev.kind, e); enqueue({ kind: p.ev.kind, text: p.ev.id }); break; }   // 직전 이벤트가 끝나고 6초는 쉰다
   }
 }
 setInterval(tickSchedule, 400);
