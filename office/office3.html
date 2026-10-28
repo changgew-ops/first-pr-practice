@@ -2048,7 +2048,7 @@ function outingTick() {
   if ([...actors.values()].some((a) => !a.npc && (a.coming || a.leaving))) return;
   const pool = agents.filter((a) => a.state !== 'working'), target = Math.round(pool.length * OUTING.share);
   if (outingCount() >= target) return;
-  const cand = shuffled([...actors.values()].filter((a) => restOk(a) && !visiting.has(a.id) && !rewardLeave.has(a.id) && !(a.outCool > now) && !a.settling));
+  const cand = shuffled([...actors.values()].filter((a) => restOk(a) && !visiting.has(a.id) && !rewardLeave.has(a.id) && !(a.outCool > now) && !a.settling && !scenes.some((q) => q.agent === a.id)));
   const a = cand[0]; if (!a) return;
   rewardLeave.set(a.id, { kind: 'outing', until: now + (OUTING.minSec + Math.random() * (OUTING.maxSec - OUTING.minSec)) * 1000 });
   a.leaveLine = pick(['외근 다녀오겠습니다!', '거래처 좀 다녀올게요~', '외근 나갑니다~', '미팅 다녀올게요!']); a.outCool = now + 80000;
@@ -2616,8 +2616,8 @@ async function sceneStart(ev) {
   a.say('시작할게요', 'think', 1100); await sleep(500);
 }
 async function sceneDone(ev) {
-  const a = findAgent(ev); if (!a) { bossSay('보고 확인', 'good', 900); await sleep(700); return; }
-  lastReporter = a;
+  const a = findAgent(ev); if (!a || a.gone || a.leaving || a.coming || rewardLeave.has(a.id)) { bossSay('보고 확인', 'good', 900); await sleep(700); return; }   // 자리를 비운(퇴근·외근·휴가) 직원은 방송으로만 확인한다
+  lastReporter = a; a.busy = true;
   const home = layout().get(a.id), F = REPORT.force ?? {}; REPORT.force = null;
   const printed = F.print ?? Math.random() < REPORT.printP;                                      // 가끔 복사기에서 보고서를 뽑아 간다
   if (printed) {
@@ -2632,6 +2632,7 @@ async function sceneDone(ev) {
   if (pleased && (F.reward || Math.random() < REWARD.p)) await specialReward(a, F.reward === true ? undefined : F.reward);
   bossSet('sleep');
   await a.job(async () => { const h = layout().get(a.id) ?? home; if (h && !h.gone) { await goFloor(a, fIdx(h.floor), h.x, h.loft); a.setPose(h); a.say('휴식', 'think', 1200); } });   // 보고 뒤에는 3F가 아니라 자기 층 자리로 돌아간다(밤이면 settleAll이 퇴근시킨다)
+  a.busy = false; settleAll(false);
 }
 async function sceneFail(ev) {
   let a = findAgent(ev) ?? lastReporter ?? [...actors.values()].find((x) => x.doc.state === 'working') ?? null;
@@ -2688,6 +2689,7 @@ function settleAll(instant = false) {
     if (ac.coming || ac.leaving) continue;                    // 출퇴근 중에는 건드리지 않는다
     ac.vis = !dest.hidden; ac.alphaT = ac.vis ? 1 : 0;
     if (instant) { ac.floor = fIdx(dest.floor); ac.loft = !!dest.loft; ac.x = dest.x; ac.walk = null; ac.setPose(dest); ac.inCar = false; ac.carMode = false; ac.sink = ac.sitting ? 6 : ac.pose === 'sofa' ? 4 : 0; ac.alpha = ac.alphaT; continue; }
+    if (ac.busy) { ac.dest = dest; continue; }                                                   // 장면 중인 직원은 건드리지 않는다(장면이 끝나면 스스로 자리로 돌아간다)
     ac.dest = dest;
     if (!ac.settling && (ac.floor !== fIdx(dest.floor) || ac.loft !== !!dest.loft || Math.abs(ac.x - dest.x) > 1) && ac.q) {
       ac.settling = true; ac.commute = true;
@@ -3193,13 +3195,15 @@ function renderStaff() {
   const sa = (id) => SCHED.find((e) => e.id === id)?.at;
   const AMB_NAME = { gossip: '계단참 뒷담화', treasure: '계단 보물찾기', stairslip: '계단 서류 해프닝', parcel: '택배 도착', dinner: '저녁 회식', welcome: '신입 환영', quiz: '마귀 퀴즈', mishap: '서류 해프닝', clean: '굼바 대청소', snack: '간식 사건', patrol: '사장님 순시', meeting: '주간 회의', kamek: '마귀의 지원', exec: '간부 회의', dept: '부서 보너스', rounds: '전설 층 순회', extra: '기타 이벤트', blackout: '정전', printer: '프린터 종이 걸림', cake: '생일 케이크', rain: '비', minimeet: '3층 소회의', break: '휴게실 쉬는 시간' };
   const rows = [
-    ['시계', `${gc.label} ${String(gc.hh).padStart(2, '0')}:${String(gc.mm).padStart(2, '0')} · 낮 ${CYC.day}초 + 저녁 ${CYC.eve}초 + 밤 ${CYC.night}초(${cycLen()}초) 주기. 낮에는 순시(${sa('patrol')}초)·전설 층 순회(50% 확률, ${sa('rounds')}초)·주간 회의(10% 확률, ${sa('meeting')}초)·6층 간부 회의(${sa('exec')}초)·부서 일괄 보너스(40% 확률, ${sa('dept')}초)·간식 사건(${sa('snack')}초)·기타 이벤트(${sa('extra')}초: 정전·프린터 고장·생일 케이크·비·3층 소회의·휴게실 줄서기), 저녁에는 직원이 아직 있는 채로 킹부끄가 나타나고, 밤에는 일하지 않는 직원이 퇴근하고 일하는 직원은 야근합니다. ${ambientCur ? '지금 장면: ' + (AMB_NAME[ambientCur] ?? '') : ''}`],
+    ['시계', `${gc.label} ${String(gc.hh).padStart(2, '0')}:${String(gc.mm).padStart(2, '0')} · 낮 ${CYC.day}초(08~17시) + 저녁 ${CYC.eve}초(17~21시) + 밤 ${CYC.night}초(21~08시) = ${cycLen()}초 주기. 낮에는 순시(${sa('patrol')}초)·전설 층 순회(50% 확률, ${sa('rounds')}초)·주간 회의(10% 확률, ${sa('meeting')}초)·6층 간부 회의(${sa('exec')}초)·부서 일괄 보너스(40% 확률, ${sa('dept')}초)·간식 사건(${sa('snack')}초)·기타 이벤트(${sa('extra')}초, ${sa('extra2')}초: 정전·프린터 고장·생일 케이크·비·3층 소회의·휴게실 줄서기·마귀 퀴즈·서류 해프닝·굼바 대청소·계단 뒷담화·계단 보물찾기·계단 서류 해프닝·택배 도착)가 걸립니다. 저녁 5시(17:00)가 되면 일하지 않는 직원이 퇴근을 시작하고(가끔 몇 명은 남아 회식), 킹부끄가 나타납니다. 밤에는 일하는 직원만 야근합니다. 낮에는 일하지 않는 직원의 약 25%가 번갈아 외근을 나갑니다. ${ambientCur ? '지금 장면: ' + (AMB_NAME[ambientCur] ?? '') : ''}`],
     [`굼바 ${GOOMBAS.length}마리 · 층별 청소`, GOOMBAS.map((j) => `${FLOOR_SHORT[FL[j.floor]]}: ${j.mopping ? '닦는 중' : j.walk ? '이동' : '쉬는 중'}`).join(' · ') || '층마다 한 마리씩 바닥을 닦습니다.'],
+    ['굼바 · 계단 청소', `${STAIR_GB ? `${STAIR_GB.mopping ? '계단을 닦는 중' : STAIR_GB.climb ? '계단 이동' : '쉬는 중'}. ` : ''}한 마리가 왼쪽 계단을 한 층씩 오르내리며 계단을 닦습니다. 계단에서는 직원 둘이 계단참에서 상사 뒷담화를 하다 마귀·전설·사장님께 들키거나, 숨은 코인·간식·상자를 발견하거나, 서류를 쏟기도 합니다. 엘리베이터가 먼저지만 한 층 거리는 가끔(10%) 운동 삼아 계단을 씁니다.`],
+    ['1층 간식 창고·택배', `간식 박스 ${store.n}/${store.max}. 키노피오가 1층 창고에서 박스를 꺼내 3층 자판기를 채우고, 택배가 오면 박스가 입고됩니다.`],
     [`키노피오 ${TOADS.length}마리 · 경리·비서`, TOADS.length ? `${TOADS.map((t) => `${t.name.replace('키노피오 · ', '')}: ${t.vis ? (t.job2 || '대기') : '퇴근'}`).join(' · ')}. 낮에 근무하며 간식 자판기와 정수기 물통을 채우고, 사장님께 서류를 가져다줍니다. 간식 사건 뒤에는 간식을 다시 채웁니다.` : '이미지를 불러오지 못해 쉬는 중입니다.'],
     [`마귀 ${KAMEKS.length}마리 · 순찰·지원`, `${KAMEKS.map((k) => `${k.name}: ${FLOOR_SHORT[FL[k.floor]]}${k.castTo ? '에서 지원 중' : ''}`).join(' · ')}. 엘리베이터 없이 "이동!" 하고 순간이동하며 층을 돌다가 일이 막힌 직원(수정 중·막힘·반려 직후)을 도와주고, 일하지 않고 졸거나 휴게실에서 늘어진 직원은 지팡이로 가리키며 꾸짖습니다(같은 직원은 150초 안에 다시 혼내지 않고, 일하는 직원은 가끔 칭찬합니다).`],
     [`전설 직원 ${LEGENDS.length}마리`, `${LEGENDS.map((L) => L.name).join('·')}. 근무조 교대 없이 낮밤 내내 사장실 자리를 지킵니다(야근). 틈틈이 서류를 넘기고 고개를 돌리며, 낮에는 사장님이 소집하는 간부 회의에서 한 명씩 보고합니다(사장님이 화내면 경호 뻐끔플라워가 불덩이를 쏩니다). ${NO_CUT.length ? `${NO_CUT.join('·')}: 컷 없음(시트에 없어 제크로무가 그 자리를 맡습니다). ` : ''}${noImg.length ? `${noImg.join('·')}은(는) 이미지를 못 불러 원형 아이콘으로 표시합니다. ` : ''}${idleOffice ? '일거리가 없어 심심해합니다.' : '일이 생기면 벌떡 일어납니다.'}`],
     ['3층 휴게실(위)·회의실(아래)', `위층(로프트)이 휴게실입니다: 소파·커피머신·자판기·냉장고, 단골 피카츄·이브이${HAS_PIRANHA ? ', 뻐끔플라워 3송이(굼바를 가끔 잡아먹었다 뱉고, 사장님이 분노하면 동그란 불덩이를 쏩니다)' : ''}. 쉬는 직원은 주로 위층에서 대기하고 커피·간식·음료를 뽑습니다. 아래층은 회의실입니다(회의 테이블${HAS_TANK ? ', 잉어킹 수조' : ''}, 3층 소회의).`],
-    ['사장님 · 주간 회의', '사장님(뮤츠)은 책상 옆에 서 있고, 낮에 한 번 책상을 비우고 엘리베이터로 층을 돌며 놀고 있는 직원을 혼냅니다. 10% 확률로 주간 회의가 열리면 전원이 사장실에 모여(엘리베이터 정원 8명, 넘치면 "휴…" 하고 왼쪽 계단) 좁다고 투덜거립니다.'],
+    ['사장님 · 보고서·포상', `사장님(뮤츠)은 책상 옆에 서 있고 코인 ${wallet.boss}개를 가졌습니다(전설은 ${LEGENDS.map((L) => `${L.name} ${L.coins ?? 2}`).join('·')}). 보고(done)가 들어오면 가끔(30%) 직원이 3층 복사기에서 보고서를 뽑아 오고, 사장님이나 전설이 읽어 보고 마음에 들면 자기 코인을 주며 격려합니다. 아주 마음에 들면(2%) 휴가나 조기 퇴근을 포상으로 줍니다(db 상태와 무관한 연출, 일하는 직원은 제외). 낮에 한 번 책상을 비우고 엘리베이터로 층을 돌며 놀고 있는 직원을 혼내는데, 졸다 걸리면 훨씬 크게 혼납니다. 10% 확률로 주간 회의가 열리면 전원이 사장실에 모입니다.`],
     ['엘리베이터와 계단', `엘리베이터 ${CARS.length}대(A·B가 한 샤프트를 같이 씁니다, 정원 각 ${CAR_CAP}명, 층마다 서며 내려 주고 샤프트 위에 카별 지금 층이 표시됩니다). 두 카가 모두 찰 만큼(줄 ${CAR_CAP * CARS.length}명) 기다리는 층에서는 뒤에 온 직원이 "휴…" 하고 왼쪽 계단으로 걸어서 오르내립니다.`],
     ['킹부끄 · 저녁·밤 방문자', ghost.vis ? `${gf}에서 몰래 노는 중(분신 ${clones.filter((c) => c.vis).length}마리도 돌아다닙니다). 걸리면 "으악 들켰다!" 하고 벽을 뚫고 도망갑니다(가끔 사장님께 이르러 가기도 합니다).` : isDark() ? '곧 나타납니다. 혼자 일하는 층에서는 늘 보이고, 2명 이상 일하는 층에서는 보이지 않습니다.' : '낮에는 나타나지 않습니다. 저녁이 되면 분신술로 여러 층을 돌아다닙니다.']
   ];
