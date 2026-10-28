@@ -11,3 +11,6 @@
 .name-with-avatar { display: inline-flex; align-items: center; }
 .pcard .avatar-pcard { margin-top: 62px; }
 @media (max-width: 560px) { .avatar-pcard { width: 88px !important; height: 88px !important; } }
+/* 페이스팩 사진(web/lib/faces.js): 사진이 있는 선수만. 얼굴 뒤 배경은 구단 팔레트 대신 중립색 */
+.avatar.has-photo { background: linear-gradient(180deg, #dfe6f2, #b9c4d9); }
+.avatar img.face-photo { display: block; width: 100%; height: 100%; object-fit: cover; }

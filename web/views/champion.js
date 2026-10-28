@@ -6,7 +6,8 @@ import { logoHref } from '../lib/emblem.js';
 import { colorOf } from '../lib/team-ui.js';
 import { buildLineup } from '../../src/lineup.mjs';
 import { computeAwards } from '../../src/awards.mjs';
-import { CHAMPION_NOTE, titleStats, championTexts, championPhotoSvg, photoRoster } from '../lib/champion.js';
+import { CHAMPION_NOTE, MAX_PHOTO, titleStats, championTexts, championPhotoSvg, photoRoster } from '../lib/champion.js';
+import { onFacesReady, championPortraits, FACE_NOTE } from '../lib/faces.js';
 
 const seen = new Set(); // 이번 접속에서 이미 자동으로 띄운 우승(시드:시즌) — 화면을 다시 그려도 한 번만 뜬다
 let openDlg = null;
@@ -65,7 +66,7 @@ function build(ctx, v) {
     opp: oppName, myWins: v.myWins, oppWins: v.oppWins, games: v.games, bestOf: v.bestOf, mvpName: v.mvp?.name ?? null, mvpLine: v.mvpLine
   };
   const data = { teamId: v.teamId, teamName, season: v.season, regRank: v.regRank, wins: v.wins, losses: v.losses, opp: oppName, myWins: v.myWins, oppWins: v.oppWins, mvpName: v.mvp?.name ?? null, roster };
-  return { key: v.key, input, data, texts: championTexts(input) };
+  return { key: v.key, input, data, texts: championTexts(input), parts: { starters: v.lineup.starters, bench: v.lineup.bench, mvp: v.mvp }, photos: null };
 }
 
 /** 연출 미리보기용: 지금 구단(없으면 첫 구단)의 현재 로스터로 가짜 우승을 만든다 */
@@ -91,7 +92,7 @@ async function dataUrl(href) {
 export async function savePhoto(snap) {
   const href = logoHref(snap.data.teamId);
   const logo = href ? await dataUrl(href) : null;
-  const svg = championPhotoSvg(snap.data, { logoHref: logo });
+  const svg = championPhotoSvg(snap.data, { logoHref: logo, photos: snap.photos });
   const img = new Image();
   await new Promise((ok, no) => { img.onload = ok; img.onerror = no; img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`; });
   const c = document.createElement('canvas');
@@ -106,9 +107,28 @@ export async function savePhoto(snap) {
 
 // ---------- 화면 ----------
 function photoBox(snap) {
-  const box = h('div', { class: 'ch-photo', role: 'img', 'aria-label': `${snap.data.teamName} ${snap.data.season} 시즌 우승 단체 사진(자동 생성 일러스트)` });
-  box.innerHTML = championPhotoSvg(snap.data, { logoHref: logoHref(snap.data.teamId) });
+  const box = h('div', { class: 'ch-photo', role: 'img', 'aria-label': `${snap.data.teamName} ${snap.data.season} 시즌 우승 단체 사진(${snap.photos ? '페이스팩 사진·가상 얼굴 합성' : '자동 생성 일러스트'})` });
+  box.innerHTML = championPhotoSvg(snap.data, { logoHref: logoHref(snap.data.teamId), photos: snap.photos });
   return box;
+}
+
+/**
+ * 페이스팩(web/lib/faces.js)이 있으면 단체 사진을 소속팀 유니폼 합성 상반신으로 다시 그리고 로스터 전체(최대 12명)를 세운다.
+ * 팩이 없으면 아무것도 바꾸지 않는다(기존 일러스트 그대로). 팩은 비동기로 읽으므로 준비되는 대로 같은 상자를 갈아 끼운다.
+ */
+function upgradeWithFaces(snap, box, noteEl) {
+  onFacesReady(() => {
+    const { starters, bench, mvp } = snap.parts;
+    const roster = photoRoster({ starters, bench, finalsMvp: mvp, limit: MAX_PHOTO });
+    const pf = championPortraits(roster, snap.data.teamId, 120);
+    if (!pf || !Object.keys(pf.photos).length) return;
+    snap.data = { ...snap.data, roster };
+    snap.photos = pf.photos;
+    box.innerHTML = championPhotoSvg(snap.data, { logoHref: logoHref(snap.data.teamId), photos: snap.photos });
+    box.setAttribute('aria-label', `${snap.data.teamName} ${snap.data.season} 시즌 우승 단체 사진(페이스팩 사진·가상 얼굴 합성)`);
+    noteEl.hidden = false;
+    noteEl.textContent = `${FACE_NOTE} 이번 사진: 실제 사진 ${pf.realCount}명, 가상 얼굴 ${pf.virtualCount}명(‘가상’ 표시).`;
+  });
 }
 
 function content(ctx, snap, { onClose = null } = {}) {
@@ -119,15 +139,18 @@ function content(ctx, snap, { onClose = null } = {}) {
     try { await savePhoto(snap); } catch (e) { console.error(e); ctx.toast('사진을 저장하지 못했습니다'); }
     saveBtn.disabled = false;
   });
+  const box = photoBox(snap);
+  const faceNote = h('p', { class: 'note ch-note ch-facenote', hidden: true });
+  upgradeWithFaces(snap, box, faceNote);
   return h('div', { class: 'ch', style: { '--team': colorOf(snap.data.teamId) } },
     h('div', { class: 'ch-conf', 'aria-hidden': 'true' }, Array.from({ length: 24 }, (_, i) => h('i', { style: { '--i': i } }))),
     h('div', { class: 'ch-kicker' }, `${snap.data.season} 시즌 챔피언`),
     h('h2', { class: 'ch-head' }, t.headline),
     h('div', { class: 'ch-chips' }, t.chips.map((c) => h('span', { class: 'tag champ' }, c))),
-    photoBox(snap),
+    box,
     h('div', { class: 'ch-quotes' },
       [t.gm, t.owner, t.fans, t.next].filter(Boolean).map((q, i) => h('p', { class: i === 3 ? 'ch-next' : 'ch-quote' }, q))),
-    h('p', { class: 'note ch-note' }, CHAMPION_NOTE),
+    h('p', { class: 'note ch-note' }, CHAMPION_NOTE), faceNote,
     h('div', { class: 'ch-actions' }, saveBtn, onClose ? h('button', { class: 'btn primary', type: 'button', onclick: onClose }, '계속') : null));
 }
 

@@ -52,6 +52,8 @@ const boot = `
 const __DATA = ${JSON.stringify(data).replaceAll('</', '<\\/')};
 const __ASSETS = ${JSON.stringify(assets)};
 globalThis.KBL_DATA_BASE = 'inline/';
+// 페이스팩(선택): HTML 옆의 facepack/ 폴더가 있으면 읽고 없으면 무시한다. 사진은 HTML에 넣지 않는다(facepack/README.md)
+globalThis.KBL_FACEPACK_BASE = './facepack/';
 const __fetch = globalThis.fetch.bind(globalThis);
 globalThis.fetch = (url, opts) => {
   const u = String(url);
@@ -94,4 +96,5 @@ ${js}
 mkdirSync(join(root, 'dist'), { recursive: true });
 const outPath = join(root, 'dist/프로농구-단장-게임.html');
 writeFileSync(outPath, html);
+console.log('페이스팩(선택): 이 HTML 옆에 facepack/ 폴더를 두면 사진을 씁니다(facepack/README.md). 이 도구는 폴더를 복사하지 않습니다.');
 console.log(outPath, (html.length / 1048576).toFixed(2) + 'MB', `(이미지 ${Object.keys(assets).length}개, 데이터 ${dataFiles.length}개)`);

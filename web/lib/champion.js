@@ -135,12 +135,14 @@ export function nextSeasonLabel(season) {
 export const CHAMPION_TEMPLATES = { HEAD, GM, OWNER, FANS, NEXT };
 
 // ---------- 사진에 세울 선수 ----------
+/** 한 장에 세울 수 있는 최대 인원(기본 limit은 7, 페이스팩 사진이 있으면 화면이 12까지 요청한다) */
+export const MAX_PHOTO = 12;
 /**
- * 시상대에 설 선수: 스타팅 5명 + (챔프전 MVP가 없으면 더해서) + 벤치 상위로 limit(기본 7, 최대 8)명까지.
+ * 시상대에 설 선수: 스타팅 5명 + (챔프전 MVP가 없으면 더해서) + 벤치 상위로 limit(기본 7, 최대 12)명까지.
  * starters·bench: 선수 객체 배열(출전 편성 순서). 반환: [{ p, mvp }]
  */
 export function photoRoster({ starters = [], bench = [], finalsMvp = null, limit = 7 } = {}) {
-  const cap = Math.max(1, Math.min(8, limit));
+  const cap = Math.max(1, Math.min(MAX_PHOTO, limit));
   const list = [];
   const add = (p) => { if (p && !list.some((x) => x.p.id === p.id) && list.length < cap) list.push({ p, mvp: Boolean(finalsMvp && p.id === finalsMvp.id) }); };
   starters.forEach(add);
@@ -155,22 +157,37 @@ export function photoRoster({ starters = [], bench = [], finalsMvp = null, limit
 /** 시상대 자리 계산: 뒷줄(높은 단)과 앞줄, 트로피를 사이에 둔 좌우. MVP는 뒷줄 한가운데. 반환: [{ p, mvp, x, y, size, row }] (x,y는 카드 왼쪽 위) */
 export function podiumLayout(roster) {
   const n = roster.length;
-  const backCount = Math.min(4, Math.ceil(n / 2)), frontCount = n - backCount;
   const mvpIdx = roster.findIndex((r) => r.mvp);
   const ordered = [...roster];
   if (mvpIdx > 0) { const [m] = ordered.splice(mvpIdx, 1); ordered.unshift(m); } // 첫 칸(뒷줄 가운데)에 MVP
-  const back = ordered.slice(0, backCount), front = ordered.slice(backCount);
   const out = [];
-  const BS = 104, FS = 120, CX = 480;
-  // 뒷줄: 가운데부터 좌우로 번갈아 놓는다(가운데 칸이 없으면(짝수) 왼쪽 가운데가 첫 칸)
-  const backX = backSlots(backCount, BS, 18, CX);
-  back.forEach((r, i) => out.push({ ...r, x: backX[i], y: 140, size: BS, row: 'back' }));
-  const left = Math.floor(frontCount / 2), right = frontCount - left;
-  const gap = 20, trophyHalf = 62; // 트로피 폭 절반 + 여유
-  const frontX = [];
-  for (let i = 0; i < left; i++) frontX.push(CX - trophyHalf - gap - FS - i * (FS + gap)); // 왼쪽: 트로피 쪽부터 바깥으로
-  for (let i = 0; i < right; i++) frontX.push(CX + trophyHalf + gap + i * (FS + gap)); // 오른쪽
-  front.forEach((r, i) => out.push({ ...r, x: frontX[i], y: 292, size: FS, row: 'front' }));
+  const CX = 480, gap = 20, trophyHalf = 62; // 트로피 폭 절반 + 여유
+  const frontSlots = (count, size) => {
+    const left = Math.floor(count / 2), right = count - left, xs = [];
+    for (let i = 0; i < left; i++) xs.push(CX - trophyHalf - gap - size - i * (size + gap)); // 왼쪽: 트로피 쪽부터 바깥으로
+    for (let i = 0; i < right; i++) xs.push(CX + trophyHalf + gap + i * (size + gap)); // 오른쪽
+    return xs;
+  };
+  if (n <= 8) {
+    const backCount = Math.min(4, Math.ceil(n / 2)), frontCount = n - backCount;
+    const BS = 104, FS = 120;
+    // 뒷줄: 가운데부터 좌우로 번갈아 놓는다(가운데 칸이 없으면(짝수) 왼쪽 가운데가 첫 칸)
+    const backX = backSlots(backCount, BS, 18, CX);
+    ordered.slice(0, backCount).forEach((r, i) => out.push({ ...r, x: backX[i], y: 140, size: BS, row: 'back' }));
+    const frontX = frontSlots(frontCount, FS);
+    ordered.slice(backCount).forEach((r, i) => out.push({ ...r, x: frontX[i], y: 292, size: FS, row: 'front' }));
+    return out;
+  }
+  // 9~12명: 뒷줄·가운데줄·앞줄 세 줄(앞줄은 트로피 양옆). 로스터 전체가 보이도록 카드를 조금 줄인다
+  const frontCount = Math.min(4, Math.max(2, Math.round(n / 3))), rest = n - frontCount;
+  const backCount = Math.ceil(rest / 2), midCount = rest - backCount;
+  const S = 84, FS = 104;
+  const backX = backSlots(backCount, S, 14, CX);
+  ordered.slice(0, backCount).forEach((r, i) => out.push({ ...r, x: backX[i], y: 128, size: S, row: 'back' }));
+  const midX = backSlots(midCount, S, 14, CX);
+  ordered.slice(backCount, backCount + midCount).forEach((r, i) => out.push({ ...r, x: midX[i], y: 220, size: S, row: 'mid' }));
+  const frontX = frontSlots(frontCount, FS);
+  ordered.slice(backCount + midCount).forEach((r, i) => out.push({ ...r, x: frontX[i], y: 308, size: FS, row: 'front' }));
   return out;
 }
 function backSlots(count, size, gap, cx) {
@@ -195,8 +212,8 @@ function star(cx, cy, r) {
   for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + (i * Math.PI) / 5, rr = i % 2 ? r * 0.45 : r; pts.push(`${(cx + Math.cos(a) * rr).toFixed(1)},${(cy + Math.sin(a) * rr).toFixed(1)}`); }
   return pts.join(' ');
 }
-function trophy(cx, bottom) {
-  return `<g transform="translate(${cx} ${bottom})">
+function trophy(cx, bottom, k = 1) {
+  return `<g transform="translate(${cx} ${bottom})${k === 1 ? '' : ` scale(${k})`}">
 <ellipse cx="0" cy="2" rx="48" ry="7" fill="#000" opacity=".28"/>
 <rect x="-36" y="-18" width="72" height="18" rx="3" fill="#a56a00"/><rect x="-26" y="-32" width="52" height="14" rx="2" fill="url(#gold)"/>
 <rect x="-9" y="-62" width="18" height="32" fill="url(#gold)"/>
@@ -223,15 +240,18 @@ function confettiDots(seed, team) {
  * 우승 단체 사진 SVG(960×540). data: { teamId, teamName, season, regRank, wins, losses, opp, myWins, oppWins, mvpName, roster: photoRoster 결과 }
  * opts.logoHref: 구단 로고 이미지 주소(없으면 로고 없이). 화면과 PNG 저장이 같은 그림을 쓴다.
  */
-export function championPhotoSvg(data, { logoHref = null } = {}) {
+export function championPhotoSvg(data, { logoHref = null, photos = null } = {}) {
   const team = colorOf(data.teamId);
   const bgTop = dark(team, 0.62), bgBottom = '#0b1022';
   const cards = podiumLayout(data.roster ?? []);
   const cardOf = ({ p, mvp, x, y, size }) => {
-    const av = avatarSvg(p, { size, teamColor: team, number: p.number ?? null }).replace(/^<svg xmlns="[^"]*"/, `<svg x="${x}" y="${y}"`);
+    const ph = photos?.[p.id] ?? null; // 페이스팩 사진(실존 사진 또는 가상 얼굴 + 유니폼 몸통)이 있으면 그것을, 없으면 자동 조합 일러스트를
+    const av = ph
+      ? `<rect x="${x}" y="${y}" width="${size}" height="${size}" rx="9" fill="${dark(team, 0.8)}"/><image href="${esc(ph.href)}" x="${x}" y="${y}" width="${size}" height="${size}" preserveAspectRatio="xMidYMin slice"/>${ph.virtual ? `<text x="${x + 6}" y="${y + 14}" font-size="10" font-weight="800" fill="#fff" stroke="#000" stroke-opacity=".5" stroke-width="2.5" paint-order="stroke" font-family="${FONT}">가상</text>` : ''}`
+      : avatarSvg(p, { size, teamColor: team, number: p.number ?? null }).replace(/^<svg xmlns="[^"]*"/, `<svg x="${x}" y="${y}"`);
     const label = cleanName(p.baseName ?? p.name ?? '');
     return `<g>${av}<rect x="${x}" y="${y}" width="${size}" height="${size}" rx="9" fill="none" stroke="${mvp ? '#ffd45c' : '#ffffff'}" stroke-opacity="${mvp ? 1 : 0.55}" stroke-width="${mvp ? 4 : 2}"/>
-<rect x="${x}" y="${y + size - 22}" width="${size}" height="22" fill="#000" opacity=".58"/><text x="${x + size / 2}" y="${y + size - 7}" text-anchor="middle" font-size="${size > 110 ? 14 : 13}" font-weight="700" fill="#fff" font-family="${FONT}">${esc(label)}</text>
+<rect x="${x}" y="${y + size - 22}" width="${size}" height="22" fill="#000" opacity=".58"/><text x="${x + size / 2}" y="${y + size - 7}" text-anchor="middle" font-size="${size > 110 ? 14 : size < 90 ? 11 : 13}" font-weight="700" fill="#fff" font-family="${FONT}">${esc(label)}</text>
 ${mvp ? `<g><polygon points="${star(x + size - 15, y + 15, 14)}" fill="#ffd45c" stroke="#a56a00" stroke-width="1.5"/><text x="${x + size - 15}" y="${y + 36}" text-anchor="middle" font-size="9" font-weight="800" fill="#ffd45c" font-family="${FONT}">MVP</text></g>` : ''}</g>`;
   };
   const rowSvg = (row) => cards.filter((c) => c.row === row).map(cardOf).join('');
@@ -251,10 +271,10 @@ ${confettiDots(`${data.teamId}:${data.season}`, team)}
 ${logoHref ? `<image href="${esc(logoHref)}" x="194" y="30" width="86" height="56" preserveAspectRatio="xMidYMid meet"/>` : ''}
 <text x="${logoHref ? 500 : 480}" y="70" text-anchor="middle" font-size="36" font-weight="900" fill="#2b1b00">${esc(data.season)} 시즌 우승</text>
 <text x="480" y="122" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" stroke="#000" stroke-opacity=".35" stroke-width="3" paint-order="stroke">${esc(data.teamName)}</text>
-<rect x="170" y="244" width="620" height="30" rx="4" fill="url(#step)"/><rect x="170" y="244" width="620" height="4" fill="#fff" opacity=".18"/>
-<g>${rowSvg('back')}</g>
+${cards.some((c) => c.row === 'mid') ? '' : `<rect x="170" y="244" width="620" height="30" rx="4" fill="url(#step)"/><rect x="170" y="244" width="620" height="4" fill="#fff" opacity=".18"/>`}
+<g>${rowSvg('back')}</g><g>${rowSvg('mid')}</g>
 <rect x="70" y="412" width="820" height="44" rx="5" fill="url(#step)"/><rect x="70" y="412" width="820" height="4" fill="#fff" opacity=".18"/>
-${trophy(480, 412)}
+${trophy(480, 412, cards.some((c) => c.row === 'mid') ? 0.72 : 1)}
 <g>${rowSvg('front')}</g>
 <rect x="0" y="456" width="960" height="84" fill="#0b1022" opacity=".7"/>
 <text x="480" y="492" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">${rec}</text>

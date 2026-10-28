@@ -1,8 +1,9 @@
 // 선수 카드 일러스트: 선수 id·이름에서 결정적으로 조합한 스타일화 인물 그림(평면 벡터 SVG).
-// 실제 선수의 사진·초상이 아니다. 피부·머리·표정·체형을 해시로 고른 무작위 조합일 뿐이라 실존 인물의 특징을 반영하지 않는다.
+// 이 그림은 실제 선수의 사진·초상이 아니다(선택 기능인 페이스팩 사진은 web/lib/faces.js가 따로 덮어쓴다). 피부·머리·표정·체형을 해시로 고른 무작위 조합일 뿐이라 실존 인물의 특징을 반영하지 않는다.
 // 같은 선수(같은 kblId/id)는 늘 같은 그림이고, 나이·포지션·희귀도·구단색만 표현을 조금 바꾼다.
 // 순수 문자열 생성(avatarSvg)과 DOM 요소(avatarEl)를 나눠 두어 node 테스트가 가능하다.
 import { mulberry32, hashString } from '../../src/rng.mjs';
+import { upgradeAvatar } from './faces.js';
 
 const SKIN = ['#f6d5b8', '#eec29b', '#d9a273', '#b97d52', '#8d5a36', '#6b4226'];
 const HAIR = ['#1f1a17', '#2b1f17', '#43301f', '#5f4328', '#7a5a35', '#b8893a', '#8a8d93'];
@@ -121,7 +122,8 @@ export function avatarEl(p, opts = {}) {
   el.className = `avatar r-${p.rarity ?? 'common'}${opts.cls ? ` ${opts.cls}` : ''}`;
   el.style.width = `${opts.size ?? 64}px`; el.style.height = `${opts.size ?? 64}px`;
   el.innerHTML = avatarSvg(p, opts);
+  upgradeAvatar(el, p, opts); // 페이스팩이 있고 실제 사진이 있는 선수는 사진으로 바꾼다(없으면 이 그림 그대로)
   return el;
 }
 
-export const AVATAR_NOTE = '일러스트는 이름·번호로 자동 조합한 그림이며 실제 선수의 모습이 아닙니다.';
+export const AVATAR_NOTE = '일러스트는 이름·번호로 자동 조합한 그림이며 실제 선수의 모습이 아닙니다(페이스팩 사진이 있는 선수는 KBL 공식 프로필 사진).';
