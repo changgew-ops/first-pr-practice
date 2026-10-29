@@ -23,8 +23,12 @@ var d=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,'src');
 Object.defineProperty(HTMLImageElement.prototype,'src',{configurable:true,enumerable:d.enumerable,get:d.get,set:function(v){var k=key(v);d.set.call(this,T[k]||v);}});
 })();</script>`;
 
+// db에 연결되지 않은 단일 HTML에서도 실제 직원 목록을 보이도록, office/snapshot.json(db를 내려받은 스냅샷)이 있으면 넣는다
+let snapshotTag = '';
+try { snapshotTag = `<script>window.__OFFICE_SNAPSHOT=${readFileSync(join(root, 'office/snapshot.json'), 'utf8').replace(/</g, '\\u003c')};</script>`; } catch { /* 스냅샷이 없으면 예시 직원 10명 */ }
+
 // 호스트(claude.ai)가 붙이던 문서 틀을 직접 붙인다: 기본 리셋 + viewport
-const skeleton = (body) => `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>${shim}</head><body>
+const skeleton = (body) => `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>${shim}${snapshotTag}</head><body>
 ${body}
 </body></html>
 `;

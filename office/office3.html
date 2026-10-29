@@ -3889,6 +3889,8 @@ async function connect() {
   let db = null;
   try { db = await window.claude?.use?.('db'); } catch { db = null; }
   const live = document.getElementById('live'), text = document.getElementById('live-text');
+  const snap = window.__OFFICE_SNAPSHOT;   // 단일 HTML 빌드가 넣어 두는 db 스냅샷(db에 연결되지 않았을 때만 쓴다)
+  if (!db && snap?.agents?.length) { mock = true; text.textContent = `저장된 직원 ${snap.agents.length}명 표시 · 실시간 연결 없음`; applyAgents(snap.agents); applyFeed(snap.feed ?? []); meta = snap.main ?? {}; renderDom(); return; }
   if (!db) { mock = true; text.textContent = '연결 없음 · 예시 직원으로 표시'; applyAgents(DEMO_AGENTS); applyFeed([{ id: 'x1', kind: 'order', text: '예시: 사장님이 새 업무를 내렸습니다', at: Date.now() - 600000 }, { id: 'x2', kind: 'done', text: '예시: 프리뷰 담당이 보고했습니다', at: Date.now() - 300000 }]); return; }
   connected = true; live.classList.add('on'); text.textContent = '실시간 연결됨';
   const bad = () => { live.classList.remove('on'); text.textContent = '연결이 끊겼습니다'; };
